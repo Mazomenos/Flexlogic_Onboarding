@@ -8,16 +8,16 @@ class X12parser extends Transform {
    * Creates a new X12parser stream
    * @param {string} defaultEncoding The encoding of the file
    */
-  constructor(defaultEncoding = 'ascii') {
+  constructor(defaultEncoding = 'ascii', _segment, _component, _element, _repetition) {
     super({ objectMode: true, defaultEncoding });
     this._decoder = new StringDecoder(defaultEncoding);
     this._firstLine = true;
     this._leftOver = '';
     this._delimiters = {
-      segment: '',
-      component: '',
-      element: '',
-      repetition: '',
+      segment: _segment,
+      component: _component,
+      element: _element,
+      repetition: _repetition,
     };
   }
 
