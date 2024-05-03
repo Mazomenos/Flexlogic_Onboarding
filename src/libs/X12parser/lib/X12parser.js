@@ -111,7 +111,6 @@ class X12parser extends Transform {
 
     // If this is first line in the file try to set delimiters
     if (this._firstLine) {
-      this._delimiters = X12parser.detectDelimiters(data);
       this._firstLine = false;
     }
 
