@@ -15,6 +15,7 @@
     "react-dom": "^18",
     "zod": "^3.23.4"
   },
+  "type": "module",
   "devDependencies": {
     "@types/node": "^20",
     "@types/react": "^18",
