@@ -2,11 +2,9 @@
 import React, { useMemo } from "react";
 import Container from "@/components/Container";
 import Header from "@/components/Header";
-import { usePathname, useRouter } from "next/navigation";
+import {usePathname} from "next/navigation";
 
 function Layout({ children }: { children: React.ReactNode }) {
-  const router = useRouter();
-
 
   const currentPath = usePathname();
   const pageName = useMemo(() => {
