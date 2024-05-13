@@ -4,16 +4,97 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
-generator client {
-  provider = "prisma-client-js"
-}
-
 datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
-model test {
-  id   String @id @default(auto()) @map("_id") @db.ObjectId
-  data String
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Individual EDI Element structure
+model EDIElement {
+  id           String @id @default(auto()) @map("_id") @db.ObjectId
+  Element      String
+  NameElement String
+  Type         String
+  Min          Int
+  Max          Int
+  Version      String
+}
+
+// Individual EDI Segment structure
+model EDISegments {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  Segment String
+  Name    String
+  Version String
+
+  Elements Element[]
+}
+
+// Individual EDI Document structure
+model EDIdocuments {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  Doc     Int
+  Version String
+
+  Segments Segment[]
+}
+
+model TPDocs {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  Version String
+  Partner String
+  Doc     Int
+
+  Segments  Segment[]
+  LogErrors LogErrors[]
+}
+
+type Element {
+  Position    String
+  Element     String
+  Requirement String?
+  Repeat      String
+
+  NameElement String?
+  Type        String?
+  Min         Int?
+  Max         Int?
+  Value       String?
+
+  Conditions Json[]
+  Composites ElementComposite[]
+}
+
+type ElementComposite {
+  Position    String
+  Element     String
+  Requirement String?
+  Repeat      String
+
+  NameElement String?
+  Type        String?
+  Min         Int?
+  Max         Int?
+  Value       String?
+
+  Conditions Json[]
+}
+
+type Segment {
+  Max         String
+  Requirement String
+  Segment     String
+
+  Position String?
+
+  Elements Element[]
+}
+
+type LogErrors {
+  Position String
+  Comments String
 }
