@@ -1,12 +1,28 @@
-import React from "react";
+"use client";
+import React, { useMemo } from "react";
 import Container from "@/components/Container";
 import Header from "@/components/Header";
+import { usePathname, useRouter } from "next/navigation";
 
 function Layout({ children }: { children: React.ReactNode }) {
+  const router = useRouter();
+
+
+  const currentPath = usePathname();
+  const pageName = useMemo(() => {
+    if (currentPath === "/Admin") {
+      return "Partners";
+    }
+    else if (currentPath === "/Cliente") {
+      return "PartnerShip";
+    }
+    return "";
+  }, [currentPath]);
+
   return (
     <React.Fragment>
       <main className="bg-base-200 font-sans-serif h-screen flex flex-col tracking-normal font-extrabold max-h-dvh">
-        <Header> Partners list </Header>
+        <Header>{pageName}</Header>
         <Container>{children}</Container>
       </main>
     </React.Fragment>
