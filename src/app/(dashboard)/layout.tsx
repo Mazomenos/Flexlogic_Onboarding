@@ -19,7 +19,7 @@ function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <React.Fragment>
-      <main className="bg-base-200 font-sans-serif h-screen flex flex-col tracking-normal font-extrabold max-h-dvh">
+      <main className="bg-base-200 text-primary-content font-sans-serif h-screen flex flex-col tracking-normal font-extrabold max-h-dvh">
         <Header>{pageName}</Header>
         <Container>{children}</Container>
       </main>
