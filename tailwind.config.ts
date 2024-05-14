@@ -31,7 +31,9 @@ const config: Config = {
     themes: [
       {
         mytheme: {
+          foreground: "#000000",
           primary: "#C1E2F4",
+          "primary-content": "#000000",
           secondary: "#8CC5E4",
           accent: "#FFCF52",
           neutral: "#242424",
@@ -52,6 +54,13 @@ const config: Config = {
           "--border-btn": "1px", // border width of buttons
           "--tab-border": "1px", // border width of tabs
           "--tab-radius": "0.5rem", // border radius of tabs
+        },
+      },
+      {
+        night: {
+          ...require("daisyui/src/theming/themes")["night"],
+          foreground: "#FFFFFF",
+          "primary-content": "#FFFFFF",
         },
       },
     ],
