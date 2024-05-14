@@ -33,7 +33,7 @@ const config: Config = {
         mytheme: {
           foreground: "#000000",
           primary: "#C1E2F4",
-          "primary-content": "#000000",
+          "primary-content": "#002230",
           secondary: "#8CC5E4",
           accent: "#FFCF52",
           neutral: "#242424",
