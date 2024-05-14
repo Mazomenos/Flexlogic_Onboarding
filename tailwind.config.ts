@@ -20,6 +20,11 @@ const config: Config = {
       normal: "0.10em",
     },
     extend: {
+      colors: {
+        "brand-blue": "#99CEFF",
+        "brand-red": "#FFA5A5",
+      },
+  
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
@@ -40,10 +45,10 @@ const config: Config = {
           "base-100": "#FFFFFF",
           "base-200": "#F6F6F6",
           "base-300": "#E3E3E3",
-          info: "#A6BFFF",
+          info: "#99CEFF",
           success: "#BCDBA9",
           warning: "#FAE5AE",
-          error: "#DA9999",
+          error: "#FFD1D1",
 
           "--rounded-box": "1rem", // border radius rounded-box utility class, used in card and other large boxes
           "--rounded-btn": "0.5rem", // border radius rounded-btn utility class, used in buttons and similar element
