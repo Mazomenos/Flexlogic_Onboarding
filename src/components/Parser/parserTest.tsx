@@ -14,6 +14,7 @@ export default function ParserTest() {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
+    console.log(typeof file.name);
     ParseEDIfileTest(file.name);
 
     return { success: true };
