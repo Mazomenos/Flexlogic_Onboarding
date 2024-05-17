@@ -18,11 +18,14 @@ export default function Home() {
     { id: 4, name: "Partner y", status: "Failed" },
   ];
 
+  const handleAddPartner = () => {
+    console.log("Add Partnership");
+  }
+
   return (
     <main>
       <div className="w-full justify-end flex">
-        {" "}
-        <AddButton> + Partnership </AddButton>
+        <AddButton onClick={() => handleAddPartner()}> Add Partnership + </AddButton>
       </div>
       <BrakeRule />
       {partnerships.map((partnership, index) => (
