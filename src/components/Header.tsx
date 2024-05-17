@@ -1,5 +1,3 @@
-import Image from "next/image";
-import Logo from "../assets/images/logo.png";
 import ThemeChanger from "./ThemeChanger";
 import FlexLogicLogo from "./FlexLogicLogo";
 
