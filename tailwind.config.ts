@@ -24,7 +24,7 @@ const config: Config = {
         "brand-blue": "#99CEFF",
         "brand-red": "#FFA5A5",
       },
-  
+
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
@@ -64,6 +64,13 @@ const config: Config = {
       {
         night: {
           ...require("daisyui/src/theming/themes")["night"],
+          foreground: "#FFFFFF",
+          "primary-content": "#FFFFFF",
+        },
+      },
+      {
+        dim: {
+          ...require("daisyui/src/theming/themes")["dim"],
           foreground: "#FFFFFF",
           "primary-content": "#FFFFFF",
         },

@@ -2,7 +2,7 @@ export default function ThemeChanger() {
   return (
     <label className="swap swap-rotate pt-2">
       {/* this hidden checkbox controls the state */}
-      <input type="checkbox" className="theme-controller" value="night" />
+      <input type="checkbox" className="theme-controller" value="dim" />
 
       {/* sun icon */}
       <svg
