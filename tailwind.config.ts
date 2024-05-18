@@ -6,16 +6,8 @@ const config: Config = {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  darkMode: "class",
   theme: {
-    fontFamily: {
-      "sans-serif": [
-        "Quicksand",
-        {
-          fontFeatureSettings: '"cv11", "ss01"',
-          fontVariationSettings: '"opsz" 32',
-        },
-      ],
-    },
     letterSpacing: {
       normal: "0.10em",
     },
@@ -23,6 +15,10 @@ const config: Config = {
       colors: {
         "brand-blue": "#99CEFF",
         "brand-red": "#FFA5A5",
+      },
+      fontFamily: {
+        sans: ["var(--font-lato)"],
+        mono: ["var(--font-roboto-mono)"],
       },
 
       backgroundImage: {
@@ -45,10 +41,14 @@ const config: Config = {
           "base-100": "#FFFFFF",
           "base-200": "#F6F6F6",
           "base-300": "#E3E3E3",
-          info: "#99CEFF",
+          info: "#c7e1f2",
+          "info-content": "#39668d",
           success: "#BCDBA9",
+          "success-content": "#3c7e44",
           warning: "#FAE5AE",
+          "warning-content": "#986523",
           error: "#FFD1D1",
+          "error-content": "#aa2e26",
 
           "--rounded-box": "1rem", // border radius rounded-box utility class, used in card and other large boxes
           "--rounded-btn": "0.5rem", // border radius rounded-btn utility class, used in buttons and similar element
@@ -73,6 +73,10 @@ const config: Config = {
           ...require("daisyui/src/theming/themes")["dim"],
           foreground: "#FFFFFF",
           "primary-content": "#FFFFFF",
+          "success-content": "#8aecc0",
+          "warning-content": "#ead16b",
+          "info-content": "#428591",
+          "error-content": "#f3b29f",
         },
       },
     ],
