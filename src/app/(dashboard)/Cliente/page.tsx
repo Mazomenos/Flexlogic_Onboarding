@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import AddButton from "@/components/AddButton";
 import BrakeRule from "@/components/BrakeRule";
 import ListItem from "@/components/ListItem";
@@ -21,12 +21,14 @@ export default function Home() {
 
   const handleAddPartner = () => {
     console.log("Add Partnership");
-  }
+  };
 
   return (
     <main>
-      <div className="w-full justify-end flex">
-        <AddButton onClick={() => handleAddPartner()}> Add Partnership + </AddButton>
+      <div className="w-full mt-1 justify-end flex">
+        <AddButton onClick={() => handleAddPartner()}>
+          + Add Partnership
+        </AddButton>
       </div>
       <BrakeRule />
       {partnerships.map((partnership, index) => (
