@@ -49,6 +49,7 @@ const config: Config = {
           "warning-content": "#986523",
           error: "#FFD1D1",
           "error-content": "#aa2e26",
+          "base-content": "#39668d",
 
           "--rounded-box": "1rem", // border radius rounded-box utility class, used in card and other large boxes
           "--rounded-btn": "0.5rem", // border radius rounded-btn utility class, used in buttons and similar element
@@ -76,6 +77,7 @@ const config: Config = {
           "success-content": "#8aecc0",
           "warning-content": "#ead16b",
           "info-content": "#428591",
+          "base-content": "#71e8fc",
           "error-content": "#f3b29f",
         },
       },
