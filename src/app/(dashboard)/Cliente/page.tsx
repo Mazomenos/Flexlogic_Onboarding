@@ -35,19 +35,21 @@ export default function Home() {
   };
 
   return (
-    <main>
+    <div className=" h-full flex flex-col ">
       <div className="w-full mt-1 justify-end flex">
         <AddButton onClick={() => handleAddPartner()}>
           + Add Partnership
         </AddButton>
       </div>
       <BrakeRule />
-      {partnerships.map((partnership, index) => (
-        <ListItem key={index} path={partnership.name}>
-          <p>{partnership.name} </p>
-          <Badges status={partnership.status} />
-        </ListItem>
-      ))}
-    </main>
+      <div className="max-h-full flex flex-col items-center w-full overflow-y-auto overscroll-none">
+        {partnerships.map((partnership, index) => (
+          <ListItem key={index} path={partnership.name}>
+            <p>{partnership.name} </p>
+            <Badges status={partnership.status} />
+          </ListItem>
+        ))}
+      </div>
+    </div>
   );
 }
