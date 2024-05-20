@@ -106,9 +106,11 @@ export default function Home() {
         console.log(result)
     }
 
-    const alphanumeric8Test = () => {
-        const schema = z.string().regex(new RegExp('^[a-zA-Z0-9]{8}$'))
-        const result = schema.safeParse(inputString)
+    const lengthTest = () => {
+        const length = 8
+
+        const schema = z.string().length(length)
+        const result = schema.safeParse(inputString.trimEnd())
         console.log(result)
     }
 
@@ -147,7 +149,7 @@ export default function Home() {
                 <button className="btn btn-primary" onClick={yymmddTest}>YYMMDD</button>
                 <button className="btn btn-primary" onClick={hhmmTest}>HHMM</button>
                 <button className="btn btn-primary" onClick={ccyymmddTest}>CCYYMMDD</button>
-                <button className="btn btn-primary" onClick={alphanumeric8Test}>Alph8</button>
+                <button className="btn btn-primary" onClick={lengthTest}>Alph8</button>
                 <button className="btn btn-primary" onClick={moneyTest}>Money</button>
             </div>
         </main>
