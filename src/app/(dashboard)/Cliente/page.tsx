@@ -1,3 +1,10 @@
+/* 
+ * Main page of client, here the client user can visualize 
+ * Partnerships and their respective states.
+ * They can also click Add Partnership button to start the add partnership process.
+ */
+
+
 "use client";
 import AddButton from "@/components/AddButton";
 import BrakeRule from "@/components/BrakeRule";
@@ -11,7 +18,7 @@ type Partnership = {
 };
 
 export default function Home() {
-  // Aquí iría la llamada a las partnerships
+  // TODO: Change to actual DB call
   const partnerships: Partnership[] = [
     { id: 1, name: "Amazon", status: "Complete" },
     { id: 2, name: "Walmart", status: "In Process" },
