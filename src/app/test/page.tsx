@@ -95,7 +95,7 @@ export default function Home() {
     }
 
     const hhmmTest = () => {
-        const schema = z.string().regex(new RegExp('^[0-2][0-9][0-5][0-9]$'))
+        const schema = z.string().regex(new RegExp('^(?:[01][0-9]|2[0-3])[0-5][0-9]$'))
         const result = schema.safeParse(inputString)
         console.log(result)
     }
@@ -113,8 +113,13 @@ export default function Home() {
     }
 
     const moneyTest = () => {
-        const schema = z.string().regex(new RegExp('^\d+\.\d{2}$'))
+        /*const schema = z.string().regex(new RegExp('^\d+\.\d{2}$'))
         const result = schema.safeParse(inputString)
+        console.log(result)*/
+        const decimalPosition = 2
+        const parts = inputString.split('.')
+        const schema = z.string().length(decimalPosition)
+        const result = schema.safeParse(parts[1])
         console.log(result)
     }
 
