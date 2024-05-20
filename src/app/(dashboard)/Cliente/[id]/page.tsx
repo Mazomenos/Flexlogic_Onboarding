@@ -1,9 +1,46 @@
+"use client";
+import AddButton from "@/components/AddButton";
+import BrakeRule from "@/components/BrakeRule";
+import ListItem from "@/components/ListItem";
+import { IoMdDownload } from "react-icons/io";
+import { TfiLayoutLineSolid } from "react-icons/tfi";
+
+type Partnership = {
+  id: number;
+  EDIDoc: string;
+  mandatory: boolean;
+  status: string;
+};
+
 export default function Home() {
-    return (
-      <main>
-        <p>Cliente EDI DOCS </p>
-        <button className="btn btn-primary">Button</button>
-      </main>
-    );
+  const partnerships: Partnership[] = [
+    { id: 1, EDIDoc: "EDI 850 Purchase Order", mandatory: true, status: "Validate" },
+    { id: 2, EDIDoc: "EDI 860 Purchase Order Change Request ", mandatory: false, status: "Validate" },
+    { id: 3, EDIDoc: "EDI 855 Purchase Order Acknowledgment", mandatory: true, status: "Complete" },
+    { id: 4, EDIDoc: "EDI 856 Ship Notice/Manifest", mandatory: true, status: "Validate" },
+    { id: 5, EDIDoc: "EDI 820 Payment Order/Remittance Advice", mandatory: false, status: "Failed" }
+  ];
+
+  const handleAddPartner = () => {
+    console.log("Add Partnership");
   }
-  
+
+  return (
+    <main>
+      <div className="flex justify-end">
+        <AddButton onClick={() => handleAddPartner()}> Download PO Test <IoMdDownload /> </AddButton>
+      </div>
+      <BrakeRule />
+      {partnerships.map((partnership, index) => (
+        <ListItem key={index} path={partnership.EDIDoc}>
+          <div className="flex flex-row w-full">
+            <p className="basis-2/5">{partnership.EDIDoc} </p>
+            <TfiLayoutLineSolid style={{ transform: 'rotate(90deg)' }} className="grid content-center h-full" size={32} />
+            <p className="basis-2/5">{partnership.mandatory ? "Mandatory" : "Optional"} </p>
+            <p className="basis-1/5 flex justify-end">{partnership.status} </p>
+          </div>
+        </ListItem>
+      ))}
+    </main>
+  );
+}
