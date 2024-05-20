@@ -23,7 +23,7 @@ function getPageName(currentPath: string ) {
         return router.push("/404");
       } else {
         if (currentPath === `/Cliente/${partner.id}` || currentPath === `/Admin/${partner.id}`) {
-          pageName = partner.companyName;
+          pageName = (partner.companyName + " Partnership EDI Verification");
         }
       }
     });
