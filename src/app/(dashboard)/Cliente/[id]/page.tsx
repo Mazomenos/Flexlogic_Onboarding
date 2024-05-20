@@ -4,6 +4,7 @@ import BrakeRule from "@/components/BrakeRule";
 import ListItem from "@/components/ListItem";
 import { IoMdDownload } from "react-icons/io";
 import { TfiLayoutLineSolid } from "react-icons/tfi";
+import Badges from "../components/Badges";
 
 type Partnership = {
   id: number;
@@ -38,7 +39,10 @@ export default function Home() {
               <p className="basis-2/5">{partnership.EDIDoc} </p>
               <TfiLayoutLineSolid style={{ transform: 'rotate(90deg)' }} className="grid content-center h-full" size={32} />
               <p className="basis-2/5">{partnership.mandatory ? "Mandatory" : "Optional"} </p>
-              <p className="basis-1/5 flex justify-end">{partnership.status} </p>
+              <div className="basis-1/5 flex justify-end">
+                <Badges status={partnership.status} />
+              </div>
+
             </div>
           </ListItem>
         ))}
