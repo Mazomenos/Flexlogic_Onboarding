@@ -15,13 +15,13 @@ generator client {
 
 // Individual EDI Element structure
 model EDIElement {
-  id           String @id @default(auto()) @map("_id") @db.ObjectId
-  Element      String
-  NameElement String
-  Type         String
-  Min          Int
-  Max          Int
-  Version      String
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  Name    String
+  Element String
+  Type    String
+  Min     Int
+  Max     Int
+  Version String
 }
 
 // Individual EDI Segment structure
@@ -44,57 +44,74 @@ model EDIdocuments {
 }
 
 model TPDocs {
-  id      String @id @default(auto()) @map("_id") @db.ObjectId
-  Version String
-  Partner String
-  Doc     Int
+  id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  Segments  Segment[]
-  LogErrors LogErrors[]
+  Segments Segment[]
 }
 
 type Element {
   Position    String
   Element     String
-  Requirement String?
+  Requirement String
+  Type        String
   Repeat      String
 
-  NameElement String?
-  Type        String?
-  Min         Int?
-  Max         Int?
-  Value       String?
+  Min   Int?
+  Max   Int?
+  Value String?
 
   Conditions Json[]
-  Composites ElementComposite[]
-}
-
-type ElementComposite {
-  Position    String
-  Element     String
-  Requirement String?
-  Repeat      String
-
-  NameElement String?
-  Type        String?
-  Min         Int?
-  Max         Int?
-  Value       String?
-
-  Conditions Json[]
+  Composites Element[]
 }
 
 type Segment {
-  Max         String
-  Requirement String
   Segment     String
+  Requirement String
+  Max         String
 
   Position String?
 
   Elements Element[]
+  Segments Segment[]
+}
+
+// User structure -----------------------
+model Users {
+  id           String        @id @default(auto()) @map("_id") @db.ObjectId
+  Partnerships Partnership[]
+}
+
+type Partnership {
+  idPartner String
+  Docs      UserDocs[]
+}
+
+type UserDocs {
+  Status    String // Completed, in progress & failed
+  DocFile   String? // id of file if saved somewhere else
+  LogErrors LogErrors[]
 }
 
 type LogErrors {
   Position String
   Comments String
 }
+
+//--------------------------
+
+// Trading Partner structure -----------------------
+model TradingPartner {
+  id            String          @id @default(auto()) @map("_id") @db.ObjectId
+  Name          String
+  Initial850EDI String? // id of file if saved somewhere else
+  DocsRequired  TPDocRequired[]
+}
+
+type TPDocRequired {
+  idDoc     String // id from TPDocs
+  Doc       String
+  Version   String
+  isVisible Boolean
+}
+
+//--------------------------
