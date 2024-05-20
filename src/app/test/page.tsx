@@ -88,6 +88,36 @@ export default function Home() {
         console.log(result)
     }
 
+    const yymmddTest = () => {
+        const schema = z.string().regex(new RegExp('^[0-9]{2}(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])$'))
+        const result = schema.safeParse(inputString)
+        console.log(result)
+    }
+
+    const hhmmTest = () => {
+        const schema = z.string().regex(new RegExp('^[0-2][0-9][0-5][0-9]$'))
+        const result = schema.safeParse(inputString)
+        console.log(result)
+    }
+
+    const ccyymmddTest = () => {
+        const schema = z.string().regex(new RegExp('^[0-9]{4}(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])$'))
+        const result = schema.safeParse(inputString)
+        console.log(result)
+    }
+
+    const alphanumeric8Test = () => {
+        const schema = z.string().regex(new RegExp('^[a-zA-Z0-9]{8}$'))
+        const result = schema.safeParse(inputString)
+        console.log(result)
+    }
+
+    const moneyTest = () => {
+        const schema = z.string().regex(new RegExp('^\d+\.\d{2}$'))
+        const result = schema.safeParse(inputString)
+        console.log(result)
+    }
+
     return (
         <main>
             <p>Test</p>
@@ -107,6 +137,13 @@ export default function Home() {
                 <button className="btn btn-primary" onClick={tmTest}>TM</button>
                 <button className="btn btn-warning" onClick={dtTest}>DT</button>
                 <button className="btn btn-primary" onClick={bTest}>B</button>
+            </div>
+            <div>
+                <button className="btn btn-primary" onClick={yymmddTest}>YYMMDD</button>
+                <button className="btn btn-primary" onClick={hhmmTest}>HHMM</button>
+                <button className="btn btn-primary" onClick={ccyymmddTest}>CCYYMMDD</button>
+                <button className="btn btn-primary" onClick={alphanumeric8Test}>Alph8</button>
+                <button className="btn btn-primary" onClick={moneyTest}>Money</button>
             </div>
         </main>
     );
