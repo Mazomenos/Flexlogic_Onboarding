@@ -1,9 +1,8 @@
-/* 
- * Main page of client, here the client user can visualize 
+/*
+ * Main page of client, here the client user can visualize
  * Partnerships and their respective states.
  * They can also click Add Partnership button to start the add partnership process.
  */
-
 
 "use client";
 import AddButton from "@/components/AddButton";
@@ -42,7 +41,7 @@ export default function Home() {
   };
 
   return (
-    <div className=" h-full flex flex-col ">
+    <div className="h-full flex flex-col ">
       <div className="w-full mt-1 justify-end flex">
         <AddButton onClick={() => handleAddPartner()}>
           + Add Partnership
