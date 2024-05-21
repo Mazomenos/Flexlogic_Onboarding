@@ -18,13 +18,13 @@ async function EDIElements_seed() {
     }
 }
 
-// async function EDISegments_seed() {
-//     for (let EDISegment of EDISegments) {
-//         await prisma.eDISegments.create({
-//             data: EDISegment
-//         })
-//     }
-// }
+async function EDISegments_seed() {
+    for (let EDISegment of EDISegments) {
+        await prisma.eDISegments.create({
+            data: EDISegment
+        })
+    }
+}
 
 async function Users_seed() {
     for (let User of Users) {
@@ -63,7 +63,8 @@ async function main () {
     await Users_seed();   
     await TradingPartners_seed();   
     await EDITPDocs_seed();   
-    await EDITemplateDocs_seed();     
+    await EDITemplateDocs_seed();
+    await EDISegments_seed();     
 }
 
 main().catch(e => {

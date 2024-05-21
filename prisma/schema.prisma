@@ -53,13 +53,13 @@ type Element {
   Element     String
   Requirement String
   Type        String
-  Min   Int
-  Max   Int
 
   Position    String?
+  Min   Int?
+  Max   Int?
 
-  Conditions Json[]
-  Composites Element[]
+  Conditions Json[] // Same structure as type Element
+  Composites Json[] // Same structure as type Element
 }
 
 type Segment {
@@ -69,8 +69,8 @@ type Segment {
 
   Position Int?
 
+  Segments Json[] // Same structure as type Segment
   Elements Element[]
-  Segments Segment[]
 }
 
 // User structure -----------------------
