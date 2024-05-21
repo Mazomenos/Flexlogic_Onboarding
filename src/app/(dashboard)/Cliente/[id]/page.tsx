@@ -4,7 +4,7 @@ import BrakeRule from "@/components/BrakeRule";
 import ListItem from "@/components/ListItem";
 import { IoMdDownload } from "react-icons/io";
 import { TfiLayoutLineSolid } from "react-icons/tfi";
-import Badge from "@/components/Badge";
+import Badge from "../components/Badge";
 
 type EDI = {
   id: number;
@@ -15,11 +15,36 @@ type EDI = {
 
 export default function Home() {
   const edi: EDI[] = [
-    { id: 1, EDIDoc: "EDI 850 Purchase Order", mandatory: true, status: "Validate" },
-    { id: 2, EDIDoc: "EDI 860 Purchase Order Change Request ", mandatory: false, status: "Validate" },
-    { id: 3, EDIDoc: "EDI 855 Purchase Order Acknowledgment", mandatory: true, status: "Complete" },
-    { id: 4, EDIDoc: "EDI 856 Ship Notice/Manifest", mandatory: true, status: "Validate" },
-    { id: 5, EDIDoc: "EDI 820 Payment Order/Remittance Advice", mandatory: false, status: "Failed" },
+    {
+      id: 1,
+      EDIDoc: "EDI 850 Purchase Order",
+      mandatory: true,
+      status: "Validate",
+    },
+    {
+      id: 2,
+      EDIDoc: "EDI 860 Purchase Order Change Request ",
+      mandatory: false,
+      status: "Validate",
+    },
+    {
+      id: 3,
+      EDIDoc: "EDI 855 Purchase Order Acknowledgment",
+      mandatory: true,
+      status: "Complete",
+    },
+    {
+      id: 4,
+      EDIDoc: "EDI 856 Ship Notice/Manifest",
+      mandatory: true,
+      status: "Validate",
+    },
+    {
+      id: 5,
+      EDIDoc: "EDI 820 Payment Order/Remittance Advice",
+      mandatory: false,
+      status: "Failed",
+    },
   ];
 
   const handleAddPartner = () => {

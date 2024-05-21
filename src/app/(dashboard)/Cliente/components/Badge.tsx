@@ -1,4 +1,4 @@
-import { Status, statusColors } from "@/enums/Status";
+import { Status, statusColors } from "../enums/Status";
 
 export default function Badge({ status }: { status: string }) {
   const colorClass =

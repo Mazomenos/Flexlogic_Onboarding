@@ -3,11 +3,11 @@ import React from "react";
 import Container from "@/components/Container";
 import Header from "@/components/Header";
 import { usePathname } from "next/navigation";
-import { getPageName } from "./utils/getPageName";
+import { useGetPageName } from "./utils/getPageName";
 
 function Layout({ children }: { children: React.ReactNode }) {
   let currentPath = usePathname();
-  const pageName = getPageName(currentPath);
+  const pageName = useGetPageName(currentPath);
 
   return (
     <main className="bg-base-200 text-primary-content h-screen">
