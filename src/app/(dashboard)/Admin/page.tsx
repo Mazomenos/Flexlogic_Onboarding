@@ -35,7 +35,7 @@ export default function Home() {
                 <ListItem key={partner.id}>
                     <div className="flex flex-row w-full justify-center">
                         <div className="basis-1/12 grid justify-items-center content-center">
-                            <img src={partner.image} alt={partner.companyName} className="max-h-16" />
+                            <img src={partner.image} alt={partner.companyName} className="max-h-12" />
                         </div>
                         <p className="basis-2/6 grid justify-items-center content-center">{partner.companyName}</p>
                         <p className="basis-2/6 grid justify-items-center content-center">EDI Documents: {partner.ediDoc.join(", ")}</p>
