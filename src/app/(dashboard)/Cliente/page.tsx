@@ -9,6 +9,7 @@ import AddButton from "@/components/AddButton";
 import BrakeRule from "@/components/BrakeRule";
 import ListItem from "@/components/ListItem";
 import Badges from "./components/Badges";
+import Badge from "@/components/Badge";
 
 type Partnership = {
   id: number;
@@ -52,7 +53,7 @@ export default function Home() {
         {partnerships.map((partnership, index) => (
           <ListItem key={index} path={partnership.name}>
             <p>{partnership.name} </p>
-            <Badges status={partnership.status} />
+            <Badge status={partnership.status} />
           </ListItem>
         ))}
       </div>
