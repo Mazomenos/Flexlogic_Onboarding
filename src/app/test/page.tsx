@@ -1,15 +1,18 @@
 "use client"
 import { string, z } from "zod";
 import { use, useState } from "react";
+import data from "@/libs/validation/elements/index";
+
+data()
 
 export default function Home() {
-    const [inputString, setInputString] = useState()
-    const [minString, setMinString] = useState()
-    const [maxString, setMaxString] = useState()
+    const [inputString, setInputString] = useState("")
+    const [minString, setMinString] = useState(0)
+    const [maxString, setMaxString] = useState(0)
     const [errorLog, setErrorLog] = useState();
 
     const max = (flag: boolean) => {
-        const max = Number(maxString)
+        const max = maxString
         if (flag === true && inputString.length > max) {
             flag = false
             console.log("El valor debe ser maximo " + max)
@@ -21,7 +24,7 @@ export default function Home() {
 
     const min = () => {
         const required = "M"
-        const min = Number(minString)
+        const min = minString
         if (min > inputString.length) {
             if (inputString.length === 0) {
                 if (required === "M") {
@@ -130,8 +133,8 @@ export default function Home() {
             <p>Test</p>
             <input type="text" placeholder="Value" onChange={(e) => setInputString(e.target.value)}></input>
             <div>
-                <input type="text" placeholder="Min" onChange={(e) => setMinString(e.target.value)}></input>
-                <input type="text" placeholder="Max" onChange={(e) => setMaxString(e.target.value)}></input>
+                <input type="number" placeholder="Min" onChange={(e) => setMinString(Number(e.target.value))}></input>
+                <input type="number" placeholder="Max" onChange={(e) => setMaxString(Number(e.target.value))}></input>
             </div>
             <div>
                 <button className="btn btn-primary" onClick={min}>Min/Max</button>
