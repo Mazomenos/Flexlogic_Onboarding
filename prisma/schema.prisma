@@ -43,22 +43,20 @@ model EDIdocuments {
   Segments Segment[]
 }
 
-model TPDocs {
+model EDITPDocs {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
   Segments Segment[]
 }
 
 type Element {
-  Position    String
   Element     String
   Requirement String
   Type        String
-  Repeat      String
+  Min   Int
+  Max   Int
 
-  Min   Int?
-  Max   Int?
-  Value String?
+  Position    String?
 
   Conditions Json[]
   Composites Element[]
@@ -69,14 +67,14 @@ type Segment {
   Requirement String
   Max         String
 
-  Position String?
+  Position Int?
 
   Elements Element[]
   Segments Segment[]
 }
 
 // User structure -----------------------
-model Users {
+model User {
   id           String        @id @default(auto()) @map("_id") @db.ObjectId
   Partnerships Partnership[]
 }
@@ -87,6 +85,7 @@ type Partnership {
 }
 
 type UserDocs {
+  Doc       String
   Status    String // Completed, in progress & failed
   DocFile   String? // id of file if saved somewhere else
   LogErrors LogErrors[]

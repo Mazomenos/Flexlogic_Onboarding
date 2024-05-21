@@ -1,11 +1,131 @@
 export const EDIElements = [
     {
+        Element: "I01",
+        Name: "Authorization Information Qualifier",
+        Type: "Identifier(ID)",
+        Min: 2,
+        Max: 2,
+        Version: "X12 4010"
+    },
+    {
+        Element: "I02",
+        Name: "Authorization Information",
+        Type: "String(AN)",
+        Min: 10,
+        Max: 10,
+        Version: "X12 4010"
+    },
+    {
+        Element: "I03",
+        Name: "Security Information Qualifier",
+        Type: "Identifier(ID)",
+        Min: 2,
+        Max: 2,
+        Version: "X12 4010"
+    },
+    {
+        Element: "I04",
+        Name: "Security Information",
+        Type: "String(AN)",
+        Min: 10,
+        Max: 10,
+        Version: "X12 4010"
+    },
+    {
+        Element: "I05",
+        Name: "Interchange ID Qualifier",
+        Type: "Identifier(ID)",
+        Min: 2,
+        Max: 2,
+        Version: "X12 4010"
+    },
+    {
+        Element: "I06",
+        Name: "Interchange Sender ID",
+        Type: "String(AN)",
+        Min: 15,
+        Max: 15,
+        Version: "X12 4010"
+    },
+    {
+        Element: "I07",
+        Name: "Interchange Receiver ID",
+        Type: "String(AN)",
+        Min: 15,
+        Max: 15,
+        Version: "X12 4010"
+    },
+    {
+        Element: "I08",
+        Name: "Interchange Date",
+        Type: "Date(DT)",
+        Min: 6,
+        Max: 6,
+        Version: "X12 4010"
+    },
+    {
+        Element: "I09",
+        Name: "Interchange Time",
+        Type: "Time(TM)",
+        Min: 4,
+        Max: 4,
+        Version: "X12 4010"
+    },
+    {
+        Element: "I10",
+        Name: "Interchange Control Standards Identifier",
+        Type: "Identifier(ID)",
+        Min: 1,
+        Max: 1,
+        Version: "X12 4010"
+    },
+    {
+        Element: "I11",
+        Name: "Interchange Control Version Number",
+        Type: "Identifier(ID)",
+        Min: 5,
+        Max: 5,
+        Version: "X12 4010"
+    },
+    {
+        Element: "I12",
+        Name: "Interchange Control Number",
+        Type: "Numeric(N0)",
+        Min: 9,
+        Max: 9,
+        Version: "X12 4010"
+    },
+    {
+        Element: "I13",
+        Name: "Acknowledge Requested",
+        Type: "Identifier(ID)",
+        Min: 1,
+        Max: 1,
+        Version: "X12 4010"
+    },
+    {
+        Element: "I14",
+        Name: "Usage Indicator",
+        Type: "Identifier(ID)",
+        Min: 1,
+        Max: 1,
+        Version: "X12 4010"
+    },
+    {
+        Element: "I15",
+        Name: "Component Element Separator",
+        Type: "", // Separador
+        Min: 1, 
+        Max: 1,
+        Version: "X12 4010"
+    },
+    {
         Element: "3",
         Name: "Free-form Message",
         Type: "String(AN)",
         Min: 1,
         Max: 60,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "19",
@@ -13,7 +133,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 2,
         Max: 30,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "22",
@@ -21,7 +141,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 30,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "23",
@@ -29,7 +149,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 1,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "24",
@@ -37,7 +157,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 4,
         Max: 4,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "26",
@@ -45,7 +165,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 3,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "40",
@@ -53,7 +173,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "46",
@@ -61,7 +181,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 4,
         Max: 4,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "54",
@@ -69,7 +189,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "55",
@@ -77,7 +197,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 2,
         Max: 10,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "59",
@@ -85,7 +205,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 2,
         Max: 5,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "61",
@@ -93,7 +213,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 30,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "65",
@@ -101,7 +221,7 @@ export const EDIElements = [
         Type: "Decimal number(R)",
         Min: 1,
         Max: 8,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "66",
@@ -109,7 +229,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "66",
@@ -117,7 +237,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "67",
@@ -125,7 +245,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 2,
         Max: 80,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "76",
@@ -133,7 +253,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 22,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "79",
@@ -141,7 +261,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 50,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "80",
@@ -149,7 +269,7 @@ export const EDIElements = [
         Type: "Numeric(N0)",
         Min: 1,
         Max: 7,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "81",
@@ -157,7 +277,7 @@ export const EDIElements = [
         Type: "Decimal number(R)",
         Min: 1,
         Max: 10,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "82",
@@ -165,7 +285,7 @@ export const EDIElements = [
         Type: "Decimal number(R)",
         Min: 1,
         Max: 8,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "87",
@@ -173,7 +293,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 48,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "88",
@@ -181,7 +301,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "91",
@@ -189,7 +309,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "92",
@@ -197,7 +317,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "93",
@@ -205,7 +325,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 60,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "96",
@@ -213,7 +333,7 @@ export const EDIElements = [
         Type: "Numeric(N0)",
         Min: 1,
         Max: 10,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "98",
@@ -221,7 +341,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 3,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "100",
@@ -229,7 +349,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 3,
         Max: 3,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "102",
@@ -237,7 +357,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 1,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "103",
@@ -245,7 +365,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 3,
         Max: 5,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "107",
@@ -253,7 +373,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "113",
@@ -261,7 +381,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 4,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "114",
@@ -269,7 +389,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 2,
         Max: 24,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "115",
@@ -277,7 +397,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 1,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "116",
@@ -285,7 +405,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 3,
         Max: 15,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "118",
@@ -293,7 +413,7 @@ export const EDIElements = [
         Type: "Decimal number(R)",
         Min: 1,
         Max: 9,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "119",
@@ -301,7 +421,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 6,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "127",
@@ -309,7 +429,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 30,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "128",
@@ -317,7 +437,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 3,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "133",
@@ -325,7 +445,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "140",
@@ -333,7 +453,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 4,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "143",
@@ -341,7 +461,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 3,
         Max: 3,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "146",
@@ -349,7 +469,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "152",
@@ -357,7 +477,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 3,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "156",
@@ -365,7 +485,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "166",
@@ -373,7 +493,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 55,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "168",
@@ -381,7 +501,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 4,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "169",
@@ -389,7 +509,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 16,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "170",
@@ -397,7 +517,7 @@ export const EDIElements = [
         Type: "Numeric(N0)",
         Min: 1,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "171",
@@ -405,7 +525,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 7,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "172",
@@ -413,7 +533,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "173",
@@ -421,7 +541,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 4,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "174",
@@ -429,7 +549,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 2,
         Max: 30,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "182",
@@ -437,7 +557,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 2,
         Max: 28,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "183",
@@ -445,7 +565,7 @@ export const EDIElements = [
         Type: "Decimal number(R)",
         Min: 1,
         Max: 8,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "184",
@@ -453,7 +573,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 1,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "187",
@@ -461,7 +581,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "188",
@@ -469,7 +589,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 1,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "189",
@@ -477,7 +597,7 @@ export const EDIElements = [
         Type: "Decimal number(R)",
         Min: 1,
         Max: 8,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "200",
@@ -485,7 +605,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 6,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "206",
@@ -493,7 +613,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 4,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "207",
@@ -501,7 +621,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 10,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "208",
@@ -509,7 +629,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 1,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "209",
@@ -517,7 +637,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 4,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "212",
@@ -525,7 +645,7 @@ export const EDIElements = [
         Type: "Decimal number(R)",
         Min: 1,
         Max: 17,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "213",
@@ -533,7 +653,7 @@ export const EDIElements = [
         Type: "Numeric(N0)",
         Min: 1,
         Max: 3,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "215",
@@ -541,7 +661,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 30,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "218",
@@ -549,7 +669,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 14,
         Max: 40,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "219",
@@ -557,7 +677,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 3,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "222",
@@ -565,7 +685,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 4,
         Max: 25,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "224",
@@ -573,7 +693,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 25,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "225",
@@ -581,7 +701,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 2,
         Max: 15,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "227",
@@ -589,7 +709,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "234",
@@ -597,7 +717,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 48,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "235",
@@ -605,7 +725,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "236",
@@ -613,7 +733,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 3,
         Max: 3,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "248",
@@ -621,7 +741,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 1,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "249",
@@ -629,7 +749,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 1,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "254",
@@ -637,7 +757,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 3,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "277",
@@ -645,7 +765,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 6,
         Max: 6,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "280",
@@ -653,7 +773,7 @@ export const EDIElements = [
         Type: "Decimal number(R)",
         Min: 4,
         Max: 10,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "284",
@@ -661,7 +781,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "289",
@@ -669,7 +789,7 @@ export const EDIElements = [
         Type: "Numeric(N0)",
         Min: 1,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "294",
@@ -677,7 +797,7 @@ export const EDIElements = [
         Type: "Numeric(N0)",
         Min: 1,
         Max: 5,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "295",
@@ -685,7 +805,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 1,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "306",
@@ -693,7 +813,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "309",
@@ -701,7 +821,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "310",
@@ -709,7 +829,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 30,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "324",
@@ -717,7 +837,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 22,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "325",
@@ -725,7 +845,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 20,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "326",
@@ -733,7 +853,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 45,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "327",
@@ -741,7 +861,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 8,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "328",
@@ -749,7 +869,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 30,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "329",
@@ -757,7 +877,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 4,
         Max: 9,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "330",
@@ -765,7 +885,7 @@ export const EDIElements = [
         Type: "Decimal number(R)",
         Min: 1,
         Max: 15,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "331",
@@ -773,7 +893,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "332",
@@ -781,7 +901,7 @@ export const EDIElements = [
         Type: "Decimal number(R)",
         Min: 1,
         Max: 6,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "332",
@@ -789,7 +909,7 @@ export const EDIElements = [
         Type: "Decimal number(R)",
         Min: 1,
         Max: 6,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "333",
@@ -797,7 +917,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "334",
@@ -805,7 +925,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "335",
@@ -813,7 +933,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 3,
         Max: 3,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "336",
@@ -821,7 +941,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "337",
@@ -829,7 +949,7 @@ export const EDIElements = [
         Type: "Time(TM)",
         Min: 4,
         Max: 8,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "338",
@@ -837,7 +957,7 @@ export const EDIElements = [
         Type: "Decimal number(R)",
         Min: 1,
         Max: 6,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "342",
@@ -845,7 +965,7 @@ export const EDIElements = [
         Type: "Decimal number(R)",
         Min: 1,
         Max: 5,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "344",
@@ -853,7 +973,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "345",
@@ -861,7 +981,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "347",
@@ -869,7 +989,7 @@ export const EDIElements = [
         Type: "Decimal number(R)",
         Min: 1,
         Max: 10,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "349",
@@ -877,7 +997,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 1,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "350",
@@ -885,7 +1005,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 20,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "351",
@@ -893,7 +1013,7 @@ export const EDIElements = [
         Type: "Numeric(N0)",
         Min: 1,
         Max: 3,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "352",
@@ -901,7 +1021,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 80,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "353",
@@ -909,7 +1029,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "354",
@@ -917,7 +1037,7 @@ export const EDIElements = [
         Type: "Numeric(N0)",
         Min: 1,
         Max: 6,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "355",
@@ -925,7 +1045,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "356",
@@ -933,7 +1053,7 @@ export const EDIElements = [
         Type: "Numeric(N0)",
         Min: 1,
         Max: 6,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "357",
@@ -941,7 +1061,7 @@ export const EDIElements = [
         Type: "Decimal number(R)",
         Min: 1,
         Max: 8,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "358",
@@ -949,7 +1069,7 @@ export const EDIElements = [
         Type: "Decimal number(R)",
         Min: 1,
         Max: 10,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "362",
@@ -957,7 +1077,7 @@ export const EDIElements = [
         Type: "N2",
         Min: 1,
         Max: 10,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "363",
@@ -965,7 +1085,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 3,
         Max: 3,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "364",
@@ -973,7 +1093,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 80,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "365",
@@ -981,7 +1101,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "366",
@@ -989,7 +1109,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "367",
@@ -997,7 +1117,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 30,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "368",
@@ -1005,7 +1125,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "369",
@@ -1013,7 +1133,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 45,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "370",
@@ -1021,7 +1141,7 @@ export const EDIElements = [
         Type: "Date(DT)",
         Min: 8,
         Max: 8,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "371",
@@ -1029,7 +1149,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "373",
@@ -1037,7 +1157,7 @@ export const EDIElements = [
         Type: "Date(DT)",
         Min: 8,
         Max: 8,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "374",
@@ -1045,7 +1165,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 3,
         Max: 3,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "378",
@@ -1053,7 +1173,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 1,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "380",
@@ -1061,7 +1181,7 @@ export const EDIElements = [
         Type: "Decimal number(R)",
         Min: 1,
         Max: 15,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "382",
@@ -1069,7 +1189,7 @@ export const EDIElements = [
         Type: "Decimal number(R)",
         Min: 1,
         Max: 10,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "383",
@@ -1077,7 +1197,7 @@ export const EDIElements = [
         Type: "Decimal number(R)",
         Min: 1,
         Max: 9,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "384",
@@ -1085,7 +1205,7 @@ export const EDIElements = [
         Type: "Decimal number(R)",
         Min: 1,
         Max: 9,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "385",
@@ -1093,7 +1213,7 @@ export const EDIElements = [
         Type: "Decimal number(R)",
         Min: 1,
         Max: 9,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "386",
@@ -1101,7 +1221,7 @@ export const EDIElements = [
         Type: "Numeric(N0)",
         Min: 1,
         Max: 3,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "387",
@@ -1109,7 +1229,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 35,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "388",
@@ -1117,7 +1237,7 @@ export const EDIElements = [
         Type: "Date(DT)",
         Min: 8,
         Max: 8,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "389",
@@ -1125,7 +1245,7 @@ export const EDIElements = [
         Type: "N2",
         Min: 1,
         Max: 10,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "395",
@@ -1133,7 +1253,7 @@ export const EDIElements = [
         Type: "Decimal number(R)",
         Min: 1,
         Max: 8,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "396",
@@ -1141,7 +1261,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 2,
         Max: 30,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "399",
@@ -1149,7 +1269,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 1,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "400",
@@ -1157,7 +1277,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "407",
@@ -1165,7 +1285,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "408",
@@ -1173,7 +1293,7 @@ export const EDIElements = [
         Type: "Decimal number(R)",
         Min: 1,
         Max: 4,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "441",
@@ -1181,7 +1301,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 1,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "443",
@@ -1189,7 +1309,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 20,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "446",
@@ -1197,7 +1317,7 @@ export const EDIElements = [
         Type: "Date(DT)",
         Min: 8,
         Max: 8,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "447",
@@ -1205,7 +1325,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 6,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "478",
@@ -1213,7 +1333,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 1,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "499",
@@ -1221,7 +1341,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 10,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "508",
@@ -1229,7 +1349,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 35,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "522",
@@ -1237,7 +1357,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 3,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "554",
@@ -1245,7 +1365,7 @@ export const EDIElements = [
         Type: "Numeric(N0)",
         Min: 1,
         Max: 6,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "559",
@@ -1253,7 +1373,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "560",
@@ -1261,7 +1381,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 10,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "563",
@@ -1269,7 +1389,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "566",
@@ -1277,7 +1397,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "567",
@@ -1285,7 +1405,7 @@ export const EDIElements = [
         Type: "Numeric(N0)",
         Min: 4,
         Max: 5,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "587",
@@ -1293,7 +1413,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "595",
@@ -1301,7 +1421,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 1,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "597",
@@ -1309,7 +1429,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 8,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "610",
@@ -1317,7 +1437,7 @@ export const EDIElements = [
         Type: "N2",
         Min: 1,
         Max: 15,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "623",
@@ -1325,7 +1445,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "628",
@@ -1333,7 +1453,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 12,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "639",
@@ -1341,7 +1461,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "640",
@@ -1349,7 +1469,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "641",
@@ -1357,7 +1477,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 3,
         Max: 3,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "646",
@@ -1365,7 +1485,7 @@ export const EDIElements = [
         Type: "Decimal number(R)",
         Min: 1,
         Max: 15,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "648",
@@ -1373,7 +1493,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 3,
         Max: 3,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "649",
@@ -1381,7 +1501,7 @@ export const EDIElements = [
         Type: "Decimal number(R)",
         Min: 1,
         Max: 10,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "653",
@@ -1389,7 +1509,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 3,
         Max: 3,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "654",
@@ -1397,7 +1517,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "655",
@@ -1405,7 +1525,7 @@ export const EDIElements = [
         Type: "Decimal number(R)",
         Min: 1,
         Max: 10,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "656",
@@ -1413,7 +1533,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 3,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "657",
@@ -1421,7 +1541,7 @@ export const EDIElements = [
         Type: "Numeric(N0)",
         Min: 1,
         Max: 10,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "659",
@@ -1429,7 +1549,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "662",
@@ -1437,7 +1557,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 1,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "665",
@@ -1445,7 +1565,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 1,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "668",
@@ -1453,7 +1573,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "669",
@@ -1461,7 +1581,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 3,
         Max: 3,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "673",
@@ -1469,7 +1589,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "687",
@@ -1477,7 +1597,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "688",
@@ -1485,7 +1605,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "706",
@@ -1493,7 +1613,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "728",
@@ -1501,7 +1621,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "729",
@@ -1509,7 +1629,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 6,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "731",
@@ -1517,7 +1637,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "732",
@@ -1525,7 +1645,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "733",
@@ -1533,7 +1653,7 @@ export const EDIElements = [
         Type: "Decimal number(R)",
         Min: 1,
         Max: 4,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "734",
@@ -1541,7 +1661,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 12,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "735",
@@ -1549,7 +1669,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "736",
@@ -1557,7 +1677,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 1,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "737",
@@ -1565,7 +1685,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "738",
@@ -1573,7 +1693,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 3,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "739",
@@ -1581,7 +1701,7 @@ export const EDIElements = [
         Type: "Decimal number(R)",
         Min: 1,
         Max: 20,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "740",
@@ -1589,7 +1709,7 @@ export const EDIElements = [
         Type: "Decimal number(R)",
         Min: 1,
         Max: 20,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "741",
@@ -1597,7 +1717,7 @@ export const EDIElements = [
         Type: "Decimal number(R)",
         Min: 1,
         Max: 20,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "750",
@@ -1605,7 +1725,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 3,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "751",
@@ -1613,7 +1733,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 12,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "752",
@@ -1621,7 +1741,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "753",
@@ -1629,7 +1749,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 5,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "754",
@@ -1637,7 +1757,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 7,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "755",
@@ -1645,7 +1765,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "756",
@@ -1653,7 +1773,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "757",
@@ -1661,7 +1781,7 @@ export const EDIElements = [
         Type: "Numeric(N0)",
         Min: 1,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "759",
@@ -1669,7 +1789,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "765",
@@ -1677,7 +1797,7 @@ export const EDIElements = [
         Type: "Numeric(N0)",
         Min: 1,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "770",
@@ -1685,7 +1805,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 20,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "782",
@@ -1693,7 +1813,7 @@ export const EDIElements = [
         Type: "Decimal number(R)",
         Min: 1,
         Max: 18,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "786",
@@ -1701,7 +1821,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "787",
@@ -1709,7 +1829,7 @@ export const EDIElements = [
         Type: "Numeric(N)",
         Min: 1,
         Max: 15,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "788",
@@ -1717,7 +1837,7 @@ export const EDIElements = [
         Type: "Numeric(N)",
         Min: 1,
         Max: 5,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "789",
@@ -1725,7 +1845,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "790",
@@ -1733,7 +1853,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 132,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "791",
@@ -1741,7 +1861,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 80,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "792",
@@ -1749,7 +1869,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 1,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "797",
@@ -1757,7 +1877,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "799",
@@ -1765,7 +1885,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 30,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "800",
@@ -1773,7 +1893,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 30,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "801",
@@ -1781,7 +1901,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 30,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "802",
@@ -1789,7 +1909,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 30,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "803",
@@ -1797,7 +1917,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 64,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "804",
@@ -1805,7 +1925,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 4,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "810",
@@ -1813,7 +1933,7 @@ export const EDIElements = [
         Type: "Numeric(N0)",
         Min: 1,
         Max: 6,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "819",
@@ -1821,7 +1941,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 3,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "822",
@@ -1829,7 +1949,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 15,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "828",
@@ -1837,7 +1957,7 @@ export const EDIElements = [
         Type: "Decimal number(R)",
         Min: 1,
         Max: 9,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "854",
@@ -1845,7 +1965,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "883",
@@ -1853,7 +1973,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "884",
@@ -1861,7 +1981,7 @@ export const EDIElements = [
         Type: "Numeric(N0)",
         Min: 1,
         Max: 3,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "885",
@@ -1869,7 +1989,7 @@ export const EDIElements = [
         Type: "Numeric(N0)",
         Min: 1,
         Max: 3,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "897",
@@ -1877,7 +1997,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 1,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "933",
@@ -1885,7 +2005,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 264,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "934",
@@ -1893,7 +2013,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "935",
@@ -1901,7 +2021,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "936",
@@ -1909,7 +2029,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "951",
@@ -1917,7 +2037,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "954",
@@ -1925,7 +2045,7 @@ export const EDIElements = [
         Type: "Decimal number(R)",
         Min: 1,
         Max: 10,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "955",
@@ -1933,7 +2053,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "956",
@@ -1941,7 +2061,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 10,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "963",
@@ -1949,7 +2069,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "984",
@@ -1957,7 +2077,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 1,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "985",
@@ -1965,7 +2085,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 3,
         Max: 3,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "1000",
@@ -1973,7 +2093,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "1004",
@@ -1981,7 +2101,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "1005",
@@ -1989,7 +2109,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 4,
         Max: 4,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "1018",
@@ -1997,7 +2117,7 @@ export const EDIElements = [
         Type: "Decimal number(R)",
         Min: 1,
         Max: 15,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "1019",
@@ -2005,7 +2125,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 3,
         Max: 3,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "1066",
@@ -2013,7 +2133,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "1067",
@@ -2021,7 +2141,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 1,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "1068",
@@ -2029,7 +2149,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 1,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "1073",
@@ -2037,7 +2157,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 1,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "1096",
@@ -2045,7 +2165,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 5,
         Max: 5,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "1104",
@@ -2053,7 +2173,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "1106",
@@ -2061,7 +2181,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "1109",
@@ -2069,7 +2189,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 1,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "1136",
@@ -2077,7 +2197,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "1166",
@@ -2085,7 +2205,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "1179",
@@ -2093,7 +2213,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 1,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "1195",
@@ -2101,7 +2221,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 80,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "1196",
@@ -2109,7 +2229,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "1232",
@@ -2117,7 +2237,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "1250",
@@ -2125,7 +2245,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 3,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "1251",
@@ -2133,7 +2253,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 35,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "1270",
@@ -2141,7 +2261,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 3,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "1271",
@@ -2149,7 +2269,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 30,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "1300",
@@ -2157,7 +2277,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 4,
         Max: 4,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "1301",
@@ -2165,7 +2285,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 10,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "1309",
@@ -2173,7 +2293,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "1310",
@@ -2181,7 +2301,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 1,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "1321",
@@ -2189,7 +2309,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "1322",
@@ -2197,7 +2317,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 1,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "1373",
@@ -2205,7 +2325,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 2,
         Max: 4,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "1375",
@@ -2213,7 +2333,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 5,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "1401",
@@ -2221,7 +2341,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 3,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "1430",
@@ -2229,7 +2349,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 7,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "1470",
@@ -2237,7 +2357,7 @@ export const EDIElements = [
         Type: "Numeric(N0)",
         Min: 1,
         Max: 9,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "1525",
@@ -2245,7 +2365,7 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 1,
         Max: 2,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "1551",
@@ -2253,7 +2373,7 @@ export const EDIElements = [
         Type: "String(AN)",
         Min: 1,
         Max: 4096,
-        Version: "4010"
+        Version: "X12 4010"
     },
     {
         Element: "1570",
@@ -2261,6 +2381,6 @@ export const EDIElements = [
         Type: "Identifier(ID)",
         Min: 3,
         Max: 3,
-        Version: "4010"
+        Version: "X12 4010"
     },
 ];
