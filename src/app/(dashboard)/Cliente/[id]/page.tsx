@@ -6,7 +6,7 @@ import { IoMdDownload } from "react-icons/io";
 import { TfiLayoutLineSolid } from "react-icons/tfi";
 import Badges from "../components/Badges";
 
-type Partnership = {
+type EDI = {
   id: number;
   EDIDoc: string;
   mandatory: boolean;
@@ -14,7 +14,7 @@ type Partnership = {
 };
 
 export default function Home() {
-  const partnerships: Partnership[] = [
+  const edi: EDI[] = [
     { id: 1, EDIDoc: "EDI 850 Purchase Order", mandatory: true, status: "Validate" },
     { id: 2, EDIDoc: "EDI 860 Purchase Order Change Request ", mandatory: false, status: "Validate" },
     { id: 3, EDIDoc: "EDI 855 Purchase Order Acknowledgment", mandatory: true, status: "Complete" },
@@ -33,7 +33,7 @@ export default function Home() {
       </div>
       <BrakeRule />
       <div className="max-h-full flex flex-col items-center w-full overflow-y-auto overscroll-none">
-        {partnerships.map((partnership, index) => (
+        {edi.map((partnership, index) => (
           <ListItem key={index} path={partnership.EDIDoc}>
             <div className="flex flex-row w-full">
               <p className="basis-2/5">{partnership.EDIDoc} </p>
