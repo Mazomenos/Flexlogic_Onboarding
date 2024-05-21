@@ -12,9 +12,9 @@ const prisma = new PrismaClient();
 
 async function EDIElements_seed() {
     for (let EDIElement of EDIElements) {
-        await prisma.eDIElement.create({
+       await prisma.eDIElement.create({
             data: EDIElement
-        })
+       })
     }
 }
 
@@ -42,13 +42,13 @@ async function TradingPartners_seed() {
     }
 }
 
-// async function EDITemplateDocs_seed() {
-//     for (let EDITemplateDoc of EDITemplateDocs) {
-//         await prisma.eDITemplateDocs.create({
-//             data: EDITemplateDoc
-//         })
-//     }
-// }
+async function EDITemplateDocs_seed() {
+    for (let EDITemplateDoc of EDITemplateDocs) {
+        await prisma.eDIdocuments.create({
+            data: EDITemplateDoc
+        })
+    }
+}
 
 async function EDITPDocs_seed() {
     for (let EDITPDoc of EDITPDocs) {
@@ -64,7 +64,8 @@ async function main () {
     await EDIElements_seed();  
     await Users_seed();   
     await TradingPartners_seed();   
-    await EDITPDocs_seed();
+    await EDITPDocs_seed();   
+    await EDITemplateDocs_seed();     
 }
 
 main().catch(e => {
