@@ -15,7 +15,7 @@ export default function Modal({ children, setIsOpen, isOpen }: Props) {
         className="relative z-50"
       >
         <div className="fixed inset-0 bg-black/30 flex w-screen items-center justify-center p-4">
-          <DialogPanel className="max-w-lg space-y-4 border border-base-200 text-primary-content bg-base-100 p-12 rounded-xl">
+          <DialogPanel className="max-w-1/2 w-2/5 h-1/2 flex flex-col items-center overflow-y-auto overscroll-none border border-base-200 text-primary-content bg-base-100 p-12 rounded-xl">
             {children}
           </DialogPanel>
         </div>
