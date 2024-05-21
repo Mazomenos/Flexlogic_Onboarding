@@ -7,6 +7,7 @@ import CancelButton from "@/components/CancelButton";
 import ListItem from "@/components/ListItem";
 import GenericButton from "@/components/GenericButton";
 import BrakeRule from "@/components/BrakeRule";
+import BackButton from "@/components/BackButton";
 
 type Edi = {
   id: number;
@@ -120,6 +121,7 @@ export default function Home() {
     <>
       <button onClick={() => setIsOpen(true)}>Open dialog</button>
       <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
+        <DialogTitle className="text-2xl">Partners</DialogTitle>
         <div className="max-h-full flex flex-col items-center w-full overflow-y-auto overscroll-none">
           {partnerships.map((partnership) => (
             <ListItem key={partnership.id} path={partnership.name}>
@@ -133,6 +135,14 @@ export default function Home() {
         <CancelButton onClick={() => setIsOpen(false)} />
       </Modal>
       <Modal isOpen={isModal2} setIsOpen={setIsModal2}>
+        <div className="absolute top-4 left-4">
+          <BackButton
+            onClick={() => {
+              setIsOpen(true);
+              setIsModal2(false);
+            }}
+          />
+        </div>
         <DialogTitle className="text-2xl">
           {" "}
           {selectedPartnership?.name} Partnership EDI Verification{" "}
