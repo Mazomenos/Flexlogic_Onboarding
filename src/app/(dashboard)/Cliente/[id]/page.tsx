@@ -5,6 +5,8 @@ import ListItem from "@/components/ListItem";
 import { IoMdDownload } from "react-icons/io";
 import { TfiLayoutLineSolid } from "react-icons/tfi";
 import Badge from "../components/Badge";
+import Errors from "../docs/Errors";
+import { useState } from "react";
 
 type EDI = {
   id: number;
@@ -14,6 +16,9 @@ type EDI = {
 };
 
 export default function Home() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedError, setSelectedError] = useState(null);
+
   const edi: EDI[] = [
     {
       id: 1,
@@ -47,14 +52,19 @@ export default function Home() {
     },
   ];
 
-  const handleAddPartner = () => {
-    console.log("Add Partnership");
+  const downloadPOTest = () => {
+    console.log("Descargado");
+  };
+
+  const handleOpenModal = (error) => {
+    setSelectedError(error);
+    setIsOpen(true);
   };
 
   return (
     <div className="h-full flex flex-col">
       <div className="flex justify-end">
-        <AddButton onClick={() => handleAddPartner()}>
+        <AddButton onClick={() => downloadPOTest()}>
           {" "}
           Download PO Test <IoMdDownload />{" "}
         </AddButton>
@@ -62,7 +72,7 @@ export default function Home() {
       <BrakeRule />
       <div className="max-h-full flex flex-col items-center w-full overflow-y-auto overscroll-none">
         {edi.map((partnership, index) => (
-          <ListItem key={index} path={partnership.EDIDoc}>
+          <ListItem key={index} path={partnership.EDIDoc} onClick = {handleOpenModal}>
             <div className="flex flex-row w-full">
               <p className="basis-2/5">{partnership.EDIDoc} </p>
               <TfiLayoutLineSolid
