@@ -8,6 +8,7 @@ import ListItem from '@/components/ListItem'
 import GenericButton from '@/components/GenericButton'
 import BrakeRule from '@/components/BrakeRule'
 import BackButton from '@/components/BackButton'
+import AddButton from '@/components/AddButton'
 
 type Edi = {
   id: number
@@ -23,7 +24,7 @@ type Partnership = {
   edi: Edi[]
 }
 
-export default function Home() {
+export default function AddPartnership() {
   const partnerships: Partnership[] = [
     {
       id: 1,
@@ -149,7 +150,9 @@ export default function Home() {
 
   return (
     <>
-      <button onClick={() => setIsOpen(true)}>Open dialog</button>
+      <div className='grid justify-items-end'>
+        <AddButton onClick={() => setIsOpen(true)}>Add Partnership +</AddButton>
+      </div>
       <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
         <DialogTitle className="text-2xl">Partners</DialogTitle>
         <BrakeRule classname="my-3" />
@@ -195,7 +198,7 @@ export default function Home() {
             ))}
         </div>
         <BrakeRule classname="my-3" />
-        <div className="absolute flex-row right-2 bottom-2">
+        <div className="absolute flex-row right-5 bottom-2">
           <div className="m-2 inline-block">
             <CancelButton onClick={() => setIsModal2(false)} />{' '}
           </div>
