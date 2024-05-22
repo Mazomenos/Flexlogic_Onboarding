@@ -73,6 +73,26 @@ type Segment {
   Elements Element[]
 }
 
+// Trading Partner structure -----------------------
+model TradingPartner {
+  id            String          @id @default(auto()) @map("_id") @db.ObjectId
+  Name          String
+  Initial850EDI String? // id of file if saved somewhere else
+  Delimiters    String[]
+  EDIVersion    String
+  EOL           String
+  DocsRequired  TPDocRequired[]
+}
+
+type TPDocRequired {
+  idDoc     String // id from TPDocs
+  Doc       String
+  Version   String
+  isVisible Boolean
+}
+
+//--------------------------
+
 // User structure -----------------------
 model User {
   id           String        @id @default(auto()) @map("_id") @db.ObjectId
@@ -94,26 +114,6 @@ type UserDocs {
 type LogErrors {
   Position String
   Comments String
-}
-
-//--------------------------
-
-// Trading Partner structure -----------------------
-model TradingPartner {
-  id            String          @id @default(auto()) @map("_id") @db.ObjectId
-  Name          String
-  Initial850EDI String? // id of file if saved somewhere else
-  Delimiters    String[]
-  EDIVersion    String
-  EOL           String
-  DocsRequired  TPDocRequired[]
-}
-
-type TPDocRequired {
-  idDoc     String // id from TPDocs
-  Doc       String
-  Version   String
-  isVisible Boolean
 }
 
 //--------------------------
