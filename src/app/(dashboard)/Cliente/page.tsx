@@ -5,10 +5,10 @@
  */
 
 "use client";
-import AddButton from "@/components/AddButton";
 import BrakeRule from "@/components/BrakeRule";
 import ListItem from "@/components/ListItem";
 import Badge from "./components/Badge";
+import AddPartnership from "./docs/page";
 
 type Partnership = {
   id: number;
@@ -36,16 +36,11 @@ export default function Home() {
     { id: 15, name: "Partner X", status: "Complete" },
   ];
 
-  const handleAddPartner = () => {
-    console.log("Add Partnership");
-  };
 
   return (
     <div className="h-full flex flex-col ">
       <div className="w-full mt-1 justify-end flex">
-        <AddButton onClick={() => handleAddPartner()}>
-          + Add Partnership
-        </AddButton>
+        <AddPartnership />
       </div>
       <BrakeRule />
       <div className="max-h-full flex flex-col items-center w-full overflow-y-auto overscroll-none">
