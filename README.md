@@ -37,7 +37,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 ## Migrate Database
 
-To be able to migrate and run the seeder first make sure to have all the necessary configurations if you want to run it locally since you'll need a replica set which you can find how to do it here [Documentation](https://pris.ly/d/mongodb-replica-set)
+To be able to migrate and run the seeder first make sure to have all the necessary configurations if you want to run it locally since we are using mongoDB as the main database so you'll need a replica set which you can find how to do it here [Documentation](https://pris.ly/d/mongodb-replica-set)
 We recommend doing it directly on MongoDB Atlas since is easier and faster to set up.
 
 If you have your database in MongoDB ready you just have to run the following lines:
