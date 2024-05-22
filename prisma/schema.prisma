@@ -50,11 +50,11 @@ model EDITPDocs {
 }
 
 type Element {
+  Position    String
   Element     String
   Requirement String
-  Type        String
 
-  Position    String?
+  Type        String?
   Min   Int?
   Max   Int?
 
