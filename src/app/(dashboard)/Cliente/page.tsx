@@ -8,7 +8,7 @@
 import BrakeRule from "@/components/BrakeRule";
 import ListItem from "@/components/ListItem";
 import Badge from "./components/Badge";
-import AddPartnership from "./docs/page";
+import AddPartnership from "./docs/AddPartnership";
 
 type Partnership = {
   id: number;
