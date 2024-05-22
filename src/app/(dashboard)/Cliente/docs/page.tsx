@@ -158,7 +158,7 @@ export default function AddPartnership() {
         <BrakeRule classname="my-3" />
         <div className="max-h-fit flex flex-col items-center w-full overflow-y-auto overscroll-none">
           {partnerships.map((partnership) => (
-            <ListItem key={partnership.id} path={partnership.name}>
+            <ListItem key={partnership.id}>
               <p> {partnership.name} Connection </p>
               <GenericButton onClick={() => handleViewClick(partnership.id)}>
                 View
@@ -188,7 +188,7 @@ export default function AddPartnership() {
         <div className="max-h-full flex flex-col items-center w-full overflow-y-auto overscroll-none">
           {selectedPartnership &&
             selectedPartnership.edi.map((edi) => (
-              <ListItem key={edi.id} path={edi.EDIDoc}>
+              <ListItem key={edi.id}>
                 <p> {edi.EDIDoc} </p>
                 <Description>
                   {' '}
