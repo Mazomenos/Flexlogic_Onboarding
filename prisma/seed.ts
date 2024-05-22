@@ -44,7 +44,7 @@ async function TradingPartners_seed() {
 
 async function EDITemplateDocs_seed() {
     for (let EDITemplateDoc of EDITemplateDocs) {
-        await prisma.eDIdocuments.create({
+        await prisma.eDITemplateDocuments.create({
             data: EDITemplateDoc
         })
     }

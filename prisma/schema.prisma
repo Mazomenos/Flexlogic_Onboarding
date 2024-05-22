@@ -35,7 +35,7 @@ model EDISegments {
 }
 
 // Individual EDI Document structure
-model EDIdocuments {
+model EDITemplateDocuments {
   id      String @id @default(auto()) @map("_id") @db.ObjectId
   Doc     Int
   Version String
