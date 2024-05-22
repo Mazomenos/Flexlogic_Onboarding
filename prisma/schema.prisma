@@ -54,9 +54,9 @@ type Element {
   Element     String
   Requirement String
 
-  Type        String?
-  Min   Int?
-  Max   Int?
+  Type String?
+  Min  Int?
+  Max  Int?
 
   Conditions Json[] // Same structure as type Element
   Composites Json[] // Same structure as type Element
@@ -103,6 +103,9 @@ model TradingPartner {
   id            String          @id @default(auto()) @map("_id") @db.ObjectId
   Name          String
   Initial850EDI String? // id of file if saved somewhere else
+  Delimiters    String[]
+  EDIVersion    String
+  EOL           String
   DocsRequired  TPDocRequired[]
 }
 

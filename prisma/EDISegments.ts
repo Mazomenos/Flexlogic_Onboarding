@@ -2,7 +2,7 @@ export const EDISegments = [
   {
     Segment: "ST",
     Name: "Transaction Set Header",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "ST-01",
@@ -21,7 +21,7 @@ export const EDISegments = [
   {
     Segment: "BEG",
     Name: "Beginning Segment for Purchase Order",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "BEG-01",
@@ -100,7 +100,7 @@ export const EDISegments = [
   {
     Segment: "CUR",
     Name: "Currency",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "CUR-01",
@@ -233,7 +233,7 @@ export const EDISegments = [
   {
     Segment: "REF",
     Name: "Reference Identification",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "REF-01",
@@ -302,7 +302,7 @@ export const EDISegments = [
   {
     Segment: "PER",
     Name: "Administrative Communications Contact",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "PER-01",
@@ -363,7 +363,7 @@ export const EDISegments = [
   {
     Segment: "TAX",
     Name: "Tax Reference",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "TAX-01",
@@ -448,7 +448,7 @@ export const EDISegments = [
   {
     Segment: "FOB",
     Name: "F.O.B. Related Instructions",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "FOB-01",
@@ -509,7 +509,7 @@ export const EDISegments = [
   {
     Segment: "CTP",
     Name: "Pricing Information",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "CTP-01",
@@ -674,7 +674,7 @@ export const EDISegments = [
   {
     Segment: "PAM",
     Name: "Period Amount",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "PAM-01",
@@ -863,7 +863,7 @@ export const EDISegments = [
   {
     Segment: "CSH",
     Name: "Sales Requirements",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "CSH-01",
@@ -930,7 +930,7 @@ export const EDISegments = [
   {
     Segment: "TC2",
     Name: "Commodity",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "TC2-01",
@@ -949,7 +949,7 @@ export const EDISegments = [
   {
     Segment: "SAC",
     Name: "Service, Promotion, Allowance, or Charge Information",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "SAC-01",
@@ -1052,7 +1052,7 @@ export const EDISegments = [
   {
     Segment: "ITD",
     Name: "Terms of Sale/Deferred Terms of Sale",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "ITD-01",
@@ -1149,7 +1149,7 @@ export const EDISegments = [
   {
     Segment: "DIS",
     Name: "Discount Detail",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "DIS-01",
@@ -1192,7 +1192,7 @@ export const EDISegments = [
   {
     Segment: "INC",
     Name: "Installment Information",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "INC-01",
@@ -1321,7 +1321,7 @@ export const EDISegments = [
   {
     Segment: "DTM",
     Name: "Date/Time Reference",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "DTM-01",
@@ -1364,7 +1364,7 @@ export const EDISegments = [
   {
     Segment: "LDT",
     Name: "Lead Time",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "LDT-01",
@@ -1395,7 +1395,7 @@ export const EDISegments = [
   {
     Segment: "LIN",
     Name: "Item Identification",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "LIN-01",
@@ -1588,7 +1588,7 @@ export const EDISegments = [
   {
     Segment: "SI",
     Name: "Service Characteristic Identification",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "SI-01",
@@ -1721,7 +1721,7 @@ export const EDISegments = [
   {
     Segment: "PID",
     Name: "Product/Item Description",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "PID-01",
@@ -1782,7 +1782,7 @@ export const EDISegments = [
   {
     Segment: "MEA",
     Name: "Measurements",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "MEA-01",
@@ -1941,7 +1941,7 @@ export const EDISegments = [
   {
     Segment: "PWK",
     Name: "Paperwork",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "PWK-01",
@@ -2034,7 +2034,7 @@ export const EDISegments = [
   {
     Segment: "PKG",
     Name: "Marking, Packaging, Loading",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "PKG-01",
@@ -2077,7 +2077,7 @@ export const EDISegments = [
   {
     Segment: "TD1",
     Name: "Carrier Details (Quantity and Weight)",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "TD1-01",
@@ -2144,7 +2144,7 @@ export const EDISegments = [
   {
     Segment: "TD5",
     Name: "Carrier Details (Routing Sequence/Transit Time)",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "TD5-01",
@@ -2241,7 +2241,7 @@ export const EDISegments = [
   {
     Segment: "TD3",
     Name: "Carrier Details (Equipment)",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "TD3-01",
@@ -2308,7 +2308,7 @@ export const EDISegments = [
   {
     Segment: "TD4",
     Name: "Carrier Details (Special Handling, or Hazardous Materials, or Both)",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "TD4-01",
@@ -2345,7 +2345,7 @@ export const EDISegments = [
   {
     Segment: "MAN",
     Name: "Marks and Numbers",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "MAN-01",
@@ -2388,7 +2388,7 @@ export const EDISegments = [
   {
     Segment: "PCT",
     Name: "Percent Amounts",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "PCT-01",
@@ -2407,7 +2407,7 @@ export const EDISegments = [
   {
     Segment: "CTB",
     Name: "Restrictions/Conditions",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "CTB-01",
@@ -2450,7 +2450,7 @@ export const EDISegments = [
   {
     Segment: "TXI",
     Name: "Tax Information",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "TXI-01",
@@ -2517,7 +2517,7 @@ export const EDISegments = [
   {
     Segment: "AMT",
     Name: "Monetary Amount",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "AMT-01",
@@ -2542,7 +2542,7 @@ export const EDISegments = [
   {
     Segment: "FA1",
     Name: "Type of Financial Accounting Data",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "FA1-01",
@@ -2567,7 +2567,7 @@ export const EDISegments = [
   {
     Segment: "FA2",
     Name: "Accounting Data",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "FA2-01",
@@ -2586,7 +2586,7 @@ export const EDISegments = [
   {
     Segment: "N9",
     Name: "Reference Identification",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "N9-01",
@@ -2673,7 +2673,7 @@ export const EDISegments = [
   {
     Segment: "MSG",
     Name: "Message Text",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "MSG-01",
@@ -2698,7 +2698,7 @@ export const EDISegments = [
   {
     Segment: "N1",
     Name: "Name",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "N1-01",
@@ -2741,7 +2741,7 @@ export const EDISegments = [
   {
     Segment: "N2",
     Name: "Additional Name Information",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "N2-01",
@@ -2760,7 +2760,7 @@ export const EDISegments = [
   {
     Segment: "N3",
     Name: "Address Information",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "N3-01",
@@ -2779,7 +2779,7 @@ export const EDISegments = [
   {
     Segment: "N4",
     Name: "Geographic Location",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "N4-01",
@@ -2822,7 +2822,7 @@ export const EDISegments = [
   {
     Segment: "NX2",
     Name: "Location ID Component",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "NX2-01",
@@ -2847,7 +2847,7 @@ export const EDISegments = [
   {
     Segment: "LM",
     Name: "Code Source Information",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "LM-01",
@@ -2866,7 +2866,7 @@ export const EDISegments = [
   {
     Segment: "LQ",
     Name: "Industry Code",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "LQ-01",
@@ -2885,7 +2885,7 @@ export const EDISegments = [
   {
     Segment: "SPI",
     Name: "Specification Identifier",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "SPI-01",
@@ -2982,7 +2982,7 @@ export const EDISegments = [
   {
     Segment: "G61",
     Name: "Contact",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "G61-01",
@@ -3019,7 +3019,7 @@ export const EDISegments = [
   {
     Segment: "CB1",
     Name: "Contract and Cost Accounting Standards Data",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "CB1-01",
@@ -3038,7 +3038,7 @@ export const EDISegments = [
   {
     Segment: "ADV",
     Name: "Advertising Demographic Information",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "ADV-01",
@@ -3087,7 +3087,7 @@ export const EDISegments = [
   {
     Segment: "MTX",
     Name: "Text",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "MTX-01",
@@ -3118,7 +3118,7 @@ export const EDISegments = [
   {
     Segment: "PO1",
     Name: "Baseline Item Data",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "PO1-01",
@@ -3275,7 +3275,7 @@ export const EDISegments = [
   {
     Segment: "CN1",
     Name: "Contract Information",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "CN1-01",
@@ -3318,7 +3318,7 @@ export const EDISegments = [
   {
     Segment: "PO3",
     Name: "Additional Item Detail",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "PO3-01",
@@ -3373,7 +3373,7 @@ export const EDISegments = [
   {
     Segment: "PO4",
     Name: "Item Physical Details",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "PO4-01",
@@ -3488,7 +3488,7 @@ export const EDISegments = [
   {
     Segment: "IT8",
     Name: "Conditions of Sale",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "IT8-01",
@@ -3657,7 +3657,7 @@ export const EDISegments = [
   {
     Segment: "SDQ",
     Name: "Destination Quantity",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "SDQ-01",
@@ -3802,7 +3802,7 @@ export const EDISegments = [
   {
     Segment: "IT3",
     Name: "Additional Item Data",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "IT3-01",
@@ -3839,7 +3839,7 @@ export const EDISegments = [
   {
     Segment: "QTY",
     Name: "Quantity",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "QTY-01",
@@ -3962,7 +3962,7 @@ export const EDISegments = [
   {
     Segment: "SCH",
     Name: "Line Item Schedule",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "SCH-01",
@@ -4041,7 +4041,7 @@ export const EDISegments = [
   {
     Segment: "LS",
     Name: "Loop Header",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "LS-01",
@@ -4054,7 +4054,7 @@ export const EDISegments = [
   {
     Segment: "LE",
     Name: "Loop Trailer",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "LE-01",
@@ -4067,7 +4067,7 @@ export const EDISegments = [
   {
     Segment: "SLN",
     Name: "Subline Item Detail",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "SLN-01",
@@ -4334,7 +4334,7 @@ export const EDISegments = [
   {
     Segment: "CTT",
     Name: "Transaction Totals",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "CTT-01",
@@ -4383,7 +4383,7 @@ export const EDISegments = [
   {
     Segment: "SE",
     Name: "Transaction Set Trailer",
-    Version: "4010",
+    Version: "X12 4010",
     Elements: [
       {
         Position: "SE-01",
