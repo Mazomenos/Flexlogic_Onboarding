@@ -9,6 +9,7 @@
 */
 
 import { Min, Max } from "./minMax";
+import { Types } from "./types";
 
 
 //Funcion Auxiliar
@@ -155,8 +156,8 @@ export default function data() {
                     name: "isac",
                     req: "M",
                     type: "id",
-                    min: 2,
-                    max: 2,
+                    min: 4,
+                    max: 6,
                     condition: {
                         codes: [
                             "ac",
@@ -212,7 +213,7 @@ export default function data() {
     while(segpos < (file.length)){
         let fileseg = file[segpos]
         let configseg: { max: number; min: number; req: string; name: string; elements: []; } = getSegmentConfig(fileseg.name, config)!;
-        console.log(typeof(configseg))
+        //console.log(typeof(configseg))
         //console.log(configseg)
         //segmentos
         console.log(fileseg.name)
@@ -237,14 +238,14 @@ export default function data() {
             let max = configseg.elements[elementpos].max
             let condition = configseg.elements[elementpos].condition
 
-            console.log(position);
-            console.log(name);
+            //console.log(position);
+            //console.log(name);
             console.log(req);
             console.log(type);
             console.log(min);
             console.log(max);
-            console.log(condition);
-
+            //console.log(condition);
+            
             //Validacion Datos
 
             //Min
@@ -256,14 +257,18 @@ export default function data() {
             }
 
             //Type
-            
+            //cambiar la lista por una referencia a los delimitadores
+            Types(data, type, ["*","~"])
 
             //Conditions
+            
 
             elementpos++;
+            console.log("");
           }
 
         segpos++;
 
     }
+    
 }

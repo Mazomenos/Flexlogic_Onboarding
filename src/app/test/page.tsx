@@ -50,7 +50,17 @@ export default function Home() {
     }
 
     const alphanumericTest = () => {
-        const regexSchema = z.string().regex(new RegExp('^[^*~:]+$'), 'String must not have delimiters inside them')
+        let delimiters = ["*","~", ":"]
+        let regex = '^[^'
+        delimiters.forEach(delimiter => {
+            regex = regex + delimiter
+        });
+
+        regex = regex + ']+$'
+
+        console.log(regex)
+        //'^[^*~:]+$'
+        const regexSchema = z.string().regex(new RegExp(regex), 'String must not have delimiters inside them')
         const result = regexSchema.safeParse(inputString)
         console.log(result)
     }
