@@ -1,128 +1,159 @@
-"use client";
+'use client'
 
-import { DialogTitle, Description } from "@headlessui/react";
-import Modal from "@/components/Modal";
-import React from "react";
-import CancelButton from "@/components/CancelButton";
-import ListItem from "@/components/ListItem";
-import GenericButton from "@/components/GenericButton";
-import BrakeRule from "@/components/BrakeRule";
-import BackButton from "@/components/BackButton";
+import { DialogTitle, Description } from '@headlessui/react'
+import Modal from '@/components/Modal'
+import React from 'react'
+import CancelButton from '@/components/CancelButton'
+import ListItem from '@/components/ListItem'
+import GenericButton from '@/components/GenericButton'
+import BrakeRule from '@/components/BrakeRule'
+import BackButton from '@/components/BackButton'
 
 type Edi = {
-  id: number;
-  EDIDoc: string;
-  mandatory: boolean;
-  status: string;
-};
+  id: number
+  EDIDoc: string
+  mandatory: boolean
+  status: string
+}
 
 type Partnership = {
-  id: number;
-  name: string;
-  status: string;
-  edi: Edi[];
-};
+  id: number
+  name: string
+  status: string
+  edi: Edi[]
+}
 
 export default function Home() {
   const partnerships: Partnership[] = [
     {
       id: 1,
-      name: "Amazon",
-      status: "Complete",
+      name: 'Amazon',
+      status: 'Complete',
       edi: [
         {
           id: 1,
-          EDIDoc: "EDI 850 Purchase Order",
+          EDIDoc: 'EDI 850 Purchase Order',
           mandatory: true,
-          status: "Validate",
+          status: 'Validate',
         },
         {
           id: 2,
-          EDIDoc: "EDI 860 Purchase Order Change Request",
+          EDIDoc: 'EDI 860 Purchase Order Change Request',
           mandatory: false,
-          status: "Validate",
+          status: 'Validate',
         },
         {
           id: 3,
-          EDIDoc: "EDI 855 Purchase Order Acknowledgment",
+          EDIDoc: 'EDI 855 Purchase Order Acknowledgment',
           mandatory: true,
-          status: "Complete",
+          status: 'Complete',
         },
         {
           id: 4,
-          EDIDoc: "EDI 856 Ship Notice/Manifest",
+          EDIDoc: 'EDI 856 Ship Notice/Manifest',
           mandatory: true,
-          status: "Validate",
+          status: 'Validate',
         },
         {
           id: 5,
-          EDIDoc: "EDI 820 Payment Order/Remittance Advice",
+          EDIDoc: 'EDI 820 Payment Order/Remittance Advice',
           mandatory: false,
-          status: "Failed",
+          status: 'Failed',
         },
       ],
     },
     {
-      id: 2,
-      name: "Walmart",
-      status: "In Process",
+      id: 3,
+      name: 'AutoZone',
+      status: 'In Process',
       edi: [
         {
           id: 1,
-          EDIDoc: "EDI 850 Purchase Order",
+          EDIDoc: 'EDI 850 Purchase Order',
           mandatory: true,
-          status: "Validate",
+          status: 'Validate',
         },
         {
           id: 2,
-          EDIDoc: "EDI 860 Purchase Order Change Request",
+          EDIDoc: 'EDI 860 Purchase Order Change Request',
           mandatory: false,
-          status: "Validate",
+          status: 'Validate',
         },
         {
           id: 3,
-          EDIDoc: "EDI 855 Purchase Order Acknowledgment",
+          EDIDoc: 'EDI 855 Purchase Order Acknowledgment',
           mandatory: true,
-          status: "Complete",
+          status: 'Complete',
         },
         {
           id: 4,
-          EDIDoc: "EDI 856 Ship Notice/Manifest",
+          EDIDoc: 'EDI 856 Ship Notice/Manifest',
           mandatory: true,
-          status: "Validate",
+          status: 'Validate',
         },
         {
           id: 5,
-          EDIDoc: "EDI 820 Payment Order/Remittance Advice",
+          EDIDoc: 'EDI 820 Payment Order/Remittance Advice',
           mandatory: false,
-          status: "Failed",
+          status: 'Failed',
+        },
+        {
+          id: 6,
+          EDIDoc: 'EDI 850 Purchase Order',
+          mandatory: true,
+          status: 'Validate',
+        },
+        {
+          id: 7,
+          EDIDoc: 'EDI 860 Purchase Order Change Request',
+          mandatory: false,
+          status: 'Validate',
+        },
+        {
+          id: 8,
+          EDIDoc: 'EDI 855 Purchase Order Acknowledgment',
+          mandatory: true,
+          status: 'Complete',
+        },
+        {
+          id: 9,
+          EDIDoc: 'EDI 856 Ship Notice/Manifest',
+          mandatory: true,
+          status: 'Validate',
+        },
+        {
+          id: 10,
+          EDIDoc: 'EDI 820 Payment Order/Remittance Advice',
+          mandatory: false,
+          status: 'Failed',
         },
       ],
     },
-  ];
+  ]
 
-  const [isOpen, setIsOpen] = React.useState(false);
-  const [isModal2, setIsModal2] = React.useState(false);
+  const [isOpen, setIsOpen] = React.useState(false)
+  const [isModal2, setIsModal2] = React.useState(false)
   const [selectedPartnershipId, setSelectedPartnershipId] = React.useState<
     number | null
-  >(null);
+  >(null)
 
   const handleViewClick = (id: number) => {
-    setSelectedPartnershipId(id);
-    setIsOpen(false);
-    setIsModal2(true);
-  };
+    setSelectedPartnershipId(id)
+    setIsOpen(false)
+    setIsModal2(true)
+  }
 
   const selectedPartnership = partnerships.find(
-    (partnership) => partnership.id === selectedPartnershipId,
-  );
+    (partnership) => partnership.id === selectedPartnershipId
+  )
 
   return (
     <>
       <button onClick={() => setIsOpen(true)}>Open dialog</button>
       <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
         <DialogTitle className="text-2xl">Partners</DialogTitle>
-        <div className="max-h-full flex flex-col items-center w-full overflow-y-auto overscroll-none">
+        <BrakeRule classname="my-3" />
+        <div className="max-h-fit flex flex-col items-center w-full overflow-y-auto overscroll-none">
           {partnerships.map((partnership) => (
             <ListItem key={partnership.id} path={partnership.name}>
               <p> {partnership.name} Connection </p>
@@ -132,45 +163,49 @@ export default function Home() {
             </ListItem>
           ))}
         </div>
-        <CancelButton onClick={() => setIsOpen(false)} />
+        <BrakeRule classname="my-3" />
+        <div className="absolute bottom-2 w-full flex justify-center">
+          <CancelButton onClick={() => setIsOpen(false)} />{' '}
+        </div>
       </Modal>
       <Modal isOpen={isModal2} setIsOpen={setIsModal2}>
         <div className="absolute top-4 left-4">
           <BackButton
             onClick={() => {
-              setIsOpen(true);
-              setIsModal2(false);
+              setIsOpen(true)
+              setIsModal2(false)
             }}
           />
         </div>
         <DialogTitle className="text-2xl">
-          {" "}
-          {selectedPartnership?.name} Partnership EDI Verification{" "}
+          {' '}
+          {selectedPartnership?.name} Partnership EDI Verification{' '}
         </DialogTitle>
-        <BrakeRule />
+        <BrakeRule classname="my-4" />
         <div className="max-h-full flex flex-col items-center w-full overflow-y-auto overscroll-none">
           {selectedPartnership &&
             selectedPartnership.edi.map((edi) => (
               <ListItem key={edi.id} path={edi.EDIDoc}>
                 <p> {edi.EDIDoc} </p>
                 <Description>
-                  {" "}
-                  {edi.mandatory ? "Mandatory" : "Optional"}{" "}
+                  {' '}
+                  {edi.mandatory ? 'Mandatory' : 'Optional'}{' '}
                 </Description>
               </ListItem>
             ))}
         </div>
-        <div className="flex w-full justify-end">
-          <div className="w-full flex justify-end mr-2">
-            <CancelButton onClick={() => setIsModal2(false)} />
+        <BrakeRule classname="my-3" />
+        <div className="absolute flex-row right-2 bottom-2">
+          <div className="m-2 inline-block">
+            <CancelButton onClick={() => setIsModal2(false)} />{' '}
           </div>
-
-          <GenericButton onClick={() => setIsModal2(false)}>
-            {" "}
-            Create{" "}
-          </GenericButton>
+          <div className="inline-block">
+            <GenericButton onClick={() => setIsModal2(false)}>
+              Create
+            </GenericButton>
+          </div>
         </div>
       </Modal>
     </>
-  );
+  )
 }
