@@ -9,6 +9,7 @@ import GenericButton from '@/components/GenericButton'
 import BrakeRule from '@/components/BrakeRule'
 import BackButton from '@/components/BackButton'
 import AddButton from '@/components/AddButton'
+import { useRouter } from "next/navigation";
 
 type Edi = {
   id: number
@@ -25,6 +26,7 @@ type Partnership = {
 }
 
 export default function AddPartnership() {
+  const router = useRouter();
   const partnerships: Partnership[] = [
     {
       id: 1,
@@ -143,10 +145,18 @@ export default function AddPartnership() {
     setIsOpen(false)
     setIsModal2(true)
   }
-
+  
   const selectedPartnership = partnerships.find(
     (partnership) => partnership.id === selectedPartnershipId
   )
+
+  const handleCreateClick = () => {
+    partnerships.map((partnership) => {
+      if (partnership.id === selectedPartnershipId) {
+        router.push(`/Cliente/${partnership.id}`)
+      }
+    })
+  }
 
   return (
     <>
@@ -203,7 +213,7 @@ export default function AddPartnership() {
             <CancelButton onClick={() => setIsModal2(false)} />{' '}
           </div>
           <div className="inline-block">
-            <GenericButton onClick={() => setIsModal2(false)}>
+            <GenericButton onClick={() => handleCreateClick()}>
               Create
             </GenericButton>
           </div>
