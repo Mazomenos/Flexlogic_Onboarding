@@ -1,16 +1,13 @@
 import CompareData from "./conditions/compare"
-import idCodes from "./conditions/idCodes"
+import IdCodes from "./conditions/idCodes"
 import DateFormat from "./conditions/dateFormat"
-import DecimalPosition from "./conditions/decimalPosition"
+import DecimalPosition from "./conditions/decimalposition"
 import charLength from "./conditions/charLength"
 import TimeFormat from "./conditions/timeFormat"
 
-interface Iconditions {
-    type: string
-    params: any
-}
+import { Iconditions, IcharLength, IdecimalCondition, IcompareCodes, IcompareData, IdateAndTimeFormat } from "./conditions/InterfaceConditions"
 
-
+/*
 const equal: Iconditions[] = [
     {
         type: "hello",
@@ -76,37 +73,38 @@ const equal: Iconditions[] = [
         ]
     }
 ]
+*/
 
 export default function Conditions(data: string, conditions: Iconditions[], file: Object) {
     //Conditions Loop
     conditions.forEach(condition => {
         switch (condition.type) {
             case 'compareData':
-                CompareData(data, condition.params)
+                CompareData(data, condition.params as IcompareData)
                 console.log("compareData");
                 break;
 
             case 'decimalPosition':
-                DecimalPosition(data, condition.params)
+                DecimalPosition(data, condition.params as IdecimalCondition)
                 console.log("decimalPosition");
                 break;
 
             case 'dateFormat':
-                DateFormat(data, condition.params)
+                DateFormat(data, condition.params as IdateAndTimeFormat)
                 console.log("dateFormat");
                 break;
 
             case 'timeFormat':
                 console.log("timeFormat");
-                TimeFormat(data, condition.params)
+                TimeFormat(data, condition.params as IdateAndTimeFormat)
                 break;
 
             case 'charLength':
-                charLength(data, condition.params)
+                charLength(data, condition.params as IcharLength)
                 console.log("charLength");
                 break;
             case 'idCodes':
-                idCodes(data, condition.params)
+                IdCodes(data, condition.params as IcompareCodes)
                 console.log("idCodes");
                 break;
         }

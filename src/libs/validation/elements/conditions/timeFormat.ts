@@ -1,10 +1,7 @@
 import { z } from "zod"
+import { IdateAndTimeFormat } from "./InterfaceConditions"
 
-interface ITimeFormat {
-    format: string
-}
-
-export default function TimeFormat(data: string, params: ITimeFormat) {
+export default function TimeFormat(data: string, params: IdateAndTimeFormat) {
     const format = params.format
     let regularExp = ""
     switch (format) {

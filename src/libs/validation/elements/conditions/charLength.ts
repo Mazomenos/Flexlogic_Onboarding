@@ -1,6 +1,4 @@
-interface IcharLength {
-    length: string
-}
+import { IcharLength } from "./InterfaceConditions"
 
 
 export default function charLength(data:string, params: IcharLength) {

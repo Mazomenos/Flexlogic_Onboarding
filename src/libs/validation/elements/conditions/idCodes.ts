@@ -1,8 +1,6 @@
-interface IcompareCodes {
-    codes: string[]
-}
+import { IcompareCodes } from "./InterfaceConditions"
 
-export default function idCodes(data:string, params: IcompareCodes) {
+export default function IdCodes(data:string, params: IcompareCodes) {
     let count = 0
     while(count < params.codes.length){
         if (params.codes[count] === data){

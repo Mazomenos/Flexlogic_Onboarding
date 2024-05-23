@@ -1,10 +1,7 @@
 import { z } from "zod"
+import { IdecimalCondition } from "./InterfaceConditions"
 
-interface IDecimalCondition {
-    decimals: string
-}
-
-export default function DecimalPosition(data: string, params: IDecimalCondition) {
+export default function DecimalPosition(data: string, params: IdecimalCondition) {
     const decimalPosition = Number(params.decimals)
     const parts = data.split('.')
     const schema = z.string().length(decimalPosition)

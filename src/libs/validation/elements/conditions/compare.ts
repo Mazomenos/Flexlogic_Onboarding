@@ -1,35 +1,4 @@
-enum Operator {
-    EQUAL = "=",
-    MORE = ">",
-    LESS = "<"
-}
-
-enum Source {
-    STATIC = 0,
-    PO = 1,
-    FILE = 2
-}
-
-//Compare Interface
-interface IcompareData {
-    source: Source
-    data: any
-}
-
-interface IcompareStatic {
-    
-        operator: Operator,
-        data: string
-
-}
-
-interface IcompareFile {
-  
-        operator: Operator,
-        segment: string,
-        element: string
-
-}
+import { IcompareData, IcompareStatic, Operator, Source } from "./InterfaceConditions";
 
 function compareStatic(data:string, params: IcompareStatic) {
     switch(params.operator){
@@ -62,7 +31,7 @@ function compareStatic(data:string, params: IcompareStatic) {
 export default function CompareData(data: string, params: IcompareData) {
     switch(params.source){
         case Source.STATIC:
-            compareStatic(data, params.data)
+            compareStatic(data, params.data as IcompareStatic)
             console.log("static")
             break;
         case Source.PO:
