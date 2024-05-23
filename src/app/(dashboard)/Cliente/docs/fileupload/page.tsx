@@ -4,47 +4,53 @@ import { DialogTitle } from "@headlessui/react";
 import Modal from "@/components/Modal";
 import React from "react";
 import CancelButton from "@/components/CancelButton";
+import GenericButton from "@/components/GenericButton";
 import { PiUploadSimple } from "react-icons/pi";
+import { ParseEDIfileTest } from "@/libs/X12parser/lib/parseEDIfileTest";
+import { Readable } from "stream";
 
+// Read stream code by Russell Briggs: https://medium.com/@dupski/nodejs-creating-a-readable-stream-from-a-string-e0568597387f
+class ReadableString extends Readable {
+  private sent = false;
+
+  constructor(private str: string) {
+    super();
+  }
+
+  _read() {
+    if (!this.sent) {
+      this.push(Buffer.from(this.str));
+      this.sent = true;
+    } else {
+      this.push(null);
+    }
+  }
+}
 export default function Home() {
   const [isOpen, setIsOpen] = React.useState(false);
-  const [file, setFile] = React.useState<File | null>(null);
-  //const { edgestore } = useEdgeStore();
-  const [message, setMessage] = React.useState<string | null>(null);
-  const [error, setError] = React.useState<string | null>(null);
+  const [fileContent, setFileContent] = React.useState<string | null>(null);
+  // const [message, setMessage] = React.useState<string | null>(null);
+  // const [error, setError] = React.useState<string | null>(null);
 
-  const uploadAndParseFile = async () => {
-    if (file && file.name) {
-      //const filename = file.name.toString();
-      //console.log(filename);
-      const formData = new FormData();
-      formData.append("file", file);
-
-      try {
-        const response = await fetch("/api/parse", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ fileName: formData }),
-        });
-
-        if (!response.ok) {
-          throw new Error("Error en la respuesta del servidor");
-        }
-
-        const result = await response.json();
-        setMessage(result.message);
-      } catch (err) {
-        if (err instanceof Error) {
-          setError(err.message);
-        } else {
-          setError("Unknown error");
-        }
-      }
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const text = e.target?.result;
+        setFileContent(text as string);
+      };
+      reader.readAsText(file);
+      console.log("FileContent:");
+      console.log(fileContent);
+      console.log(typeof fileContent);
     } else {
-      console.error("No file selected or file has no name");
+      console.log("Error reading file");
     }
+  };
+  const uploadAndParseFile = async () => {
+    const contentStream = new ReadableString(String(fileContent));
+    ParseEDIfileTest(contentStream);
   };
 
   return (
@@ -53,20 +59,15 @@ export default function Home() {
       <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
         <DialogTitle className="text-2xl">Upload your document</DialogTitle>
         <div className="flex flex-col-reverse items-center w-full">
-          <input
-            type="file"
-            onChange={(e) => {
-              setFile(e.target.files?.[0] || null);
-            }}
-          />
-          {error && <p>Error: {error}</p>}
-          {message && <p>{message}</p>}
+          <input type="file" onChange={handleFileChange} />
+          {/* {error && <p>Error: {error}</p>}
+          {message && <p>{message}</p>} */}
         </div>
         <div className="flex w-full justify-end">
           <div className="w-full flex justify-end mr-2">
             <CancelButton onClick={() => setIsOpen(false)} />
           </div>
-          <button onClick={uploadAndParseFile}>Validate</button>
+          <GenericButton onClick={uploadAndParseFile}> Validate </GenericButton>
         </div>
       </Modal>
     </>
