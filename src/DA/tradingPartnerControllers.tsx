@@ -10,17 +10,15 @@ export async function GetPartnershipsFromUser(userId: string) {
                 id: userId
             }
         })
-        let partnerships = []
         if (!userPartnerships) throw new Error('User not found')
-        const userPartnershipTypeList = userPartnerships.Partnerships
-        for (let i = 0; i < userPartnershipTypeList.length; i++) {
-            const partner = await prisma.tradingPartner.findFirst({
-                where: {
-                    id: userPartnershipTypeList[i].idPartner
+        const idPartners = userPartnerships.Partnerships.map(partnership => partnership.idPartner)
+        const partnerships = await prisma.tradingPartner.findMany({
+            where: {
+                id: {
+                    in: idPartners
                 }
-            })
-            partnerships.push(partner)
-        }
+            }
+        })
         return partnerships
     } catch (error) {
         if (error instanceof Error) {
