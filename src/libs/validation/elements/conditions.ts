@@ -1,5 +1,5 @@
 import CompareData from "./conditions/compare"
-
+import idCodes from "./conditions/idCodes"
 
 interface Iconditions {
     type: string
@@ -83,6 +83,7 @@ export default function Conditions(data: string, conditions: Iconditions[], file
                 break;
 
             case 'decimalPosition':
+
                 console.log("decimalPosition");
                 break;
 
@@ -96,6 +97,10 @@ export default function Conditions(data: string, conditions: Iconditions[], file
             
             case 'charLength':
                 console.log("charLength");
+                break;
+            case 'idCodes':
+                idCodes(data, condition.params)
+                console.log("idCodes");
                 break;
         }
     });
