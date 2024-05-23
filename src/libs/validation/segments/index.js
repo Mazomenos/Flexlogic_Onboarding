@@ -698,7 +698,7 @@ var SystemFile = [
     {
         Position: 18,
         Segment: "IEA",
-        Requirement: "M",
+        Requirement: "OP",
         Max: "1",
         Elements: [
             {
@@ -778,21 +778,24 @@ var ClientFile = [
     { "1": "1", "2": "8", name: "CTT" },
     { "1": "10", "2": "0001", name: "SE" },
     { "1": "1", "2": "12911", name: "GE" },
+    { '1': '1', '2': '000012911', name: 'IEA' }
 ];
-function ValStructure(currSystemFile, ClientFile, varControlClient, reqLoop) {
+function ValStructure(currSystemFile, ClientFile, varControlClient, reqLoop, isFirst) {
     var isValidated = false;
     var repCounter = 0;
     var varControlSys = 0;
-    while (varControlSys < currSystemFile.length + 1 && varControlClient < ClientFile.length) {
-        console.log(varControlClient);
-        console.log(varControlSys);
-        console.log(currSystemFile.length);
+    while (varControlSys < currSystemFile.length + 1) {
         if (varControlSys >= currSystemFile.length) {
-            console.log("limite");
-            return { status: "error", value: varControlClient };
+            if (isFirst === true) {
+                break;
+            }
+            return { status: "ErrorLoop", value: varControlClient };
         }
         else {
-            console.log("Sistema:", currSystemFile[varControlSys].Segment, " Pos:", varControlSys, " | Cliente:", ClientFile[varControlClient].name, " Pos:", varControlClient);
+            if (varControlClient >= ClientFile.length) {
+                break;
+            }
+            //console.log("Sys:", currSystemFile[varControlSys].Segment, " Pos:", varControlSys, " | Cliente:", ClientFile[varControlClient].name, " Pos:", varControlClient);
         }
         if ((ClientFile[varControlClient].name ===
             currSystemFile[varControlSys].Segment &&
@@ -806,14 +809,21 @@ function ValStructure(currSystemFile, ClientFile, varControlClient, reqLoop) {
         }
         else {
             repCounter = 0;
-            console.log("Cont: ", repCounter);
             if (currSystemFile[varControlSys].Segment === "LOOP") {
                 var varControlLoop = 0;
-                var Diff = 1;
-                while (varControlLoop <= currSystemFile[varControlSys].Max && Diff > 0) {
-                    Diff = ValStructure(currSystemFile[varControlSys].Segments, ClientFile, varControlClient, currSystemFile[varControlSys].Requirement).value;
-                    Diff = Diff - varControlClient;
-                    varControlClient = Diff + varControlClient;
+                var diff = 1;
+                var result = void 0;
+                while (varControlLoop <= currSystemFile[varControlSys].Max && diff > 0) {
+                    result = ValStructure(currSystemFile[varControlSys].Segments, ClientFile, varControlClient, currSystemFile[varControlSys].Requirement, false);
+                    if (result.status === "Failed") {
+                        if (varControlLoop > 0) {
+                            break;
+                        }
+                        return { status: "Failed" };
+                    }
+                    diff = result.value;
+                    diff = diff - varControlClient;
+                    varControlClient = diff + varControlClient;
                     varControlLoop++;
                 }
                 varControlSys++;
@@ -825,7 +835,7 @@ function ValStructure(currSystemFile, ClientFile, varControlClient, reqLoop) {
             else {
                 if (currSystemFile[varControlSys].Requirement === "M") {
                     if (reqLoop === "M") {
-                        return { status: "Failed", comment: "Errorrrr" };
+                        return { status: "Failed", comment: "Error" };
                     }
                     return { status: "error", value: varControlClient };
                 }
@@ -835,6 +845,13 @@ function ValStructure(currSystemFile, ClientFile, varControlClient, reqLoop) {
             }
         }
     }
-    return { status: "Success" };
+    console.log("Cliente: ", varControlClient, " Largo: ", ClientFile.length);
+    console.log("Sistema: ", varControlSys, " Largo: ", currSystemFile.length - 1);
+    if (varControlSys < currSystemFile.length - 1 || varControlClient < ClientFile.length) {
+        return { status: "Failed" };
+    }
+    else {
+        return { status: "Success" };
+    }
 }
-console.log(ValStructure(SystemFile, ClientFile, 0, "M").status);
+console.log(ValStructure(SystemFile, ClientFile, 0, "M", true).status);
