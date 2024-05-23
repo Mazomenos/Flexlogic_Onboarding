@@ -8,6 +8,9 @@ import { TfiLayoutLineSolid } from "react-icons/tfi";
 import CancelButton from '@/components/CancelButton'
 import ListItem from '@/components/ListItem'
 import BrakeRule from '@/components/BrakeRule'
+import AddButon from '@/components/AddButton'
+import { IoMdDownload } from 'react-icons/io'
+import GenericButton from '@/components/GenericButton';
 
 type Errors = {
     id: number
@@ -25,6 +28,10 @@ export default function Errors({ isOpen, setIsOpen }: { isOpen: boolean, setIsOp
         { id: 6, typeError: 'Segmentation', desc: 'This is a mandatory document' },
         { id: 7, typeError: 'Elements', desc: 'This is a optional document' },
     ];
+
+    const download = () => {
+        console.log('Downloaded');
+    }
 
     return (
         <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
@@ -48,8 +55,13 @@ export default function Errors({ isOpen, setIsOpen }: { isOpen: boolean, setIsOp
                 ))}
             </div>
             <BrakeRule classname="my-3" />
-            <div className="absolute bottom-2 w-full flex justify-center">
-                <CancelButton onClick={() => setIsOpen(false)} />{' '}
+            <AddButon onClick={() => download()}> Download All <IoMdDownload /> </AddButon>
+            <BrakeRule classname="my-3" />
+            <div className="absolute bottom-2 w-full flex justify-end mr-5">
+                <div className='mr-2'>
+                    <CancelButton onClick={() => setIsOpen(false)} />{' '}
+                </div>
+                <GenericButton onClick={() => setIsOpen(false)}> Validate </GenericButton>
             </div>
         </Modal>
     )
