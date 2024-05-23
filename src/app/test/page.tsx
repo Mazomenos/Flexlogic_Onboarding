@@ -141,7 +141,7 @@ export default function Home() {
     return (
         <main>
             <p>Test</p>
-            <input type="text" placeholder="Value" onChange={(e) => setInputString(e.target.value)}></input>
+            <input type="text" placeholder="Value" onChange={(e) => setInputString(String(e.target.value))}></input>
             <div>
                 <input type="number" placeholder="Min" onChange={(e) => setMinString(Number(e.target.value))}></input>
                 <input type="number" placeholder="Max" onChange={(e) => setMaxString(Number(e.target.value))}></input>
