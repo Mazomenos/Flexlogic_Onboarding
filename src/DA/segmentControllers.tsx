@@ -1,6 +1,8 @@
+"use server"
+
 import { prisma } from "@/libs/prisma";
 
-async function getSegment(segmentName: string) {
+export async function GetSegment(segmentName: string) {
     const segment = await prisma.eDISegments.findFirst({
         where: {
             Segment: segmentName
@@ -8,5 +10,3 @@ async function getSegment(segmentName: string) {
     });
     return segment
 }
-
-module.exports = [getSegment]

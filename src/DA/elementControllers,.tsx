@@ -1,6 +1,8 @@
+"use server"
+
 import { prisma } from "@/libs/prisma";
 
-async function getElement(elementName: string) {
+export async function GetElement(elementName: string) {
     const element = await prisma.eDIElement.findFirst({
         where: {
             Element: elementName
@@ -8,5 +10,3 @@ async function getElement(elementName: string) {
     });
     return element
 }
-
-module.exports = [getElement]
