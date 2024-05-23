@@ -1,6 +1,6 @@
 import X12parser from "@/libs/X12parser/lib/X12parser";
 
-export function ParseEDIfileTest(contentStream) {
+export function ParseEDIfile(contentStream) {
   // Create a new parser
   const myParser = new X12parser("ascii", "~", ">", "*", "U");
   myParser.on("error", (err) => {

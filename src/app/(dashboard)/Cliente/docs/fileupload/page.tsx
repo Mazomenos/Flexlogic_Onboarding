@@ -6,7 +6,7 @@ import React from "react";
 import CancelButton from "@/components/CancelButton";
 import GenericButton from "@/components/GenericButton";
 import { PiUploadSimple } from "react-icons/pi";
-import { ParseEDIfileTest } from "@/libs/X12parser/lib/parseEDIfileTest";
+import { ParseEDIfile } from "@/libs/X12parser/lib/parseEDIfile";
 import { Readable } from "stream";
 
 // Read stream code by Russell Briggs: https://medium.com/@dupski/nodejs-creating-a-readable-stream-from-a-string-e0568597387f
@@ -50,7 +50,7 @@ export default function Home() {
   };
   const uploadAndParseFile = async () => {
     const contentStream = new ReadableString(String(fileContent));
-    ParseEDIfileTest(contentStream);
+    ParseEDIfile(contentStream);
   };
 
   return (
