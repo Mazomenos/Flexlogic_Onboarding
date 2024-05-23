@@ -1,5 +1,5 @@
 import CompareData from "./conditions/compare"
-
+import DecimalPosition from "./conditions/decimalposition"
 
 interface Iconditions {
     type: string
@@ -83,6 +83,7 @@ export default function Conditions(data: string, conditions: Iconditions[], file
                 break;
 
             case 'decimalPosition':
+                DecimalPosition(data, condition.params)
                 console.log("decimalPosition");
                 break;
 
