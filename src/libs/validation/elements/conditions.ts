@@ -1,4 +1,5 @@
 import CompareData from "./conditions/compare"
+import DateFormat from "./conditions/dateFormat"
 import DecimalPosition from "./conditions/decimalposition"
 
 interface Iconditions {
@@ -10,11 +11,11 @@ interface Iconditions {
 const equal: Iconditions[] = [
     {
         type: "hello",
-        params: 
-            {
+        params:
+        {
             operator: Operator.EQUAL
         }
-    
+
     }
 ]
 
@@ -23,9 +24,9 @@ const equal: Iconditions[] = [
         type: "hello",
         params: [
             {
-            operator: "="
-        }
-    ]
+                operator: "="
+            }
+        ]
     }
 ]
 
@@ -34,9 +35,9 @@ const equal: Iconditions[] = [
         type: "hello",
         params: [
             {
-            operator: "="
-        }
-    ]
+                operator: "="
+            }
+        ]
     }
 ]
 
@@ -45,9 +46,9 @@ const equal: Iconditions[] = [
         type: "hello",
         params: [
             {
-            operator: "="
-        }
-    ]
+                operator: "="
+            }
+        ]
     }
 ]
 
@@ -56,9 +57,9 @@ const equal: Iconditions[] = [
         type: "hello",
         params: [
             {
-            operator: "="
-        }
-    ]
+                operator: "="
+            }
+        ]
     }
 ]
 
@@ -67,16 +68,16 @@ const equal: Iconditions[] = [
         type: "hello",
         params: [
             {
-            operator: "="
-        }
-    ]
+                operator: "="
+            }
+        ]
     }
 ]
 
 export default function Conditions(data: string, conditions: Iconditions[], file: Object) {
     //Conditions Loop
     conditions.forEach(condition => {
-        switch(condition.type){
+        switch (condition.type) {
             case 'compareData':
                 CompareData(data, condition.params)
                 console.log("compareData");
@@ -88,13 +89,14 @@ export default function Conditions(data: string, conditions: Iconditions[], file
                 break;
 
             case 'dateFormat':
+                DateFormat(data, condition.params)
                 console.log("dateFormat");
                 break;
 
             case 'timeFormat':
                 console.log("timeFormat");
                 break;
-            
+
             case 'charLength':
                 console.log("charLength");
                 break;
