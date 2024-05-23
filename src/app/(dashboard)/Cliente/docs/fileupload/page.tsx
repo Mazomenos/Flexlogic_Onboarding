@@ -5,7 +5,6 @@ import Modal from "@/components/Modal";
 import React from "react";
 import CancelButton from "@/components/CancelButton";
 import { PiUploadSimple } from "react-icons/pi";
-import { useEdgeStore } from "@/lib/edgestore";
 
 export default function Home() {
   const [isOpen, setIsOpen] = React.useState(false);
