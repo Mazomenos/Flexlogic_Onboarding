@@ -9,6 +9,7 @@ import Badge from "../components/Badge";
 import Errors from "../docs/Errors";
 import { useState } from "react";
 import { Status } from "../enums/Status";
+import ValidateButton from "../components/ValidateButton";
 
 type EDI = {
   id: number;
@@ -34,7 +35,7 @@ export default function Home() {
 
   const openError = (con: boolean) => {
     setIsErrorModalOpen(con);
-  }
+  };
 
   return (
     <div className="h-full flex flex-col">
@@ -47,7 +48,11 @@ export default function Home() {
       <BrakeRule />
       <div className="max-h-full flex flex-col items-center w-full overflow-y-auto overscroll-none">
         {edi.map((partnership, index) => (
-          <ListItem key={index} path={partnership.status == Status.FAILED ? partnership.EDIDoc : ""} onClick={() => openError(true)} >
+          <ListItem
+            key={index}
+            path={partnership.status == Status.FAILED ? partnership.EDIDoc : ""}
+            onClick={() => openError(true)}
+          >
             <div className="flex flex-row w-full">
               <p className="basis-2/5">{partnership.EDIDoc} </p>
               <TfiLayoutLineSolid
@@ -59,7 +64,17 @@ export default function Home() {
                 {partnership.mandatory ? "Mandatory" : "Optional"}{" "}
               </p>
               <div className="basis-1/5 flex justify-end">
-                <Badge status={partnership.status} />
+                {partnership.status == Status.VALIDATE ? (
+                  <ValidateButton
+                    onClick={() => {
+                      console.log(partnership.id);
+                    }}
+                  >
+                    {partnership.status}
+                  </ValidateButton>
+                ) : (
+                  <Badge status={partnership.status} />
+                )}
               </div>
             </div>
           </ListItem>
