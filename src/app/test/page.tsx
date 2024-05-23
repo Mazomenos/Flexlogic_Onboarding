@@ -2,8 +2,21 @@
 import { string, z } from "zod";
 import { use, useState } from "react";
 import data from "@/libs/validation/elements/index";
+import CompareData from "@/libs/validation/elements/conditions/compare";
+import idCodes from "@/libs/validation/elements/conditions/idCodes";
 
-data()
+
+//CompareData("hola", {source: 0,data: {operator: "=", data: "hola"}})
+
+//CompareData("hola", {source: 0,data: {operator: ">", data: "aa"}})
+
+//CompareData("holla", {source: 0,data: {operator: "<", data: "hola"}})
+
+idCodes("as", {codes:["as","aass","ddf"]})
+idCodes("po", {codes:["dsd","sds","ss"]})
+idCodes("sop", {codes:["dd","dd","dd"]})
+
+//data()
 
 export default function Home() {
     const [inputString, setInputString] = useState("")
