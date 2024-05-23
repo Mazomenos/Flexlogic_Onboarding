@@ -9,6 +9,7 @@ import BrakeRule from "@/components/BrakeRule";
 import ListItem from "@/components/ListItem";
 import Badge from "./components/Badge";
 import AddPartnership from "./docs/AddPartnership";
+import { useRouter } from "next/navigation";
 
 type Partnership = {
   id: number;
@@ -17,6 +18,8 @@ type Partnership = {
 };
 
 export default function Home() {
+  const router = useRouter();
+
   // TODO: Change to actual DB call
   const partnerships: Partnership[] = [
     { id: 1, name: "Amazon", status: "Complete" },
@@ -36,6 +39,9 @@ export default function Home() {
     { id: 15, name: "Partner X", status: "Complete" },
   ];
 
+  function handlePartnershipRedirect(path: number) {
+    router.push(`/Cliente/${path.toString()}`);
+  }
 
   return (
     <div className="h-full flex flex-col ">
@@ -45,7 +51,11 @@ export default function Home() {
       <BrakeRule />
       <div className="max-h-full flex flex-col items-center w-full overflow-y-auto overscroll-none">
         {partnerships.map((partnership, index) => (
-          <ListItem key={index} path={partnership.name}>
+          <ListItem
+            key={index}
+            path={partnership.id.toString()}
+            onClick={() => handlePartnershipRedirect(partnership.id)}
+          >
             <p>{partnership.name} </p>
             <Badge status={partnership.status} />
           </ListItem>
