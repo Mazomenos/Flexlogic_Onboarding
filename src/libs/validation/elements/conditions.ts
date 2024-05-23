@@ -1,8 +1,9 @@
 import CompareData from "./conditions/compare"
 import idCodes from "./conditions/idCodes"
 import DateFormat from "./conditions/dateFormat"
-import DecimalPosition from "./conditions/decimalposition"
+import DecimalPosition from "./conditions/decimalPosition"
 import charLength from "./conditions/charLength"
+import TimeFormat from "./conditions/timeFormat"
 
 interface Iconditions {
     type: string
@@ -97,6 +98,7 @@ export default function Conditions(data: string, conditions: Iconditions[], file
 
             case 'timeFormat':
                 console.log("timeFormat");
+                TimeFormat(data, condition.params)
                 break;
 
             case 'charLength':
