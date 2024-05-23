@@ -1,4 +1,6 @@
-export const Users = [
+import { User } from "./interfaces/EDIInterfaces";
+
+export const Users: User[]  = [
     {
         Partnerships: [
             {

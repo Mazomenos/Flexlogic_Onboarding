@@ -1,4 +1,6 @@
-export const EDITPDocs = [
+import { EDITPDocument } from "./interfaces/EDIInterfaces";
+
+export const EDITPDocs: EDITPDocument[] = [
     {
         id: "664d783c5d59cf13115aaec8",
         Segments: [

@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
-import { getElement } from './elementControllers'
-import { getSegment } from './segmentControllers'
+import { GetElement } from './elementControllers'
+import { GetSegment } from './segmentControllers'
 
 const prisma = new PrismaClient();
 
@@ -55,13 +55,13 @@ export async function postTPDoc(TPId: string, DocTemplateNum: number) {
     let newDataSegments: any[] = []
     for (let j = 0; j < templateDoc.Segments.length; j++) {
         let segment = templateDoc.Segments[j]
-        let segmentData = await getSegment(segment.Segment)
+        let segmentData = await GetSegment(segment.Segment)
         let elements: any[] = []
         if (segmentData && segmentData.Elements) {
             for (let i = 0; i < segmentData.Elements.length; i++) {
                 let element = segmentData.Elements[i]
                 if (element) {
-                    let elementData = await getElement(element.Element)
+                    let elementData = await GetElement(element.Element)
                     elements.push({
                         Position: element.Position,
                         Element: element.Element,

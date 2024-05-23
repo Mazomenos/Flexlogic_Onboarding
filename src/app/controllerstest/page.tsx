@@ -1,7 +1,7 @@
 "use client"
 
 import { GetPartnershipsFromUser, PostPartnership, UpdatePartnership } from "@/DA/tradingPartnerControllers";
-import { GetElement } from "@/DA/elementControllers,";
+import { GetElement } from "@/DA/elementControllers";
 import { GetSegment } from "@/DA/segmentControllers";
 
 

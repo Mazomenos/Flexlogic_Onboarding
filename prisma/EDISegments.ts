@@ -1,4 +1,5 @@
-export const EDISegments = [
+import { EDISegment } from "./interfaces/EDIInterfaces";
+export const EDISegments: EDISegment[] = [
   {
     Segment: "ST",
     Name: "Transaction Set Header",
