@@ -1,6 +1,7 @@
 import CompareData from "./conditions/compare"
 import idCodes from "./conditions/idCodes"
 import DecimalPosition from "./conditions/decimalposition"
+import charLength from "./conditions/charLength"
 
 interface Iconditions {
     type: string
@@ -97,6 +98,7 @@ export default function Conditions(data: string, conditions: Iconditions[], file
                 break;
             
             case 'charLength':
+                charLength(data, condition.params)
                 console.log("charLength");
                 break;
             case 'idCodes':
