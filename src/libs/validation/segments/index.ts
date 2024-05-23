@@ -780,6 +780,7 @@ const ClientFile = [
   { "1": "1", "2": "8", name: "CTT" },
   { "1": "10", "2": "0001", name: "SE" },
   { "1": "1", "2": "12911", name: "GE" },
+  { '1': '1', '2': '000012911', name: 'IEA' },
   { '1': '1', '2': '000012911', name: 'IEA' }
 ];
 
@@ -813,6 +814,9 @@ function ValStructure(currSystemFile: Array<any>, ClientFile: Array<any>, varCon
       varControlClient++;
       isValidated = true;
     } else {
+      if (repCounter > currSystemFile[varControlSys].Max) {
+        return { status: "Failed" }
+      }
       repCounter = 0;
       if (currSystemFile[varControlSys].Segment === "LOOP") {
         let varControlLoop = 0;
@@ -849,8 +853,8 @@ function ValStructure(currSystemFile: Array<any>, ClientFile: Array<any>, varCon
     }
   }
   
-  console.log("Cliente: ", varControlClient, " Largo: ", ClientFile.length);
-  console.log("Sistema: ", varControlSys, " Largo: ", currSystemFile.length - 1);
+  // console.log("Cliente: ", varControlClient, " Largo: ", ClientFile.length);
+  // console.log("Sistema: ", varControlSys, " Largo: ", currSystemFile.length - 1);
 
   if (varControlSys < currSystemFile.length - 1 || varControlClient < ClientFile.length) {
     return { status: "Failed" }
