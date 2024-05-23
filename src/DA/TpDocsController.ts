@@ -110,10 +110,6 @@ export async function postTPDoc(TPId: string, DocTemplateNum: number) {
 
     return updatedDocs;
 }
-const partnerId = "664e5cf5138e5b159c068266";
-const docTemplate = 850;
-
-postTPDoc(partnerId, docTemplate)
 
 export async function updateTPDoc(TPDocId: string, newData: any) {
 
