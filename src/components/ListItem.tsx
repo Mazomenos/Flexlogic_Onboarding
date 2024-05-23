@@ -3,13 +3,14 @@ interface IListItem {
   children: React.ReactNode;
   id?: number;
   path?: string;
+  onClick?: () => void;
 }
 
-export default function ListItem({ children, id, path }: IListItem) {
+export default function ListItem({ children, id, path, onClick }: IListItem) {
   return (
     <li
       onClick={() => {
-        path && console.log(path);
+        path && onClick && onClick();
       }}
       key={id}
       className={
