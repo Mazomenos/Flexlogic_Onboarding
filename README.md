@@ -42,8 +42,8 @@ We recommend doing it directly on MongoDB Atlas since is easier and faster to se
 
 If you have your database in MongoDB ready you just have to run the following lines:
 
-[!WARNING]
-Make sure you have an empty DB since data can be duplicated
+> [!WARNING]
+> Make sure you have an empty DB since data can be duplicated
 
 ```bash
 npx prisma generate
