@@ -1,4 +1,6 @@
-export const EDITemplateDocs = [
+import { EDITemplateDocument } from "./interfaces/EDIInterfaces";
+
+export const EDITemplateDocs: EDITemplateDocument[]  = [
     {
         Doc: 850,
         Version: "X12 4010",
