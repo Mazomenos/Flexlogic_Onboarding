@@ -784,7 +784,7 @@ const ClientFile = [
   { '1': '1', '2': '000012911', name: 'IEA' }
 ];
 
-function ValStructure(currSystemFile: Array<any>, ClientFile: Array<any>, varControlClient: number, reqLoop: String, isFirst: Boolean): any {
+export default function ValStructure(currSystemFile: Array<any>, ClientFile: Array<any>, varControlClient: number, reqLoop: String, isFirst: Boolean): any {
   let isValidated = false;
   let repCounter = 0;
   let varControlSys = 0;
