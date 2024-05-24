@@ -15,13 +15,13 @@ generator client {
 
 // Individual EDI Element structure
 model EDIElement {
-  id           String @id @default(auto()) @map("_id") @db.ObjectId
-  Element      String
-  NameElement String
-  Type         String
-  Min          Int
-  Max          Int
-  Version      String
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  Name    String
+  Element String
+  Type    String
+  Min     Int
+  Max     Int
+  Version String
 }
 
 // Individual EDI Segment structure
@@ -35,7 +35,7 @@ model EDISegments {
 }
 
 // Individual EDI Document structure
-model EDIdocuments {
+model EDITemplateDocuments {
   id      String @id @default(auto()) @map("_id") @db.ObjectId
   Doc     Int
   Version String
@@ -43,58 +43,77 @@ model EDIdocuments {
   Segments Segment[]
 }
 
-model TPDocs {
-  id      String @id @default(auto()) @map("_id") @db.ObjectId
-  Version String
-  Partner String
-  Doc     Int
+model EDITPDocs {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  Segments  Segment[]
-  LogErrors LogErrors[]
+  Segments Segment[]
 }
 
 type Element {
   Position    String
   Element     String
-  Requirement String?
-  Repeat      String
+  Requirement String
 
-  NameElement String?
-  Type        String?
-  Min         Int?
-  Max         Int?
-  Value       String?
+  Type String?
+  Min  Int?
+  Max  Int?
 
-  Conditions Json[]
-  Composites ElementComposite[]
-}
-
-type ElementComposite {
-  Position    String
-  Element     String
-  Requirement String?
-  Repeat      String
-
-  NameElement String?
-  Type        String?
-  Min         Int?
-  Max         Int?
-  Value       String?
-
-  Conditions Json[]
+  Conditions Json[] // Same structure as type Element
+  Composites Json[] // Same structure as type Element
 }
 
 type Segment {
-  Max         String
-  Requirement String
   Segment     String
+  Requirement String
+  Max         String
 
-  Position String?
+  Position Int?
 
+  Segments Json[] // Same structure as type Segment
   Elements Element[]
+}
+
+// Trading Partner structure -----------------------
+model TradingPartner {
+  id            String          @id @default(auto()) @map("_id") @db.ObjectId
+  Name          String
+  Initial850EDI String? // id of file if saved somewhere else
+  Delimiters    String[]
+  EDIVersion    String
+  EOL           String
+  DocsRequired  TPDocRequired[]
+}
+
+type TPDocRequired {
+  idDoc     String // id from TPDocs
+  Doc       String
+  Version   String
+  isVisible Boolean
+}
+
+//--------------------------
+
+// User structure -----------------------
+model User {
+  id           String        @id @default(auto()) @map("_id") @db.ObjectId
+  Partnerships Partnership[]
+}
+
+type Partnership {
+  idPartner String
+  Docs      UserDocs[]
+}
+
+type UserDocs {
+  Doc       String
+  Status    String // Completed, in progress & failed
+  DocFile   String? // id of file if saved somewhere else
+  LogErrors LogErrors[]
 }
 
 type LogErrors {
   Position String
   Comments String
 }
+
+//--------------------------
