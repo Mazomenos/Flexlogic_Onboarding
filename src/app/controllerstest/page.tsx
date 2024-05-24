@@ -1,9 +1,9 @@
 "use client"
 
-import { GetPartnershipsFromUser, PostPartnership, UpdatePartnership } from "@/DA/tradingPartnerControllers";
+import { GetPartnershipsFromUser } from "@/DA/tradingPartnerControllers";
 import { GetElement } from "@/DA/elementControllers";
 import { GetSegment } from "@/DA/segmentControllers";
-import { getTPDocsFromPartnership } from "@/DA/TpDocsController";
+import { GetTPDocsFromPartnership } from "@/DA/TpDocsController";
 
 
 export default function Home() {
