@@ -3,12 +3,12 @@
 import { GetPartnershipsFromUser, PostPartnership, UpdatePartnership } from "@/DA/tradingPartnerControllers";
 import { GetElement } from "@/DA/elementControllers";
 import { GetSegment } from "@/DA/segmentControllers";
-import { getTPDocsFromPartnership } from "@/DA/TpDocsController";
+import { GetTPDocsFromPartnership } from "@/DA/TpDocsController";
 
 
 export default function Home() {
     const useController = async () => {
-        console.log(await GetPartnershipsFromUser("664e7362e5bbc91ef71acf36"));
+        console.log(await GetTPDocsFromPartnership("664d76a8d7412ac29ddf6a1b"));
     }
 
     return (
