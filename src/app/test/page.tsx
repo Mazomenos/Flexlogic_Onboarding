@@ -1,9 +1,7 @@
 "use client"
 import { string, z } from "zod";
 import { use, useState } from "react";
-import data from "@/libs/validation/elements/index";
 
-data()
 
 export default function Home() {
     const [inputString, setInputString] = useState("")
