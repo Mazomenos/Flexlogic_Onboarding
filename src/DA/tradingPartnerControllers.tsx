@@ -34,8 +34,6 @@ export async function GetPartnershipsFromUser(userId: string) {
     }
 }
 
-/*
-//WARNING DOESNT WORK!!!!!!!!!
 export async function PostPartnership(Name: string, Delimiters: string[], EDIVersion: string, EOL: string) {
     try {
         //Creates new blank 850 document to link to this new partnership
@@ -55,13 +53,20 @@ export async function PostPartnership(Name: string, Delimiters: string[], EDIVer
                 Segments: []
             }
         })
+        const DocsRequired : TPDocRequired[] = [{
+            idDoc: newTPDocument.id,
+            Doc: "850",
+            Version: "X12 410",
+            isVisible: false
+        }]
         const partnership = await prisma.tradingPartner.create({
             data: {
                 Name,
-                //Initial850EDI: newTPDocument.id,
+                Initial850EDI: newTPDocument.id,
                 Delimiters,
                 EDIVersion,
-                EOL
+                EOL,
+                DocsRequired
             }
         })
         return partnership
@@ -79,7 +84,6 @@ export async function PostPartnership(Name: string, Delimiters: string[], EDIVer
     }
 }
 
-//Testing pending
 export async function UpdatePartnership(id: string, Name: string, Initial850EDI: string, Delimiters: string[], EDIVersion: string, EOL: string, DocsRequired: TPDocRequired[]) {
     try {
         const partnership = await prisma.tradingPartner.update({
@@ -110,7 +114,6 @@ export async function UpdatePartnership(id: string, Name: string, Initial850EDI:
     }
 }
 
-//Testing pending
 export async function DeletePartnership(id: string) {
     try {
         const partnership = await prisma.tradingPartner.delete({
@@ -132,4 +135,3 @@ export async function DeletePartnership(id: string) {
         }
     }
 }
-*/
