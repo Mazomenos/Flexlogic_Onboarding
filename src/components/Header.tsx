@@ -1,5 +1,3 @@
-import Image from "next/image";
-import Logo from "../assets/images/logo.png";
 import ThemeChanger from "./ThemeChanger";
 import FlexLogicLogo from "./FlexLogicLogo";
 
@@ -9,7 +7,7 @@ export default function Header({ children }: { children: React.ReactNode }) {
       <div className="basis-1/4 grid justify-items-center ">
         <FlexLogicLogo />
       </div>
-      <div className="text-4xl font-sans-serif justify-center items-center text-center font-bold basis-1/2">
+      <div className="text-4xl justify-center items-center text-center font-semibold   basis-1/2">
         {" "}
         {children}{" "}
       </div>

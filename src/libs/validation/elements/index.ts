@@ -10,6 +10,7 @@
 
 import { Min, Max } from "./minMax";
 import { Types } from "./types";
+// import { Min, Max } from "./minMax";
 
 
 //Funcion Auxiliar
@@ -200,6 +201,150 @@ export default function data() {
                     }
                 }
             ]}
+//     const config = [
+//         {
+//             position: 1,
+//             max: 2,
+//             req: "M",
+//             name: "ISA",
+//             elements: [
+//                 {
+//                     position: 1,
+//                     name: "isac",
+//                     req: "M",
+//                     type: "id",
+//                     min: 2,
+//                     max: 2,
+//                     condition: {
+//                         codes: [
+//                             "ac",
+//                             "do",
+//                             "di",
+//                             "pu"
+//                         ]
+//                     }
+//                 },
+//                 {
+//                     position: 1,
+//                     name: "isac",
+//                     req: "M",
+//                     type: "id",
+//                     min: 2,
+//                     max: 2,
+//                     condition: {
+//                         codes: [
+//                             "ac",
+//                             "do",
+//                             "di",
+//                             "pu"
+//                         ]
+//                     }
+//                 },
+//                 {
+//                     position: 1,
+//                     name: "isac",
+//                     req: "M",
+//                     type: "id",
+//                     min: 2,
+//                     max: 2,
+//                     condition: {
+//                         codes: [
+//                             "ac",
+//                             "do",
+//                             "di",
+//                             "pu"
+//                         ]
+//                     }
+//                 },
+//                 {
+//                     position: 1,
+//                     name: "isac",
+//                     req: "M",
+//                     type: "id",
+//                     min: 2,
+//                     max: 2,
+//                     condition: {
+//                         codes: [
+//                             "ac",
+//                             "do",
+//                             "di",
+//                             "pu"
+//                         ]
+//                     }
+//                 },
+//                 {
+//                     position: 1,
+//                     name: "isac",
+//                     req: "M",
+//                     type: "id",
+//                     min: 2,
+//                     max: 2,
+//                     condition: {
+//                         codes: [
+//                             "ac",
+//                             "do",
+//                             "di",
+//                             "pu"
+//                         ]
+//                     }
+//                 },
+//             ]
+//         },
+//         {
+//             position: 1,
+//             max: 2,
+//             req: "M",
+//             name: "GS",
+//             elements: [
+//                 {
+//                     position: 1,
+//                     name: "isac",
+//                     req: "M",
+//                     type: "id",
+//                     min: 2,
+//                     max: 2,
+//                     condition: {
+//                         codes: [
+//                             "ac",
+//                             "do",
+//                             "di",
+//                             "pu"
+//                         ]
+//                     }
+//                 },
+//                 {
+//                     position: 1,
+//                     name: "isac",
+//                     req: "M",
+//                     type: "id",
+//                     min: 2,
+//                     max: 2,
+//                     condition: {
+//                         codes: [
+//                             "ac",
+//                             "do",
+//                             "di",
+//                             "pu"
+//                         ]
+//                     }
+//                 },
+//                 {
+//                     position: 1,
+//                     name: "isac",
+//                     req: "M",
+//                     type: "id",
+//                     min: 2,
+//                     max: 2,
+//                     condition: {
+//                         codes: [
+//                             "ac",
+//                             "do",
+//                             "di",
+//                             "pu"
+//                         ]
+//                     }
+//                 }
+//             ]}
         
         
         
@@ -217,6 +362,14 @@ export default function data() {
         //console.log(configseg)
         //segmentos
         console.log(fileseg.name)
+//     // Moverse por segmentos
+//     while(segpos < (file.length)){
+//         let fileseg = file[segpos]
+//         let configseg: { max: number; min: number; req: string; name: string; elements: []; } = getSegmentConfig(fileseg.name, config)!;
+//         console.log(typeof(configseg))
+//         //console.log(configseg)
+//         //segmentos
+//         console.log(fileseg.name)
 
 
         const keys = Object.keys(fileseg);
@@ -247,6 +400,15 @@ export default function data() {
             //console.log(condition);
             
             //Validacion Datos
+//             console.log(position);
+//             console.log(name);
+//             console.log(req);
+//             console.log(type);
+//             console.log(min);
+//             console.log(max);
+//             console.log(condition);
+
+//             //Validacion Datos
 
             //Min
             let minR:boolean = Min(data, min, req)
@@ -259,16 +421,23 @@ export default function data() {
             //Type
             //cambiar la lista por una referencia a los delimitadores
             Types(data, type, ["*","~"])
+//             //Type
+            
 
             //Conditions
             
+//             //Conditions
 
             elementpos++;
             console.log("");
           }
+//             elementpos++;
+//           }
 
         segpos++;
 
     }
     
 }
+//     }
+// }
