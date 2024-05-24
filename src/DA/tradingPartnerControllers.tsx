@@ -34,6 +34,7 @@ export async function GetPartnershipsFromUser(userId: string) {
     }
 }
 
+/*
 //WARNING DOESNT WORK!!!!!!!!!
 export async function PostPartnership(Name: string, Delimiters: string[], EDIVersion: string, EOL: string) {
     try {
@@ -131,3 +132,4 @@ export async function DeletePartnership(id: string) {
         }
     }
 }
+*/

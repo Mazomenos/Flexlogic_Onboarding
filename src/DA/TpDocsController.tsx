@@ -41,7 +41,7 @@ export async function GetTPDocsFromPartnership(TPId: string) {
             })
         }
         return newData;
-        
+
     } catch (error) {
         if (error instanceof Error) {
             console.log(
@@ -56,8 +56,6 @@ export async function GetTPDocsFromPartnership(TPId: string) {
     }
 }
 
-
-/*
 export async function postTPDoc(TPId: string, DocTemplateNum: number) {
     try {
         const tradingPartner = await prisma.tradingPartner.findFirst({
@@ -206,4 +204,3 @@ export async function deleteTPDoc(TPDocId: string) {
         }
     }
 }
-*/
