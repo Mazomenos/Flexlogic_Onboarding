@@ -4,7 +4,7 @@ import { prisma } from '@/libs/prisma';
 import { GetElement } from './elementControllers'
 import { GetSegment } from './segmentControllers'
 
-export async function getTPDocsFromPartnership(TPId: string) {
+export async function GetTPDocsFromPartnership(TPId: string) {
     try {
         const tradingPartner = await prisma.tradingPartner.findUnique({
             where: {
