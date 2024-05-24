@@ -61,24 +61,30 @@ export function Types(data:string , type:string, delimiters: string[]){
             ANtype(data,delimiters)
             //De donde saco los delimitadores :(???
             console.log("AN")
+            break;
         case 'N0':
         case 'N2':
         case 'N4':
         case 'N6': 
             Ntype(data)
             console.log("N")
+            break;
         case 'R':
             Rtype(data)
             console.log("R")
+            break;
         case 'ID':
             IDtype(data)
             console.log("ID")
+            break;
         case 'DT':
         case 'TM':
             DTMtype(data)
             console.log("DT or TM")
+            break;
         case 'B':
             Btype(data)
             console.log("B")
+            break;
     }
 }

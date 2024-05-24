@@ -9,6 +9,7 @@ import { PiUploadSimple } from "react-icons/pi";
 import { ParseEDIfile } from "@/libs/X12parser/lib/parseEDIfile";
 import { Readable } from "stream";
 import ValStructure from "@/libs/validation/segments";
+import data from "@/libs/validation/elements";
 
 
 const SystemFile = [
@@ -137,7 +138,7 @@ const SystemFile = [
         Type: "",
         Min: 1,
         Max: 1,
-      },
+      }
     ],
   },
   {
@@ -776,6 +777,7 @@ export default function Home() {
     const contentStream = new ReadableString(String(fileContent));
     const Segments = await ParseEDIfile(contentStream);
     console.log(ValStructure(SystemFile, Segments, 0, "M", true));
+    data(SystemFile, Segments)
   };
 
   return (

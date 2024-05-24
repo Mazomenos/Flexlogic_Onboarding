@@ -1,10 +1,7 @@
 //Pending:
 /*
-- Agregar llamada a api para obtener documento de configuracion
+- Agregar llamada a DA para obtener documento de configuracion
 - Agregar Validaciones:
--- Min
--- Max
--- Type
 -- Condition
 */
 
@@ -16,361 +13,51 @@ import { Types } from "./types";
 //Funcion Auxiliar
 //Recibe un nombre de segmento y una instancia de un documento de configuracion de EDI de un TD especifico,
 //y nos retorna la informacion del segmento con el nombre que haga match.
-function getSegmentConfig(name: string, config: [{max: number,min: number, req: string, name: string, elements: []}]) {
+function getSegmentConfig(name: string, config: any) {
     let counter = 0;
+    let loopCounter = 0;
     while(counter < config.length){
-        if (name === config[counter].name){
-            console.log("found")
+        //console.log(config)
+        //console.log(config[counter].Segment)
+        if (name === config[counter].Segment){
+            //console.log("found")
             return config[counter]
         }
-        else {
+        else if (config[counter].Segment === "LOOP"){
+            //console.log("LOOP")
+            loopCounter = 0;
+            //console.log(config[counter].Segments.length)
+            while (loopCounter < config[counter].Segments.length){
+                if (name === config[counter].Segments[loopCounter].Segment){
+                    //console.log("found")
+                    return config[counter].Segments[loopCounter];
+                }
+                else {
+                    loopCounter++;
+                }
+            }
             counter++;
             
+        } else {
+            counter++;
         }
     }
     //Agregar catch error
 }
 
-function min(){
-    console.log("min")
-}
-
-function max(){
-    console.log("max")
-}
-
-export default function data() {
-    const file = [
-        {
-            '1': '00',
-            '2': '          ',
-            '3': '00',
-            '4': '          ',
-            '5': 'ZZ',
-            'name': 'ISA'
-        },
-        {
-            '1': 'IB',
-            '2': 'VENDOR',
-            '3': 'AMAZON',
-            'name': 'GS'
-        }
-    ]
-
-    const config = [
-        {
-            position: 1,
-            max: 2,
-            req: "M",
-            name: "ISA",
-            elements: [
-                {
-                    position: 1,
-                    name: "isac",
-                    req: "M",
-                    type: "id",
-                    min: 2,
-                    max: 2,
-                    condition: {
-                        codes: [
-                            "ac",
-                            "do",
-                            "di",
-                            "pu"
-                        ]
-                    }
-                },
-                {
-                    position: 1,
-                    name: "isac",
-                    req: "M",
-                    type: "id",
-                    min: 2,
-                    max: 2,
-                    condition: {
-                        codes: [
-                            "ac",
-                            "do",
-                            "di",
-                            "pu"
-                        ]
-                    }
-                },
-                {
-                    position: 1,
-                    name: "isac",
-                    req: "M",
-                    type: "id",
-                    min: 2,
-                    max: 2,
-                    condition: {
-                        codes: [
-                            "ac",
-                            "do",
-                            "di",
-                            "pu"
-                        ]
-                    }
-                },
-                {
-                    position: 1,
-                    name: "isac",
-                    req: "M",
-                    type: "id",
-                    min: 2,
-                    max: 2,
-                    condition: {
-                        codes: [
-                            "ac",
-                            "do",
-                            "di",
-                            "pu"
-                        ]
-                    }
-                },
-                {
-                    position: 1,
-                    name: "isac",
-                    req: "M",
-                    type: "id",
-                    min: 2,
-                    max: 2,
-                    condition: {
-                        codes: [
-                            "ac",
-                            "do",
-                            "di",
-                            "pu"
-                        ]
-                    }
-                },
-            ]
-        },
-        {
-            position: 1,
-            max: 2,
-            req: "M",
-            name: "GS",
-            elements: [
-                {
-                    position: 1,
-                    name: "isac",
-                    req: "M",
-                    type: "id",
-                    min: 4,
-                    max: 6,
-                    condition: {
-                        codes: [
-                            "ac",
-                            "do",
-                            "di",
-                            "pu"
-                        ]
-                    }
-                },
-                {
-                    position: 1,
-                    name: "isac",
-                    req: "M",
-                    type: "id",
-                    min: 2,
-                    max: 2,
-                    condition: {
-                        codes: [
-                            "ac",
-                            "do",
-                            "di",
-                            "pu"
-                        ]
-                    }
-                },
-                {
-                    position: 1,
-                    name: "isac",
-                    req: "M",
-                    type: "id",
-                    min: 2,
-                    max: 2,
-                    condition: {
-                        codes: [
-                            "ac",
-                            "do",
-                            "di",
-                            "pu"
-                        ]
-                    }
-                }
-            ]}
-//     const config = [
-//         {
-//             position: 1,
-//             max: 2,
-//             req: "M",
-//             name: "ISA",
-//             elements: [
-//                 {
-//                     position: 1,
-//                     name: "isac",
-//                     req: "M",
-//                     type: "id",
-//                     min: 2,
-//                     max: 2,
-//                     condition: {
-//                         codes: [
-//                             "ac",
-//                             "do",
-//                             "di",
-//                             "pu"
-//                         ]
-//                     }
-//                 },
-//                 {
-//                     position: 1,
-//                     name: "isac",
-//                     req: "M",
-//                     type: "id",
-//                     min: 2,
-//                     max: 2,
-//                     condition: {
-//                         codes: [
-//                             "ac",
-//                             "do",
-//                             "di",
-//                             "pu"
-//                         ]
-//                     }
-//                 },
-//                 {
-//                     position: 1,
-//                     name: "isac",
-//                     req: "M",
-//                     type: "id",
-//                     min: 2,
-//                     max: 2,
-//                     condition: {
-//                         codes: [
-//                             "ac",
-//                             "do",
-//                             "di",
-//                             "pu"
-//                         ]
-//                     }
-//                 },
-//                 {
-//                     position: 1,
-//                     name: "isac",
-//                     req: "M",
-//                     type: "id",
-//                     min: 2,
-//                     max: 2,
-//                     condition: {
-//                         codes: [
-//                             "ac",
-//                             "do",
-//                             "di",
-//                             "pu"
-//                         ]
-//                     }
-//                 },
-//                 {
-//                     position: 1,
-//                     name: "isac",
-//                     req: "M",
-//                     type: "id",
-//                     min: 2,
-//                     max: 2,
-//                     condition: {
-//                         codes: [
-//                             "ac",
-//                             "do",
-//                             "di",
-//                             "pu"
-//                         ]
-//                     }
-//                 },
-//             ]
-//         },
-//         {
-//             position: 1,
-//             max: 2,
-//             req: "M",
-//             name: "GS",
-//             elements: [
-//                 {
-//                     position: 1,
-//                     name: "isac",
-//                     req: "M",
-//                     type: "id",
-//                     min: 2,
-//                     max: 2,
-//                     condition: {
-//                         codes: [
-//                             "ac",
-//                             "do",
-//                             "di",
-//                             "pu"
-//                         ]
-//                     }
-//                 },
-//                 {
-//                     position: 1,
-//                     name: "isac",
-//                     req: "M",
-//                     type: "id",
-//                     min: 2,
-//                     max: 2,
-//                     condition: {
-//                         codes: [
-//                             "ac",
-//                             "do",
-//                             "di",
-//                             "pu"
-//                         ]
-//                     }
-//                 },
-//                 {
-//                     position: 1,
-//                     name: "isac",
-//                     req: "M",
-//                     type: "id",
-//                     min: 2,
-//                     max: 2,
-//                     condition: {
-//                         codes: [
-//                             "ac",
-//                             "do",
-//                             "di",
-//                             "pu"
-//                         ]
-//                     }
-//                 }
-//             ]}
-        
-        
-        
-    ]
-    let segpos = 0
-
-
+export default function data(config: any, file: any) {
     
+
+    let segpos = 0
 
     // Moverse por segmentos
     while(segpos < (file.length)){
         let fileseg = file[segpos]
-        let configseg: { max: number; min: number; req: string; name: string; elements: []; } = getSegmentConfig(fileseg.name, config)!;
-        //console.log(typeof(configseg))
-        //console.log(configseg)
+        let configseg: any = getSegmentConfig(fileseg.name, config)!;
+        console.log("tipo segmento" + typeof(configseg))
+        console.log(configseg)
         //segmentos
         console.log(fileseg.name)
-//     // Moverse por segmentos
-//     while(segpos < (file.length)){
-//         let fileseg = file[segpos]
-//         let configseg: { max: number; min: number; req: string; name: string; elements: []; } = getSegmentConfig(fileseg.name, config)!;
-//         console.log(typeof(configseg))
-//         //console.log(configseg)
-//         //segmentos
-//         console.log(fileseg.name)
-
 
         const keys = Object.keys(fileseg);
 
@@ -383,13 +70,13 @@ export default function data() {
             console.log(`Element: ${key}, Data: ${data}`);
 
             //Datos de Configuracion de elemento
-            let position = configseg.elements[elementpos].position
-            let name = configseg.elements[elementpos].name
-            let req = configseg.elements[elementpos].req
-            let type = configseg.elements[elementpos].type
-            let min = configseg.elements[elementpos].min
-            let max = configseg.elements[elementpos].max
-            let condition = configseg.elements[elementpos].condition
+            //let position = configseg.Elements[elementpos].Position
+            //let name = configseg.Elements[elementpos].Element
+            let req = configseg.Elements[elementpos].Requirement
+            let type = configseg.Elements[elementpos].Type
+            let min = configseg.Elements[elementpos].Min
+            let max = configseg.Elements[elementpos].Max
+            //let condition = configseg.Elements[elementpos].condition
 
             //console.log(position);
             //console.log(name);
@@ -400,15 +87,6 @@ export default function data() {
             //console.log(condition);
             
             //Validacion Datos
-//             console.log(position);
-//             console.log(name);
-//             console.log(req);
-//             console.log(type);
-//             console.log(min);
-//             console.log(max);
-//             console.log(condition);
-
-//             //Validacion Datos
 
             //Min
             let minR:boolean = Min(data, min, req)
