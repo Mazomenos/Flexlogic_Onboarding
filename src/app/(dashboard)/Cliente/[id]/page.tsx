@@ -10,6 +10,7 @@ import Errors from "../docs/Errors";
 import { useState } from "react";
 import { Status } from "../enums/Status";
 import ValidateButton from "../components/ValidateButton";
+import ValidationForm from "../components/ValidationForm";
 
 type EDI = {
   id: number;
@@ -22,11 +23,36 @@ export default function Home() {
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
 
   const edi: EDI[] = [
-    { id: 1, EDIDoc: "EDI 850 Purchase Order", mandatory: true, status: "Validate" },
-    { id: 2, EDIDoc: "EDI 860 Purchase Order Change Request ", mandatory: false, status: "Validate" },
-    { id: 3, EDIDoc: "EDI 855 Purchase Order Acknowledgment", mandatory: true, status: "Complete" },
-    { id: 4, EDIDoc: "EDI 856 Ship Notice/Manifest", mandatory: true, status: "Validate" },
-    { id: 5, EDIDoc: "EDI 820 Payment Order/Remittance Advice", mandatory: false, status: "Failed" },
+    {
+      id: 1,
+      EDIDoc: "EDI 850 Purchase Order",
+      mandatory: true,
+      status: "Validate",
+    },
+    {
+      id: 2,
+      EDIDoc: "EDI 860 Purchase Order Change Request ",
+      mandatory: false,
+      status: "Validate",
+    },
+    {
+      id: 3,
+      EDIDoc: "EDI 855 Purchase Order Acknowledgment",
+      mandatory: true,
+      status: "Complete",
+    },
+    {
+      id: 4,
+      EDIDoc: "EDI 856 Ship Notice/Manifest",
+      mandatory: true,
+      status: "Validate",
+    },
+    {
+      id: 5,
+      EDIDoc: "EDI 820 Payment Order/Remittance Advice",
+      mandatory: false,
+      status: "Failed",
+    },
   ];
 
   const downloadPOTest = () => {
@@ -65,13 +91,7 @@ export default function Home() {
               </p>
               <div className="basis-1/5 flex justify-end">
                 {partnership.status == Status.VALIDATE ? (
-                  <ValidateButton
-                    onClick={() => {
-                      console.log(partnership.id);
-                    }}
-                  >
-                    {partnership.status}
-                  </ValidateButton>
+                  <ValidationForm />
                 ) : (
                   <Badge status={partnership.status} />
                 )}
