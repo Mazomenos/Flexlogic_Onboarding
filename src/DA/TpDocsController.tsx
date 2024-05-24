@@ -10,8 +10,14 @@ export async function getTPDocsFromPartnership(TPId: string) {
             where: {
                 id: TPId
             },
-            include: {
-                DocsRequired: true
+            select: {
+                DocsRequired: {
+                    select: {
+                        idDoc: true,
+                        Doc: true,
+                        Version: true
+                    }
+                }
             }
         });
 
@@ -19,17 +25,23 @@ export async function getTPDocsFromPartnership(TPId: string) {
             throw new Error('Trading Partner not found');
         }
 
-        const idDocs = tradingPartner.DocsRequired.map(doc => doc.idDoc);
-
-        const docsFromEDITPDocs = await prisma.eDITPDocs.findMany({
-            where: {
-                id: {
-                    in: idDocs
+        let newData: any[] = []
+        for (let i = 0; i < tradingPartner.DocsRequired.length; i++) {
+            let docData = tradingPartner.DocsRequired[i]
+            const docsFromEDITPDocs = await prisma.eDITPDocs.findFirst({
+                where: {
+                    id: docData.idDoc
                 }
-            }
-        });
-
-        return docsFromEDITPDocs;
+            })
+            newData.push({
+                idDoc: docData.idDoc,
+                Doc: docData.Doc,
+                Version: docData.Version,
+                Segments: docsFromEDITPDocs?.Segments
+            })
+        }
+        return newData;
+        
     } catch (error) {
         if (error instanceof Error) {
             console.log(
@@ -43,6 +55,8 @@ export async function getTPDocsFromPartnership(TPId: string) {
         }
     }
 }
+
+
 /*
 export async function postTPDoc(TPId: string, DocTemplateNum: number) {
     try {
