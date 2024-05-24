@@ -9,7 +9,13 @@ import { PiUploadSimple } from "react-icons/pi";
 import { ParseEDIfile } from "@/libs/X12parser/lib/parseEDIfile";
 import { Readable } from "stream";
 import ValStructure from "@/libs/validation/segments";
-
+import ValidateButton from "./ValidateButton";
+import ListItem from "@/components/ListItem";
+import { TfiLayoutLineSolid } from "react-icons/tfi";
+import BrakeRule from "@/components/BrakeRule";
+import AddButton from "@/components/AddButton";
+import { IoMdDownload } from "react-icons/io";
+import RedButton from "@/components/RedButton";
 
 const SystemFile = [
   {
@@ -734,6 +740,12 @@ const SystemFile = [
   },
 ];
 
+type Errors = {
+  id: number;
+  typeError: string;
+  desc: string;
+};
+
 // Read stream code by Russell Briggs: https://medium.com/@dupski/nodejs-creating-a-readable-stream-from-a-string-e0568597387f
 class ReadableString extends Readable {
   private sent = false;
@@ -751,10 +763,13 @@ class ReadableString extends Readable {
     }
   }
 }
-export default function Home() {
+export default function ValidationForm() {
   const [isOpen, setIsOpen] = React.useState(false);
   const [fileContent, setFileContent] = React.useState<string | null>(null);
   let cont = 0;
+  const [validationStatus, setValidationStatus] = React.useState(false);
+
+  const [errorStatus, setErrorStatus] = React.useState(false);
   // const [message, setMessage] = React.useState<string | null>(null);
   // const [error, setError] = React.useState<string | null>(null);
 
@@ -775,22 +790,105 @@ export default function Home() {
   const uploadAndParseFile = async () => {
     const contentStream = new ReadableString(String(fileContent));
     const Segments = await ParseEDIfile(contentStream);
-    console.log(ValStructure(SystemFile, Segments, 0, "M", true));
+    const result = ValStructure(SystemFile, Segments, 0, "M", true);
+    console.log(result);
+    if (result.status === "Success") {
+      setIsOpen(false);
+      setValidationStatus(true);
+    } else {
+      setIsOpen(false);
+      setErrorStatus(true);
+    }
   };
+
+  function download() {
+    console.log("All errors downloaded!");
+  }
+
+  const errors: Errors[] = [
+    {
+      id: 1,
+      typeError: "Structure",
+      desc: "The provided file has an invalid structure",
+    },
+  ];
 
   return (
     <>
-      <button onClick={() => setIsOpen(true)}>Validate</button>
+      <Modal isOpen={errorStatus} setIsOpen={setErrorStatus}>
+        <DialogTitle className="text-2xl">ERRORS</DialogTitle>
+        <BrakeRule classname="my-3" />
+        <div className="max-h-fit flex flex-col items-center w-full overflow-y-auto overscroll-none">
+          {errors.map((error) => (
+            <ListItem key={error.id}>
+              <div className="flex flex-row w-full">
+                <p className="basis-3/12 uppercase font-bold text-error-content/80">
+                  {error.typeError}
+                </p>
+                <div className="basis-1/12">
+                  <TfiLayoutLineSolid
+                    style={{ transform: "rotate(90deg)" }}
+                    className="grid content-center h-full"
+                    size={32}
+                  />
+                </div>
+                <p className="basis-8/12 text-error-content/60">{error.desc}</p>
+              </div>
+            </ListItem>
+          ))}
+        </div>
+        <BrakeRule classname="my-3" />
+        <AddButton onClick={() => download()}>
+          {" "}
+          Download All <IoMdDownload />{" "}
+        </AddButton>
+        <BrakeRule classname="my-3" />
+        <div className="absolute bottom-2 w-full flex justify-center">
+          <RedButton onClick={() => setErrorStatus(false)}> Close </RedButton>
+        </div>
+      </Modal>
+
+      <Modal isOpen={validationStatus} setIsOpen={setValidationStatus}>
+        <DialogTitle className="text-2xl">
+          Document validated successfully!
+        </DialogTitle>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1}
+          stroke="currentColor"
+          className="size-full text-success-content/75"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M10.125 2.25h-4.5c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125v-9M10.125 2.25h.375a9 9 0 0 1 9 9v.375M10.125 2.25A3.375 3.375 0 0 1 13.5 5.625v1.5c0 .621.504 1.125 1.125 1.125h1.5a3.375 3.375 0 0 1 3.375 3.375M9 15l2.25 2.25L15 12"
+          />
+        </svg>
+
+        <div className="flex w-full">
+          <div className="w-full flex justify-center ">
+            <RedButton onClick={() => setValidationStatus(false)}>
+              Close
+            </RedButton>
+          </div>
+        </div>
+      </Modal>
+
+      <ValidateButton onClick={() => setIsOpen(true)}>Validate</ValidateButton>
       <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
         <DialogTitle className="text-2xl">Upload your document</DialogTitle>
-        <div className="flex flex-col-reverse items-center w-full">
-          <input type="file" onChange={handleFileChange} />
+        <BrakeRule classname="h-3" />
+        <div className="flex justify-center  items-center w-full rounded-md shadow-[rgba(50,_50,_105,_0.15)_0px_2px_5px_0px,_rgba(0,_0,_0,_0.05)_0px_1px_1px_0px] bg-base-200/50 min-h-[10rem]">
+          <input type="file" onChange={handleFileChange} className="" />
           {/* {error && <p>Error: {error}</p>}
           {message && <p>{message}</p>} */}
         </div>
+        <BrakeRule classname="h-3" />
         <div className="flex w-full justify-end">
           <div className="w-full flex justify-end mr-2">
-            <CancelButton onClick={() => setIsOpen(false)} />
+            <RedButton onClick={() => setIsOpen(false)}> Cancel </RedButton>
           </div>
           <GenericButton onClick={uploadAndParseFile}> Validate </GenericButton>
         </div>
