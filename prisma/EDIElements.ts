@@ -1,4 +1,6 @@
-export const EDIElements = [
+import { EDIElement } from "./interfaces/EDIInterfaces";
+
+export const EDIElements: EDIElement[] = [
     {
         Element: "I01",
         Name: "Authorization Information Qualifier",
