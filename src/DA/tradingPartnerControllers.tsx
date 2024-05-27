@@ -34,8 +34,7 @@ export async function GetPartnershipsFromUser(userId: string) {
     }
 }
 
-/*
-//WARNING DOESNT WORK!!!!!!!!!
+
 export async function PostPartnership(Name: string, Delimiters: string[], EDIVersion: string, EOL: string) {
     try {
         //Creates new blank 850 document to link to this new partnership
@@ -132,4 +131,3 @@ export async function DeletePartnership(id: string) {
         }
     }
 }
-*/

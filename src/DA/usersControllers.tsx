@@ -1,3 +1,5 @@
+"use server"
+
 import { prisma } from "@/libs/prisma"
 
 export async function GetUser(userId: string) {
