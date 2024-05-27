@@ -10,7 +10,7 @@ function Layout({ children }: { children: React.ReactNode }) {
   const pageName = useGetPageName(currentPath);
 
   return (
-    <main className="bg-base-200 text-primary-content h-screen">
+    <main className="bg-base-200 text-primary-content dark:text-darkMode-foreground h-screen">
       <div className="h-20">
         <Header>{pageName}</Header>
       </div>

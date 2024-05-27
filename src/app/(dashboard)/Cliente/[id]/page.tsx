@@ -53,7 +53,7 @@ export default function Home() {
             path={partnership.status == Status.FAILED ? partnership.EDIDoc : ""}
             onClick={() => openError(true)}
           >
-            <div className="flex flex-row w-full">
+            <div className="flex flex-row w-full items-center">
               <p className="basis-2/5">{partnership.EDIDoc} </p>
               <TfiLayoutLineSolid
                 style={{ transform: "rotate(90deg)" }}

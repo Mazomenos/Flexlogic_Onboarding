@@ -6,6 +6,7 @@ export default function FlexLogicLogo() {
       viewBox="0 0 136 25"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      className="dark:text-white"
     >
       <g>
         <path

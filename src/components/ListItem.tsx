@@ -15,8 +15,8 @@ export default function ListItem({ children, id, path, onClick }: IListItem) {
       key={id}
       className={
         path
-          ? "cursor-pointer dark:bg-red-800 w-[97%] flex bg-base-100 justify-between items-center flex-row place-items-start mx-1 my-2 px-8 shadow-[0px_0px_10px_1px_#00000024] 0 hover:bg-base-200 border-1 border-base-200 rounded-xl text-xl py-6"
-          : "dark:bg-red-800 w-[97%] flex bg-base-100 justify-between items-center flex-row place-items-start mx-1 my-2 px-8 shadow-[0px_0px_10px_1px_#00000024] 0  border-base-200 rounded-xl text-xl py-6"
+          ? "relative cursor-pointer bg-base-100 dark:bg-darkMode-base-100 hover:bg-base-200 dark:hover:bg-darkMode-base-200 border-base-300 w-[97%] flex  justify-between items-center flex-row place-items-start mx-1 my-2 px-8 shadow-[0px_0px_10px_1px_#00000024] 0  border-1 text-xl py-6"
+          : "relative bg-base-100 dark:bg-darkMode-base-100 border-base-300 w-[97%] flex  justify-between items-center flex-row place-items-start mx-1 my-2 px-8 shadow-[0px_0px_10px_1px_#00000024] 0  border-1 text-xl py-6"
       }
     >
       {children}

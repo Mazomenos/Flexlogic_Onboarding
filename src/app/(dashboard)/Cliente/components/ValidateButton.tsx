@@ -7,7 +7,7 @@ export default function ValidateButton({
 }) {
   return (
     <button
-      className="h-10 w-28 bg-info text-lg font-bold text-info-content transition motion-reduce:transition-none motion-reduce:hover:transform-none hover:bg-transparent hover:text-brand-blue hover:border-primary hover:border-2 rounded-md"
+      className="w-28 p-1 text-sm bg-info font-bold text-info-content transition motion-reduce:transition-none motion-reduce:hover:transform-none hover:bg-transparent hover:text-brand-blue ring-2 ring-primary hover:ring-primary hover:border-1"
       onClick={onClick}
     >
       <div className=""> {children} </div>
