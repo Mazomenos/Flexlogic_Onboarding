@@ -15,6 +15,19 @@ const config: Config = {
       colors: {
         "brand-blue": "#99CEFF",
         "brand-red": "#FFA5A5",
+
+        "darkMode-base-100": "#2A303C",
+        "darkMode-base-200": "#242933",
+        "darkMode-error": "#7F6362",
+        "darkMode-error-content": "#FFAF9B",
+        "darkMode-success-content": "#62EFBD",
+        "darkMode-success": "#3C6861",
+        "darkMode-warning": "#797048",
+        "darkMode-warning-content": "#EFD057",
+        "darkMode-info": "#347B8A",
+        "darkMode-info-content": "#28EBFF",
+
+        "darkMode-foreground": "#FFFFFF",
       },
       fontFamily: {
         sans: ["var(--font-lato)"],
