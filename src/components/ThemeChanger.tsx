@@ -21,7 +21,7 @@ export default function ThemeChanger() {
         <Button
           variant="outline"
           className={
-            "dark:bg-darkMode-base-200 hover:dark:bg-darkMode-base-100"
+            "dark:bg-darkMode-base-100 hover:dark:bg-darkMode-base-200 dark:border-darkMode-base-200"
           }
           size="icon"
         >
@@ -30,7 +30,7 @@ export default function ThemeChanger() {
           <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="dark:bg-darkMode-base-200" align="end">
+      <DropdownMenuContent className="dark:bg-darkMode-base-100 dark:border-darkMode-base-200" align="end">
         <DropdownMenuItem
           className="bg-base-100 dark:bg-darkMode-base-100 hover:bg-base-200 dark:hover:bg-darkMode-base-200"
           onClick={() => setTheme("light")}
