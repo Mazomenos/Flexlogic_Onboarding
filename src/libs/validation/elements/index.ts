@@ -7,7 +7,6 @@
 
 import { Min, Max } from "./minMax";
 import { Types } from "./types";
-// import { Min, Max } from "./minMax";
 
 export interface Ierror {
     position: string,
@@ -200,19 +199,27 @@ export default function data(config: any, file: any, delimiters: string[]) {
 
                 //Type
                 //cambiar la lista por una referencia a los delimitadores delimiters
-                Types(data, type, ["*","~"])
-                
+                let errorType:string = Types(data, type, ["*","~"])
 
-    
-                //Conditions
+                if (errorType !== "") {
+                    errorsElement.push(errorType)
+                } else {
+                    //Conditions
+                }
+
+
+                //Empujar errores con segmento y posicion de elemento a la lista de errores
+                // para bd
                 errorLog = pushErrors(errorLog, errorsElement, errorPos)
                 console.log(errorLog.length)
 
+                //Moverse al siguiente elemento
                 elementpos++;
                 configpos++;
                 console.log("");
             }
         }
+        //Moverse al Siguiente Segmento
         segpos++;
     }
     //Imprimir Errores
