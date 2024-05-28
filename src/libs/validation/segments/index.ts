@@ -1,7 +1,5 @@
 
 export default function ValStructure(currSystemFile: Array<any>, ClientFile: Array<any>, varControlClient: number, reqLoop: String, isFirst: Boolean): any {
-  // console.log(currSystemFile);
-  // console.log(ClientFile);
   let isValidated = false;
   let repCounter = 0;
   let varControlSys = 0;
@@ -11,7 +9,7 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
       if (isFirst === true) {
         break;
       }
-      return { status: "ErrorLoop", value: varControlClient };
+      return { value: varControlClient };
     } else {
       if (varControlClient >= ClientFile.length) {
         break;
@@ -32,7 +30,7 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
       isValidated = true;
     } else {
       if (repCounter > currSystemFile[varControlSys].Max) {
-        return { status: "Failed" }
+        return { Status: "Failed", Position: varControlClient - 1, Description: `Max repetition limit reached for Segment: ${ClientFile[varControlClient - 1].name}`};
       }
       repCounter = 0;
       if (currSystemFile[varControlSys].Segment === "LOOP") {
@@ -41,11 +39,12 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
         let result;
         while (varControlLoop <= currSystemFile[varControlSys].Max && diff > 0) {
             result = ValStructure(currSystemFile[varControlSys].Segments, ClientFile, varControlClient, currSystemFile[varControlSys].Requirement, false);
-            if ( result.status === "Failed") {
+            
+            if ( result.Status === "Failed") {
               if (varControlLoop > 0) {
                 break;
               }
-              return { status: "Failed" }
+              return { Status: result.status, Position: result.Position, Description: result.Description }
             }
             diff = result.value;
             diff = diff - varControlClient;
@@ -57,27 +56,32 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
         varControlSys++;
         isValidated = false;
       } else {
-
         if (currSystemFile[varControlSys].Requirement === "M") {
             if (reqLoop === "M") {
-                return { status: "Failed", comment: "Error"}
+                return { Status: "Failed", Position: varControlClient, Description: `Segment ${currSystemFile[varControlSys].Segment} is Mandatory and is not present in your current file!`}
             }
-            return { status: "error", value: varControlClient };
+            return { value: varControlClient };
         } else {
           varControlSys++;
         }
       }
     }
   }
-  
-  // console.log("Cliente: ", varControlClient, " Largo: ", ClientFile.length);
-  // console.log("Sistema: ", varControlSys, " Largo: ", currSystemFile.length - 1);
 
   if (varControlSys < currSystemFile.length - 1 || varControlClient < ClientFile.length) {
-    return { status: "Failed" };
+    switch(currSystemFile[varControlSys + 1].Requirement) {
+      case "M": {
+        return { Status: "Failed", Position: varControlClient, Description: `The last Segment ${currSystemFile[varControlSys + 1].Segment} is Mandatory and is not present in your current file!`};
+      }
+      case "OP": {
+        return { Status: "Success" };
+      }
+    }
+    return { Status: "Failed", Position: varControlClient, Description: `There are more segments present in your file than there should be, starting from segment: ${ClientFile[varControlClient - 1].name}` };
   } else {
-    return { status: "Success" };
+    if (repCounter > currSystemFile[varControlSys].Max) {
+      return { Status: "Failed", Position: varControlClient - 1, Description: `Max repetition limit reached for Segment: ${ClientFile[varControlClient - 1].name}`};
+    }
+    return { Status: "Success" };
   }
 }
-
-//console.log(ValStructure(SystemFile, ClientFile, 0, "M", true).status);
