@@ -15,8 +15,8 @@ export default function Modal({ children, setIsOpen, isOpen }: Props) {
         onClose={() => setIsOpen(false)}
         className="relative z-50"
       >
-        <div className="fixed inset-0 bg-black/30 flex w-screen items-center justify-center p-4">
-          <DialogPanel className="relative w-full max-w-3xl max-h-[50%] flex flex-col items-center overflow-y-auto overscroll-none border border-base-200 text-primary-content bg-base-100 p-12 rounded-xl">
+        <div className="fixed inset-0 backdrop-blur-sm bg-black/30 flex w-screen items-center justify-center p-4">
+          <DialogPanel className="bg-base-100 dark:bg-darkMode-base-100 border-base-200 dark:border-darkMode-base-200   max-h-[90%] md:max-h-[90%] relative w-full max-w-3xl xl:max-h-[60%] flex flex-col items-center overflow-y-auto overscroll-none border text-primary-content dark:text-darkMode-foreground p-12">
             {children}
             <div className="absolute top-4 right-4">
               <CloseButton onClick={() => setIsOpen(false)} />{" "}
