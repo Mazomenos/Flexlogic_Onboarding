@@ -16,7 +16,7 @@ function useGetPageName(currentPath: string) {
     if (currentPath === "/Admin") {
       pageName = "Partners";
     } else if (currentPath === "/Cliente") {
-      pageName = "PartnerShip";
+      pageName = "Your partnerships";
     }
 
     if (icp > partners.length) {
