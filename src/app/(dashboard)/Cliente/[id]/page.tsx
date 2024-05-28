@@ -10,6 +10,8 @@ import Errors from "../docs/Errors";
 import { useState } from "react";
 import { Status } from "../enums/Status";
 import ValidateButton from "../components/ValidateButton";
+import BackButton from "@/components/BackButton";
+import { useRouter } from "next/navigation";
 
 type EDI = {
   id: number;
@@ -19,14 +21,41 @@ type EDI = {
 };
 
 export default function Home() {
+  const router = useRouter();
+
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
 
   const edi: EDI[] = [
-    { id: 1, EDIDoc: "EDI 850 Purchase Order", mandatory: true, status: "Validate" },
-    { id: 2, EDIDoc: "EDI 860 Purchase Order Change Request ", mandatory: false, status: "Validate" },
-    { id: 3, EDIDoc: "EDI 855 Purchase Order Acknowledgment", mandatory: true, status: "Complete" },
-    { id: 4, EDIDoc: "EDI 856 Ship Notice/Manifest", mandatory: true, status: "Validate" },
-    { id: 5, EDIDoc: "EDI 820 Payment Order/Remittance Advice", mandatory: false, status: "Failed" },
+    {
+      id: 1,
+      EDIDoc: "EDI 850 Purchase Order",
+      mandatory: true,
+      status: "Validate",
+    },
+    {
+      id: 2,
+      EDIDoc: "EDI 860 Purchase Order Change Request ",
+      mandatory: false,
+      status: "Validate",
+    },
+    {
+      id: 3,
+      EDIDoc: "EDI 855 Purchase Order Acknowledgment",
+      mandatory: true,
+      status: "Complete",
+    },
+    {
+      id: 4,
+      EDIDoc: "EDI 856 Ship Notice/Manifest",
+      mandatory: true,
+      status: "Validate",
+    },
+    {
+      id: 5,
+      EDIDoc: "EDI 820 Payment Order/Remittance Advice",
+      mandatory: false,
+      status: "Failed",
+    },
   ];
 
   const downloadPOTest = () => {
@@ -39,10 +68,16 @@ export default function Home() {
 
   return (
     <div className="h-full flex flex-col">
-      <div className="flex justify-end">
+      <div className="relative flex justify-center md:justify-end">
+        <div className="absolute top-1 left-0">
+          <BackButton
+            onClick={() => {
+              router.back();
+            }}
+          />
+        </div>
         <AddButton onClick={() => downloadPOTest()}>
-          {" "}
-          Download PO Test <IoMdDownload />{" "}
+          Download PO Test <IoMdDownload />
         </AddButton>
       </div>
       <BrakeRule />
