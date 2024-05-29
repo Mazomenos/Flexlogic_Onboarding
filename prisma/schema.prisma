@@ -115,8 +115,10 @@ type UserDocs {
 }
 
 type LogErrors {
-  Position String
-  Comments String
+  Title       String
+  Description String
+  Position    String
+  Type        String
 }
 
 //--------------------------
