@@ -9,7 +9,7 @@ function ValStructure(currSystemFile, ClientFile, varControlClient, reqLoop, isF
             if (isFirst === true) {
                 break;
             }
-            return { value: varControlClient };
+            return { Status: "EndLoop", value: varControlClient };
         }
         else {
             if (varControlClient >= ClientFile.length) {
@@ -38,17 +38,23 @@ function ValStructure(currSystemFile, ClientFile, varControlClient, reqLoop, isF
                 var result = void 0;
                 while (varControlLoop <= currSystemFile[varControlSys].Max && diff > 0) {
                     result = ValStructure(currSystemFile[varControlSys].Segments, ClientFile, varControlClient, currSystemFile[varControlSys].Requirement, false);
-                    if (result.Status === "Failed") {
-                        if (varControlLoop > 0) {
-                            break;
-                        }
-                        // Add error in loops
-                        return { Status: result.status, Position: result.Position, Description: result.Description };
-                    }
                     diff = result.value;
                     diff = diff - varControlClient;
-                    varControlClient = diff + varControlClient;
-                    varControlLoop++;
+                    switch (result.Status) {
+                        case ("Failed"): {
+                            if (varControlLoop > 0) {
+                                break;
+                            }
+                            return { Status: result.status, Position: result.Position, Description: result.Description };
+                        }
+                        case ("EndLoop"): {
+                            varControlClient = diff + varControlClient;
+                            varControlLoop++;
+                        }
+                        case ("ErrorLoop"): {
+                            break;
+                        }
+                    }
                 }
                 varControlSys++;
             }
@@ -59,9 +65,9 @@ function ValStructure(currSystemFile, ClientFile, varControlClient, reqLoop, isF
             else {
                 if (currSystemFile[varControlSys].Requirement === "M") {
                     if (reqLoop === "M") {
-                        return { Status: "Failed", Position: varControlClient, Description: "Error Segment ".concat(currSystemFile[varControlSys].Segment, " is Mandatory and is not present in your current file!") };
+                        return { Status: "Failed", Position: varControlClient, Description: "Segment ".concat(currSystemFile[varControlSys].Segment, " is Mandatory and is not present in your current file!") };
                     }
-                    return { value: varControlClient };
+                    return { Status: "ErrorLoop", value: varControlClient };
                 }
                 else {
                     varControlSys++;
@@ -72,7 +78,7 @@ function ValStructure(currSystemFile, ClientFile, varControlClient, reqLoop, isF
     if (varControlSys < currSystemFile.length - 1 || varControlClient < ClientFile.length) {
         switch (currSystemFile[varControlSys + 1].Requirement) {
             case "M": {
-                return { Status: "Failed", Position: varControlClient, Description: "Error Segment ".concat(currSystemFile[varControlSys + 1].Segment, " is Mandatory and is not present in your current file!") };
+                return { Status: "Failed", Position: varControlClient, Description: "The last Segment ".concat(currSystemFile[varControlSys + 1].Segment, " is Mandatory and is not present in your current file!") };
             }
             case "OP": {
                 return { Status: "Success" };

@@ -9,7 +9,7 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
       if (isFirst === true) {
         break;
       }
-      return { value: varControlClient };
+      return { Status: "EndLoop", value: varControlClient };
     } else {
       if (varControlClient >= ClientFile.length) {
         break;
@@ -40,16 +40,24 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
         while (varControlLoop <= currSystemFile[varControlSys].Max && diff > 0) {
             result = ValStructure(currSystemFile[varControlSys].Segments, ClientFile, varControlClient, currSystemFile[varControlSys].Requirement, false);
             
-            if ( result.Status === "Failed") {
-              if (varControlLoop > 0) {
-                break;
-              }
-              return { Status: result.status, Position: result.Position, Description: result.Description }
-            }
             diff = result.value;
             diff = diff - varControlClient;
-            varControlClient = diff + varControlClient;
-            varControlLoop++;
+
+            switch (result.Status) {
+              case ("Failed"): {
+                if (varControlLoop > 0) {
+                  break;
+                }
+                return { Status: result.status, Position: result.Position, Description: result.Description }
+              }
+              case ("EndLoop"): {
+                varControlClient = diff + varControlClient;
+                varControlLoop++;
+              }
+              case ("ErrorLoop"): {
+                break;
+              }
+            }
         }
         varControlSys++;
       } else if (isValidated === true) {
@@ -60,7 +68,7 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
             if (reqLoop === "M") {
                 return { Status: "Failed", Position: varControlClient, Description: `Segment ${currSystemFile[varControlSys].Segment} is Mandatory and is not present in your current file!`}
             }
-            return { value: varControlClient };
+            return { Status: "ErrorLoop",value: varControlClient };
         } else {
           varControlSys++;
         }
