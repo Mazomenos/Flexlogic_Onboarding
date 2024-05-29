@@ -96,11 +96,14 @@ type Error = {
 };
 type PartnershipDocs = {
   Doc: string;
+  DocFile: string;
+  isRequired: boolean;
   Status: string;
   LogErrors: Error[];
 };
 type UserPartnerships = {
   idPartner: string;
+  Status: string;
   Docs: PartnershipDocs[];
 };
 export interface User {
