@@ -1,7 +1,10 @@
 export default function CancelButton({ onClick }: { onClick: () => void }) {
   return (
-    <button className="size-1/12 h-10 bg-error text-black hover:bg-transparent hover:text-brand-red hover:border-brand-red hover:border-2 rounded-md flex justify-center items-center" onClick={onClick}>
-      <div className="ml-2"> Cancel </div>
+    <button
+      className="bg-error p-2 w-36 h-10  font-bold text-error-content hover:bg-transparent hover:text-error-content/70 hover:ring-brand-red hover:ring-2 "
+      onClick={onClick}
+    >
+      <div className=" "> Cancel </div>
     </button>
-  );  
+  );
 }
