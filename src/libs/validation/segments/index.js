@@ -4,18 +4,19 @@ function ValStructure(currSystemFile, ClientFile, varControlClient, reqLoop, isF
     var isValidated = false;
     var repCounter = 0;
     var varControlSys = 0;
+    var segmentsValidated = 0;
     while (varControlSys < currSystemFile.length + 1) {
         if (varControlSys >= currSystemFile.length) {
             if (isFirst === true) {
                 break;
             }
-            return { Status: "EndLoop", value: varControlClient };
+            return { value: varControlClient, segValidated: segmentsValidated };
         }
         else {
             if (varControlClient >= ClientFile.length) {
                 break;
             }
-            //console.log("Sys:", currSystemFile[varControlSys].Segment, " Pos:", varControlSys, " | Cliente:", ClientFile[varControlClient].name, " Pos:", varControlClient);
+            console.log("Sys:", currSystemFile[varControlSys].Segment, " Pos:", varControlSys, " | Cliente:", ClientFile[varControlClient].name, " Pos:", varControlClient);
         }
         if ((ClientFile[varControlClient].name ===
             currSystemFile[varControlSys].Segment &&
@@ -26,6 +27,7 @@ function ValStructure(currSystemFile, ClientFile, varControlClient, reqLoop, isF
             repCounter++;
             varControlClient++;
             isValidated = true;
+            segmentsValidated++;
         }
         else {
             if (repCounter > currSystemFile[varControlSys].Max) {
@@ -38,23 +40,20 @@ function ValStructure(currSystemFile, ClientFile, varControlClient, reqLoop, isF
                 var result = void 0;
                 while (varControlLoop <= currSystemFile[varControlSys].Max && diff > 0) {
                     result = ValStructure(currSystemFile[varControlSys].Segments, ClientFile, varControlClient, currSystemFile[varControlSys].Requirement, false);
-                    diff = result.value;
-                    diff = diff - varControlClient;
-                    switch (result.Status) {
-                        case ("Failed"): {
-                            if (varControlLoop > 0) {
-                                break;
-                            }
-                            return { Status: result.status, Position: result.Position, Description: result.Description };
-                        }
-                        case ("EndLoop"): {
-                            varControlClient = diff + varControlClient;
-                            varControlLoop++;
-                        }
-                        case ("ErrorLoop"): {
+                    if (currSystemFile[varControlSys + 1].Segment === "LOOP" && currSystemFile[varControlSys].Segments[0].Segment === currSystemFile[varControlSys + 1].Segments[0].Segment) {
+                        console.log("Loops seguidos");
+                    }
+                    console.log(result.segValidated);
+                    if (result.Status === "Failed") {
+                        if (varControlLoop > 0) {
                             break;
                         }
+                        return { Status: result.Status, Position: result.Position, Description: result.Description };
                     }
+                    diff = result.value;
+                    diff = diff - varControlClient;
+                    varControlClient = diff + varControlClient;
+                    varControlLoop++;
                 }
                 varControlSys++;
             }
@@ -65,9 +64,9 @@ function ValStructure(currSystemFile, ClientFile, varControlClient, reqLoop, isF
             else {
                 if (currSystemFile[varControlSys].Requirement === "M") {
                     if (reqLoop === "M") {
-                        return { Status: "Failed", Position: varControlClient, Description: "Segment ".concat(currSystemFile[varControlSys].Segment, " is Mandatory and is not present in your current file!") };
+                        return { Status: "Failed", Position: varControlClient, Description: "Error Segment ".concat(currSystemFile[varControlSys].Segment, " is Mandatory and is not present in your current file!") };
                     }
-                    return { Status: "ErrorLoop", value: varControlClient };
+                    return { value: varControlClient, segValidated: segmentsValidated };
                 }
                 else {
                     varControlSys++;

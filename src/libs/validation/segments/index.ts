@@ -3,18 +3,19 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
   let isValidated = false;
   let repCounter = 0;
   let varControlSys = 0;
+  let segmentsValidated = 0;
 
   while (varControlSys < currSystemFile.length + 1) {
     if ( varControlSys >= currSystemFile.length ) {
       if (isFirst === true) {
         break;
       }
-      return { value: varControlClient };
+      return { value: varControlClient, segValidated: segmentsValidated };
     } else {
       if (varControlClient >= ClientFile.length) {
         break;
       }
-      //console.log("Sys:", currSystemFile[varControlSys].Segment, " Pos:", varControlSys, " | Cliente:", ClientFile[varControlClient].name, " Pos:", varControlClient);
+      console.log("Sys:", currSystemFile[varControlSys].Segment, " Pos:", varControlSys, " | Cliente:", ClientFile[varControlClient].name, " Pos:", varControlClient);
     }
 
     if (
@@ -28,6 +29,7 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
       repCounter++;
       varControlClient++;
       isValidated = true;
+      segmentsValidated++;
     } else {
       if (repCounter > currSystemFile[varControlSys].Max) {
         return { Status: "Failed", Position: varControlClient - 1, Description: `Max repetition limit reached for Segment: ${ClientFile[varControlClient - 1].name}`};
@@ -36,16 +38,23 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
       if (currSystemFile[varControlSys].Segment === "LOOP") {
         let varControlLoop = 0;
         let diff = 1;
-        let result;
+        let result, result2;
         while (varControlLoop <= currSystemFile[varControlSys].Max && diff > 0) {
             result = ValStructure(currSystemFile[varControlSys].Segments, ClientFile, varControlClient, currSystemFile[varControlSys].Requirement, false);
             
+            if (currSystemFile[varControlSys + 1].Segment === "LOOP" && currSystemFile[varControlSys].Segments[0].Segment === currSystemFile[varControlSys + 1].Segments[0].Segment) {
+              result2 = ValStructure(currSystemFile[varControlSys].Segments, ClientFile, varControlClient, currSystemFile[varControlSys].Requirement, false);
+              console.log("Loops seguidos");
+            }
+            console.log(result.segValidated)
             if ( result.Status === "Failed") {
               if (varControlLoop > 0) {
                 break;
               }
-              return { Status: result.status, Position: result.Position, Description: result.Description }
+              return { Status: result.Status, Position: result.Position, Description: result.Description }
             }
+
+
             
             diff = result.value;
             diff = diff - varControlClient;
@@ -61,7 +70,7 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
             if (reqLoop === "M") {
                 return { Status: "Failed", Position: varControlClient, Description: `Error Segment ${currSystemFile[varControlSys].Segment} is Mandatory and is not present in your current file!`}
             }
-            return { value: varControlClient };
+            return { value: varControlClient, segValidated: segmentsValidated };
         } else {
           varControlSys++;
         }
