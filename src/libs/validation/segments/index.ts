@@ -9,7 +9,7 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
       if (isFirst === true) {
         break;
       }
-      return { Status: "EndLoop", value: varControlClient };
+      return { value: varControlClient };
     } else {
       if (varControlClient >= ClientFile.length) {
         break;
@@ -40,24 +40,17 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
         while (varControlLoop <= currSystemFile[varControlSys].Max && diff > 0) {
             result = ValStructure(currSystemFile[varControlSys].Segments, ClientFile, varControlClient, currSystemFile[varControlSys].Requirement, false);
             
-            diff = result.value;
-            diff = diff - varControlClient;
-
-            switch (result.Status) {
-              case ("Failed"): {
-                if (varControlLoop > 0) {
-                  break;
-                }
-                return { Status: result.status, Position: result.Position, Description: result.Description }
-              }
-              case ("EndLoop"): {
-                varControlClient = diff + varControlClient;
-                varControlLoop++;
-              }
-              case ("ErrorLoop"): {
+            if ( result.Status === "Failed") {
+              if (varControlLoop > 0) {
                 break;
               }
+              return { Status: result.status, Position: result.Position, Description: result.Description }
             }
+            
+            diff = result.value;
+            diff = diff - varControlClient;
+            varControlClient = diff + varControlClient;
+            varControlLoop++;
         }
         varControlSys++;
       } else if (isValidated === true) {
@@ -66,9 +59,9 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
       } else {
         if (currSystemFile[varControlSys].Requirement === "M") {
             if (reqLoop === "M") {
-                return { Status: "Failed", Position: varControlClient, Description: `Segment ${currSystemFile[varControlSys].Segment} is Mandatory and is not present in your current file!`}
+                return { Status: "Failed", Position: varControlClient, Description: `Error Segment ${currSystemFile[varControlSys].Segment} is Mandatory and is not present in your current file!`}
             }
-            return { Status: "ErrorLoop",value: varControlClient };
+            return { value: varControlClient };
         } else {
           varControlSys++;
         }
