@@ -6,6 +6,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import ActionsButton from "./components/ActionsButton";
 import Modal from "@/components/Modal";
 import { DialogTitle } from "@headlessui/react";
+import AddPartner from "./components/AddPartner";
 
 export default function Home() {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -121,6 +122,7 @@ export default function Home() {
 
   return (
     <div className="h-full flex flex-col ">
+      <AddPartner />
       <BrakeRule />
       <div className="max-h-full flex flex-col items-center w-full overflow-y-auto overscroll-none">
         {partners.map((partner) => (
