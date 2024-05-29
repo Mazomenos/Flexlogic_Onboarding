@@ -777,7 +777,7 @@ export default function Home() {
     const contentStream = new ReadableString(String(fileContent));
     const Segments = await ParseEDIfile(contentStream);
     console.log(ValStructure(SystemFile, Segments, 0, "M", true));
-    data(SystemFile, Segments)
+    data(SystemFile, Segments, [])
   };
 
   return (
