@@ -73,16 +73,17 @@ export interface EDITPDocument {
 type DocumentsRequired = {
   idDoc: string;
   Doc: string;
-  Version: string;
   isVisible: boolean;
+  isRequired: boolean;
 };
 export interface TradingPartner {
   id: string;
   Name: string;
   Initial850EDI: string;
   Delimiters: string[];
-  EDIVersion: string;
+  Version: string;
   EOL: string;
+  isVisible: boolean;
   DocsRequired: DocumentsRequired[];
 }
 
