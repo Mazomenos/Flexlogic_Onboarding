@@ -7,6 +7,7 @@ import Modal from "@/components/Modal";
 import { DialogTitle } from "@headlessui/react";
 import AddPartner from "./components/AddPartner";
 import { TrashIcon, EyeIcon, EyeSlashIcon } from "@heroicons/react/16/solid";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -14,6 +15,9 @@ export default function Home() {
     number | null
   >(null);
   const [value, setValue] = React.useState("");
+
+  const router = useRouter();
+
   const [partners, setPartners] = React.useState([
     {
       id: 1,
@@ -59,6 +63,14 @@ export default function Home() {
     setIsOpen(true);
   };
 
+  const handleEditButton = (id: number) => {
+    partners.map((partner) => {
+      if (partner.id === id) {
+        router.push(`/Admin/${partner.id}`);
+      }
+    });
+  };
+
   const handleVisible = (id: number) => {
     setPartners((prevPartners) =>
       prevPartners.map((partner) =>
@@ -89,9 +101,7 @@ export default function Home() {
                 EDI Documents: {partner.ediDoc.join(", ")}
               </p>
               <div className="basis-1/6 grid justify-items-center content-center">
-                <button
-                  onClick={() => handleVisible(partner.id)}
-                >
+                <button onClick={() => handleVisible(partner.id)}>
                   {partner.visible ? (
                     <EyeIcon className="size-8" />
                   ) : (
@@ -102,7 +112,8 @@ export default function Home() {
               <div className="basis-1/12 grid justify-items-center content-center">
                 <ActionsButton
                   itemId={partner.id}
-                  handleClick={handleDeleteButton}
+                  handleEditButton={handleEditButton}
+                  handleDeleteButton={handleDeleteButton}
                 />
               </div>
             </div>
