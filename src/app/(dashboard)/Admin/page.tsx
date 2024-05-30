@@ -127,7 +127,7 @@ export default function Home() {
             value={value}
             onChange={handleChange}
             placeholder={`Please type ${selectedPartnership?.companyName} to confirm`}
-            className="w-full text-lg placeholder:text-primary-content/40 dark:placeholder:text-darkMode-foreground/40 p-3 bg-inherit border-2 rounded-md appearance-none border-error dark:border-darkMode-error focus:bg-base-200 dark:focus:bg-darkMode-base-200"
+            className="w-full outline-none text-lg placeholder:text-primary-content/40 dark:placeholder:text-darkMode-foreground/40 p-3 bg-inherit border-2 rounded-md appearance-none border-error dark:border-darkMode-error focus:bg-base-200 dark:focus:bg-darkMode-base-200"
             type="text"
             name="name"
           />
