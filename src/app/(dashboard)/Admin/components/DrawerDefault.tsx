@@ -25,6 +25,7 @@ export default function DrawerDefault({ open, setOpen, idDocument }: Props) {
   return (
     <Drawer
       open={open}
+      size={600}
       onClose={closeDrawer}
       className="p-4 size-80 w-full bg-base-200 dark:bg-darkMode-base-200 "
       placement="right"
