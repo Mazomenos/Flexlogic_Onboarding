@@ -88,16 +88,17 @@ export default function Home() {
               <p className="basis-2/6 grid justify-items-center content-center">
                 EDI Documents: {partner.ediDoc.join(", ")}
               </p>
-              <button
-                className="basis-1/6 grid justify-items-center content-center"
-                onClick={() => handleVisible(partner.id)}
-              >
-                {partner.visible ? (
-                  <EyeIcon className="size-8" />
-                ) : (
-                  <EyeSlashIcon className="size-8" />
-                )}
-              </button>
+              <div className="basis-1/6 grid justify-items-center content-center">
+                <button
+                  onClick={() => handleVisible(partner.id)}
+                >
+                  {partner.visible ? (
+                    <EyeIcon className="size-8" />
+                  ) : (
+                    <EyeSlashIcon className="size-8" />
+                  )}
+                </button>
+              </div>
               <div className="basis-1/12 grid justify-items-center content-center">
                 <ActionsButton
                   itemId={partner.id}
