@@ -37,23 +37,33 @@ function ValStructure(currSystemFile, ClientFile, varControlClient, reqLoop, isF
             if (currSystemFile[varControlSys].Segment === "LOOP") {
                 var varControlLoop = 0;
                 var diff = 1;
-                var result = void 0;
+                var result = void 0, result2 = void 0;
                 while (varControlLoop <= currSystemFile[varControlSys].Max && diff > 0) {
+                    repCounter = 0;
                     result = ValStructure(currSystemFile[varControlSys].Segments, ClientFile, varControlClient, currSystemFile[varControlSys].Requirement, false);
-                    if (currSystemFile[varControlSys + 1].Segment === "LOOP" && currSystemFile[varControlSys].Segments[0].Segment === currSystemFile[varControlSys + 1].Segments[0].Segment) {
-                        console.log("Loops seguidos");
-                    }
-                    console.log(result.segValidated);
+                    diff = result.value;
+                    diff = diff - varControlClient;
+                    varControlClient = diff + varControlClient;
                     if (result.Status === "Failed") {
                         if (varControlLoop > 0) {
                             break;
                         }
                         return { Status: result.Status, Position: result.Position, Description: result.Description };
                     }
-                    diff = result.value;
-                    diff = diff - varControlClient;
-                    varControlClient = diff + varControlClient;
+                    else if (currSystemFile[varControlSys + 1].Segment === "LOOP" && currSystemFile[varControlSys].Segments[0].Segment === currSystemFile[varControlSys + 1].Segments[0].Segment) {
+                        result2 = ValStructure(currSystemFile[varControlSys].Segments, ClientFile, varControlClient, currSystemFile[varControlSys].Requirement, false);
+                        if (result.segValidated < result2.segValidated) {
+                            diff = result2.value;
+                            diff = diff - varControlClient;
+                            varControlClient = diff + varControlClient;
+                            varControlSys++;
+                        }
+                        else {
+                            varControlSys++;
+                        }
+                    }
                     varControlLoop++;
+                    console.log(varControlLoop);
                 }
                 varControlSys++;
             }

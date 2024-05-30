@@ -40,26 +40,31 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
         let diff = 1;
         let result, result2;
         while (varControlLoop <= currSystemFile[varControlSys].Max && diff > 0) {
+            repCounter = 0;
             result = ValStructure(currSystemFile[varControlSys].Segments, ClientFile, varControlClient, currSystemFile[varControlSys].Requirement, false);
-            
-            if (currSystemFile[varControlSys + 1].Segment === "LOOP" && currSystemFile[varControlSys].Segments[0].Segment === currSystemFile[varControlSys + 1].Segments[0].Segment) {
-              result2 = ValStructure(currSystemFile[varControlSys].Segments, ClientFile, varControlClient, currSystemFile[varControlSys].Requirement, false);
-              console.log("Loops seguidos");
-            }
-            console.log(result.segValidated)
+
+            diff = result.value;
+            diff = diff - varControlClient;
+            varControlClient = diff + varControlClient;
+
             if ( result.Status === "Failed") {
               if (varControlLoop > 0) {
                 break;
               }
               return { Status: result.Status, Position: result.Position, Description: result.Description }
+            } else if (currSystemFile[varControlSys + 1].Segment === "LOOP" && currSystemFile[varControlSys].Segments[0].Segment === currSystemFile[varControlSys + 1].Segments[0].Segment) {
+              result2 = ValStructure(currSystemFile[varControlSys].Segments, ClientFile, varControlClient, currSystemFile[varControlSys].Requirement, false);
+              if (result.segValidated < result2.segValidated) {
+                diff = result2.value;
+                diff = diff - varControlClient;
+                varControlClient = diff + varControlClient;
+                varControlSys++;
+              } else {
+                varControlSys++;
+              }
             }
-
-
-            
-            diff = result.value;
-            diff = diff - varControlClient;
-            varControlClient = diff + varControlClient;
             varControlLoop++;
+            console.log(varControlLoop);
         }
         varControlSys++;
       } else if (isValidated === true) {
