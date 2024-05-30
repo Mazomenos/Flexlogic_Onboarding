@@ -1,8 +1,6 @@
 "use client";
-import AddButton from "@/components/AddButton";
 import BrakeRule from "@/components/BrakeRule";
 import ListItem from "@/components/ListItem";
-import { TfiLayoutLineSolid } from "react-icons/tfi";
 import React, { useState } from "react";
 import BackButton from "@/components/BackButton";
 import { useRouter } from "next/navigation";
@@ -17,7 +15,8 @@ import { DialogTitle } from "@headlessui/react";
 import DeleteButton from "@/components/DeleteButton";
 import CancelButton from "@/components/CancelButton";
 import DrawerDefault from "../components/DrawerDefault";
-import { Divide } from "lucide-react";
+import AddDocument from "../components/AddDocument";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/16/solid";
 
 type EDI = {
   IdDoc: number;
@@ -116,7 +115,7 @@ export default function Home() {
               }}
             />
           </div>
-          <AddButton onClick={() => downloadPOTest()}>Add Document +</AddButton>
+          <AddDocument />
         </div>
         <BrakeRule />
         <div className="max-h-full flex flex-col items-center w-full overflow-y-auto overscroll-none">
@@ -124,10 +123,10 @@ export default function Home() {
             <div className="flex flex-row w-full items-center">
               <p className="basis-2/5">Documents</p>
               <p className="basis-1/5 grid justify-items-center content-center">
-                Mandatory
+                Visible
               </p>
               <p className="basis-1/5 grid justify-items-center content-center">
-                Visible
+                Mandatory
               </p>
               <p className="basis-1/5 grid justify-items-center content-center">
                 Actions
@@ -141,18 +140,38 @@ export default function Home() {
                 <div className="basis-1/5 grid justify-items-center content-center">
                   <button onClick={() => handleRequired(Docs.IdDoc)}>
                     {Docs.isRequired ? (
-                      <FaEye size={24} />
+                      <div
+                        className="tooltip tooltip-primary"
+                        data-tip="This document is visible"
+                      >
+                        <EyeIcon className="size-8" />
+                      </div>
                     ) : (
-                      <FaEyeSlash size={24} />
+                      <div
+                        className="tooltip tooltip-primary"
+                        data-tip="This document is not visible"
+                      >
+                        <EyeSlashIcon className="size-8" />
+                      </div>
                     )}
                   </button>
                 </div>
                 <div className="basis-1/5 grid justify-items-center">
                   <button onClick={() => handleVisible(Docs.IdDoc)}>
                     {Docs.isVisible ? (
-                      <MdOutlineCheckBox size={24} />
+                      <div
+                        className="tooltip tooltip-primary"
+                        data-tip="This document is mandatory"
+                      >
+                        <span className="font-bold"> M </span>
+                      </div>
                     ) : (
-                      <MdOutlineCheckBoxOutlineBlank size={24} />
+                      <div
+                        className="tooltip tooltip-primary"
+                        data-tip="This document is optional"
+                      >
+                        <span className="font-bold"> O </span>
+                      </div>
                     )}
                   </button>
                 </div>
