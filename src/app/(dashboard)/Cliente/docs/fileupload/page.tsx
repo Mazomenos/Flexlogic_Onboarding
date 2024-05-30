@@ -472,7 +472,7 @@ const SystemFile = [
     Position: 12,
     Segment: "LOOP",
     Requirement: "",
-    Max: "1000",
+    Max: "3",
     Segments: [
       {
         Position: 1,
@@ -501,7 +501,7 @@ const SystemFile = [
       {
         Position: 2,
         Segment: "MSG",
-        Requirement: "M",
+        Requirement: "OP",
         Max: "1000",
         Elements: [
           {
@@ -520,11 +520,43 @@ const SystemFile = [
     Position: 13,
     Segment: "LOOP",
     Requirement: "",
-    Max: "200",
+    Max: "3",
     Segments: [
       {
         Position: 1,
         Segment: "N1",
+        Requirement: "M",
+        Max: "1",
+        Elements: [
+          {
+            Position: "N101",
+            Element: "98",
+            Requirement: "M",
+            Type: "ID",
+            Min: 2,
+            Max: 3,
+          },
+          {
+            Position: "N103",
+            Element: "66",
+            Requirement: "M",
+            Type: "ID",
+            Min: 1,
+            Max: 2,
+          },
+          {
+            Position: "N104",
+            Element: "67",
+            Requirement: "M",
+            Type: "AN",
+            Min: 2,
+            Max: 80,
+          },
+        ],
+      },
+      {
+        Position: 1,
+        Segment: "PM",
         Requirement: "M",
         Max: "1",
         Elements: [
@@ -560,8 +592,40 @@ const SystemFile = [
     Position: 14,
     Segment: "LOOP",
     Requirement: "",
-    Max: "1000",
+    Max: "5",
     Segments: [
+      {
+        Position: 1,
+        Segment: "N1",
+        Requirement: "M",
+        Max: "1",
+        Elements: [
+          {
+            Position: "N101",
+            Element: "98",
+            Requirement: "M",
+            Type: "ID",
+            Min: 2,
+            Max: 3,
+          },
+          {
+            Position: "N103",
+            Element: "66",
+            Requirement: "M",
+            Type: "ID",
+            Min: 1,
+            Max: 2,
+          },
+          {
+            Position: "N104",
+            Element: "67",
+            Requirement: "M",
+            Type: "AN",
+            Min: 2,
+            Max: 80,
+          },
+        ],
+      },
       {
         Position: 1,
         Segment: "PO1",
@@ -632,7 +696,7 @@ const SystemFile = [
     Position: 15,
     Segment: "LOOP",
     Requirement: "",
-    Max: "1",
+    Max: "4",
     Segments: [
       {
         Position: 1,
@@ -711,7 +775,7 @@ const SystemFile = [
   {
     Position: 18,
     Segment: "IEA",
-    Requirement: "OP",
+    Requirement: "M",
     Max: "1",
     Elements: [
       {
