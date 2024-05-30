@@ -75,11 +75,11 @@ export default function Home() {
         {partners.map((partner) => (
           <ListItem key={partner.id}>
             <div className="flex flex-row w-full justify-center h-full">
-              <div className="basis-1/12 grid justify-items-center content-center h-full ">
+              <div className="basis-1/12 grid justify-items-center content-center max-h-full relative">
                 <img
                   src={partner.image}
                   alt={partner.companyName}
-                  className="max-h-16"
+                  className="max-h-12 content-center "
                 />
               </div>
               <p className="basis-2/6 grid justify-items-center content-center">
