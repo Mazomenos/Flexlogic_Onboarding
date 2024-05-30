@@ -16,7 +16,7 @@ interface Props {
 
 export default function ActionsButton({ handleClick, itemId }: Props) {
   return (
-    <div className=" w-52 text-right">
+    <div className="text-right">
       <Menu>
         <MenuButton className="inline-flex items-center border-2 border-base-200 dark:border-darkMode-base-200 rounded-md bg-base-100 dark:bg-darkMode-base-100 p-1 text-sm/6 font-semibold text-primary-content dark:text-darkMode-foreground  focus:outline-none data-[hover]:bg-base-200 dark:data-[hover]:bg-darkMode-base-200 data-[open]:bg-base-200 dark:data-[open]:bg-darkMode-base-200">
           <AiOutlineMore className="size-8 fill-primary-content dark:fill-darkMode-foreground" />
