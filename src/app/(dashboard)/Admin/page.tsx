@@ -103,9 +103,19 @@ export default function Home() {
               <div className="basis-1/6 grid justify-items-center content-center">
                 <button onClick={() => handleVisible(partner.id)}>
                   {partner.visible ? (
-                    <EyeIcon className="size-8" />
+                    <div
+                      className="tooltip tooltip-primary"
+                      data-tip="This partner is visible"
+                    >
+                      <EyeIcon className="size-8" />{" "}
+                    </div>
                   ) : (
-                    <EyeSlashIcon className="size-8" />
+                    <div
+                      className="tooltip tooltip-primary"
+                      data-tip="This partner is visible"
+                    >
+                      <EyeSlashIcon className="size-8" />
+                    </div>
                   )}
                 </button>
               </div>
