@@ -14,14 +14,24 @@ export async function GetUsersPartnerInfo(userId: string) {
         })
         if (!userPartnerships) throw new Error('User not found')
 
-        const partnerships = userPartnerships.Partnerships;
-        const data = partnerships.map((partnership) => ({
-            idPartner: partnership.idPartner,
-            Name: partnership.Name,
-            Status: partnership.Status
-        }));
-
-        return data
+            const partnerships = userPartnerships.Partnerships;
+            const data = await Promise.all(partnerships.map(async (partnership) => {
+                const tradingPartner = await prisma.tradingPartner.findUnique({
+                    where: {
+                        id: partnership.idPartner
+                    }
+                });
+                
+                if (!tradingPartner) throw new Error('Trading partner not found');
+    
+                return {
+                    idPartner: partnership.idPartner,
+                    Name: tradingPartner.Name,
+                    Status: partnership.Status
+                };
+            }));
+    
+            return data;
 
     } catch (error) {
         if (error instanceof Error) {
@@ -108,7 +118,7 @@ export async function GetUsersLogErrors(PartnerId: string, UserId: string) {
                         for (let k = 0; k < docData.LogErrors.length; k++) {
                             let logError = docData.LogErrors[k];
                             newData.push({
-                                LogErrors: [logError.IdError, logError.Type, logError.Description]
+                                LogErrors: [logError.Title, logError.Description, logError.Position, logError.Type]
                             });
                         }
                     }
@@ -214,6 +224,7 @@ export async function GetTPVisible(PartnerId: string) {
         if (!tradingPartner) throw new Error('User not found')
         
         let newData: any[] = []
+
         newData.push(tradingPartner.Name)
         newData.push(tradingPartner.isVisible)
         return newData;
@@ -270,3 +281,4 @@ export async function GetTPDocsRequired(PartnerId: string) {
         }
     }
 }
+
