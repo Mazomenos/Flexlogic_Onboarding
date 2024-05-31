@@ -113,10 +113,10 @@ export default function Home() {
             <div className="flex flex-row w-full items-center">
               <p className="basis-2/6">Documents</p>
               <p className="basis-1/6 grid justify-items-center content-center">
-                Visible
+                Mandatory
               </p>
               <p className="basis-1/6 grid justify-items-center content-center">
-                Mandatory
+                Visible
               </p>
               <p className="basis-1/6 grid justify-items-center content-center">
                 Actions
