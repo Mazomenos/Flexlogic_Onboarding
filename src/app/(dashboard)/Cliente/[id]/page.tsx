@@ -16,6 +16,7 @@ import { useParams } from 'next/navigation';
 import { GetUsersDocs } from "@/DA/usersTpControllers";
 
 type EDI = {
+  idDoc: string;
   Doc: string;
   isRequired: boolean;
   Status: string;
@@ -32,7 +33,7 @@ export default function Home() {
 
   const getTPDocs = async () => {
     try {
-      const response = await GetUsersDocs("664d76a8d7412ac29ddf6a1b","665982bd6b957759ec9a570c")
+      const response = await GetUsersDocs("664d76a8d7412ac29ddf6a1b","665a0753b9c7af2580bc0ad5")
 
       if (response) {
         const data = await response;
@@ -133,7 +134,7 @@ export default function Home() {
                 {partnership.Status == Status.VALIDATE ? (
                   <ValidateButton
                     onClick={() => {
-                      console.log("validate");
+                      console.log(partnership.idDoc);
                     }}
                   >
                     {partnership.Status}

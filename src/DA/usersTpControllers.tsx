@@ -67,6 +67,7 @@ export async function GetUsersDocs(PartnerId: string, UserId: string) {
                 for (let j = 0; j < partnership.Docs.length; j++) {
                     let docData = partnership.Docs[j]
                     newData.push({
+                        idDoc: docData.idDoc,
                         Doc: docData.Doc,
                         Status: docData.Status,
                         DocFile: docData.DocFile,
