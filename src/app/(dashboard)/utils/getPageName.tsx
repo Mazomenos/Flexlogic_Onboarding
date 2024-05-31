@@ -35,41 +35,28 @@ function useGetPageName(currentPath: string) {
   ];
 
   let pageName = "";
-  const icp = parseInt(currentPath.split("/")[2]);
+  const icp = currentPath.split("/")[2];
 
-  partnerships.map((partnerships) => {
-    if (currentPath === "/Cliente") {
-      pageName = "Your partnerships";
-    }
+  const partnershipNames = partnerships.map(p => p.name);
+  const partnerNames = partners.map(p => p.companyName);
 
-    if (icp > partners.length) {
-      return router.push("/404");
-    } else {
-      if (
-        currentPath === `/Cliente/${partnerships.id}`
-      ) {
-        pageName = partnerships.name + " Partnership EDI Verification";
-      }
-    }
-  }),
+  const isPartnership = partnershipNames.includes(icp);
+  const isPartner = partnerNames.includes(icp);
 
-    partners.map((partner) => {
-      if (currentPath === "/Admin") {
-        pageName = "Partner List";
-      }
+  if (!isPartnership && !isPartner) {
+    router.push("/404");
+    return ""; 
+  }
 
-      if (icp > partners.length) {
-        return router.push("/404");
-      } else {
-        if (
-          currentPath === `/Admin/${partner.id}`
-        ) {
-          pageName = partner.companyName + " EDI Documents";
-        }
-      }
-    }
-
-    );
+  if (currentPath === "/Cliente") {
+    pageName = "Your partnerships";
+  } else if (isPartnership && currentPath === `/Cliente/${icp}`) {
+    pageName = `${icp} Partnership EDI Verification`;
+  } else if (currentPath === "/Admin") {
+    pageName = "Partner List";
+  } else if (isPartner && currentPath === `/Admin/${icp}`) {
+    pageName = `${icp} EDI Documents`;
+  }
 
   return pageName;
 }
