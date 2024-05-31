@@ -7,24 +7,51 @@ import { IoMdDownload } from "react-icons/io";
 import { TfiLayoutLineSolid } from "react-icons/tfi";
 import Badge from "../components/Badge";
 import Errors from "../docs/Errors";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Status } from "../enums/Status";
 import ValidateButton from "../components/ValidateButton";
 import BackButton from "@/components/BackButton";
 import { useRouter } from "next/navigation";
+import { useParams } from 'next/navigation';
+import { GetUsersDocs } from "@/DA/usersTpControllers";
 
 type EDI = {
-  id: number;
-  EDIDoc: string;
-  mandatory: boolean;
-  status: string;
+  Doc: string;
+  isRequired: boolean;
+  Status: string;
 };
+
+
 
 export default function Home() {
   const router = useRouter();
+  const { id } = useParams<{ id: string }>(); // Specify the param type
+
+  //Integracion
+  const [TPDoc, setTPDoc] = useState<EDI[] | null>(null);
+
+  const getTPDocs = async () => {
+    try {
+      const response = await GetUsersDocs("664d76a8d7412ac29ddf6a1b","665982bd6b957759ec9a570c")
+
+      if (response) {
+        const data = await response;
+        console.log(data)
+        if (data) setTPDoc(data)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    getTPDocs()
+  }, [])
+
 
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
 
+  /*
   const edi: EDI[] = [
     {
       id: 1,
@@ -57,6 +84,7 @@ export default function Home() {
       status: "Failed",
     },
   ];
+  */
 
   const downloadPOTest = () => {
     console.log("Descargado");
@@ -77,38 +105,41 @@ export default function Home() {
           />
         </div>
         <AddButton onClick={() => downloadPOTest()}>
-          Download PO Test <IoMdDownload />
+          Download PO Test {id}<IoMdDownload />
         </AddButton>
+        <div>
+          {}
+        </div>
       </div>
       <BrakeRule />
       <div className="max-h-full flex flex-col items-center w-full overflow-y-auto overscroll-none">
-        {edi.map((partnership, index) => (
+        {TPDoc && TPDoc.map((partnership, index) => (
           <ListItem
             key={index}
-            path={partnership.status == Status.FAILED ? partnership.EDIDoc : ""}
+            path={partnership.Status == Status.FAILED ? partnership.Doc : ""}
             onClick={() => openError(true)}
           >
             <div className="flex flex-row w-full items-center">
-              <p className="basis-2/5">{partnership.EDIDoc} </p>
+              <p className="basis-2/5">{partnership.Doc} </p>
               <TfiLayoutLineSolid
                 style={{ transform: "rotate(90deg)" }}
                 className="grid content-center h-full"
                 size={32}
               />
               <p className="basis-2/5">
-                {partnership.mandatory ? "Mandatory" : "Optional"}{" "}
+                {partnership.isRequired ? "Mandatory" : "Optional"}{" "}
               </p>
               <div className="basis-1/5 flex justify-end">
-                {partnership.status == Status.VALIDATE ? (
+                {partnership.Status == Status.VALIDATE ? (
                   <ValidateButton
                     onClick={() => {
-                      console.log(partnership.id);
+                      console.log("validate");
                     }}
                   >
-                    {partnership.status}
+                    {partnership.Status}
                   </ValidateButton>
                 ) : (
-                  <Badge status={partnership.status} />
+                  <Badge status={partnership.Status} />
                 )}
               </div>
             </div>
