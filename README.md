@@ -43,7 +43,7 @@ We recommend doing it directly on MongoDB Atlas since is easier and faster to se
 If you have your database in MongoDB ready you just have to run the following lines:
 
 > [!WARNING]
-> Make sure you have an empty DB since data can be duplicated
+> The seed command will ERASE all documents and collections in the database that have the same name as those defined in the schema. Make sure to back up any necessary data before running the seed command.
 
 ```bash
 npx prisma generate

@@ -79,16 +79,17 @@ model TradingPartner {
   Name          String
   Initial850EDI String? // id of file if saved somewhere else
   Delimiters    String[]
-  EDIVersion    String
+  Version       String
   EOL           String
+  isVisible     Boolean
   DocsRequired  TPDocRequired[]
 }
 
 type TPDocRequired {
-  idDoc     String // id from TPDocs
-  Doc       String
-  Version   String
-  isVisible Boolean
+  idDoc      String // id from TPDocs
+  Doc        String
+  isVisible  Boolean
+  isRequired Boolean
 }
 
 //--------------------------
@@ -101,19 +102,23 @@ model User {
 
 type Partnership {
   idPartner String
+  Status    String
   Docs      UserDocs[]
 }
 
 type UserDocs {
-  Doc       String
-  Status    String // Completed, in progress & failed
-  DocFile   String? // id of file if saved somewhere else
-  LogErrors LogErrors[]
+  Doc        String
+  DocFile    String? // id of file if saved somewhere else
+  isRequired Boolean
+  Status     String // Completed, validated & failed
+  LogErrors  LogErrors[]
 }
 
 type LogErrors {
-  Position String
-  Comments String
+  Title       String
+  Description String
+  Position    String
+  Type        String
 }
 
 //--------------------------
