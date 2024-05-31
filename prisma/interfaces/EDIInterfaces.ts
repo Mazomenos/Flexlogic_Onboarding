@@ -91,8 +91,10 @@ export interface TradingPartner {
 // USERS
 //
 type Error = {
+  Title: string;
+  Description: string;
   Position: string;
-  Comments: string;
+  Type: string;
 };
 type PartnershipDocs = {
   Doc: string;
