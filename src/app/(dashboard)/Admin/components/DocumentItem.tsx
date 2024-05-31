@@ -54,25 +54,6 @@ export default function DocumentItem({
     >
       <div className="flex flex-row w-full items-center">
         <p className="basis-2/6">{document.Doc} </p>
-        <div className="basis-1/6 grid justify-items-center content-center">
-          <button onClick={() => handleVisibleClick()}>
-            {document.isVisible ? (
-              <div
-                className="tooltip tooltip-primary"
-                data-tip="This document is visible"
-              >
-                <EyeIcon className="size-8" />
-              </div>
-            ) : (
-              <div
-                className="tooltip tooltip-primary"
-                data-tip="This document is not visible"
-              >
-                <EyeSlashIcon className="size-8" />
-              </div>
-            )}
-          </button>
-        </div>
         <div className="basis-1/6 grid justify-items-center">
           <button onClick={() => handleMandatoryClick()}>
             {document.isRequired ? (
@@ -88,6 +69,25 @@ export default function DocumentItem({
                 data-tip="This document is optional"
               >
                 <span className="font-bold"> O </span>
+              </div>
+            )}
+          </button>
+        </div>
+        <div className="basis-1/6 grid justify-items-center content-center">
+          <button onClick={() => handleVisibleClick()}>
+            {document.isVisible ? (
+              <div
+                className="tooltip tooltip-primary"
+                data-tip="This document is visible"
+              >
+                <EyeIcon className="size-8" />
+              </div>
+            ) : (
+              <div
+                className="tooltip tooltip-primary"
+                data-tip="This document is not visible"
+              >
+                <EyeSlashIcon className="size-8" />
               </div>
             )}
           </button>
