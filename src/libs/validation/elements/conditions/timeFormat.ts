@@ -17,5 +17,9 @@ export default function TimeFormat(data: string, params: IdateAndTimeFormat) {
     }
     const schema = z.string().regex(new RegExp(regularExp))
     const result = schema.safeParse(data)
-    console.log(result)
+    if (result.success === false){
+        return "Time format should be: " + params.format
+    } else {
+        return ""
+    }
 }

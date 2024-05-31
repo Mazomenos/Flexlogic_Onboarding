@@ -1,11 +1,11 @@
 import { IcharLength } from "./InterfaceConditions"
 
 
-export default function charLength(data:string, params: IcharLength) {
+export default function charLength(data:string, params: IcharLength): string {
     const chars = data.trim()
     if (chars.length !== Number(params.length)) {
-        console.log("Error: El valor no cumple con el numero de caracteres")
+        return "Length of content in Element must be " + params.length + " characters" 
     } else {
-        console.log("Numero de chars deseado")
+        return ""
     }
 } 

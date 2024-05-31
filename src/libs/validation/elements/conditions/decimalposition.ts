@@ -7,4 +7,9 @@ export default function DecimalPosition(data: string, params: IdecimalCondition)
     const schema = z.string().length(decimalPosition)
     const result = schema.safeParse(parts[1])
     console.log(result)
+    if (result.success === false){
+        return "This element should have " + params.decimals + " decimals"
+    } else {
+        return ""
+    }
 }

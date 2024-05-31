@@ -205,6 +205,7 @@ export default function data(config: any, file: any, delimiters: string[]) {
                     errorsElement.push(errorType)
                 } else {
                     //Conditions
+                    
                 }
 
 

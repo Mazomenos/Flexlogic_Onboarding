@@ -7,75 +7,10 @@ import TimeFormat from "./conditions/timeFormat"
 
 import { Iconditions, IcharLength, IdecimalCondition, IcompareCodes, IcompareData, IdateAndTimeFormat } from "./conditions/InterfaceConditions"
 
-/*
-const equal: Iconditions[] = [
-    {
-        type: "hello",
-        params:
-        {
-            operator: Operator.EQUAL
-        }
 
-    }
-]
-
-const equal: Iconditions[] = [
-    {
-        type: "hello",
-        params: [
-            {
-                operator: "="
-            }
-        ]
-    }
-]
-
-const equal: Iconditions[] = [
-    {
-        type: "hello",
-        params: [
-            {
-                operator: "="
-            }
-        ]
-    }
-]
-
-const equal: Iconditions[] = [
-    {
-        type: "hello",
-        params: [
-            {
-                operator: "="
-            }
-        ]
-    }
-]
-
-const equal: Iconditions[] = [
-    {
-        type: "hello",
-        params: [
-            {
-                operator: "="
-            }
-        ]
-    }
-]
-
-const equal: Iconditions[] = [
-    {
-        type: "hello",
-        params: [
-            {
-                operator: "="
-            }
-        ]
-    }
-]
-*/
-
-export default function Conditions(data: string, conditions: Iconditions[], file: Object) {
+export default function Conditions(data: string, conditions: Iconditions[], file: Object): string {
+    let result = "";
+    
     //Conditions Loop
     conditions.forEach(condition => {
         switch (condition.type) {
@@ -109,4 +44,11 @@ export default function Conditions(data: string, conditions: Iconditions[], file
                 break;
         }
     });
+
+    if (result !== ""){
+        console.log(result)
+        return result
+    } else {
+        return ""
+    }
 }
