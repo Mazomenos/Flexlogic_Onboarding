@@ -22,10 +22,12 @@ type Errors = {
 export default function Errors({
   isOpen,
   setIsOpen,
+  setIsUploadOpen,
   errors
 }: {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsUploadOpen: React.Dispatch<React.SetStateAction<boolean>>;
   errors: Errors[]
 }) {
 
@@ -104,7 +106,7 @@ export default function Errors({
       </AddButon>
       <BrakeRule classname="my-3" />
       <div className="absolute bottom-4 w-full flex justify-center ">
-        <GenericButton onClick={() => setIsOpen(false)}>Validate</GenericButton>
+        <GenericButton onClick={() => {setIsOpen(false); setIsUploadOpen(true)}}>Validate</GenericButton>
       </div>
     </Modal>
   );

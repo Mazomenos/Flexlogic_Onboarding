@@ -55,40 +55,10 @@ export default function Home() {
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [DocErrors, setDocErrors] = useState<any[]>([])
 
-  /*
-  const edi: EDI[] = [
-    {
-      id: 1,
-      EDIDoc: "EDI 850 Purchase Order",
-      mandatory: true,
-      status: "Validate",
-    },
-    {
-      id: 2,
-      EDIDoc: "EDI 860 Purchase Order Change Request ",
-      mandatory: false,
-      status: "Validate",
-    },
-    {
-      id: 3,
-      EDIDoc: "EDI 855 Purchase Order Acknowledgment",
-      mandatory: true,
-      status: "Complete",
-    },
-    {
-      id: 4,
-      EDIDoc: "EDI 856 Ship Notice/Manifest",
-      mandatory: true,
-      status: "Validate",
-    },
-    {
-      id: 5,
-      EDIDoc: "EDI 820 Payment Order/Remittance Advice",
-      mandatory: false,
-      status: "Failed",
-    },
-  ];
-  */
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+  const [UploadData, setUploadData] = useState("")
+
+  
 
   const downloadPOTest = () => {
     console.log("Descargado");
@@ -96,6 +66,10 @@ export default function Home() {
 
   const openError = (con: boolean) => {
     setIsErrorModalOpen(con);
+  };
+
+  const openUpload = (con: boolean) => {
+    setIsUploadModalOpen(con);
   };
 
   return (
@@ -121,7 +95,7 @@ export default function Home() {
           <ListItem
             key={index}
             path={partnership.Status == Status.FAILED ? partnership.Doc : ""}
-            onClick={() => {openError(true); setDocErrors(partnership.LogErrors)}}
+            onClick={() => {openError(true); setDocErrors(partnership.LogErrors); setUploadData(partnership.idDoc)}}
           >
             <div className="flex flex-row w-full items-center">
               <p className="basis-2/5">{partnership.Doc} </p>
@@ -135,7 +109,7 @@ export default function Home() {
               </p>
               <div className="basis-1/5 flex justify-end">
                 {partnership.Status == Status.VALIDATE ? (
-                  <UploadModal idDoc={partnership.idDoc} status={partnership.Status}></UploadModal>
+                  <ValidateButton onClick={() => {openUpload(true); setUploadData(partnership.idDoc)}}>{partnership.Status}</ValidateButton>
                 ) : (
                   <Badge status={partnership.Status} />
                 )}
@@ -145,7 +119,8 @@ export default function Home() {
           </ListItem>
         ))}
       </div>
-      <Errors isOpen={isErrorModalOpen} setIsOpen={setIsErrorModalOpen} errors={DocErrors} />
+      <Errors isOpen={isErrorModalOpen} setIsOpen={setIsErrorModalOpen} setIsUploadOpen={setIsUploadModalOpen} errors={DocErrors} />
+      <UploadModal isOpen={isUploadModalOpen} setIsOpen={setIsUploadModalOpen} idDoc={UploadData}></UploadModal>
     </div>
   );
 }

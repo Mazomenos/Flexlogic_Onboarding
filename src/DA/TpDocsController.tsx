@@ -54,6 +54,38 @@ export async function GetTPDocsFromPartnership(TPId: string) {
     }
 }
 
+export async function GetTPDocById(TPDocId: string){
+    try {
+
+        const TPDoc = await prisma.eDITPDocs.findUnique({
+            where: {
+                id: TPDocId
+            },
+            select: {
+                Segments: true
+            }
+        });
+
+        if (!TPDoc) {
+            throw new Error('Document not found');
+        }
+
+        return TPDoc;
+
+    } catch (error) {
+        if (error instanceof Error) {
+            console.log(
+                {
+                    message: error.message,
+                },
+                {
+                    status: 500,
+                }
+            );
+        }
+    }
+}
+
 export async function postTPDoc(TPId: string, DocTemplateNum: number) {
     try {
         const tradingPartner = await prisma.tradingPartner.findFirst({

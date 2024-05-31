@@ -9,10 +9,11 @@ import { PiUploadSimple } from "react-icons/pi";
 import { ParseEDIfile } from "@/libs/X12parser/lib/parseEDIfile";
 import { Readable } from "stream";
 import ValStructure from "@/libs/validation/segments";
-import ValidateButton from "../../components/ValidateButton";
 import data from "@/libs/validation/elements";
+import { GetTPDocById } from "@/DA/TpDocsController";
+import { useState, useEffect } from "react";
 
-
+/*
 const SystemFile = [
   {
     Position: 1,
@@ -735,6 +736,7 @@ const SystemFile = [
     ],
   },
 ];
+*/
 
 // Read stream code by Russell Briggs: https://medium.com/@dupski/nodejs-creating-a-readable-stream-from-a-string-e0568597387f
 class ReadableString extends Readable {
@@ -753,8 +755,15 @@ class ReadableString extends Readable {
     }
   }
 }
-export default function UploadModal({idDoc, status}:{idDoc: string, status: string}) {
-  const [isOpen, setIsOpen] = React.useState(false);
+export default function UploadModal({
+  idDoc,
+  isOpen,
+  setIsOpen
+  }:{
+    idDoc: string,
+    isOpen: boolean;
+    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  }) {
   const [fileContent, setFileContent] = React.useState<string | null>(null);
   let cont = 0;
   // const [message, setMessage] = React.useState<string | null>(null);
@@ -774,16 +783,34 @@ export default function UploadModal({idDoc, status}:{idDoc: string, status: stri
     }
   };
 
+  //---------------Integracion-----------------//
+
   const uploadAndParseFile = async () => {
-    const contentStream = new ReadableString(String(fileContent));
-    const Segments = await ParseEDIfile(contentStream);
-    console.log(ValStructure(SystemFile, Segments, 0, "M", true));
-    data(SystemFile, Segments, [])
+
+    try {
+      const response = await GetTPDocById(idDoc)
+
+      if (response) {
+        const info = await response;
+        console.log("calo")
+        console.log(info.Segments)
+        if (info){
+
+          const contentStream = new ReadableString(String(fileContent));
+          const Segments = await ParseEDIfile(contentStream);
+          console.log(ValStructure(info.Segments, Segments, 0, "M", true));
+          data(info.Segments, Segments, [])
+        }
+      }
+    } catch (error) {
+      console.log(error)
+    }
   };
+
+
 
   return (
     <>
-      <ValidateButton onClick={() => setIsOpen(true)}>{"Validate"}</ValidateButton>
       <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
         <DialogTitle className="text-2xl">Upload your document {idDoc}</DialogTitle>
         <div className="flex flex-col-reverse items-center w-full">
