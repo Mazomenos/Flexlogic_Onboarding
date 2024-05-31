@@ -2,12 +2,12 @@
 import React from "react";
 import BrakeRule from "@/components/BrakeRule";
 import ListItem from "@/components/ListItem";
-import ActionsButton from "./components/ActionsButton";
 import Modal from "@/components/Modal";
 import { DialogTitle } from "@headlessui/react";
 import AddPartner from "./components/AddPartner";
-import { TrashIcon, EyeIcon, EyeSlashIcon } from "@heroicons/react/16/solid";
+import { TrashIcon } from "@heroicons/react/16/solid";
 import { useRouter } from "next/navigation";
+import PartnersList from "./components/PartnersList";
 
 export default function Home() {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -71,64 +71,41 @@ export default function Home() {
     });
   };
 
-  const handleVisible = (id: number) => {
-    setPartners((prevPartners) =>
-      prevPartners.map((partner) =>
-        partner.id === id ? { ...partner, visible: !partner.visible } : partner,
-      ),
-    );
-  };
+  // const handleVisible = (id: number) => {
+  //   setPartners((prevPartners) =>
+  //     prevPartners.map((partner) =>
+  //       partner.id === id ? { ...partner, visible: !partner.visible } : partner,
+  //     ),
+  //   );
+  // };
 
   return (
     <div className="h-full flex flex-col ">
       <AddPartner />
       <BrakeRule />
       <div className="max-h-full flex flex-col items-center w-full overflow-y-auto overscroll-none">
-        {partners.map((partner) => (
-          <ListItem key={partner.id}>
-            <div className="flex flex-row w-full justify-center h-full">
-              <div className="basis-1/12 grid justify-items-center content-center max-h-full relative">
-                <img
-                  src={partner.image}
-                  alt={partner.companyName}
-                  className="max-h-12 content-center "
-                />
-              </div>
-              <p className="basis-2/6 grid justify-items-center content-center">
-                {partner.companyName}
-              </p>
-              <p className="basis-2/6 grid justify-items-center content-center">
-                EDI Documents: {partner.ediDoc.join(", ")}
-              </p>
-              <div className="basis-1/6 grid justify-items-center content-center">
-                <button onClick={() => handleVisible(partner.id)}>
-                  {partner.visible ? (
-                    <div
-                      className="tooltip tooltip-primary"
-                      data-tip="This partner is visible"
-                    >
-                      <EyeIcon className="size-8" />{" "}
-                    </div>
-                  ) : (
-                    <div
-                      className="tooltip tooltip-primary"
-                      data-tip="This partner is visible"
-                    >
-                      <EyeSlashIcon className="size-8" />
-                    </div>
-                  )}
-                </button>
-              </div>
-              <div className="basis-1/12 grid justify-items-center content-center">
-                <ActionsButton
-                  itemId={partner.id}
-                  handleEditButton={handleEditButton}
-                  handleDeleteButton={handleDeleteButton}
-                />
-              </div>
-            </div>
-          </ListItem>
-        ))}
+        <ListItem>
+          <div className="flex flex-row w-full items-center">
+            <p className="basis-3/6">Documents</p>
+            <p className="basis-1/6 grid justify-items-center content-center">
+              Visible
+            </p>
+            <p className="basis-1/6 grid justify-items-center content-center">
+              Actions
+            </p>
+            <p className="basis-1/6 grid justify-items-center content-center">
+              Save Changes
+            </p>
+          </div>
+        </ListItem>
+
+        <div className="max-h-full flex flex-col items-center w-full overflow-y-auto overscroll-none">
+          <PartnersList
+            handleEditButton={handleEditButton}
+            handleDeleteButton={handleDeleteButton}
+            Partners={partners}
+          />
+        </div>
       </div>
       <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
         <DialogTitle className="text-2xl">Delete Partner</DialogTitle>
