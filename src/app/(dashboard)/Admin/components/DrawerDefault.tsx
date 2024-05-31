@@ -1,13 +1,7 @@
 import React from "react";
-import {
-  Drawer,
-  Button,
-  Typography,
-  IconButton,
-} from "@material-tailwind/react";
+import { Drawer } from "@material-tailwind/react";
 import CloseButton from "@/components/CloseButton";
 import GenericButton from "@/components/GenericButton";
-import type { DrawerProps } from "@material-tailwind/react";
 
 interface Props {
   children?: React.ReactNode;
@@ -27,7 +21,7 @@ export default function DrawerDefault({ open, setOpen, idDocument }: Props) {
       open={open}
       size={600}
       onClose={closeDrawer}
-      className="absolute right-0 top-0 p-4 size-80 w-full bg-base-200 dark:bg-darkMode-base-200 "
+      className=" p-4 size-80 w-full bg-base-200 dark:bg-darkMode-base-200 "
       placement="right"
     >
       <div className="mb-6 flex items-center justify-between">
