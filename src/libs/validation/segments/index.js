@@ -40,8 +40,6 @@ function ValStructure(currSystemFile, ClientFile, varControlClient, reqLoop, isF
                 var diff = 1;
                 var result = void 0, result2 = void 0;
                 while (varControlLoop <= currSystemFile[varControlSys].Max && diff > 0) {
-                    console.log("varClienteee: ", varControlClient);
-                    console.log("varSysteeem:", varControlSys);
                     console.log("Max: ", currSystemFile[varControlSys].Max);
                     console.log("control loop:", varControlLoop);
                     repCounter = 0;
@@ -68,7 +66,6 @@ function ValStructure(currSystemFile, ClientFile, varControlClient, reqLoop, isF
                             diff = diff - varControlClient;
                             console.log("empate");
                             varControlClient++;
-                            //varControlSys++;
                         }
                     }
                     else if (result.Status === "Failed") {
@@ -76,7 +73,7 @@ function ValStructure(currSystemFile, ClientFile, varControlClient, reqLoop, isF
                         if (result.Type === 1) {
                             console.log("hola");
                             //varControlClient--;
-                            varControlClient++;
+                            //varControlClient++;
                             break;
                         }
                         else {
@@ -95,18 +92,21 @@ function ValStructure(currSystemFile, ClientFile, varControlClient, reqLoop, isF
                     }
                     else {
                         varControlClient++;
+                        //console.log("validated: ", result.segValidated)
                     }
+                    //console.log("validated: ", result.segValidated)
                     console.log("final");
                     console.log(diff);
                     varControlLoop++;
-                    console.log("Max2: ", currSystemFile[varControlSys].Max);
+                    console.log("Max final: ", currSystemFile[varControlSys].Max);
                     console.log("control loop2:", varControlLoop);
                 }
                 console.log("Se termino el loop");
                 console.log("varcontrolloop: ", varControlLoop, " | max: ", currSystemFile[varControlSys].Max);
-                if (varControlLoop > +currSystemFile[varControlSys].Max) {
-                    return { Status: "Failed", Type: 1, Position: varControlClient - 1, Description: "Max repetition limit reached for Segment: ".concat(ClientFile[varControlClient - 1].name) };
+                if (varControlLoop > +currSystemFile[varControlSys].Max && currSystemFile[varControlSys].Requirement === "M") {
+                    return { Status: "Failed", Type: 1, Position: varControlClient, Description: "Max repetition limit reached for Segment: ".concat(ClientFile[varControlClient].name) };
                 }
+                //varControlClient++;
                 varControlSys++;
                 console.log("varcontrolcl: ", varControlClient);
             }

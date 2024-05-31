@@ -472,7 +472,7 @@ const SystemFile = [
     Position: 12,
     Segment: "LOOP",
     Requirement: "",
-    Max: "1",
+    Max: "2",
     Segments: [
       {
         Position: 1,
