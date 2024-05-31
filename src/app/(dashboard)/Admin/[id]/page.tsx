@@ -17,6 +17,8 @@ import CancelButton from "@/components/CancelButton";
 import DrawerDefault from "../components/DrawerDefault";
 import AddDocument from "../components/AddDocument";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/16/solid";
+import DocumentsList from "../components/DocumentsList";
+import { Handshake } from "lucide-react";
 
 type EDI = {
   IdDoc: number;
@@ -66,10 +68,6 @@ export default function Home() {
       isRequired: false,
     },
   ]);
-
-  const downloadPOTest = () => {
-    console.log("Descargado");
-  };
 
   const handleEditButton = (id: number) => {
     setSelectedDocumentId(id);
@@ -121,70 +119,26 @@ export default function Home() {
         <div className="max-h-full flex flex-col items-center w-full overflow-y-auto overscroll-none">
           <ListItem>
             <div className="flex flex-row w-full items-center">
-              <p className="basis-2/5">Documents</p>
-              <p className="basis-1/5 grid justify-items-center content-center">
+              <p className="basis-2/6">Documents</p>
+              <p className="basis-1/6 grid justify-items-center content-center">
                 Visible
               </p>
-              <p className="basis-1/5 grid justify-items-center content-center">
+              <p className="basis-1/6 grid justify-items-center content-center">
                 Mandatory
               </p>
-              <p className="basis-1/5 grid justify-items-center content-center">
+              <p className="basis-1/6 grid justify-items-center content-center">
                 Actions
+              </p>
+              <p className="basis-1/6 grid justify-items-center content-center">
+                Save Changes
               </p>
             </div>
           </ListItem>
-          {edi.map((Docs, index) => (
-            <ListItem key={index}>
-              <div className="flex flex-row w-full items-center">
-                <p className="basis-2/5">{Docs.Doc} </p>
-                <div className="basis-1/5 grid justify-items-center content-center">
-                  <button onClick={() => handleRequired(Docs.IdDoc)}>
-                    {Docs.isRequired ? (
-                      <div
-                        className="tooltip tooltip-primary"
-                        data-tip="This document is visible"
-                      >
-                        <EyeIcon className="size-8" />
-                      </div>
-                    ) : (
-                      <div
-                        className="tooltip tooltip-primary"
-                        data-tip="This document is not visible"
-                      >
-                        <EyeSlashIcon className="size-8" />
-                      </div>
-                    )}
-                  </button>
-                </div>
-                <div className="basis-1/5 grid justify-items-center">
-                  <button onClick={() => handleVisible(Docs.IdDoc)}>
-                    {Docs.isVisible ? (
-                      <div
-                        className="tooltip tooltip-primary"
-                        data-tip="This document is mandatory"
-                      >
-                        <span className="font-bold"> M </span>
-                      </div>
-                    ) : (
-                      <div
-                        className="tooltip tooltip-primary"
-                        data-tip="This document is optional"
-                      >
-                        <span className="font-bold"> O </span>
-                      </div>
-                    )}
-                  </button>
-                </div>
-                <div className="basis-1/5 flex justify-center">
-                  <ActionsButton
-                    itemId={Docs.IdDoc}
-                    handleDeleteButton={handleDeleteButton}
-                    handleEditButton={handleEditButton}
-                  />
-                </div>
-              </div>
-            </ListItem>
-          ))}
+          <DocumentsList
+            Documents={edi}
+            handleDeleteButton={handleDeleteButton}
+            handleEditButton={handleEditButton}
+          />
         </div>
         <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
           <DialogTitle className="text-2xl">Delete Document</DialogTitle>
