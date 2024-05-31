@@ -15,7 +15,6 @@ export async function GetTPDocsFromPartnership(TPId: string) {
                     select: {
                         idDoc: true,
                         Doc: true,
-                        Version: true
                     }
                 }
             }
@@ -36,7 +35,6 @@ export async function GetTPDocsFromPartnership(TPId: string) {
             newData.push({
                 idDoc: docData.idDoc,
                 Doc: docData.Doc,
-                Version: docData.Version,
                 Segments: docsFromEDITPDocs?.Segments
             })
         }
