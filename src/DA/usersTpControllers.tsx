@@ -71,7 +71,8 @@ export async function GetUsersDocs(PartnerId: string, UserId: string) {
                         Doc: docData.Doc,
                         Status: docData.Status,
                         DocFile: docData.DocFile,
-                        isRequired: docData.isRequired
+                        isRequired: docData.isRequired,
+                        LogErrors: docData.LogErrors
                     })
                 }
             }

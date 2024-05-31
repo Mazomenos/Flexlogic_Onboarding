@@ -9,6 +9,7 @@ import { PiUploadSimple } from "react-icons/pi";
 import { ParseEDIfile } from "@/libs/X12parser/lib/parseEDIfile";
 import { Readable } from "stream";
 import ValStructure from "@/libs/validation/segments";
+import ValidateButton from "../../components/ValidateButton";
 
 
 const SystemFile = [
@@ -751,7 +752,7 @@ class ReadableString extends Readable {
     }
   }
 }
-export default function Home() {
+export default function UploadModal({idDoc, status}:{idDoc: string, status: string}) {
   const [isOpen, setIsOpen] = React.useState(false);
   const [fileContent, setFileContent] = React.useState<string | null>(null);
   let cont = 0;
@@ -780,9 +781,9 @@ export default function Home() {
 
   return (
     <>
-      <button onClick={() => setIsOpen(true)}>Validate</button>
+      <ValidateButton onClick={() => setIsOpen(true)}>{"Validate"}</ValidateButton>
       <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
-        <DialogTitle className="text-2xl">Upload your document</DialogTitle>
+        <DialogTitle className="text-2xl">Upload your document {idDoc}</DialogTitle>
         <div className="flex flex-col-reverse items-center w-full">
           <input type="file" onChange={handleFileChange} />
           {/* {error && <p>Error: {error}</p>}

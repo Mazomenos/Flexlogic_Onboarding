@@ -14,12 +14,14 @@ import BackButton from "@/components/BackButton";
 import { useRouter } from "next/navigation";
 import { useParams } from 'next/navigation';
 import { GetUsersDocs } from "@/DA/usersTpControllers";
+import UploadModal from "../docs/fileupload/page";
 
 type EDI = {
   idDoc: string;
   Doc: string;
   isRequired: boolean;
   Status: string;
+  LogErrors: any[]
 };
 
 
@@ -51,6 +53,7 @@ export default function Home() {
 
 
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+  const [DocErrors, setDocErrors] = useState<any[]>([])
 
   /*
   const edi: EDI[] = [
@@ -118,7 +121,7 @@ export default function Home() {
           <ListItem
             key={index}
             path={partnership.Status == Status.FAILED ? partnership.Doc : ""}
-            onClick={() => openError(true)}
+            onClick={() => {openError(true); setDocErrors(partnership.LogErrors)}}
           >
             <div className="flex flex-row w-full items-center">
               <p className="basis-2/5">{partnership.Doc} </p>
@@ -132,22 +135,17 @@ export default function Home() {
               </p>
               <div className="basis-1/5 flex justify-end">
                 {partnership.Status == Status.VALIDATE ? (
-                  <ValidateButton
-                    onClick={() => {
-                      console.log(partnership.idDoc);
-                    }}
-                  >
-                    {partnership.Status}
-                  </ValidateButton>
+                  <UploadModal idDoc={partnership.idDoc} status={partnership.Status}></UploadModal>
                 ) : (
                   <Badge status={partnership.Status} />
                 )}
               </div>
+              
             </div>
           </ListItem>
         ))}
       </div>
-      <Errors isOpen={isErrorModalOpen} setIsOpen={setIsErrorModalOpen} />
+      <Errors isOpen={isErrorModalOpen} setIsOpen={setIsErrorModalOpen} errors={DocErrors} />
     </div>
   );
 }

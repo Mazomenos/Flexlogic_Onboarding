@@ -11,20 +11,25 @@ import { IoMdDownload } from "react-icons/io";
 import GenericButton from "@/components/GenericButton";
 import ErrorItem from "../components/ErrorItem";
 
+
 type Errors = {
-  id: number;
-  typeError: string;
-  title: string;
-  description: string;
+  Type: string;
+  Title: string;
+  Description: string;
+  Position: String
 };
 
 export default function Errors({
   isOpen,
   setIsOpen,
+  errors
 }: {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  errors: Errors[]
 }) {
+
+  /*
   const errors: Errors[] = [
     {
       id: 1,
@@ -76,6 +81,7 @@ export default function Errors({
         "Et ea esse aute elit ullamco. Ipsum irure voluptate est adipisicing consectetur aliqua ullamco non et pariatur do exercitation fugiat. Labore id fugiat adipisicing consequat esse nulla laborum dolor officia labore anim et incididunt adipisicing.",
     },
   ];
+  */
 
   const download = () => {
     console.log("Downloaded");
@@ -87,8 +93,8 @@ export default function Errors({
       <BrakeRule classname="my-3" />
       <div className="h-full justify-center flex-col overflow-y-auto w-full">
         {errors.map((error, index) => (
-          <ErrorItem key={index} type={error.typeError} title={error.title}>
-            {error.description}
+          <ErrorItem key={index} type={error.Type} title={error.Title}>
+            {error.Description}
           </ErrorItem>
         ))}
       </div>
