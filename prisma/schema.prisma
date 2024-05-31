@@ -107,6 +107,7 @@ type Partnership {
 }
 
 type UserDocs {
+  idDoc      String
   Doc        String
   DocFile    String? // id of file if saved somewhere else
   isRequired Boolean

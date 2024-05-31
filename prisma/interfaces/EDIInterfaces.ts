@@ -97,6 +97,7 @@ type Error = {
   Type: string;
 };
 type PartnershipDocs = {
+  idDoc: string;
   Doc: string;
   DocFile: string;
   isRequired: boolean;
