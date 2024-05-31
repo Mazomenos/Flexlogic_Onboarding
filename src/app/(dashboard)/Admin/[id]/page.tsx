@@ -4,21 +4,13 @@ import ListItem from "@/components/ListItem";
 import React, { useState } from "react";
 import BackButton from "@/components/BackButton";
 import { useRouter } from "next/navigation";
-import {
-  MdOutlineCheckBox,
-  MdOutlineCheckBoxOutlineBlank,
-} from "react-icons/md";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
-import ActionsButton from "../components/ActionsButton";
 import Modal from "@/components/Modal";
 import { DialogTitle } from "@headlessui/react";
 import DeleteButton from "@/components/DeleteButton";
 import CancelButton from "@/components/CancelButton";
 import DrawerDefault from "../components/DrawerDefault";
 import AddDocument from "../components/AddDocument";
-import { EyeIcon, EyeSlashIcon } from "@heroicons/react/16/solid";
 import DocumentsList from "../components/DocumentsList";
-import { Handshake } from "lucide-react";
 
 type EDI = {
   IdDoc: number;
