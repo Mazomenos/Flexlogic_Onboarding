@@ -66,7 +66,7 @@ export default function Home() {
   const handleEditButton = (id: number) => {
     partners.map((partner) => {
       if (partner.id === id) {
-        router.push(`/Admin/${partner.id}`);
+        router.push(`/Admin/${partner.companyName}`);
       }
     });
   };
