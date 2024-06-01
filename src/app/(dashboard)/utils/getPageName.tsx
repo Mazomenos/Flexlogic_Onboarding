@@ -31,16 +31,14 @@ function useGetPageName(currentPath: string) {
     { id: 5, companyName: "Walmart" },
     { id: 6, companyName: "Tufesa" },
     { id: 7, companyName: "Amazon" },
-    { id: 8, companyName: "Empresa X" },
+    { id: 8, companyName: "Empresa_X" },
   ];
 
   let pageName = "";
   const pathParts = currentPath.split("/");
-  const icp = pathParts[2];
-
-  const partnershipNames = partnerships.map(p => p.name);
-  const partnerNames = partners.map(p => p.companyName);
-
+  const icp = pathParts[2]?.replace(/_/g, " ");
+  const partnershipNames = partnerships.map(p => p.name.replace(/_/g, " "));
+  const partnerNames = partners.map(p => p.companyName.replace(/_/g, " ")); 
 
   if (pathParts.length > 2 && !partnershipNames.includes(icp) && !partnerNames.includes(icp)) {
     router.push("/404");
@@ -49,13 +47,13 @@ function useGetPageName(currentPath: string) {
 
   if (currentPath === "/Cliente") {
     pageName = "Your partnerships";
-  } else if (partnershipNames.includes(icp) && currentPath === `/Cliente/${icp}`) {
+  } else if (partnershipNames.includes(icp) && currentPath === `/Cliente/${pathParts[2]}`) {
     pageName = `${icp} Partnership EDI Verification`;
   } 
   
   if (currentPath === "/Admin") {
     pageName = "Partner List";
-  } else if (partnerNames.includes(icp) && currentPath === `/Admin/${icp}`) {
+  } else if (partnerNames.includes(icp) && currentPath === `/Admin/${pathParts[2]}`) {
     pageName = `${icp} EDI Documents`;
   }
 
