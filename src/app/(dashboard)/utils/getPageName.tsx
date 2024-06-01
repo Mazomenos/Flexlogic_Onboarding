@@ -35,26 +35,25 @@ function useGetPageName(currentPath: string) {
   ];
 
   let pageName = "";
-  const icp = currentPath.split("/")[2];
+  const pathParts = currentPath.split("/");
+  const icp = pathParts[2];
 
   const partnershipNames = partnerships.map(p => p.name);
   const partnerNames = partners.map(p => p.companyName);
 
-  const isPartnership = partnershipNames.includes(icp);
-  const isPartner = partnerNames.includes(icp);
 
-  if (!isPartnership && !isPartner) {
+  if (pathParts.length > 2 && !partnershipNames.includes(icp) && !partnerNames.includes(icp)) {
     router.push("/404");
     return ""; 
   }
 
   if (currentPath === "/Cliente") {
     pageName = "Your partnerships";
-  } else if (isPartnership && currentPath === `/Cliente/${icp}`) {
+  } else if (partnershipNames.includes(icp) && currentPath === `/Cliente/${icp}`) {
     pageName = `${icp} Partnership EDI Verification`;
   } else if (currentPath === "/Admin") {
     pageName = "Partner List";
-  } else if (isPartner && currentPath === `/Admin/${icp}`) {
+  } else if (partnerNames.includes(icp) && currentPath === `/Admin/${icp}`) {
     pageName = `${icp} EDI Documents`;
   }
 
