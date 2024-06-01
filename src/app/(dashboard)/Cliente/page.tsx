@@ -39,8 +39,13 @@ export default function Home() {
     { id: 15, name: "Partner X", status: "Complete" },
   ];
 
-  function handlePartnershipRedirect(path: number) {
-    router.push(`/Cliente/${path.toString()}`);
+  function handlePartnershipRedirect(id: number) {
+    partnerships.map((partnership) => {
+      if (partnership.id === id) {
+        router.push(`/Cliente/${partnership.name}`);
+      }
+    });
+    
   }
 
   return (

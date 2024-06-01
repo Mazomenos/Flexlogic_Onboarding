@@ -51,7 +51,9 @@ function useGetPageName(currentPath: string) {
     pageName = "Your partnerships";
   } else if (partnershipNames.includes(icp) && currentPath === `/Cliente/${icp}`) {
     pageName = `${icp} Partnership EDI Verification`;
-  } else if (currentPath === "/Admin") {
+  } 
+  
+  if (currentPath === "/Admin") {
     pageName = "Partner List";
   } else if (partnerNames.includes(icp) && currentPath === `/Admin/${icp}`) {
     pageName = `${icp} EDI Documents`;
