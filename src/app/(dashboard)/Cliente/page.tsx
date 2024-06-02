@@ -10,6 +10,9 @@ import ListItem from "@/components/ListItem";
 import Badge from "./components/Badge";
 import AddPartnership from "./docs/AddPartnership";
 import { useRouter } from "next/navigation";
+import {userID} from "../layout"
+import { useContext } from "react";
+import { useAppContext } from "@/context/context";
 
 type Partnership = {
   id: number;
@@ -42,6 +45,11 @@ export default function Home() {
   function handlePartnershipRedirect(path: number) {
     router.push(`/Cliente/${path.toString()}`);
   }
+
+  const userId = useContext(userID)
+  const {state, setState} = useAppContext()
+
+  setState("Partnerships")
 
   return (
     <div className="h-full flex flex-col ">

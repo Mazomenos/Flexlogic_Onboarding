@@ -7,7 +7,7 @@ import { IoMdDownload } from "react-icons/io";
 import { TfiLayoutLineSolid } from "react-icons/tfi";
 import Badge from "../components/Badge";
 import Errors from "../docs/Errors";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Status } from "../enums/Status";
 import ValidateButton from "../components/ValidateButton";
 import BackButton from "@/components/BackButton";
@@ -15,6 +15,8 @@ import { useRouter } from "next/navigation";
 import { useParams } from 'next/navigation';
 import { GetUsersDocs } from "@/DA/usersTpControllers";
 import UploadModal from "../docs/fileupload/page";
+import {userID} from "../../layout"
+import { useAppContext } from "@/context/context";
 
 type EDI = {
   idDoc: string;
@@ -25,10 +27,14 @@ type EDI = {
 };
 
 
-
 export default function Home() {
   const router = useRouter();
   const { id } = useParams<{ id: string }>(); // Specify the param type
+  const userId = useContext(userID)
+
+  const {state, setState} = useAppContext()
+
+  setState("Amazon")
 
   //Integracion
   const [TPDoc, setTPDoc] = useState<EDI[] | null>(null);
@@ -83,7 +89,7 @@ export default function Home() {
           />
         </div>
         <AddButton onClick={() => downloadPOTest()}>
-          Download PO Test {id}<IoMdDownload />
+          Download PO Test {state}<IoMdDownload />
         </AddButton>
         <div>
           {}
