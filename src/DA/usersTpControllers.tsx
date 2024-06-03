@@ -1,6 +1,7 @@
 "use server"
 
 import { prisma } from "@/libs/prisma";
+import { LogErrors } from "@prisma/client";
 
 export async function GetUsersPartnerInfo(userId: string) {
     try {
@@ -71,8 +72,7 @@ export async function GetUsersDocs(PartnerId: string, UserId: string) {
                         Doc: docData.Doc,
                         Status: docData.Status,
                         DocFile: docData.DocFile,
-                        isRequired: docData.isRequired,
-                        LogErrors: docData.LogErrors
+                        isRequired: docData.isRequired
                     })
                 }
             }
@@ -123,6 +123,55 @@ export async function GetUsersLogErrors(PartnerId: string, UserId: string) {
                                 LogErrors: [logError.Title, logError.Description, logError.Position, logError.Type]
                             });
                         }
+                    }
+
+                }
+
+            }
+        }
+
+        return newData
+
+    } catch (error) {
+        if (error instanceof Error) {
+            console.log(
+                {
+                    message: error.message,
+                },
+                {
+                    status: 500,
+                }
+            );
+        }
+    }
+}
+
+export async function GetPartnershipDocLogError(PartnerId: string, UserId: string, DocId: string) {
+    try {
+        const user = await prisma.user.findUnique({
+            where: {
+                id: UserId,
+            },
+            include: {
+                Partnerships: true
+            }
+        });
+
+
+        if (!user) throw new Error('User not found')
+        
+
+        let newData: any[] = []
+        for (let i = 0; i < user.Partnerships.length; i++) {
+            let partnership = user.Partnerships[i]
+            if (partnership.idPartner === PartnerId) {
+                for (let j = 0; j < partnership.Docs.length; j++) {
+                    let docData = partnership.Docs[j];
+                    // checks if it exist and it is not null
+
+                    if (docData.idDoc === DocId && docData.LogErrors && docData.LogErrors.length > 0) {
+                        let logError = docData.LogErrors;
+                        return logError
                     }
 
                 }

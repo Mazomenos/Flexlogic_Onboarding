@@ -6,22 +6,24 @@ import ListItem from "@/components/ListItem";
 import { IoMdDownload } from "react-icons/io";
 import { TfiLayoutLineSolid } from "react-icons/tfi";
 import Badge from "../components/Badge";
-import Errors from "../docs/Errors";
+import Errors from "../components/ErrorsModal";
 import { useState, useEffect } from "react";
 import { Status } from "../enums/Status";
 import ValidateButton from "../components/ValidateButton";
 import BackButton from "@/components/BackButton";
 import { useRouter } from "next/navigation";
 import { useParams } from 'next/navigation';
-import { GetUsersDocs } from "@/DA/usersTpControllers";
-import UploadModal from "../docs/fileupload/page";
+import { GetUsersDocs, GetPartnershipDocLogError } from "@/DA/usersTpControllers";
+import UploadModal from "../components/UploadModal";
+import { LogErrors } from "@prisma/client";
 
+
+//Tipo especifico para definir lo que se jala de cada doc de la bd
 type EDI = {
   idDoc: string;
   Doc: string;
   isRequired: boolean;
   Status: string;
-  LogErrors: any[]
 };
 
 
@@ -30,40 +32,107 @@ export default function Home() {
   const router = useRouter();
   const { id } = useParams<{ id: string }>(); // Specify the param type
 
-  //Integracion
-  const [TPDoc, setTPDoc] = useState<EDI[] | null>(null);
+  //Variables estaticas temporales
+  let userID = "665a0753b9c7af2580bc0ad5"
+  let partnershipID = "664d76a8d7412ac29ddf6a1b"
 
+  //Integracion
+
+  /*useState que contiene Una lista de los documentos
+    con los atributos necesarios para mostrarlos al Cliente
+    Empieza como null, y al hacer la llamada a la bd
+    en el reload inicial se actualiza por la lista de datos
+    o queda vacia.
+  */
+  const [TPDocs, setTPDocs] = useState<EDI[] | null>(null);
+
+  /**
+   * Estos useState se utilizan para manejar los modales de 
+   * error y subida de archivos, los cuales son usados en la
+   * pagina para abrir los modales y son dados como props
+   * a los modales para que puedan cerrarse e abrir otros
+   * segun el flujo
+   */
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+  
+  /**
+   * useState que en el cual se contiene el id del Doc al que se le
+   * presione uno de sus botones para realizar una accion, el cual es
+   * enviado como prop a los modales para que puedan usarlo con los
+   * controladores, asi accediendo y modificando la informacion del 
+   * Documento.
+   */
+  const [TPDocID, setTPDocID] = useState("")
+
+  /**
+   * useState que contiene una lista de errores que es llamada como prop
+   * al modal de errores, y es actualizado cuando se presiona uno de los
+   * documentos con estado "failed"
+   */
+  const [ErrorLog, setErrorLog] = useState<LogErrors[]>([])
+
+  /**
+   * Esta funcion asyncronica llama el controlador
+   * GetUsersDocs y nos devuelve los documentos
+   * de la partnership.
+   */
   const getTPDocs = async () => {
     try {
-      const response = await GetUsersDocs("664d76a8d7412ac29ddf6a1b","665a0753b9c7af2580bc0ad5")
+      const response = await GetUsersDocs(partnershipID,userID)
 
       if (response) {
         const data = await response;
         console.log(data)
-        if (data) setTPDoc(data)
+        if (data) setTPDocs(data)
       }
     } catch (error) {
       console.log(error)
     }
   }
 
+  /**
+   * Este UseEffect se asegura de actualizar la pagina con la ejecucion
+   * de la funcion que llama a los datos y actualiza el useState
+   */
   useEffect(() => {
     getTPDocs()
   }, [])
 
 
-  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
-  const [DocErrors, setDocErrors] = useState<any[]>([])
+  /**
+   * Esta funcion asyncronica llama el controlador
+   * GetPartnershipDocLogError y nos devuelve los errores
+   * registrados en la base. Tambien actualiza el TPDocID
+   * para que se pueda usar en otro intento de validacion.
+   */
+  const getErrorLog = async (idDoc: string) => {
+    setTPDocID(idDoc)
+    try {
+      const response = await GetPartnershipDocLogError(partnershipID,userID, idDoc)
 
-  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
-  const [UploadData, setUploadData] = useState("")
+      if (response) {
+        const data = await response;
+        if (data) setErrorLog(data)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
 
   
-
+  /**
+   * Funcion provisional que sera cambiado por
+   * un download
+   */
   const downloadPOTest = () => {
     console.log("Descargado");
   };
 
+  /**
+   * Funciones que abren o cierran los modales
+   */
   const openError = (con: boolean) => {
     setIsErrorModalOpen(con);
   };
@@ -91,11 +160,11 @@ export default function Home() {
       </div>
       <BrakeRule />
       <div className="max-h-full flex flex-col items-center w-full overflow-y-auto overscroll-none">
-        {TPDoc && TPDoc.map((partnership, index) => (
+        {TPDocs && TPDocs.map((partnership, index) => (
           <ListItem
             key={index}
             path={partnership.Status == Status.FAILED ? partnership.Doc : ""}
-            onClick={() => {openError(true); setDocErrors(partnership.LogErrors); setUploadData(partnership.idDoc)}}
+            onClick={() => {openError(true); getErrorLog(partnership.idDoc)}}
           >
             <div className="flex flex-row w-full items-center">
               <p className="basis-2/5">{partnership.Doc} </p>
@@ -109,7 +178,7 @@ export default function Home() {
               </p>
               <div className="basis-1/5 flex justify-end">
                 {partnership.Status == Status.VALIDATE ? (
-                  <ValidateButton onClick={() => {openUpload(true); setUploadData(partnership.idDoc)}}>{partnership.Status}</ValidateButton>
+                  <ValidateButton onClick={() => {openUpload(true); setTPDocID(partnership.idDoc)}}>{partnership.Status}</ValidateButton>
                 ) : (
                   <Badge status={partnership.Status} />
                 )}
@@ -119,8 +188,8 @@ export default function Home() {
           </ListItem>
         ))}
       </div>
-      <Errors isOpen={isErrorModalOpen} setIsOpen={setIsErrorModalOpen} setIsUploadOpen={setIsUploadModalOpen} errors={DocErrors} />
-      <UploadModal isOpen={isUploadModalOpen} setIsOpen={setIsUploadModalOpen} idDoc={UploadData}></UploadModal>
+      <Errors isOpen={isErrorModalOpen} setIsOpen={setIsErrorModalOpen} setIsUploadOpen={setIsUploadModalOpen} errorLog={ErrorLog} />
+      <UploadModal isOpen={isUploadModalOpen} setIsOpen={setIsUploadModalOpen} idDoc={TPDocID}></UploadModal>
     </div>
   );
 }
