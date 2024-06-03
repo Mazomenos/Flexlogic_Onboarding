@@ -146,6 +146,16 @@ export async function GetUsersLogErrors(PartnerId: string, UserId: string) {
     }
 }
 
+
+/**
+ * 
+ * @param PartnerId 
+ * @param UserId 
+ * @param DocId 
+ * @returns LogError[]
+ * 
+ * this controller is used to get the log of Errors of a single partnership file
+ */
 export async function GetPartnershipDocLogError(PartnerId: string, UserId: string, DocId: string) {
     try {
         const user = await prisma.user.findUnique({
