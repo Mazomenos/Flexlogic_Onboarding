@@ -22,7 +22,6 @@ type EDI = {
 export default function Home() {
   const router = useRouter();
 
-  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [isOpen, setIsOpen] = React.useState(false);
   const [selectedDocumentId, setSelectedDocumentId] = React.useState<
     number | null
@@ -69,22 +68,6 @@ export default function Home() {
   const deleteItem = (id: number | undefined) => {
     setIsOpen(false);
     setEdi((prevEdi) => prevEdi.filter((doc) => doc.IdDoc !== id));
-  };
-
-  const handleRequired = (id: number) => {
-    setEdi((prevEdi) =>
-      prevEdi.map((doc) =>
-        doc.IdDoc === id ? { ...doc, isRequired: !doc.isRequired } : doc,
-      ),
-    );
-  };
-
-  const handleVisible = (id: number) => {
-    setEdi((prevEdi) =>
-      prevEdi.map((doc) =>
-        doc.IdDoc === id ? { ...doc, isVisible: !doc.isVisible } : doc,
-      ),
-    );
   };
 
   const selectedDocument = edi.find((edi) => edi.IdDoc === selectedDocumentId);
