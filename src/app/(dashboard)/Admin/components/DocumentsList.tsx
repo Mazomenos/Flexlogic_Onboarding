@@ -10,8 +10,8 @@ type EDI = {
 
 interface Props {
   Documents: EDI[];
-  handleDeleteButton: any;
-  handleEditButton: any;
+  handleDeleteButton: (id: number) => void;
+  handleEditButton: (id: number) => void;
 }
 
 export default function DocumentsList({
