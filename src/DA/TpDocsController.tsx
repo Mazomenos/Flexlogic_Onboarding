@@ -151,8 +151,8 @@ export async function postTPDoc(TPId: string, DocTemplateNum: number) {
         tradingPartner.DocsRequired.push({
             idDoc: createdTPDoc.id,
             Doc: DocTemplateNum.toString(),
-            Version: "X12 4010",
-            isVisible: false
+            isVisible: true,
+            isRequired : true
         })
 
         const updatedDocs = await prisma.tradingPartner.update({

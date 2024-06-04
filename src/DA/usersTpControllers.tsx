@@ -1,6 +1,8 @@
 "use server"
 
-import { prisma } from "@/libs/prisma";
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 export async function GetUsersPartnerInfo(userId: string) {
     try {
@@ -176,7 +178,7 @@ export async function PostNewPartnership(UserId: string, PartnerId: string) {
         const newPartnership = {
             idPartner: PartnerId,
             Name: tradingPartners?.Name,
-            Status: "In process",
+            Status: "In Process",
             Docs: tradingPartners?.DocsRequired.map(doc => ({
                 idDoc: doc.idDoc,
                 Doc: doc.Doc,
@@ -215,21 +217,21 @@ export async function PostNewPartnership(UserId: string, PartnerId: string) {
     }
 }
 
-export async function GetTPVisible(PartnerId: string) {
+// partners visibles 
+export async function GetTPVisible() {
     try {
-        const tradingPartner = await prisma.tradingPartner.findFirst({
-            where: {
-                id: PartnerId
+        const tradingPartners = await prisma.tradingPartner.findMany({
+            where: { 
+                isVisible : true
             }
         });
-
-        if (!tradingPartner) throw new Error('User not found')
         
-        let newData: any[] = []
+        if (tradingPartners.length === 0) throw new Error('No trading partners found');
 
-        newData.push(tradingPartner.Name)
-        newData.push(tradingPartner.isVisible)
-        return newData;
+        return tradingPartners.map(partner => ({
+            id: partner.id,
+            Name: partner.Name,
+        }));
 
     } catch (error) {
         if (error instanceof Error) {
