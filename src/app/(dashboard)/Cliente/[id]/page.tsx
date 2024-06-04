@@ -30,8 +30,9 @@ type EDI = {
 
 export default function Home() {
   const router = useRouter();
-  const { id } = useParams<{ id: string }>(); // Specify the param type
+  const { id} = useParams<{ id: string }>(); // Specify the param type
 
+  console.log(id)
   //Variables estaticas temporales
   let userID = "665a0753b9c7af2580bc0ad5"
   let partnershipID = "664d76a8d7412ac29ddf6a1b"
