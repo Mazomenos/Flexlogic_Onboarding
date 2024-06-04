@@ -12,6 +12,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@azure/storage-blob": "^12.23.0",
     "@edgestore/react": "^0.1.6",
     "@edgestore/server": "^0.1.6",
     "@headlessui/react": "^2.0.3",
