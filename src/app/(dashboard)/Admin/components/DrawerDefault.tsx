@@ -41,7 +41,7 @@ export default function DrawerDefault({ open, setOpen, idDocument }: Props) {
       size={drawerWidth}
       onClose={closeDrawer}
       placement="right"
-      className="p-4 right-0 border-l-darkMode-foreground/30 border-l-2 top-0 bg-base-200 dark:bg-darkMode-base-200"
+      className="p-4 select-none right-0 border-l-darkMode-foreground/30 border-l-2 top-0 bg-base-200 dark:bg-darkMode-base-200"
       ref={drawerRef}
     >
       <div className="mb-6 flex items-center justify-between">
