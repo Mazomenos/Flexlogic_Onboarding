@@ -52,7 +52,7 @@ export default function AddPartner() {
                                 className="appearance-none p-2 border-b-2 border-primary-content/50 dark:border-darkMode-foreground/60 dark:bg-transparent focus:border-blue-300 dark:focus:border-info-content focus:outline-none focus:border-b-2"
                             />
                         </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div className="flex flex-col">
                                 <label htmlFor="delimiters">
                                     Delimiters
@@ -85,6 +85,9 @@ export default function AddPartner() {
                                     ))}
                                 </select>
                             </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4" >
                             <div className="flex flex-col">
                                 <label htmlFor="eol">
                                     EOL
@@ -100,6 +103,13 @@ export default function AddPartner() {
                                         </option>
                                     ))}
                                 </select>
+                            </div>
+                            <div className="flex flex-col">
+                                <div className="pt-6">
+                                    <ButtonB onClick={() => setIsOpen(false)} className=" w-full">
+                                        850 Sample
+                                    </ButtonB>
+                                </div>
                             </div>
                         </div>
                         <div className="flex justify-center">
