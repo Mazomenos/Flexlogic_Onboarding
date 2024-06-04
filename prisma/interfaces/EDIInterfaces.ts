@@ -73,16 +73,17 @@ export interface EDITPDocument {
 type DocumentsRequired = {
   idDoc: string;
   Doc: string;
-  Version: string;
   isVisible: boolean;
+  isRequired: boolean;
 };
 export interface TradingPartner {
   id: string;
   Name: string;
   Initial850EDI: string;
   Delimiters: string[];
-  EDIVersion: string;
+  Version: string;
   EOL: string;
+  isVisible: boolean;
   DocsRequired: DocumentsRequired[];
 }
 
@@ -90,16 +91,22 @@ export interface TradingPartner {
 // USERS
 //
 type Error = {
+  Title: string;
+  Description: string;
   Position: string;
-  Comments: string;
+  Type: string;
 };
 type PartnershipDocs = {
+  idDoc: string;
   Doc: string;
+  DocFile: string;
+  isRequired: boolean;
   Status: string;
   LogErrors: Error[];
 };
 type UserPartnerships = {
   idPartner: string;
+  Status: string;
   Docs: PartnershipDocs[];
 };
 export interface User {

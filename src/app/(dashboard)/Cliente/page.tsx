@@ -9,35 +9,38 @@ import BrakeRule from "@/components/BrakeRule";
 import ListItem from "@/components/ListItem";
 import Badge from "./components/Badge";
 import AddPartnership from "./docs/AddPartnership";
-import { useRouter } from "next/navigation";
+import { useRouter} from "next/navigation";
+import { useState, useEffect } from "react";
+import { GetUsersPartnerInfo } from "@/DA/usersTpControllers";
 
 type Partnership = {
-  id: number;
-  name: string;
-  status: string;
+  idPartner: string;
+  Name: string;
+  Status: string;
 };
 
 export default function Home() {
   const router = useRouter();
+  const [TPInfo, setTPInfo] = useState<Partnership[] | null>(null);
 
-  // TODO: Change to actual DB call
-  const partnerships: Partnership[] = [
-    { id: 1, name: "Amazon", status: "Complete" },
-    { id: 2, name: "Walmart", status: "In Process" },
-    { id: 3, name: "Partner X", status: "Unknown" },
-    { id: 4, name: "Partner y", status: "Failed" },
-    { id: 5, name: "Amazon", status: "Complete" },
-    { id: 6, name: "Walmart", status: "In Process" },
-    { id: 7, name: "Partner X", status: "Complete" },
-    { id: 8, name: "Partner y", status: "Failed" },
-    { id: 9, name: "Amazon", status: "Complete" },
-    { id: 10, name: "Walmart", status: "In Process" },
-    { id: 11, name: "Partner X", status: "Complete" },
-    { id: 12, name: "Partner y", status: "Failed" },
-    { id: 13, name: "Amazon", status: "Complete" },
-    { id: 14, name: "Walmart", status: "In Process" },
-    { id: 15, name: "Partner X", status: "Complete" },
-  ];
+  // gets client partnership information
+  const getTPInfo = async () => {
+    try {
+      const response = await GetUsersPartnerInfo("665a0753b9c7af2580bc0ad5")
+
+      if (response) {
+        const data = await response;
+        console.log(data)
+        if (data) setTPInfo(data)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    getTPInfo()
+  }, [])
 
   function handlePartnershipRedirect(id: number) {
     partnerships.map((partnership) => {
@@ -49,23 +52,28 @@ export default function Home() {
   }
 
   return (
+
     <div className="h-full flex flex-col ">
+
       <div className="w-full mt-1 justify-end flex">
         <AddPartnership />
       </div>
+
       <BrakeRule />
+      {/* Maps client current partnerships */}
       <div className="max-h-full flex flex-col items-center w-full overflow-y-auto overscroll-none">
-        {partnerships.map((partnership, index) => (
+        {TPInfo && TPInfo.map((partnership, index) => (
           <ListItem
             key={index}
-            path={partnership.id.toString()}
-            onClick={() => handlePartnershipRedirect(partnership.id)}
+            path={partnership.Name}
+            onClick={() => handlePartnershipRedirect(partnership.Name)}
           >
-            <p>{partnership.name} </p>
-            <Badge status={partnership.status} />
+            <p>{partnership.Name} </p>
+            <Badge status={partnership.Status} />
           </ListItem>
         ))}
       </div>
+
     </div>
   );
 }

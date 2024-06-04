@@ -15,7 +15,6 @@ export async function GetTPDocsFromPartnership(TPId: string) {
                     select: {
                         idDoc: true,
                         Doc: true,
-                        Version: true
                     }
                 }
             }
@@ -36,7 +35,6 @@ export async function GetTPDocsFromPartnership(TPId: string) {
             newData.push({
                 idDoc: docData.idDoc,
                 Doc: docData.Doc,
-                Version: docData.Version,
                 Segments: docsFromEDITPDocs?.Segments
             })
         }
@@ -56,7 +54,38 @@ export async function GetTPDocsFromPartnership(TPId: string) {
     }
 }
 
-/*
+export async function GetTPDocById(TPDocId: string){
+    try {
+
+        const TPDoc = await prisma.eDITPDocs.findUnique({
+            where: {
+                id: TPDocId
+            },
+            select: {
+                Segments: true
+            }
+        });
+
+        if (!TPDoc) {
+            throw new Error('Document not found');
+        }
+
+        return TPDoc;
+
+    } catch (error) {
+        if (error instanceof Error) {
+            console.log(
+                {
+                    message: error.message,
+                },
+                {
+                    status: 500,
+                }
+            );
+        }
+    }
+}
+
 export async function postTPDoc(TPId: string, DocTemplateNum: number) {
     try {
         const tradingPartner = await prisma.tradingPartner.findFirst({
@@ -122,8 +151,8 @@ export async function postTPDoc(TPId: string, DocTemplateNum: number) {
         tradingPartner.DocsRequired.push({
             idDoc: createdTPDoc.id,
             Doc: DocTemplateNum.toString(),
-            Version: "X12 4010",
-            isVisible: false
+            isVisible: true,
+            isRequired : true
         })
 
         const updatedDocs = await prisma.tradingPartner.update({
@@ -205,4 +234,3 @@ export async function deleteTPDoc(TPDocId: string) {
         }
     }
 }
-*/

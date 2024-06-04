@@ -2,271 +2,117 @@
 
 import { DialogTitle, Description } from "@headlessui/react";
 import Modal from "@/components/Modal";
-import React from "react";
-import CancelButton from "@/components/CancelButton";
+import React, { useEffect, useState } from "react";
 import ListItem from "@/components/ListItem";
 import GenericButton from "@/components/GenericButton";
 import BrakeRule from "@/components/BrakeRule";
 import BackButton from "@/components/BackButton";
 import AddButton from "@/components/AddButton";
 import { useRouter } from "next/navigation";
+import { GetTPDocsRequired, GetTPVisible, GetUsersPartnerInfo, PostNewPartnership } from "@/DA/usersTpControllers";
 
-type Edi = {
-  id: number;
-  EDIDoc: string;
-  mandatory: boolean;
-  status: string;
+type TPDocsRequired = {
+  idDoc: string;
+  Doc: string;
+  isVisible: boolean;
+  isRequired: boolean;
 };
 
 type Partnership = {
-  id: number;
-  name: string;
-  status: string;
-  edi: Edi[];
+  idPartner: string;
+  Name: string;
+  Status: string;
 };
+
+type TPVisible = {
+  id: string;
+  Name: string;
+}
 
 export default function AddPartnership() {
   const router = useRouter();
-  const partnerships: Partnership[] = [
-    {
-      id: 1,
-      name: "Amazon",
-      status: "Complete",
-      edi: [
-        {
-          id: 1,
-          EDIDoc: "EDI 850 Purchase Order",
-          mandatory: true,
-          status: "Validate",
-        },
-        {
-          id: 2,
-          EDIDoc: "EDI 860 Purchase Order Change Request",
-          mandatory: false,
-          status: "Validate",
-        },
-        {
-          id: 3,
-          EDIDoc: "EDI 855 Purchase Order Acknowledgment",
-          mandatory: true,
-          status: "Complete",
-        },
-        {
-          id: 4,
-          EDIDoc: "EDI 856 Ship Notice/Manifest",
-          mandatory: true,
-          status: "Validate",
-        },
-        {
-          id: 5,
-          EDIDoc: "EDI 820 Payment Order/Remittance Advice",
-          mandatory: false,
-          status: "Failed",
-        },
-      ],
-    },
-    {
-      id: 1,
-      name: "Amazon",
-      status: "Complete",
-      edi: [
-        {
-          id: 1,
-          EDIDoc: "EDI 850 Purchase Order",
-          mandatory: true,
-          status: "Validate",
-        },
-        {
-          id: 2,
-          EDIDoc: "EDI 860 Purchase Order Change Request",
-          mandatory: false,
-          status: "Validate",
-        },
-        {
-          id: 3,
-          EDIDoc: "EDI 855 Purchase Order Acknowledgment",
-          mandatory: true,
-          status: "Complete",
-        },
-        {
-          id: 4,
-          EDIDoc: "EDI 856 Ship Notice/Manifest",
-          mandatory: true,
-          status: "Validate",
-        },
-        {
-          id: 5,
-          EDIDoc: "EDI 820 Payment Order/Remittance Advice",
-          mandatory: false,
-          status: "Failed",
-        },
-      ],
-    },
-    {
-      id: 1,
-      name: "Amazon",
-      status: "Complete",
-      edi: [
-        {
-          id: 1,
-          EDIDoc: "EDI 850 Purchase Order",
-          mandatory: true,
-          status: "Validate",
-        },
-        {
-          id: 2,
-          EDIDoc: "EDI 860 Purchase Order Change Request",
-          mandatory: false,
-          status: "Validate",
-        },
-        {
-          id: 3,
-          EDIDoc: "EDI 855 Purchase Order Acknowledgment",
-          mandatory: true,
-          status: "Complete",
-        },
-        {
-          id: 4,
-          EDIDoc: "EDI 856 Ship Notice/Manifest",
-          mandatory: true,
-          status: "Validate",
-        },
-        {
-          id: 5,
-          EDIDoc: "EDI 820 Payment Order/Remittance Advice",
-          mandatory: false,
-          status: "Failed",
-        },
-      ],
-    },
-    {
-      id: 2,
-      name: "Walmart",
-      status: "Complete",
-      edi: [
-        {
-          id: 1,
-          EDIDoc: "EDI 850 Purchase Order",
-          mandatory: true,
-          status: "Validate",
-        },
-        {
-          id: 2,
-          EDIDoc: "EDI 860 Purchase Order Change Request",
-          mandatory: false,
-          status: "Validate",
-        },
-        {
-          id: 3,
-          EDIDoc: "EDI 855 Purchase Order Acknowledgment",
-          mandatory: true,
-          status: "Complete",
-        },
-        {
-          id: 4,
-          EDIDoc: "EDI 856 Ship Notice/Manifest",
-          mandatory: true,
-          status: "Validate",
-        },
-        {
-          id: 5,
-          EDIDoc: "EDI 820 Payment Order/Remittance Advice",
-          mandatory: false,
-          status: "Failed",
-        },
-      ],
-    },
-    {
-      id: 3,
-      name: "AutoZone",
-      status: "In Process",
-      edi: [
-        {
-          id: 1,
-          EDIDoc: "EDI 850 Purchase Order",
-          mandatory: true,
-          status: "Validate",
-        },
-        {
-          id: 2,
-          EDIDoc: "EDI 860 Purchase Order Change Request",
-          mandatory: false,
-          status: "Validate",
-        },
-        {
-          id: 3,
-          EDIDoc: "EDI 855 Purchase Order Acknowledgment",
-          mandatory: true,
-          status: "Complete",
-        },
-        {
-          id: 4,
-          EDIDoc: "EDI 856 Ship Notice/Manifest",
-          mandatory: true,
-          status: "Validate",
-        },
-        {
-          id: 5,
-          EDIDoc: "EDI 820 Payment Order/Remittance Advice",
-          mandatory: false,
-          status: "Failed",
-        },
-        {
-          id: 6,
-          EDIDoc: "EDI 850 Purchase Order",
-          mandatory: true,
-          status: "Validate",
-        },
-        {
-          id: 7,
-          EDIDoc: "EDI 860 Purchase Order Change Request",
-          mandatory: false,
-          status: "Validate",
-        },
-        {
-          id: 8,
-          EDIDoc: "EDI 855 Purchase Order Acknowledgment",
-          mandatory: true,
-          status: "Complete",
-        },
-        {
-          id: 9,
-          EDIDoc: "EDI 856 Ship Notice/Manifest",
-          mandatory: true,
-          status: "Validate",
-        },
-        {
-          id: 10,
-          EDIDoc: "EDI 820 Payment Order/Remittance Advice",
-          mandatory: false,
-          status: "Failed",
-        },
-      ],
-    },
-  ];
 
   const [isOpen, setIsOpen] = React.useState(false);
   const [isModal2, setIsModal2] = React.useState(false);
-  const [selectedPartnershipId, setSelectedPartnershipId] = React.useState<
-    number | null
-  >(null);
+  const [selectedPartnershipId, setSelectedPartnershipId] = React.useState<string | null>(null);
 
-  const handleViewClick = (id: number) => {
+  const [TPVisible, setTPVisible] = useState<TPVisible[] | null>(null);
+  const [TPDoc, setTPDoc] = useState<TPDocsRequired[] | null>(null);
+  const [Partnership, setPartnership] = useState<Partnership[] | null>(null);
+
+  useEffect(() => {
+    getUsersPartnerInfo(),
+    getTPVisible()
+  }, [])
+
+  // gets required docs of a trading partner
+  const getTPDocsRequired = async (idPartner: string) => {
+    try {
+      const response = await GetTPDocsRequired(idPartner);
+
+      if (response) {
+        const data = await response;
+        if (data) setTPDoc(data)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  // gets a client partnership info 
+  const getUsersPartnerInfo = async () => {
+    try {
+      const response = await GetUsersPartnerInfo("665a0753b9c7af2580bc0ad5")
+
+      if (response) {
+        const data = await response;
+        if (data) setPartnership(data)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  // gets a visible trading partner for partnership creation
+  const getTPVisible = async () => {
+    try {
+      const response = await GetTPVisible()
+
+      if (response) {
+        const data = await response;
+        if (data) setTPVisible(data)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  //posts a new partnership
+  const postNewPartnership = async (idPartner:string) => {
+    try {
+      const response = await PostNewPartnership("665a0753b9c7af2580bc0ad5",idPartner)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleViewClick = (id: string) => {
     setSelectedPartnershipId(id);
     setIsOpen(false);
     setIsModal2(true);
+    getTPDocsRequired(id)
   };
 
-  const selectedPartnership = partnerships.find(
-    (partnership) => partnership.id === selectedPartnershipId,
-  );
+  const selectedPartnership = TPVisible?.find((partner) => partner.id === selectedPartnershipId);
 
-  const handleCreateClick = () => {
-    partnerships.map((partnership) => {
-      if (partnership.id === selectedPartnershipId) {
-        router.push(`/Cliente/${partnership.id}`);
-      }
-    });
+  const handleCreateClick = async (idPartner:string, partnerName:string) => {
+    try {
+      await postNewPartnership(idPartner);
+      setIsModal2(false);
+      router.push(`/Cliente/${partnerName}`);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -274,20 +120,25 @@ export default function AddPartnership() {
       <div className="grid justify-items-end">
         <AddButton onClick={() => setIsOpen(true)}>Add Partnership +</AddButton>
       </div>
+
+      {/* Maps trading partners that are visible and are not in a partnership with the client */}
       <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
         <DialogTitle className="text-2xl">Partners</DialogTitle>
         <BrakeRule classname="my-3" />
         <div className="max-h-fit flex flex-col items-center w-full overflow-y-auto overscroll-none">
-          {partnerships.map((partnership) => (
-            <ListItem key={partnership.id}>
-              <p> {partnership.name} Connection </p>
-              <GenericButton onClick={() => handleViewClick(partnership.id)}>
-                View
-              </GenericButton>
-            </ListItem>
+          {TPVisible && TPVisible.map((partner, index) => (
+            !Partnership?.some((p) => p.idPartner == partner.id) && (
+              <ListItem key={index}>
+                <p> {partner.Name} Connection </p>
+                <GenericButton onClick={() => handleViewClick(partner.id)}>
+                  View
+                </GenericButton>
+              </ListItem>
+            )
           ))}
         </div>
       </Modal>
+
       <Modal isOpen={isModal2} setIsOpen={setIsModal2}>
         <div className="absolute top-4 left-4">
           <BackButton
@@ -297,29 +148,37 @@ export default function AddPartnership() {
             }}
           />
         </div>
+
+        {/* Displays name of trading partner selected to view */}
         <DialogTitle className="text-2xl">
           {" "}
-          {selectedPartnership?.name} Partnership EDI Verification{" "}
+          {selectedPartnership?.Name} Partnership EDI Verification{" "}
         </DialogTitle>
+
+        {/* Displays selected TPDocsRequired*/}
         <BrakeRule classname="my-4" />
         <div className="max-h-full flex flex-col items-center w-full overflow-y-auto overscroll-none">
-          {selectedPartnership &&
-            selectedPartnership.edi.map((edi) => (
-              <ListItem key={edi.id}>
-                <p> {edi.EDIDoc} </p>
+          {TPDoc &&
+            TPDoc.map((partnership, index) => (
+              <ListItem key={index}>
+                <p> {partnership.Doc} </p>
                 <Description>
                   {" "}
-                  {edi.mandatory ? "Mandatory" : "Optional"}{" "}
+                  {partnership.isRequired ? "Mandatory" : "Optional"}{" "}
                 </Description>
               </ListItem>
             ))}
         </div>
         <BrakeRule classname="my-3" />
+
+
         <div className="absolute flex-row bottom-2">
           <div className="inline-block">
-            <GenericButton onClick={() => handleCreateClick()}>
+            {selectedPartnershipId && selectedPartnership && (
+              <GenericButton onClick={() => handleCreateClick(selectedPartnershipId,selectedPartnership?.Name)}>
               Create
             </GenericButton>
+            )}
           </div>
         </div>
       </Modal>
