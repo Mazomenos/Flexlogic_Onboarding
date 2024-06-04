@@ -7,7 +7,7 @@ import { IoMdDownload } from "react-icons/io";
 import { TfiLayoutLineSolid } from "react-icons/tfi";
 import Badge from "../components/Badge";
 import Errors from "../components/ErrorsModal";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Status } from "../enums/Status";
 import ValidateButton from "../components/ValidateButton";
 import BackButton from "@/components/BackButton";
@@ -16,6 +16,8 @@ import { useParams } from 'next/navigation';
 import { GetUsersDocs, GetPartnershipDocLogError } from "@/DA/usersTpControllers";
 import UploadModal from "../components/UploadModal";
 import { LogErrors } from "@prisma/client";
+import { saveAs } from 'file-saver';
+import { downloadInitial850EDI } from "@/DA/fileManagerControllers";
 
 
 //Tipo especifico para definir lo que se jala de cada doc de la bd
@@ -118,16 +120,24 @@ export default function Home() {
     } catch (error) {
       console.log(error)
     }
-  }
+  };
 
-
-  
   /**
-   * Funcion provisional que sera cambiado por
-   * un download
-   */
-  const downloadPOTest = () => {
-    console.log("Descargado");
+   * Funcion asincrona cuyo proposito es generar el documento
+   * que se descargo, este recibe solamente el id del trading partner
+  */
+  const downloadPOTest = async () => {
+      try {
+          if (partnershipID) {              
+              const fileContent = await downloadInitial850EDI(partnershipID);
+              const text = String.fromCharCode.apply(null, Array.from(new Uint8Array(fileContent.content)));
+              saveAs(new Blob([text], { type: 'text/plain' }), fileContent.fileName);
+          } else {
+              console.log('No file available for download');
+          }
+      } catch (err) {
+          console.log('Error downloading file: ' + (err as Error).message);
+      }
   };
 
   /**

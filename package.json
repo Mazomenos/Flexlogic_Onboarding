@@ -24,6 +24,7 @@
     "@radix-ui/react-slot": "^1.0.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "file-saver": "^2.0.5",
     "lucide-react": "^0.379.0",
     "next": "14.2.3",
     "next-themes": "^0.3.0",
@@ -40,6 +41,7 @@
   "type": "module",
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",
+    "@types/file-saver": "^2.0.7",
     "@types/node": "^20.12.12",
     "@types/react": "^18",
     "@types/react-dom": "^18",
