@@ -8,6 +8,23 @@ import AddButton from "@/components/AddButton";
 import { useRouter } from "next/navigation";
 import ButtonB from "./ButtonB";
 
+const delimitersOptions = [
+    { value: "", label: "Choose delimiters" },
+    { value: ",", label: "Comma (,)" },
+    { value: ";", label: "Semicolon (;)" },
+    { value: "|", label: "Pipe (|)" }
+];
+
+const ediVersionOptions = [
+    { value: "", label: "Choose EDI version" },
+    { value: "4010", label: "X12 4010" }
+];
+
+const eolOptions = [
+    { value: "", label: "Choose EOL" },
+    { value: "LF", label: " ~ " }
+];
+
 export default function AddPartner() {
     const router = useRouter();
 
@@ -57,10 +74,11 @@ export default function AddPartner() {
                                     name="delimiters"
                                     className="p-2 border-b-2 border-primary-content/50 dark:border-darkMode-foreground/60 dark:bg-transparent focus:border-blue-300 dark:focus:border-info-content focus:outline-none focus:border-primary-content/50 focus:border-b-2"
                                 >
-                                    <option value="">Choose delimiters</option>
-                                    <option value=",">Comma (,)</option>
-                                    <option value=";">Semicolon (;)</option>
-                                    <option value="|">Pipe (|)</option>
+                                    {delimitersOptions.map(option => (
+                                        <option key={option.value} value={option.value}>
+                                            {option.label}
+                                        </option>
+                                    ))}
                                 </select>
                             </div>
                             <div className="flex flex-col">
@@ -72,8 +90,11 @@ export default function AddPartner() {
                                     name="ediVersion"
                                     className="p-2 border-b-2 border-primary-content/50 dark:border-darkMode-foreground/60 dark:bg-transparent focus:border-blue-300 dark:focus:border-info-content focus:outline-none focus:border-primary-content/50 focus:border-b-2"
                                 >
-                                    <option value="">Choose EDI version</option>
-                                    <option value="4010">X12 4010</option>
+                                    {ediVersionOptions.map(option => (
+                                        <option key={option.value} value={option.value}>
+                                            {option.label}
+                                        </option>
+                                    ))}
                                 </select>
                             </div>
                         </div>
@@ -87,8 +108,11 @@ export default function AddPartner() {
                                     name="eol"
                                     className="p-2 border-b-2 border-primary-content/50 dark:border-darkMode-foreground/60 dark:bg-transparent focus:border-blue-300 dark:focus:border-info-content focus:outline-none focus:border-primary-content/50 focus:border-b-2"
                                 >
-                                    <option value="">Choose EOL</option>
-                                    <option value="LF"> ~ </option>
+                                    {eolOptions.map(option => (
+                                        <option key={option.value} value={option.value}>
+                                            {option.label}
+                                        </option>
+                                    ))}
                                 </select>
                             </div>
                             <div className="flex flex-col">
@@ -105,7 +129,6 @@ export default function AddPartner() {
                             </ButtonB>
                         </div>
                     </form>
-
                 </div>
             </Modal>
         </>
