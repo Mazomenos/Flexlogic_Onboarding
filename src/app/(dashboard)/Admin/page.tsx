@@ -2,11 +2,19 @@
 import React from "react";
 import BrakeRule from "@/components/BrakeRule";
 import ListItem from "@/components/ListItem";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
-import ActionsButton from "./components/ActionsButton";
 import Modal from "@/components/Modal";
 import { DialogTitle } from "@headlessui/react";
 import AddPartner from "./components/AddPartner";
+import { TrashIcon } from "@heroicons/react/16/solid";
+import { useRouter } from "next/navigation";
+import PartnersList from "./components/PartnersList";
+
+type Partner = {
+  id: number;
+  companyName: string;
+  ediDoc: string[];
+  visible: boolean;
+};
 
 export default function Home() {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -15,109 +23,76 @@ export default function Home() {
   >(null);
   const [value, setValue] = React.useState("");
 
-  const handleDeleteButton = (id: number) => {
-    setSelectedPartnershipId(id);
-    setValue("");
-    setIsOpen(true);
-  };
-
-  function onSubmit() {
-    console.log("deleted");
-  }
-
-  const handleChange = (e: any) => {
-    setValue(e.target.value);
-  };
+  const router = useRouter();
 
   const [partners, setPartners] = React.useState([
     {
       id: 1,
-      image:
-        "https://res.cloudinary.com/daoth80ez/image/upload/v1715896301/Media/mu6zkbsr9lfqeq9nvwls.png",
       companyName: "Amazon",
       ediDoc: ["850", "855", "810", "860"],
       visible: true,
     },
     {
       id: 2,
-      image:
-        "https://res.cloudinary.com/daoth80ez/image/upload/v1715896301/Media/dgf2ebuyc3xbrohuwzep.svg",
       companyName: "Walmart",
       ediDoc: ["850", "855", "810", "860"],
       visible: true,
     },
     {
       id: 3,
-      image:
-        "https://res.cloudinary.com/daoth80ez/image/upload/v1715896301/Media/oznp9xnvnzeclt8snqtr.png",
-      companyName: "Autozone",
-      ediDoc: ["850", "855", "810", "860"],
-      visible: true,
-    },
-    {
-      id: 4,
-      image:
-        "https://res.cloudinary.com/daoth80ez/image/upload/v1715896301/Media/mu6zkbsr9lfqeq9nvwls.png",
-      companyName: "Amazon",
-      ediDoc: ["850", "855", "810", "860"],
-      visible: true,
-    },
-    {
-      id: 5,
-      image:
-        "https://res.cloudinary.com/daoth80ez/image/upload/v1715896301/Media/dgf2ebuyc3xbrohuwzep.svg",
-      companyName: "Walmart",
-      ediDoc: ["850", "855", "810", "860"],
-      visible: true,
-    },
-    {
-      id: 6,
-      image:
-        "https://res.cloudinary.com/daoth80ez/image/upload/v1715896301/Media/oznp9xnvnzeclt8snqtr.png",
-      companyName: "Autozone",
-      ediDoc: ["850", "855", "810", "860"],
-      visible: true,
-    },
-    {
-      id: 7,
-      image:
-        "https://res.cloudinary.com/daoth80ez/image/upload/v1715896301/Media/mu6zkbsr9lfqeq9nvwls.png",
-      companyName: "Amazon",
-      ediDoc: ["850", "855", "810", "860"],
-      visible: true,
-    },
-    {
-      id: 8,
-      image:
-        "https://res.cloudinary.com/daoth80ez/image/upload/v1715896301/Media/dgf2ebuyc3xbrohuwzep.svg",
-      companyName: "Walmart",
-      ediDoc: ["850", "855", "810", "860"],
-      visible: true,
-    },
-    {
-      id: 9,
-      image:
-        "https://res.cloudinary.com/daoth80ez/image/upload/v1715896301/Media/oznp9xnvnzeclt8snqtr.png",
       companyName: "Autozone",
       ediDoc: ["850", "855", "810", "860"],
       visible: true,
     },
   ]);
 
+// Created a 'Mirror' list of TP, this will prevent db calls when a user changes visibility
+  // and will only update in database once the user selects save button.
+  const [temporalPartners, setTemporalPartners] = React.useState(partners);
+
+  // Function that sets the selected partnership into a state
   const selectedPartnership = partners.find(
     (partners) => partners.id === selectedPartnershipId,
   );
 
-  const handleVisible = (id: number) => {
-    setPartners((prevPartners) =>
-      prevPartners.map((partner) =>
-        partner.id === id ? { ...partner, visible: !partner.visible } : partner,
-      ),
-    );
+  // This function deletes an item from the 'Mirror' temporal partners list, so the user does not need to refresh the page
+  // to see the list without the items.
+  const deleteTemporalPartner = (id: number | null) => {
+    const newPartners = temporalPartners.filter((partner) => partner.id !== id);
+    setTemporalPartners(newPartners);
   };
 
-  const handleAddPartner = () => {
-    console.log("Add Partner");
+
+  // #FIXME: change this function to controllers.
+  // This functions must delete an item from the database
+  function deleteDatabasePartner() {
+    setIsOpen(false)
+    deleteTemporalPartner(selectedPartnershipId)
+    const newTradingPartners = partners.filter((partner) => partner.id !== selectedPartnershipId);
+    setPartners(newTradingPartners);
+    
+  }
+
+  // Handler that check's delete modal value
+  const handleChange = (e: any) => {
+    setValue(e.target.value);
+  };
+
+  // Function that handles the visibility of delete modal, attached to ActionsButton.tsx
+  const handleDeleteButton = (id: number) => {
+    setSelectedPartnershipId(id);
+    setValue("");
+    setIsOpen(true);
+  };
+
+
+    // Function that redirects the user to the selected TP
+  const handleEditButton = (id: number) => {
+    partners.map((partner) => {
+      if (partner.id === id) {
+        router.push(`/Admin/${partner.companyName}`);
+      }
+    });
   };
 
   return (
@@ -125,41 +100,31 @@ export default function Home() {
       <AddPartner />
       <BrakeRule />
       <div className="max-h-full flex flex-col items-center w-full overflow-y-auto overscroll-none">
-        {partners.map((partner) => (
-          <ListItem key={partner.id}>
-            <div className="flex flex-row w-full justify-center">
-              <div className="basis-1/12 grid justify-items-center content-center max-h-10 ">
-                <img
-                  src={partner.image}
-                  alt={partner.companyName}
-                  className="max-h-16"
-                />
-              </div>
-              <p className="basis-2/6 grid justify-items-center content-center">
-                {partner.companyName}
-              </p>
-              <p className="basis-2/6 grid justify-items-center content-center">
-                EDI Documents: {partner.ediDoc.join(", ")}
-              </p>
-              <button
-                className="basis-1/6 grid justify-items-center content-center"
-                onClick={() => handleVisible(partner.id)}
-              >
-                {partner.visible ? (
-                  <FaEye size={24} />
-                ) : (
-                  <FaEyeSlash size={24} />
-                )}
-              </button>
-              <div className="basis-1/ grid justify-items-center content-center">
-                <ActionsButton
-                  itemId={partner.id}
-                  handleClick={handleDeleteButton}
-                />
-              </div>
-            </div>
-          </ListItem>
-        ))}
+        <ListItem>
+          <div className="flex flex-row w-full items-center">
+            <p className="basis-3/6">Documents</p>
+            <p className="basis-1/6 grid justify-items-center content-center">
+              Visible
+            </p>
+            <p className="basis-1/6 grid justify-items-center content-center">
+              Actions
+            </p>
+            <p className="basis-1/6 grid justify-items-center content-center">
+              Save Changes
+            </p>
+          </div>
+        </ListItem>
+
+        <div className="max-h-full flex flex-col items-center w-full overflow-y-auto overscroll-none">
+          <PartnersList
+            temporalPartners={temporalPartners}
+            setTemporalPartners={setTemporalPartners}
+            handleDeleteTemporalPartner={deleteTemporalPartner}
+            handleEditButton={handleEditButton}
+            handleDeleteButton={handleDeleteButton}
+            Partners={partners}
+          />
+        </div>
       </div>
       <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
         <DialogTitle className="text-2xl">Delete Partner</DialogTitle>
@@ -172,15 +137,14 @@ export default function Home() {
           &quot; in the box below
         </p>
         <div className="my-3" />
-        <form
+        <div
           className="w-3/4 flex-col flex justify-center"
-          onSubmit={onSubmit}
         >
           <input
             value={value}
             onChange={handleChange}
             placeholder={`Please type ${selectedPartnership?.companyName} to confirm`}
-            className="w-full text-lg placeholder:text-primary-content/40 dark:placeholder:text-darkMode-foreground/40 p-3 bg-inherit border-2 rounded-md appearance-none border-error dark:border-darkMode-error focus:bg-base-200 dark:focus:bg-darkMode-base-200"
+            className="w-full outline-none text-lg placeholder:text-primary-content/40 dark:placeholder:text-darkMode-foreground/40 p-3 bg-inherit border-2 rounded-md appearance-none border-error dark:border-darkMode-error focus:bg-base-200 dark:focus:bg-darkMode-base-200"
             type="text"
             name="name"
           />
@@ -188,27 +152,14 @@ export default function Home() {
           <button
             className="disabled:bg-base-300/30 dark:disabled:bg-darkMode-base-300/30 dark:disabled:border-darkMode-foreground/30 disabled:cursor-not-allowed disabled:text-primary-content/30 dark:disabled:text-darkMode-foreground/30 font-bold border-2 enabled:border-error dark:enabled:border-darkMode-error enabled:hover:bg-transparent dark:enabled:hover:bg-transparent enabled:text-error-content/70 dark:enabled:text-darkMode-error-content enabled:bg-error dark:enabled:bg-darkMode-error h-12 transition motion-reduce:transition-none motion-reduce:hover:transform-none rounded"
             disabled={value === selectedPartnership?.companyName ? false : true}
-            type="submit"
+            onClick={deleteDatabasePartner}
           >
             <div className="flex relative justify-center flex-row items-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="size-6 absolute left-2"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
-                />
-              </svg>
+              <TrashIcon className="size-6 absolute left-2" />
               Delete this partner
             </div>
           </button>
-        </form>
+        </div>
       </Modal>
     </div>
   );

@@ -10,13 +10,18 @@ import { PencilIcon, TrashIcon } from "@heroicons/react/16/solid";
 import React from "react";
 
 interface Props {
-  handleClick: any;
+  handleDeleteButton: any;
+  handleEditButton?: any;
   itemId: number;
 }
 
-export default function ActionsButton({ handleClick, itemId }: Props) {
+export default function ActionsButton({
+  handleDeleteButton,
+  handleEditButton,
+  itemId,
+}: Props) {
   return (
-    <div className=" w-52 text-right">
+    <div className="text-right">
       <Menu>
         <MenuButton className="inline-flex items-center border-2 border-base-200 dark:border-darkMode-base-200 rounded-md bg-base-100 dark:bg-darkMode-base-100 p-1 text-sm/6 font-semibold text-primary-content dark:text-darkMode-foreground  focus:outline-none data-[hover]:bg-base-200 dark:data-[hover]:bg-darkMode-base-200 data-[open]:bg-base-200 dark:data-[open]:bg-darkMode-base-200">
           <AiOutlineMore className="size-8 fill-primary-content dark:fill-darkMode-foreground" />
@@ -34,7 +39,12 @@ export default function ActionsButton({ handleClick, itemId }: Props) {
             className="w-52 origin-top-right bg-base-100 dark:bg-darkMode-base-100 rounded-xl border border-base-200/80 dark:border-white/5 p-1 text-sm/6 text-primary-content dark:text-darkMode-foreground [--anchor-gap:var(--spacing-1)] focus:outline-none"
           >
             <MenuItem>
-              <button className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-info/20 dark:data-[focus]:bg-darkMode-info">
+              <button
+                onClick={() => {
+                  handleEditButton(itemId);
+                }}
+                className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-info/20 dark:data-[focus]:bg-darkMode-info"
+              >
                 <PencilIcon className="group-data-[focus]:fill-info-content size-4 fill-primary-content dark:fill-white/30" />
                 Edit
               </button>
@@ -44,9 +54,7 @@ export default function ActionsButton({ handleClick, itemId }: Props) {
 
             <MenuItem>
               <button
-                onClick={() => {
-                  handleClick(itemId);
-                }}
+                onClick={() => handleDeleteButton(itemId)}
                 className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-error/20 dark:data-[focus]:bg-darkMode-error"
               >
                 <TrashIcon className="group-data-[focus]:fill-error-content dark:group-data-[focus]:fill-darkMode-error-content size-4 fill-primary-content dark:fill-white/30" />
