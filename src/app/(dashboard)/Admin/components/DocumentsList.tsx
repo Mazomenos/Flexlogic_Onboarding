@@ -12,32 +12,31 @@ interface Props {
   Documents: EDI[];
   handleDeleteButton: (id: number) => void;
   handleEditButton: (id: number) => void;
+  temporalDocuments: EDI[]
+  setTemporalDocuments : React.Dispatch<React.SetStateAction<EDI[]>>
+  handleDeleteDocument: (id: number) => void;
 }
 
 export default function DocumentsList({
   Documents,
   handleEditButton,
   handleDeleteButton,
+  temporalDocuments,
+  setTemporalDocuments,
+  handleDeleteDocument
 }: Props) {
-  const [temporalDocument, setTemporalDocuments] = React.useState(Documents);
+  
 
   const handleUpdateDocument = (updatedDocument: EDI) => {
-    const newDocuments = temporalDocument.map((document) =>
+    const newDocuments = temporalDocuments.map((document) =>
       document.IdDoc === updatedDocument.IdDoc ? updatedDocument : document,
-    );
-    setTemporalDocuments(newDocuments);
-  };
-
-  const handleDeleteDocument = (id: number) => {
-    const newDocuments = temporalDocument.filter(
-      (document) => document.IdDoc !== id,
     );
     setTemporalDocuments(newDocuments);
   };
 
   return (
     <React.Fragment>
-      {temporalDocument.map((document, index) => {
+      {temporalDocuments.map((document, index) => {
         return (
           <DocumentItem
             realDoc={Documents[index]}

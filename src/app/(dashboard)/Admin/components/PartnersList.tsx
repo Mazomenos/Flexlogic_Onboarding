@@ -12,24 +12,24 @@ interface Props {
   Partners: Partner[];
   handleDeleteButton: any;
   handleEditButton: any;
+  temporalPartners: Partner[]
+  setTemporalPartners: React.Dispatch<React.SetStateAction<Partner[]>>
+  handleDeleteTemporalPartner: (id: number) => void;
 }
 
 export default function PartnersList({
   Partners,
   handleEditButton,
   handleDeleteButton,
+  temporalPartners,
+  setTemporalPartners,
+  handleDeleteTemporalPartner
 }: Props) {
-  const [temporalPartners, setTemporalPartners] = React.useState(Partners);
 
   const handleUpdatePartner = (updatedPartner: Partner) => {
     const newPartners = temporalPartners.map((partner) =>
       partner.id === updatedPartner.id ? updatedPartner : partner,
     );
-    setTemporalPartners(newPartners);
-  };
-
-  const handleDeletePartner = (id: number) => {
-    const newPartners = temporalPartners.filter((partner) => partner.id !== id);
     setTemporalPartners(newPartners);
   };
 
@@ -41,7 +41,7 @@ export default function PartnersList({
             realPartner={Partners[index]}
             partner={partner}
             key={index}
-            handleDeletePartner={handleDeletePartner}
+            handleDeletePartner={handleDeleteTemporalPartner}
             handleUpdatePartner={handleUpdatePartner}
             handleDeleteButton={handleDeleteButton}
             handleEditButton={handleEditButton}

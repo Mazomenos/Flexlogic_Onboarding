@@ -91,7 +91,8 @@ export default function DocumentItem({
         <div className="basis-1/6 flex justify-center">
           <ActionsButton
             itemId={document.IdDoc}
-            handleDeleteButton={handleDeleteButton}
+            handleDeleteButton={() =>
+              handleDeleteButton(document.IdDoc)}
             handleEditButton={handleEditButton}
           />
         </div>

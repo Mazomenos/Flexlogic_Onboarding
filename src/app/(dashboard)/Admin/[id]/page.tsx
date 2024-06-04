@@ -60,19 +60,40 @@ export default function Home() {
     },
   ]);
 
+  // Created a 'Mirror' list, this will prevent db calls when a user changes visibility or mandatory status,
+  // and will only update in database once the user selects save button.
+  const [temporalDocument, setTemporalDocuments] = React.useState(edi);
+
+  // Function that handles the visibility of drawer, attached to ActionsButton.tsx
   const handleEditButton = (id: number) => {
     setSelectedDocumentId(id);
     setDrawerOpen(true);
   };
 
-  const deleteItem = (id: number | undefined) => {
+  // This function deletes an item from the 'Mirror' temporal EDI list, so the user does not need to refresh the page
+  // to see the list without the items.
+  const deleteTemporalItem = (id: number | undefined) => {
+    const newDocuments = temporalDocument.filter(
+      (document) => document.IdDoc !== id,
+    );
+    setTemporalDocuments(newDocuments);
+  };
+
+  // #FIXME: change this function to controllers.
+  // This functions must delete an item from the database
+  const deleteDatabaseItem = (id: number | undefined) => {
+    // Check if this
     setIsOpen(false);
-    setEdi((prevEdi) => prevEdi.filter((doc) => doc.IdDoc !== id));
+    deleteTemporalItem(id);
+    const newEDI = edi.filter((document) => document.IdDoc !== id);
+    setEdi(newEDI);
   };
 
   const selectedDocument = edi.find((edi) => edi.IdDoc === selectedDocumentId);
 
-  const handleDeleteButton = (id: number) => {
+
+  // Function that handles the visibility of delete modal, attached to ActionsButton.tsx
+  const handleDeleteActionButton = (id: number) => {
     setSelectedDocumentId(id);
     setIsOpen(true);
   };
@@ -110,8 +131,11 @@ export default function Home() {
             </div>
           </ListItem>
           <DocumentsList
+            handleDeleteDocument={deleteTemporalItem}
+            temporalDocuments={temporalDocument}
+            setTemporalDocuments={setTemporalDocuments}
             Documents={edi}
-            handleDeleteButton={handleDeleteButton}
+            handleDeleteButton={handleDeleteActionButton}
             handleEditButton={handleEditButton}
           />
         </div>
@@ -127,7 +151,7 @@ export default function Home() {
           <div className="my-3" />
           <div className="w-[60%] flex flex-col sm:flex-row justify-between">
             <CancelButton onClick={() => setIsOpen(false)} />
-            <DeleteButton onClick={() => deleteItem(selectedDocument?.IdDoc)} />
+            <DeleteButton onClick={() => deleteDatabaseItem(selectedDocument?.IdDoc)} />
           </div>
         </Modal>
       </div>

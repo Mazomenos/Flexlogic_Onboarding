@@ -51,8 +51,8 @@ export default function AddDocument() {
                   name="delimiters"
                   className="p-2 border-b-2 border-primary-content/50 dark:border-darkMode-foreground/60 dark:bg-transparent focus:border-blue-300 dark:focus:border-info-content focus:outline-none focus:border-primary-content/50 focus:border-b-2"
                 >
-                  {EdiDocument.map((item) => (
-                    <option value={item.value} className="dark:text-white dark:bg-darkMode-base-100">{item.label}</option>
+                  {EdiDocument.map((item, index) => (
+                    <option key={index} value={item.value} className="dark:text-white dark:bg-darkMode-base-100">{item.label}</option>
                   ))}
 
                 </select>
@@ -64,9 +64,9 @@ export default function AddDocument() {
                   name="ediVersion"
                   className="p-2 border-b-2 border-primary-content/50 dark:border-darkMode-foreground/60 dark:bg-transparent focus:border-blue-300 dark:focus:border-info-content focus:outline-none focus:border-primary-content/50 focus:border-b-2"
                 >
-                  {delimitersOptions.map((option) => (
+                  {delimitersOptions.map((option,index) => (
                     <option
-                      key={option.value}
+                      key={index}
                       value={option.value}
                       className="dark:text-white dark:bg-darkMode-base-100"
                     >
@@ -82,9 +82,9 @@ export default function AddDocument() {
                   name="ediVersion"
                   className="p-2 border-b-2 border-primary-content/50 dark:border-darkMode-foreground/60 dark:bg-transparent focus:border-blue-300 dark:focus:border-info-content focus:outline-none focus:border-primary-content/50 focus:border-b-2"
                 >
-                  {eolOptions.map((option) => (
+                  {eolOptions.map((option, index) => (
                     <option
-                      key={option.value}
+                      key={index}
                       value={option.value}
                       className="dark:text-white dark:bg-darkMode-base-100"
                     >

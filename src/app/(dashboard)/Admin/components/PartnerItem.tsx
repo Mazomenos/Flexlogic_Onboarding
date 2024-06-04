@@ -65,7 +65,7 @@ export default function PartnerItem({
         <div className="basis-1/6 flex justify-center">
           <ActionsButton
             itemId={partner.id}
-            handleDeleteButton={handleDeleteButton}
+            handleDeleteButton={() => handleDeleteButton(partner.id)}
             handleEditButton={handleEditButton}
           />
         </div>
