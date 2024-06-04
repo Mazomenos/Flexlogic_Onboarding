@@ -52,19 +52,7 @@ export default function AddPartner() {
                                 className="appearance-none p-2 border-b-2 border-primary-content/50 dark:border-darkMode-foreground/60 dark:bg-transparent focus:border-blue-300 dark:focus:border-info-content focus:outline-none focus:border-b-2"
                             />
                         </div>
-                        <div className="flex flex-col">
-                            <label htmlFor="urlImage">
-                                URL Image
-                            </label>
-                            <input
-                                type="text"
-                                id="urlImage"
-                                name="urlImage"
-                                placeholder="Write the URL of the image"
-                                className="p-2 border-b-2 border-primary-content/50 dark:border-darkMode-foreground/60 dark:bg-transparent focus:border-blue-300 dark:focus:border-info-content focus:outline-none focus:border-primary-content/50 focus:border-b-2"
-                            />
-                        </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                             <div className="flex flex-col">
                                 <label htmlFor="delimiters">
                                     Delimiters
@@ -75,7 +63,7 @@ export default function AddPartner() {
                                     className="p-2 border-b-2 border-primary-content/50 dark:border-darkMode-foreground/60 dark:bg-transparent focus:border-blue-300 dark:focus:border-info-content focus:outline-none focus:border-primary-content/50 focus:border-b-2"
                                 >
                                     {delimitersOptions.map(option => (
-                                        <option key={option.value} value={option.value}>
+                                        <option key={option.value} value={option.value} className="dark:text-white dark:bg-darkMode-base-100">
                                             {option.label}
                                         </option>
                                     ))}
@@ -91,14 +79,12 @@ export default function AddPartner() {
                                     className="p-2 border-b-2 border-primary-content/50 dark:border-darkMode-foreground/60 dark:bg-transparent focus:border-blue-300 dark:focus:border-info-content focus:outline-none focus:border-primary-content/50 focus:border-b-2"
                                 >
                                     {ediVersionOptions.map(option => (
-                                        <option key={option.value} value={option.value}>
+                                        <option key={option.value} value={option.value} className="dark:text-white dark:bg-darkMode-base-100">
                                             {option.label}
                                         </option>
                                     ))}
                                 </select>
                             </div>
-                        </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div className="flex flex-col">
                                 <label htmlFor="eol">
                                     EOL
@@ -109,18 +95,11 @@ export default function AddPartner() {
                                     className="p-2 border-b-2 border-primary-content/50 dark:border-darkMode-foreground/60 dark:bg-transparent focus:border-blue-300 dark:focus:border-info-content focus:outline-none focus:border-primary-content/50 focus:border-b-2"
                                 >
                                     {eolOptions.map(option => (
-                                        <option key={option.value} value={option.value}>
+                                        <option key={option.value} className="dark:text-white dark:bg-darkMode-base-100" value={option.value}>
                                             {option.label}
                                         </option>
                                     ))}
                                 </select>
-                            </div>
-                            <div className="flex flex-col">
-                                <div className="pt-6">
-                                    <ButtonB onClick={() => setIsOpen(false)} className=" w-full">
-                                        Business Rules
-                                    </ButtonB>
-                                </div>
                             </div>
                         </div>
                         <div className="flex justify-center">
