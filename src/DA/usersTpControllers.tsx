@@ -51,8 +51,22 @@ export async function GetUsersPartnerInfo(userId: string) {
     }
 }
 
-export async function GetUsersDocs(PartnerId: string, UserId: string) {
+export async function GetUsersDocs(UserId: string, PartnerName: string) {
     try {
+
+        const partner = await prisma.tradingPartner.findFirst({
+            where: {
+                Name: PartnerName,
+                
+            }, 
+            select: {
+                id: true,
+                
+            }
+        })
+
+        if (!partner) throw new Error('User not found')
+
         const user = await prisma.user.findFirst({
             where: {
                 id: UserId,
@@ -67,7 +81,7 @@ export async function GetUsersDocs(PartnerId: string, UserId: string) {
         let newData: any[] = []
         for (let i = 0; i < user.Partnerships.length; i++) {
             let partnership = user.Partnerships[i]
-            if (partnership.idPartner === PartnerId) {
+            if (partnership.idPartner === partner.id) {
                 for (let j = 0; j < partnership.Docs.length; j++) {
                     let docData = partnership.Docs[j]
                     newData.push({
@@ -152,15 +166,30 @@ export async function GetUsersLogErrors(PartnerId: string, UserId: string) {
 
 /**
  * 
- * @param PartnerId 
+ * @param PartnerName
  * @param UserId 
  * @param DocId 
  * @returns LogError[]
  * 
  * this controller is used to get the log of Errors of a single partnership file
  */
-export async function GetPartnershipDocLogError(PartnerId: string, UserId: string, DocId: string) {
+export async function GetPartnershipDocLogError(PartnerName: string, UserId: string, DocId: string) {
     try {
+
+        const partner = await prisma.tradingPartner.findFirst({
+            where: {
+                Name: PartnerName,
+                
+            }, 
+            select: {
+                id: true,
+                
+            }
+        })
+
+        if (!partner) throw new Error('User not found')
+
+
         const user = await prisma.user.findUnique({
             where: {
                 id: UserId,
@@ -177,7 +206,7 @@ export async function GetPartnershipDocLogError(PartnerId: string, UserId: strin
         let newData: any[] = []
         for (let i = 0; i < user.Partnerships.length; i++) {
             let partnership = user.Partnerships[i]
-            if (partnership.idPartner === PartnerId) {
+            if (partnership.idPartner === partner.id) {
                 for (let j = 0; j < partnership.Docs.length; j++) {
                     let docData = partnership.Docs[j];
                     // checks if it exist and it is not null

@@ -12,7 +12,7 @@ import { Status } from "../enums/Status";
 import ValidateButton from "../components/ValidateButton";
 import BackButton from "@/components/BackButton";
 import { useRouter } from "next/navigation";
-import { useParams } from 'next/navigation';
+import { useParams} from 'next/navigation';
 import { GetUsersDocs, GetPartnershipDocLogError } from "@/DA/usersTpControllers";
 import UploadModal from "../components/UploadModal";
 import { LogErrors } from "@prisma/client";
@@ -32,11 +32,11 @@ type EDI = {
 
 export default function Home() {
   const router = useRouter();
-  const { id } = useParams<{ id: string }>(); // Specify the param type
+  const { partnerName } = useParams<{ partnerName: string }>(); // Specify the param type
+
 
   //Variables estaticas temporales
   let userID = "665a0753b9c7af2580bc0ad5"
-  let partnershipID = "664d76a8d7412ac29ddf6a1b"
 
   //Integracion
 
@@ -79,9 +79,10 @@ export default function Home() {
    * GetUsersDocs y nos devuelve los documentos
    * de la partnership.
    */
+  
   const getTPDocs = async () => {
     try {
-      const response = await GetUsersDocs(partnershipID,userID)
+      const response = await GetUsersDocs(userID,partnerName)
 
       if (response) {
         const data = await response;
@@ -92,15 +93,17 @@ export default function Home() {
       console.log(error)
     }
   }
+  
 
   /**
    * Este UseEffect se asegura de actualizar la pagina con la ejecucion
    * de la funcion que llama a los datos y actualiza el useState
    */
+
+  
   useEffect(() => {
     getTPDocs()
   }, [])
-
 
   /**
    * Esta funcion asyncronica llama el controlador
@@ -111,7 +114,7 @@ export default function Home() {
   const getErrorLog = async (idDoc: string) => {
     setTPDocID(idDoc)
     try {
-      const response = await GetPartnershipDocLogError(partnershipID,userID, idDoc)
+      const response = await GetPartnershipDocLogError(partnerName,userID, idDoc)
 
       if (response) {
         const data = await response;
@@ -162,7 +165,7 @@ export default function Home() {
           />
         </div>
         <AddButton onClick={() => downloadPOTest()}>
-          Download PO Test {id}<IoMdDownload />
+          Download PO Test {partnerName}<IoMdDownload />
         </AddButton>
         <div>
           {}
