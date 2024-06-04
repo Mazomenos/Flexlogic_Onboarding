@@ -9,7 +9,7 @@ import BrakeRule from "@/components/BrakeRule";
 import BackButton from "@/components/BackButton";
 import AddButton from "@/components/AddButton";
 import { useRouter } from "next/navigation";
-import { GetTPDocsRequired, GetTPVisible, GetUsersPartnerInfo } from "@/DA/usersTpControllers";
+import { GetTPDocsRequired, GetTPVisible, GetUsersPartnerInfo, PostNewPartnership } from "@/DA/usersTpControllers";
 
 type TPDocsRequired = {
   idDoc: string;
@@ -40,11 +40,15 @@ export default function AddPartnership() {
   const [TPDoc, setTPDoc] = useState<TPDocsRequired[] | null>(null);
   const [Partnership, setPartnership] = useState<Partnership[] | null>(null);
 
+  useEffect(() => {
+    getUsersPartnerInfo(),
+    getTPVisible()
+  }, [])
 
   // gets required docs of a trading partner
-  const getTPDocsRequired = async () => {
+  const getTPDocsRequired = async (idPartner: string) => {
     try {
-      const response = await GetTPDocsRequired("665d706a267213074dfcbf7c")
+      const response = await GetTPDocsRequired(idPartner);
 
       if (response) {
         const data = await response;
@@ -54,11 +58,6 @@ export default function AddPartnership() {
       console.log(error)
     }
   }
-
-  useEffect(() => {
-    getTPDocsRequired()
-  }, [])
-
 
   // gets a client partnership info 
   const getUsersPartnerInfo = async () => {
@@ -74,11 +73,6 @@ export default function AddPartnership() {
     }
   }
 
-  useEffect(() => {
-    getUsersPartnerInfo()
-  }, [])
-
-
   // gets a visible trading partner for partnership creation
   const getTPVisible = async () => {
     try {
@@ -93,25 +87,32 @@ export default function AddPartnership() {
     }
   }
 
-  useEffect(() => {
-    getTPVisible()
-  }, [])
-
+  //posts a new partnership
+  const postNewPartnership = async (idPartner:string) => {
+    try {
+      const response = await PostNewPartnership("665a0753b9c7af2580bc0ad5",idPartner)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const handleViewClick = (id: string) => {
     setSelectedPartnershipId(id);
     setIsOpen(false);
     setIsModal2(true);
+    getTPDocsRequired(id)
   };
 
   const selectedPartnership = TPVisible?.find((partner) => partner.id === selectedPartnershipId);
 
-  const handleCreateClick = () => {
-    Partnership?.map((partnership) => {
-      if (partnership.idPartner === selectedPartnershipId) {
-        router.push(`/Cliente/${partnership.idPartner}`);
-      }
-    });
+  const handleCreateClick = async (idPartner:string, partnerName:string) => {
+    try {
+      await postNewPartnership(idPartner);
+      setIsModal2(false);
+      router.push(`/Cliente/${partnerName}`);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -173,9 +174,11 @@ export default function AddPartnership() {
 
         <div className="absolute flex-row bottom-2">
           <div className="inline-block">
-            <GenericButton onClick={() => handleCreateClick()}>
+            {selectedPartnershipId && selectedPartnership && (
+              <GenericButton onClick={() => handleCreateClick(selectedPartnershipId,selectedPartnership?.Name)}>
               Create
             </GenericButton>
+            )}
           </div>
         </div>
       </Modal>

@@ -9,10 +9,9 @@ import BrakeRule from "@/components/BrakeRule";
 import ListItem from "@/components/ListItem";
 import Badge from "./components/Badge";
 import AddPartnership from "./docs/AddPartnership";
-import { useRouter } from "next/navigation";
+import { useRouter} from "next/navigation";
 import { useState, useEffect } from "react";
 import { GetUsersPartnerInfo } from "@/DA/usersTpControllers";
-
 
 type Partnership = {
   idPartner: string;
@@ -56,7 +55,6 @@ export default function Home() {
       </div>
 
       <BrakeRule />
-
       {/* Maps client current partnerships */}
       <div className="max-h-full flex flex-col items-center w-full overflow-y-auto overscroll-none">
         {TPInfo && TPInfo.map((partnership, index) => (

@@ -2,10 +2,14 @@
 
 import { prisma } from "@/libs/prisma";
 
+// import { PrismaClient } from '@prisma/client';
+
+// const prisma = new PrismaClient();
+
 
 export async function GetUsersPartnerInfo(userId: string) {
     try {
-        const userPartnerships = await prisma.user.findFirst({
+        const userPartnerships = await prisma.user.findUnique({
             where: {
                 id: userId
             },
@@ -15,25 +19,15 @@ export async function GetUsersPartnerInfo(userId: string) {
         })
         if (!userPartnerships) throw new Error('User not found')
 
-            const partnerships = userPartnerships.Partnerships;
-            const data = await Promise.all(partnerships.map(async (partnership) => {
-                const tradingPartner = await prisma.tradingPartner.findUnique({
-                    where: {
-                        id: partnership.idPartner
-                    }
-                });
-                
-                if (!tradingPartner) throw new Error('Trading partner not found');
-    
-                return {
-                    idPartner: partnership.idPartner,
-                    Name: tradingPartner.Name,
-                    Status: partnership.Status
-                };
-            }));
-    
-            return data;
+        const partnerships = userPartnerships.Partnerships;
+            
+        const data = partnerships.map(partnership => ({
+            idPartner : partnership.idPartner,
+            Name : partnership.Name,
+            Status : partnership.Status
+        }))
 
+        return data;
     } catch (error) {
         if (error instanceof Error) {
             console.log(
@@ -147,15 +141,7 @@ export async function GetUsersLogErrors(PartnerId: string, UserId: string) {
 }
 
 
-/**
- * 
- * @param PartnerId 
- * @param UserId 
- * @param DocId 
- * @returns LogError[]
- * 
- * this controller is used to get the log of Errors of a single partnership file
- */
+// this controller is used to get the log of Errors of a single partnership file
 export async function GetPartnershipDocLogError(PartnerId: string, UserId: string, DocId: string) {
     try {
         const user = await prisma.user.findUnique({
@@ -169,7 +155,7 @@ export async function GetPartnershipDocLogError(PartnerId: string, UserId: strin
 
 
         if (!user) throw new Error('User not found')
-        
+
 
         let newData: any[] = []
         for (let i = 0; i < user.Partnerships.length; i++) {
@@ -232,9 +218,10 @@ export async function PostNewPartnership(UserId: string, PartnerId: string) {
             throw new Error("Partnership already exists")
         }
 
+
         const newPartnership = {
             idPartner: PartnerId,
-            Name: tradingPartners?.Name,
+            Name: tradingPartners?.Name || "Unknown",
             Status: "In Process",
             Docs: tradingPartners?.DocsRequired.map(doc => ({
                 idDoc: doc.idDoc,
@@ -250,11 +237,11 @@ export async function PostNewPartnership(UserId: string, PartnerId: string) {
             where: { id: UserId },
             data: {
                 Partnerships: {
-                    push: newPartnership 
+                    push: newPartnership
                 }
             },
             include: {
-                Partnerships: true 
+                Partnerships: true
             }
         });
 
@@ -278,11 +265,11 @@ export async function PostNewPartnership(UserId: string, PartnerId: string) {
 export async function GetTPVisible() {
     try {
         const tradingPartners = await prisma.tradingPartner.findMany({
-            where: { 
-                isVisible : true
+            where: {
+                isVisible: true
             }
         });
-        
+
         if (tradingPartners.length === 0) throw new Error('No trading partners found');
 
         return tradingPartners.map(partner => ({
@@ -324,7 +311,7 @@ export async function GetTPDocsRequired(PartnerId: string) {
                 idDoc: docData.idDoc,
                 Doc: docData.Doc,
                 isVisible: docData.isVisible,
-                isRequired : docData.isRequired
+                isRequired: docData.isRequired
             })
         }
         return newData;

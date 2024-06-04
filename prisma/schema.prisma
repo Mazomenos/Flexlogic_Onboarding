@@ -102,6 +102,7 @@ model User {
 
 type Partnership {
   idPartner String
+  Name      String
   Status    String
   Docs      UserDocs[]
 }
