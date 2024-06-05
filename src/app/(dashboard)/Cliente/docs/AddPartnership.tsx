@@ -264,7 +264,7 @@ export default function AddPartnership() {
   const handleCreateClick = () => {
     partnerships.map((partnership) => {
       if (partnership.id === selectedPartnershipId) {
-        router.push(`/Cliente/${partnership.id}`);
+        router.push(`/Cliente/${partnership.name}`);
       }
     });
   };
