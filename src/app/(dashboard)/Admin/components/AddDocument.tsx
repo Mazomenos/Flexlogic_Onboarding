@@ -115,16 +115,17 @@ export default function AddDocument() {
                 </select>
               </div>
             </div>
-
+            <p>EDI Specifications Document </p>
             <div
-              className="flex flex-col text-primary-content/40 dark:text-darkMode-foreground/40 items-center hover:bg-info/30 hover:text-info-content dark:hover:bg-darkMode-info dark:hover:text-darkMode-info-content justify-center border-2 border-dashed border-primary-content/40 dark:border-darkMode-foreground/40 p-6 rounded-lg cursor-pointer hover:border-info-content dark:hover:border-darkMode-info-content transition motion-reduce:transition-none motion-reduce:hover:transform-none"
+              className="flex flex-col mt-0 text-primary-content/40 dark:text-darkMode-foreground/40 items-center hover:bg-info/30 hover:text-info-content dark:hover:bg-darkMode-info dark:hover:text-darkMode-info-content justify-center border-2 border-dashed border-primary-content/40 dark:border-darkMode-foreground/40 p-6 rounded-lg cursor-pointer hover:border-info-content dark:hover:border-darkMode-info-content transition motion-reduce:transition-none motion-reduce:hover:transform-none"
               onClick={handleUploadClick}
+              style={{ marginTop: "0.8rem" }}
             >
               <FaUpload className="text-6xl mb-4" />
               <input
                 type="file"
                 id="fileInput"
-                accept=".pdf,.edi,.txt"
+                accept=".pdf"
                 className="hidden"
                 ref={fileInputRef}
                 onChange={handleFileChange}
