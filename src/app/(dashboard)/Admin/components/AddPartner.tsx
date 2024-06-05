@@ -28,11 +28,15 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import FormModal from "./FormModal";
 import ButtonB from "./ButtonB";
+import { FaUpload } from "react-icons/fa6";
+import { ChangeEvent, useRef, useState } from "react";
 
 const FormSchema = z.object({
-  partnerName: z.string({
-    required_error: "Please input a trading partner name",
-  }),
+  partnerName: z
+    .string({
+      required_error: "Please input a trading partner name",
+    })
+    .min(2, { message: "Please input at least 2 characters" }),
   delimeters: z.string({
     required_error: "Please select a set of delimieters",
   }),
@@ -56,19 +60,47 @@ const eolOptions = [{ value: "LF", label: " ~ " }];
 export default function AddPartner() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
+    defaultValues: {
+      partnerName: "",
+    },
   });
+
+  const [fileName, setFileName] = useState("");
+  const [file, setFile] = useState<File | null>(null);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      setFileName(event.target.files[0].name);
+      setFile(event.target.files[0]);
+    }
+  };
+
+  const handleUploadClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
 
   const router = useRouter();
 
   // !TODO: Here we are going to use a POST method to post to DB
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(JSON.stringify(data, null, 2));
+    const newData = {
+      ...data,
+      partnerName: data.partnerName.split(" ").join("_"),
+    };
+    console.log(JSON.stringify(newData, null, 2));
+    console.log(file);
   }
 
   return (
     <FormModal buttonText="Add Trading Partner +">
-      <DialogTitle className="text-2xl">Add Trading Partner</DialogTitle>
-      <BrakeRule classname="my-1" />
+      <DialogTitle className="text-2xl text-center">
+        Add Trading Partner
+      </DialogTitle>
+      <BrakeRule classname="my-2" />
       <div className="w-full overflow-y-scroll">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -79,7 +111,7 @@ export default function AddPartner() {
                   name="partnerName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel> Partner Name </FormLabel>
+                      <FormLabel className="text-base">Partner Name</FormLabel>
                       <FormControl>
                         <Input
                           placeholder="Type trading partner name"
@@ -92,14 +124,14 @@ export default function AddPartner() {
                 />
               </div>
             </div>
-            <div className="grid px-1 grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid px-1 grid-cols-1 sm:grid-cols-3 gap-4">
               <div className="flex flex-col">
                 <FormField
                   control={form.control}
                   name="delimeters"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel> Delimiters </FormLabel>
+                      <FormLabel className="text-base"> Delimiters </FormLabel>
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}
@@ -128,7 +160,7 @@ export default function AddPartner() {
                   name="ediVersion"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel> EDI Version </FormLabel>
+                      <FormLabel className="text-base"> EDI Version </FormLabel>
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}
@@ -151,16 +183,13 @@ export default function AddPartner() {
                   )}
                 />
               </div>
-            </div>
-
-            <div className="grid px-1 grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="flex flex-col">
                 <FormField
                   control={form.control}
                   name="eol"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel> EOL </FormLabel>
+                      <FormLabel className="text-base"> EOL </FormLabel>
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}
@@ -183,16 +212,31 @@ export default function AddPartner() {
                   )}
                 />
               </div>
-              <div className="flex flex-col">
-                <div className="pt-6">
-                  <ButtonB onClick={() => {}} className=" w-full">
-                    850 Sample
-                  </ButtonB>
-                </div>
-              </div>
+            </div>
+            <p>EDI 850 document sample </p>
+            <div
+              className="flex flex-col mt-0 text-primary-content/40 dark:text-darkMode-foreground/40 items-center hover:bg-info/30 hover:text-info-content dark:hover:bg-darkMode-info dark:hover:text-darkMode-info-content justify-center border-2 border-dashed border-primary-content/40 dark:border-darkMode-foreground/40 p-6 rounded-lg cursor-pointer hover:border-info-content dark:hover:border-darkMode-info-content transition motion-reduce:transition-none motion-reduce:hover:transform-none"
+              onClick={handleUploadClick}
+              style={{ marginTop: "0.8rem" }}
+            >
+              <FaUpload className="text-6xl mb-4" />
+              <input
+                type="file"
+                id="fileInput"
+                accept=".pdf"
+                className="hidden"
+                ref={fileInputRef}
+                onChange={handleFileChange}
+              />
+              <p className="">
+                {fileName
+                  ? fileName
+                  : "Drag & drop a file here or click to upload"}
+              </p>
             </div>
             <div className="p-1 w-full flex justify-center">
               <Button
+                disabled={file == null ? true : false}
                 className="w-36 p-1 text-base bg-info dark:bg-darkMode-primary dark:hover:bg-transparent dark:text-darkMode-base-100 dark:hover:text-darkMode-primary font-bold text-info-content transition motion-reduce:transition-none motion-reduce:hover:transform-none hover:bg-transparent hover:text-brand-blue ring-2 ring-primary hover:ring-primary dark:ring-darkMode-primary hover:border-1"
                 type="submit"
               >

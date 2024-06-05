@@ -83,8 +83,10 @@ export default function AddDocument() {
 
   return (
     <FormModal buttonText="Add Document +">
-      <DialogTitle className="text-2xl">Create Document</DialogTitle>
-      <BrakeRule classname="my-1" />
+      <DialogTitle className="text-2xl text-center">
+        Create Document
+      </DialogTitle>
+      <BrakeRule classname="my-2" />
       <div className="w-full overflow-y-scroll">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -95,7 +97,7 @@ export default function AddDocument() {
                   name="ediType"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel> EDI Type </FormLabel>
+                      <FormLabel className="text-base"> EDI Type </FormLabel>
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}
@@ -120,7 +122,7 @@ export default function AddDocument() {
                   name="delimeters"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel> Delimiters </FormLabel>
+                      <FormLabel className="text-base"> Delimiters </FormLabel>
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}
@@ -149,7 +151,7 @@ export default function AddDocument() {
                   name="eol"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel> EOL </FormLabel>
+                      <FormLabel className="text-base"> EOL </FormLabel>
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}
