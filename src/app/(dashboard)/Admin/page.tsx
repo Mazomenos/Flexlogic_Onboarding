@@ -103,7 +103,7 @@ export default function Home() {
       <div className="max-h-full flex flex-col items-center w-full overflow-y-auto overscroll-none">
         <ListItem>
           <div className="flex flex-row w-full items-center">
-            <p className="basis-3/6">Documents</p>
+            <p className="basis-3/6">Trading Partner</p>
             <p className="basis-1/6 grid justify-items-center content-center">
               Visible
             </p>
