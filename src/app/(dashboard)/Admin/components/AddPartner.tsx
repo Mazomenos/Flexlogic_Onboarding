@@ -223,7 +223,7 @@ export default function AddPartner() {
               <input
                 type="file"
                 id="fileInput"
-                accept=".pdf"
+                accept=".edi,.txt,.example"
                 className="hidden"
                 ref={fileInputRef}
                 onChange={handleFileChange}
