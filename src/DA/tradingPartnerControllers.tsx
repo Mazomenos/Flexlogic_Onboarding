@@ -5,6 +5,28 @@ import { prisma } from "@/libs/prisma";
 import { Partnership, TPDocRequired, TradingPartner } from "@prisma/client";
 
 
+export async function GetAllTradingPartner() {
+    try {
+        const tradingPartner = await prisma.tradingPartner.findMany({
+            
+        });
+        
+        return tradingPartner;
+        
+    } catch (error) {
+        if (error instanceof Error) {
+            console.log(
+                {
+                    message: error.message,
+                },
+                {
+                    status: 500,
+                }
+            );
+        }
+    }
+}
+
 export async function GetTradingPartner(PartnerId: string) {
     try {
         const tradingPartner = await prisma.tradingPartner.findFirst({

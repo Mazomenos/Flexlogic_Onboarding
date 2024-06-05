@@ -42,13 +42,8 @@ export default function Home() {
     getTPInfo()
   }, [])
 
-  function handlePartnershipRedirect(id: number) {
-    partnerships.map((partnership) => {
-      if (partnership.id === id) {
-        router.push(`/Cliente/${partnership.name}`);
-      }
-    });
-    
+  function handlePartnershipRedirect(path: string) {
+    router.push(`/Cliente/${path}`);
   }
 
   return (
