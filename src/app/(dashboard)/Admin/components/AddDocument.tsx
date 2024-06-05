@@ -1,29 +1,61 @@
 "use client";
 
-import { DialogTitle } from "@headlessui/react";
-import Modal from "@/components/Modal";
 import React, { useState, useRef, ChangeEvent } from "react";
 import BrakeRule from "@/components/BrakeRule";
-import AddButton from "@/components/AddButton";
-import { useRouter } from "next/navigation";
 import { FaUpload } from "react-icons/fa";
 
+import { DialogTitle } from "@/components/ui/dialog";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import FormModal from "./FormModal";
+
+// Form main schema, here Zod knows how to validate form data
+const FormSchema = z.object({
+  ediType: z.string({ required_error: "Please select an EDI type" }),
+  delimeters: z.string({ required_error: "Please select delimiters" }),
+  eol: z.string({ required_error: "Please select an EOL" }),
+});
+
+// !TODO: Change to DB data
 const EdiDocument = [
-  { value: "", label: "Choose Document" },
-  { value: "856", label: "EDI 856" },
-  { value: "810", label: "EDI 810" },
+  { key: "856", label: "EDI 856" },
+  { key: "810", label: "EDI 810" },
 ];
 
+// !TODO: Change to DB data
 const delimitersOptions = [
   { value: ",", label: "Comma (,)" },
   { value: ";", label: "Semicolon (;)" },
   { value: "|", label: "Pipe (|)" },
 ];
 
+// !TODO: Change to DB data
 const eolOptions = [{ value: "LF", label: " ~ " }];
 
 export default function AddDocument() {
-  const router = useRouter();
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+  });
+
   const [isOpen, setIsOpenForms] = useState(false);
   const [fileName, setFileName] = useState("");
   const [file, setFile] = useState<File | null>(null);
@@ -43,76 +75,102 @@ export default function AddDocument() {
     }
   };
 
-  const handleOpenModal = () => {
-    setFileName("");
-    setFile(null);
-    setIsOpenForms(true);
-  };
+  // !TODO: Change to post data to DB, the uploaded file is in the
+  // 'file' useState
+  function onSubmit(data: z.infer<typeof FormSchema>) {
+    console.log(JSON.stringify(data, null, 2));
+  }
 
   return (
-    <>
-      <div className="w-full flex justify-end mt-1">
-        <AddButton onClick={handleOpenModal}>Add Document +</AddButton>
-      </div>
-      <Modal isOpen={isOpen} setIsOpen={setIsOpenForms}>
-        <DialogTitle className="text-2xl">Create Document</DialogTitle>
-        <BrakeRule classname="my-3" />
-        <div className="w-full overflow-y-scroll">
-          <form className="space-y-6">
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+    <FormModal buttonText="Add Document +">
+      <DialogTitle className="text-2xl">Create Document</DialogTitle>
+      <BrakeRule classname="my-1" />
+      <div className="w-full overflow-y-scroll">
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <div className="grid px-1 grid-cols-1 sm:grid-cols-3 gap-4 justify-between">
               <div className="flex flex-col">
-                <label htmlFor="ediDocument">EDI Document</label>
-                <select
-                  id="ediDocument"
-                  name="ediDocument"
-                  className="p-2 border-b-2 border-primary-content/50 dark:border-darkMode-foreground/60 dark:bg-transparent focus:border-blue-300 dark:focus:border-info-content focus:outline-none focus:border-primary-content/50 focus:border-b-2"
-                >
-                  {EdiDocument.map((item, index) => (
-                    <option
-                      key={index}
-                      value={item.value}
-                      className="dark:text-white dark:bg-darkMode-base-100"
-                    >
-                      {item.label}
-                    </option>
-                  ))}
-                </select>
+                <FormField
+                  control={form.control}
+                  name="ediType"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel> EDI Type </FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select an EDI document type" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="850">EDI 850</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
               <div className="flex flex-col">
-                <label htmlFor="delimiters">Delimiters</label>
-                <select
-                  id="delimiters"
-                  name="delimiters"
-                  className="p-2 border-b-2 border-primary-content/50 dark:border-darkMode-foreground/60 dark:bg-transparent focus:border-blue-300 dark:focus:border-info-content focus:outline-none focus:border-primary-content/50 focus:border-b-2"
-                >
-                  {delimitersOptions.map((option, index) => (
-                    <option
-                      key={index}
-                      value={option.value}
-                      className="dark:text-white dark:bg-darkMode-base-100"
-                    >
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
+                <FormField
+                  control={form.control}
+                  name="delimeters"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel> Delimiters </FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select a delimiter set" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {delimitersOptions.map((delimiter, index) => (
+                            <SelectItem key={index} value={delimiter.value}>
+                              {delimiter.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
               <div className="flex flex-col">
-                <label htmlFor="eol">EOL</label>
-                <select
-                  id="eol"
+                <FormField
+                  control={form.control}
                   name="eol"
-                  className="p-2 border-b-2 border-primary-content/50 dark:border-darkMode-foreground/60 dark:bg-transparent focus:border-blue-300 dark:focus:border-info-content focus:outline-none focus:border-primary-content/50 focus:border-b-2"
-                >
-                  {eolOptions.map((option, index) => (
-                    <option
-                      key={index}
-                      value={option.value}
-                      className="dark:text-white dark:bg-darkMode-base-100"
-                    >
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel> EOL </FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select a EOL set" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {eolOptions.map((eol, index) => (
+                            <SelectItem key={index} value={eol.value}>
+                              {eol.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
             </div>
             <p>EDI Specifications Document </p>
@@ -137,20 +195,18 @@ export default function AddDocument() {
               </p>
             </div>
 
-            <div className="w-full flex justify-center">
-              <button
-                disabled={file != null ? false : true}
-                className={
-                  "text-base disabled:bg-base-300/30 dark:disabled:bg-darkMode-base-300/30 dark:disabled:border-darkMode-foreground/30 disabled:border-primary-content/30 disabled:cursor-not-allowed disabled:text-primary-content/30 dark:disabled:text-darkMode-foreground/30 font-bold  h-10 border-primary dark:border-darkMode-primary border-2 bg-info dark:bg-darkMode-primary text-info-content dark:text-darkMode-base-100 font-bold hover:bg-transparent dark:hover:bg-transparent hover:text-info-content/70 dark:hover:text-darkMode-primary hover:border-primary dark:hover:border-darkMode-primary transition motion-reduce:transition-none motion-reduce:hover:transform-none w-32"
-                }
-                onClick={() => setIsOpenForms(false)}
+            <div className="p-1 w-full flex justify-center">
+              <Button
+                className="w-28 p-1 text-base bg-info dark:bg-darkMode-primary dark:hover:bg-transparent dark:text-darkMode-base-100 dark:hover:text-darkMode-primary font-bold text-info-content transition motion-reduce:transition-none motion-reduce:hover:transform-none hover:bg-transparent hover:text-brand-blue ring-2 ring-primary hover:ring-primary dark:ring-darkMode-primary hover:border-1"
+                disabled={file == null ? true : false}
+                type="submit"
               >
-                <div> Create </div>
-              </button>
+                Create
+              </Button>
             </div>
           </form>
-        </div>
-      </Modal>
-    </>
+        </Form>
+      </div>
+    </FormModal>
   );
 }
