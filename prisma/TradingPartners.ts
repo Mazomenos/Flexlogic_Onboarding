@@ -5,15 +5,16 @@ export const TradingPartners: TradingPartner[] = [
     Name: "Amazon",
     Initial850EDI: "jejejeje",
     Delimiters: ["*", ">", "~"],
-    EDIVersion: "X12 4010",
+    Version: "X12 4010",
     EOL: "CR",
+    isVisible: true,
     DocsRequired: [
       {
         idDoc: "664d783c5d59cf13115aaec8",
         Doc: "850",
-        Version: "X12 4010",
         isVisible: false,
+        isRequired: true
       },
     ],
   },
-];
+]
