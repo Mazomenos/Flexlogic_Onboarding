@@ -678,6 +678,27 @@ const SystemFile = [
   },
 ];
 
+const SystemFile2 = [
+  {
+    Position: 1,
+    Segment: "ISA",
+    Requirement: "M",
+    Max: "1",
+  },
+  {
+    Position: 2,
+    Segment: "GS",
+    Requirement: "M",
+    Max: "1",
+  },
+  {
+    Position: 3,
+    Segment: "ST",
+    Requirement: "M",
+    Max: "1",
+  },
+];
+
 // Read stream code by Russell Briggs: https://medium.com/@dupski/nodejs-creating-a-readable-stream-from-a-string-e0568597387f
 class ReadableString extends Readable {
   private sent = false;
@@ -719,7 +740,7 @@ export default function Home() {
   const uploadAndParseFile = async () => {
     const contentStream = new ReadableString(String(fileContent));
     const Segments = await ParseEDIfile(contentStream);
-    console.log(ValStructure(SystemFile, Segments, 0, "M", true));
+    console.log(ValStructure(SystemFile2, Segments, 0, "M", true));
   };
 
   return (
