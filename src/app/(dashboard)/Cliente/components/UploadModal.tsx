@@ -2,7 +2,7 @@
 
 import { DialogTitle } from "@headlessui/react";
 import Modal from "@/components/Modal";
-import React from "react";
+import React, { useState} from "react";
 import CancelButton from "@/components/CancelButton";
 import GenericButton from "@/components/GenericButton";
 import { ParseEDIfile } from "@/libs/X12parser/lib/parseEDIfile";
@@ -10,6 +10,7 @@ import { Readable } from "stream";
 import ValStructure from "@/libs/validation/segments";
 import data from "@/libs/validation/elements";
 import { GetTPDocById } from "@/DA/TpDocsController";
+import { uploadFileToAzure, uploadRecentEDI } from "@/DA/fileManagerControllers";
 
 // Read stream code by Russell Briggs: https://medium.com/@dupski/nodejs-creating-a-readable-stream-from-a-string-e0568597387f
 class ReadableString extends Readable {
@@ -29,31 +30,26 @@ class ReadableString extends Readable {
   }
 }
 export default function UploadModal({
-  idDoc,
+  dataUserDoc,
   isOpen,
   setIsOpen
   }:{
-    idDoc: string,
+    dataUserDoc: Array<string>
     isOpen: boolean;
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   }) {
-  const [fileContent, setFileContent] = React.useState<string | null>(null);
-  let cont = 0;
-  // const [message, setMessage] = React.useState<string | null>(null);
-  // const [error, setError] = React.useState<string | null>(null);
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const text = e.target?.result;
-        setFileContent(text as string);
-      };
-      reader.readAsText(file);
-    } else {
-      console.log("Error reading file");
-    }
+  const [fileContent, setFileContent] = useState<string | null>(null);
+  const [uploadUrl, setUploadUrl] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  let cont = 0;
+  const idUser = dataUserDoc[0];
+  const partnerName = dataUserDoc[1];
+  const TPDocID = dataUserDoc[2];
+
+  function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files ? event.target.files[0] : null;
+    setSelectedFile(file);
   };
 
   //---------------Integracion-----------------//
@@ -64,26 +60,46 @@ export default function UploadModal({
    * 
    * QUEDA pendiente que el data reciba delimitadores
    */
-  const uploadAndParseFile = async () => {
-
+  async function uploadAndParseFile() {
     try {
-      const response = await GetTPDocById(idDoc)
-
-      if (response) {
-        const info = await response;
-        console.log("calo")
-        console.log(info.Segments)
-        if (info){
-
-          const contentStream = new ReadableString(String(fileContent));
-          const Segments = await ParseEDIfile(contentStream);
-          console.log(ValStructure(info.Segments, Segments, 0, "M", true));
-          data(info.Segments, Segments, [])
-        }
+      if (selectedFile) {
+        const base64 = await readFileAsBase64(selectedFile);
+        const url = await uploadRecentEDI(dataUserDoc, {
+          name: selectedFile.name,
+          type: selectedFile.type,
+          data: base64,
+        });
+        setUploadUrl(url);
+        console.log("se subio")
       }
+    
+      // const response = await GetTPDocById(TPDocID) // Es id del documento
+      // if (response) {
+      //   const info = await response;
+      //   console.log("calo")
+      //   console.log(info.Segments)
+      //   if (info){
+
+      //     const contentStream = new ReadableString(String(fileContent));
+      //     const Segments = await ParseEDIfile(contentStream);
+      //     console.log(ValStructure(info.Segments, Segments, 0, "M", true));
+      //     data(info.Segments, Segments, [])
+      //   }
+      // }
     } catch (error) {
       console.log(error)
     }
+  };
+
+  function readFileAsBase64(file: File): Promise<string> {
+      return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+              resolve(reader.result as string);
+          };
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+      });
   };
 
 
@@ -91,7 +107,7 @@ export default function UploadModal({
   return (
     <>
       <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
-        <DialogTitle className="text-2xl">Upload your document {idDoc}</DialogTitle>
+        <DialogTitle className="text-2xl">Upload your document {TPDocID}</DialogTitle>
         <div className="flex flex-col-reverse items-center w-full">
           <input type="file" onChange={handleFileChange} />
           {/* {error && <p>Error: {error}</p>}

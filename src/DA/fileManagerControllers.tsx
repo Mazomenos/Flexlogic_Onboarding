@@ -93,15 +93,70 @@ export async function downloadFileContent(url: string): Promise<{ content: Uint8
     }
 }
 
+export async function uploadRecentEDI(data: Array<string>, file: UploadFile): Promise<string> {
+    try {
+        const idUser = data[0];
+        const partnerName = data[1];
+        const TPDocID = data[2];
+
+        const url = await uploadFileToAzure(file);
+
+        const getTPID = await prisma.tradingPartner.findFirst({
+            where: { Name: partnerName},
+            select: { id: true }
+        })
+        
+        const userPreviousEDI = await prisma.user.findFirst({
+            where: { id: idUser },
+            include: { Partnerships: { include: { Docs: true } } }
+        });
+
+        if (!userPreviousEDI) {
+            throw new Error(`User with ID ${idUser} not found`);
+        }
+
+        // Encuentra el documento específico dentro de las Partnerships
+        let updatedDoc;
+        const updatedPartnerships = userPreviousEDI.Partnerships.map(partnership => {
+            const updatedDocs = partnership.Docs.map(doc => {
+                if (doc.idDoc === TPDocID) {
+                    updatedDoc = { ...doc, DocFile: url };
+                    return updatedDoc;
+                }
+                return doc;
+            });
+            return { ...partnership, Docs: updatedDocs };
+        });
+
+        if (updatedDoc) {
+            await prisma.user.update({
+                where: { id: idUser },
+                data: {
+                    Partnerships: {
+                        set: updatedPartnerships
+                    }
+                }
+            });
+            console.log('Documento actualizado:', updatedDoc);
+            return url;
+        }
+
+        throw new Error(`Failed to retrieve 850 URL`,);
+
+    } catch (error) {
+        throw new Error(`Failed to start` + (error as Error).message);
+    }
+}
+
 /**
    * Funcion asincrona que devuelve la informacion del archivo inicial EDI 850
    * o PO del id del trading partner que recibio como parametro, utiliza la funcion
    * downloadFileContent despues de obtener la Url correspondiente de la base de datos.
 */
-export async function downloadInitial850EDI(idPartner: string): Promise<{ content: Uint8Array, fileName: string, fileType: string }> {
+export async function downloadInitial850EDI(namePartner: string): Promise<{ content: Uint8Array, fileName: string, fileType: string }> {
     try {
         const partnerInitial850 = await prisma.tradingPartner.findFirst({
-            where: { id: idPartner },
+            where: { Name: namePartner },
             select: { Initial850EDI: true }
         })
         if (partnerInitial850?.Initial850EDI) {
