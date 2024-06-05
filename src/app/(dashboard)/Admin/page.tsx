@@ -46,7 +46,7 @@ export default function Home() {
     },
   ]);
 
-// Created a 'Mirror' list of TP, this will prevent db calls when a user changes visibility
+  // Created a 'Mirror' list of TP, this will prevent db calls when a user changes visibility
   // and will only update in database once the user selects save button.
   const [temporalPartners, setTemporalPartners] = React.useState(partners);
 
@@ -62,15 +62,15 @@ export default function Home() {
     setTemporalPartners(newPartners);
   };
 
-
   // #FIXME: change this function to controllers.
   // This functions must delete an item from the database
   function deleteDatabasePartner() {
-    setIsOpen(false)
-    deleteTemporalPartner(selectedPartnershipId)
-    const newTradingPartners = partners.filter((partner) => partner.id !== selectedPartnershipId);
+    setIsOpen(false);
+    deleteTemporalPartner(selectedPartnershipId);
+    const newTradingPartners = partners.filter(
+      (partner) => partner.id !== selectedPartnershipId,
+    );
     setPartners(newTradingPartners);
-    
   }
 
   // Handler that check's delete modal value
@@ -85,8 +85,7 @@ export default function Home() {
     setIsOpen(true);
   };
 
-
-    // Function that redirects the user to the selected TP
+  // Function that redirects the user to the selected TP
   const handleEditButton = (id: number) => {
     partners.map((partner) => {
       if (partner.id === id) {
@@ -96,8 +95,10 @@ export default function Home() {
   };
 
   return (
-    <div className="h-full flex flex-col ">
-      <AddPartner />
+    <div className="h-full flex flex-col">
+      <div className="relative flex justify-center md:justify-end">
+        <AddPartner />
+      </div>
       <BrakeRule />
       <div className="max-h-full flex flex-col items-center w-full overflow-y-auto overscroll-none">
         <ListItem>
@@ -137,9 +138,7 @@ export default function Home() {
           &quot; in the box below
         </p>
         <div className="my-3" />
-        <div
-          className="w-3/4 flex-col flex justify-center"
-        >
+        <div className="w-3/4 flex-col flex justify-center">
           <input
             value={value}
             onChange={handleChange}
