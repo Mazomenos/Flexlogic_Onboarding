@@ -174,6 +174,23 @@ export async function uploadRecentEDI(data: Array<string>, file: UploadFile): Pr
 }
 
 /**
+   * eeee
+*/
+export async function uploadPDFInstructions(url: string): Promise<String> {
+    try {
+
+        
+        console.log("No se de donde sacar esto")
+        return "hay que hacer cambio a base"
+
+    } catch (error) {
+        throw new Error(`Failed to download file from URL ${url}: ${error}`);
+    }
+}
+
+
+
+/**
    * Funcion asincrona que devuelve la informacion del archivo inicial EDI 850
    * o PO del id del trading partner que recibio como parametro, utiliza la funcion
    * downloadFileContent despues de obtener la Url correspondiente de la base de datos.
@@ -197,7 +214,11 @@ export async function downloadInitial850EDI(namePartner: string): Promise<{ cont
 }
 
 /**
-   * Funcion 
+   * Funcion asincrona encargada de encontrar el url para pasar la informacion al 
+   * componente cliente, este mismo recibe un arreglo con tres parametros que son
+   * id del usuario, nombre del partner y id del documento del trading partner.
+   * El proceso empieza al primero encontrar al usuario y el id del partner para 
+   * despues hacer la busqueda manualmente y una vez que se encontro el url la regresa.
 */
 export async function downloadPreviousEDI(data: Array<string>): Promise<{ content: Uint8Array, fileName: string, fileType: string }> {
     try {
@@ -244,6 +265,9 @@ export async function downloadPreviousEDI(data: Array<string>): Promise<{ conten
     }
 }
 
+/**
+   * eeee
+*/
 export async function downloadPDFInstructions(url: string): Promise<String> {
     try {
 
