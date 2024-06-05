@@ -10,7 +10,7 @@ import { Readable } from "stream";
 import ValStructure from "@/libs/validation/segments";
 import data from "@/libs/validation/elements";
 import { GetTPDocById } from "@/DA/TpDocsController";
-import { uploadFileToAzure, uploadRecentEDI } from "@/DA/fileManagerControllers";
+import { uploadRecentEDI } from "@/DA/fileManagerControllers";
 
 // Read stream code by Russell Briggs: https://medium.com/@dupski/nodejs-creating-a-readable-stream-from-a-string-e0568597387f
 class ReadableString extends Readable {
@@ -40,11 +40,7 @@ export default function UploadModal({
   }) {
 
   const [fileContent, setFileContent] = useState<string | null>(null);
-  const [uploadUrl, setUploadUrl] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  let cont = 0;
-  const idUser = dataUserDoc[0];
-  const partnerName = dataUserDoc[1];
   const TPDocID = dataUserDoc[2];
 
   function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -69,23 +65,22 @@ export default function UploadModal({
           type: selectedFile.type,
           data: base64,
         });
-        setUploadUrl(url);
-        console.log("se subio")
+        console.log(url)
       }
     
-      // const response = await GetTPDocById(TPDocID) // Es id del documento
-      // if (response) {
-      //   const info = await response;
-      //   console.log("calo")
-      //   console.log(info.Segments)
-      //   if (info){
+      const response = await GetTPDocById(TPDocID) // Es id del documento
+      if (response) {
+        const info = await response;
+        console.log("calo")
+        console.log(info.Segments)
 
-      //     const contentStream = new ReadableString(String(fileContent));
-      //     const Segments = await ParseEDIfile(contentStream);
-      //     console.log(ValStructure(info.Segments, Segments, 0, "M", true));
-      //     data(info.Segments, Segments, [])
-      //   }
-      // }
+        if (info){
+          const contentStream = new ReadableString(String(fileContent));
+          const Segments = await ParseEDIfile(contentStream);
+          console.log(ValStructure(info.Segments, Segments, 0, "M", true));
+          data(info.Segments, Segments, [])
+        }
+      }
     } catch (error) {
       console.log(error)
     }

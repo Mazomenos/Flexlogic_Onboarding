@@ -36,7 +36,7 @@ export default function Home() {
 
 
   //Variables estaticas temporales
-  let userID = "665f87e6a9e5255375a01b32"
+  let userID = "665fd9f3aa66f44e3054f99b"
 
   //Integracion
 
@@ -129,7 +129,7 @@ export default function Home() {
    * Funcion asincrona cuyo proposito es generar el documento
    * que se descargo, este recibe solamente el id del trading partner
   */
-  const downloadPOTest = async () => {
+  async function downloadPOTest()  {
       try {             
           const fileContent = await downloadInitial850EDI(partnerName);
           const text = String.fromCharCode.apply(null, Array.from(new Uint8Array(fileContent.content)));
@@ -197,7 +197,7 @@ export default function Home() {
           </ListItem>
         ))}
       </div>
-      <Errors isOpen={isErrorModalOpen} setIsOpen={setIsErrorModalOpen} setIsUploadOpen={setIsUploadModalOpen} errorLog={ErrorLog} />
+      <Errors isOpen={isErrorModalOpen} setIsOpen={setIsErrorModalOpen} setIsUploadOpen={setIsUploadModalOpen} errorLog={ErrorLog} dataUserDoc={[userID, partnerName, TPDocID]} />
       <UploadModal isOpen={isUploadModalOpen} setIsOpen={setIsUploadModalOpen} dataUserDoc={[userID, partnerName, TPDocID]}></UploadModal>
     </div>
   );

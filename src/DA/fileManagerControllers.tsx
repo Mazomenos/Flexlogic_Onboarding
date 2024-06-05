@@ -1,5 +1,5 @@
 'use server'
-import { BlobServiceClient, BlockBlobClient } from "@azure/storage-blob";
+import { BlobServiceClient } from "@azure/storage-blob";
 import { PrismaClient } from "@prisma/client";
 
 const connectionString = process.env.AZURE_STORAGE_CONNECTION_STRING;
@@ -22,9 +22,21 @@ type UploadFile = {
     * y con la variable blobServiceCliente hacen la conexion completa, luego 
     * ademas se parte la informacion en un Buffer para su subida.
 */
-export async function uploadFileToAzure(file: UploadFile): Promise<string> {
+export async function uploadFileToAzure(file: UploadFile, extension: string): Promise<string> {
     const containerClient = blobServiceClient.getContainerClient("flexlogicuploaddemo");
-    const blockBlobClient = containerClient.getBlockBlobClient(file.name);
+
+    const regex = /^(.*?)(?:\.([^.]*))?$/g;
+    const match = regex.exec(file.name);
+    if (!match) {
+        throw new Error('Invalid filename: Filename should have at least one extension');
+    }
+
+    const fileNameWithoutExtension = match[1];
+    const originalExtension = match[2] || ''; 
+
+    const newFileName = `${fileNameWithoutExtension}-${extension}.${originalExtension}`;
+
+    const blockBlobClient = containerClient.getBlockBlobClient(newFileName);
 
     const buffer = Buffer.from(file.data.split(',')[1], 'base64');
 
@@ -93,58 +105,71 @@ export async function downloadFileContent(url: string): Promise<{ content: Uint8
     }
 }
 
-export async function uploadRecentEDI(data: Array<string>, file: UploadFile): Promise<string> {
+/**
+   * Funcion asincronica responsable de subir algun archivo a la base de datos en 
+   * y tras generar esa url meterla al campo correspondiente del cliente para poder 
+   * acceder a ella despues.
+   * Esta recibe la informacion del archivo y una arreglo con informacion desde el 
+   * nombre del partner, id del usuario y id del documento del socio que se esta usando
+   * para validar, estas ultimas dos se agregan al nombre del documento en azure para
+   * evitar sobreescritura accidental.
+*/
+export async function uploadRecentEDI(data: Array<string>, file: UploadFile): Promise<Boolean> {
     try {
-        const idUser = data[0];
-        const partnerName = data[1];
-        const TPDocID = data[2];
+        const [idUser, partnerName, TPDocID] = data;
 
-        const url = await uploadFileToAzure(file);
+        // Sube el archivo a Azure junto los primeros 4 caracteres de idUser y TPDocID
+        const url = await uploadFileToAzure(file, idUser.substring(0, 4) + TPDocID.substring(0, 4));
 
-        const getTPID = await prisma.tradingPartner.findFirst({
-            where: { Name: partnerName},
+        // Encuentra el socio comercial por nombre
+        const tradingPartner = await prisma.tradingPartner.findFirst({
+            where: { Name: partnerName },
             select: { id: true }
-        })
-        
-        const userPreviousEDI = await prisma.user.findFirst({
+        });
+
+        if (!tradingPartner) {
+            throw new Error(`Trading partner with name ${partnerName} not found`);
+        }
+
+        const idPartner = tradingPartner.id;
+
+        // Encuentra el usuario
+        const user = await prisma.user.findUnique({
             where: { id: idUser },
-            include: { Partnerships: { include: { Docs: true } } }
+            select: {
+                Partnerships: true
+            }
         });
 
-        if (!userPreviousEDI) {
-            throw new Error(`User with ID ${idUser} not found`);
+        if (!user) {
+            throw new Error('User not found');
         }
 
-        // Encuentra el documento específico dentro de las Partnerships
-        let updatedDoc;
-        const updatedPartnerships = userPreviousEDI.Partnerships.map(partnership => {
-            const updatedDocs = partnership.Docs.map(doc => {
-                if (doc.idDoc === TPDocID) {
-                    updatedDoc = { ...doc, DocFile: url };
-                    return updatedDoc;
-                }
-                return doc;
-            });
-            return { ...partnership, Docs: updatedDocs };
+        // Encuentra la asociación específica
+        const partnershipIndex = user.Partnerships.findIndex(p => p.idPartner === idPartner);
+        if (partnershipIndex === -1) {
+            throw new Error('Partnership not found');
+        }
+
+        // Encuentra el documento específico dentro de la asociación
+        const docIndex = user.Partnerships[partnershipIndex].Docs.findIndex(d => d.idDoc === TPDocID);
+        if (docIndex === -1) {
+            throw new Error('Document not found');
+        }
+
+        // Actualiza el campo DocFile usando Prisma
+        user.Partnerships[partnershipIndex].Docs[docIndex].DocFile = url;
+
+        await prisma.user.update({
+            where: { id: idUser },
+            data: {
+                Partnerships: user.Partnerships
+            }
         });
-
-        if (updatedDoc) {
-            await prisma.user.update({
-                where: { id: idUser },
-                data: {
-                    Partnerships: {
-                        set: updatedPartnerships
-                    }
-                }
-            });
-            console.log('Documento actualizado:', updatedDoc);
-            return url;
-        }
-
-        throw new Error(`Failed to retrieve 850 URL`,);
+        return true
 
     } catch (error) {
-        throw new Error(`Failed to start` + (error as Error).message);
+        throw new Error(`Failed to start: ${(error as Error).message}`);
     }
 }
 
@@ -159,8 +184,11 @@ export async function downloadInitial850EDI(namePartner: string): Promise<{ cont
             where: { Name: namePartner },
             select: { Initial850EDI: true }
         })
-        if (partnerInitial850?.Initial850EDI) {
-            return downloadFileContent(partnerInitial850?.Initial850EDI)
+        if (!partnerInitial850) {
+            throw new Error('Trading Partner not found');
+        }
+        if (partnerInitial850.Initial850EDI) {
+            return downloadFileContent(partnerInitial850.Initial850EDI)
         }
         throw new Error(`Failed to retrieve 850 URL`,);
     } catch (error) {
@@ -169,21 +197,48 @@ export async function downloadInitial850EDI(namePartner: string): Promise<{ cont
 }
 
 /**
-   * Funcion asincrona cuyo proposito es generar el documento
-   * que se descargo, este recibe el id del trading partner 
-   * pues de ahi sacaremos el EDI 850 o PO inicial
+   * Funcion 
 */
-export async function downloadPreviousEDI(idUser: string): Promise<{ content: Uint8Array, fileName: string, fileType: string }> {
+export async function downloadPreviousEDI(data: Array<string>): Promise<{ content: Uint8Array, fileName: string, fileType: string }> {
     try {
-        const userPreviousEDI = await prisma.user.findFirst({
-            where: { id: idUser },
-            include: { Partnerships: true }
-        })
-        if (userPreviousEDI?.Partnerships[0].Docs[0].DocFile) {
-            return downloadFileContent("poner url correspondiente")
-        }
-        throw new Error(`Failed to retrieve 850 URL`,);
+        const [idUser, partnerName, TPDocID] = data;
 
+        const user = await prisma.user.findFirst({
+            where: { id: idUser },
+            select: { Partnerships: true }
+        })
+
+        if (!user) {
+            throw new Error('User not found');
+        }
+
+        const idPartner = await prisma.tradingPartner.findFirst({
+            where: { Name: partnerName },
+            select: { id: true }
+        })
+
+        if (!idPartner) {
+            throw new Error('id of Partner not found');
+        }
+
+        const partnership = user.Partnerships.find(p => p.idPartner === idPartner.id);
+        if (!partnership) {
+            throw new Error('Partnership not found');
+        }
+
+        // Encuentra el documento específico dentro de la asociación
+        const doc = partnership.Docs.find(d => d.idDoc === TPDocID);
+        if (!doc) {
+            throw new Error('Document not found');
+        }
+
+        // Obtiene la URL del archivo desde DocFile
+        const fileUrl = doc.DocFile;
+        if (!fileUrl) {
+            throw new Error('File URL not found in document');
+        }
+
+        return downloadFileContent(fileUrl);
     } catch (error) {
         throw new Error(`Failed to start` + (error as Error).message);
     }

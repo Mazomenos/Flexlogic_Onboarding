@@ -5,6 +5,7 @@ export const Users: User[]  = [
         Partnerships: [
             {
               idPartner: "664d76a8d7412ac29ddf6a1b", // Cambiar por el id del TP
+              Name: "Amazon",
               Status: "In Process",
               Docs: [
                 {

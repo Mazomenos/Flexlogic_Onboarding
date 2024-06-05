@@ -106,6 +106,7 @@ type PartnershipDocs = {
 };
 type UserPartnerships = {
   idPartner: string;
+  Name: string,
   Status: string;
   Docs: PartnershipDocs[];
 };
