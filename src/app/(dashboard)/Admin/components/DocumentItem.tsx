@@ -8,7 +8,7 @@ import ActionsButton from "./ActionsButton";
 import { IoIosSave } from "react-icons/io";
 
 type EDI = {
-  IdDoc: number;
+  idDoc: string;
   Doc: string;
   isVisible: boolean;
   isRequired: boolean;
@@ -18,9 +18,9 @@ interface Props {
   key: number;
   document: EDI;
   handleUpdateDocument: (edi: EDI) => void;
-  handleDeleteDocument: (id: number) => void;
-  handleDeleteButton: (id: number) => void;
-  handleEditButton: (id: number) => void;
+  handleDeleteDocument: (id: string) => void;
+  handleDeleteButton: (id: string) => void;
+  handleEditButton: (id: string) => void;
   realDoc: EDI;
 }
 
@@ -32,21 +32,21 @@ export default function DocumentItem({
   handleDeleteButton,
   realDoc,
 }: Props) {
+
   function handleVisibleClick() {
     handleUpdateDocument({
       ...document,
       isVisible: !document.isVisible,
     });
-    console.log(realDoc);
-    console.log(document);
   }
+  
   const handleMandatoryClick = () =>
     handleUpdateDocument({
       ...document,
       isRequired: !document.isRequired,
     });
 
-  return (
+    return (
     <li className="relative bg-base-100 dark:bg-darkMode-base-100 border-base-300 w-[97%] flex  justify-between items-center flex-row place-items-start mx-1 my-2 px-8 shadow-[0px_0px_10px_1px_#00000024] dark:shadow-[0px_0px_10px_1px_#dadee610] border-1 text-xl py-6">
       <div className="flex flex-row w-full items-center">
         <p className="basis-2/6">{document.Doc} </p>
@@ -90,9 +90,9 @@ export default function DocumentItem({
         </div>
         <div className="basis-1/6 flex justify-center">
           <ActionsButton
-            itemId={document.IdDoc}
+            itemId={document.idDoc}
             handleDeleteButton={() =>
-              handleDeleteButton(document.IdDoc)}
+              handleDeleteButton(document.idDoc)}
             handleEditButton={handleEditButton}
           />
         </div>

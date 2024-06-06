@@ -7,7 +7,7 @@ interface Props {
   children?: React.ReactNode;
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  idDocument: number | null;
+  idDocument: string | null;
 }
 
 export default function DrawerDefault({ open, setOpen, idDocument }: Props) {

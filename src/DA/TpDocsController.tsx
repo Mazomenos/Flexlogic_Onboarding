@@ -1,8 +1,12 @@
 "use server"
 
-import { prisma } from '@/libs/prisma';
+// import { prisma } from '@/libs/prisma';
 import { GetElement } from './elementControllers'
 import { GetSegment } from './segmentControllers'
+
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 export async function GetTPDocsFromPartnership(TPId: string) {
     try {
@@ -54,7 +58,7 @@ export async function GetTPDocsFromPartnership(TPId: string) {
     }
 }
 
-export async function GetTPDocById(TPDocId: string){
+export async function GetTPDocById(TPDocId: string) {
     try {
 
         const TPDoc = await prisma.eDITPDocs.findUnique({
@@ -152,7 +156,7 @@ export async function postTPDoc(TPId: string, DocTemplateNum: number) {
             idDoc: createdTPDoc.id,
             Doc: DocTemplateNum.toString(),
             isVisible: true,
-            isRequired : true
+            isRequired: true
         })
 
         const updatedDocs = await prisma.tradingPartner.update({
@@ -179,21 +183,56 @@ export async function postTPDoc(TPId: string, DocTemplateNum: number) {
     }
 }
 
-export async function updateTPDoc(TPDocId: string, newData: any) {
+export async function updateTPDoc(PartnerId: string, TPDocId: string, newDocument: any) {
     try {
-        const updatedTPDoc = await prisma.eDITPDocs.update({
+        // Find the trading partner
+        const partner = await prisma.tradingPartner.findUnique({
             where: {
-                id: TPDocId
-
+                id: PartnerId
             },
-            data: newData
+            include: {
+                DocsRequired: true
+            }
         });
 
-        if (!updatedTPDoc) {
-            throw new Error('Trading partner doc not found');
+        // Throw error if trading partner not found
+        if (!partner) {
+            throw new Error('Trading partner not found');
         }
 
-        return updatedTPDoc;
+        // Filters DocsRequired data
+        const newData = partner.DocsRequired.filter(docs => docs.idDoc !== TPDocId)
+            .map(docs => ({
+                idDoc: docs.idDoc,
+                Doc: docs.Doc,
+                isRequired: docs.isRequired,
+                isVisible: docs.isVisible
+            }));
+
+        // Add the new document to newData
+        newData.push({
+            idDoc: newDocument.idDoc, 
+            Doc: newDocument.Doc,
+            isRequired: newDocument.isRequired,
+            isVisible: newDocument.isVisible
+        });
+
+        // Update the trading partner with the filtered DocsRequired
+        const updatedPartner = await prisma.tradingPartner.update({
+            where: {
+                id: PartnerId
+            },
+            data: {
+                DocsRequired: {
+                    set: newData
+                }
+            },
+            include: {
+                DocsRequired: true
+            }
+        });
+
+        return updatedPartner;
     } catch (error) {
         if (error instanceof Error) {
             console.log(
@@ -208,29 +247,60 @@ export async function updateTPDoc(TPDocId: string, newData: any) {
     }
 }
 
-export async function deleteTPDoc(TPDocId: string) {
+export async function deleteTPDoc(PartnerId: string, TPDocId: string) {
     try {
-        const deletedTPDoc = await prisma.eDITPDocs.delete({
+        // Find the trading partner
+        const partner = await prisma.tradingPartner.findUnique({
+            where: {
+                id: PartnerId
+            },
+            include: {
+                DocsRequired: true
+            }
+        });
+
+        // Throw error if trading partner not found
+        if (!partner) {
+            throw new Error('Trading partner not found');
+        }
+
+
+        // Filters DocsRequired data
+        const newData = partner.DocsRequired.filter(docs => docs.idDoc !== TPDocId)
+            .map(docs => ({
+                idDoc: docs.idDoc,
+                Doc: docs.Doc,
+                isRequired: docs.isRequired,
+                isVisible: docs.isVisible
+            }));
+
+
+
+        // Deletes entries with the given TPDocId
+        const deletedoc = await prisma.eDITPDocs.delete({
             where: {
                 id: TPDocId
             }
         });
 
-        if (!deletedTPDoc) {
-            throw new Error('Trading partner doc not found');
-        }
-
-        return deletedTPDoc;
-    } catch (error) {
-        if (error instanceof Error) {
-            console.log(
-                {
-                    message: error.message,
-                },
-                {
-                    status: 500,
+        // Update the trading partner with the filtered DocsRequired
+        const updatedPartner = await prisma.tradingPartner.update({
+            where: {
+                id: PartnerId
+            },
+            data: {
+                DocsRequired: {
+                    set: newData
                 }
-            );
-        }
+            },
+            include: {
+                DocsRequired: true
+            }
+        });
+
+        return updatedPartner;
+    } catch (error) {
+        console.error(error);
+        throw new Error('Failed to delete Trading Partner document');
     }
 }
