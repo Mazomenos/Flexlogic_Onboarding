@@ -18,4 +18,9 @@ export default function TimeFormat(data: string, params: IdateAndTimeFormat) {
     const schema = z.string().regex(new RegExp(regularExp))
     const result = schema.safeParse(data)
     console.log(result)
+    if (result.success === false) {
+        return "This element must be in a '" + format + "' format"
+    } else {
+        return ""
+    }
 }

@@ -75,38 +75,43 @@ const equal: Iconditions[] = [
 ]
 */
 
-export default function Conditions(data: string, conditions: Iconditions[], file: Object) {
+export default function Conditions(data: string, conditions: Iconditions[], file?: Object) {
+    let results: string[] = []
+
     //Conditions Loop
     conditions.forEach(condition => {
+        let result = ""
         switch (condition.type) {
             case 'compareData':
-                CompareData(data, condition.params as IcompareData)
+                result = CompareData(data, condition.params as IcompareData)
                 console.log("compareData");
                 break;
 
             case 'decimalPosition':
-                DecimalPosition(data, condition.params as IdecimalCondition)
+                result = DecimalPosition(data, condition.params as IdecimalCondition)
                 console.log("decimalPosition");
                 break;
 
             case 'dateFormat':
-                DateFormat(data, condition.params as IdateAndTimeFormat)
+                result = DateFormat(data, condition.params as IdateAndTimeFormat)
                 console.log("dateFormat");
                 break;
 
             case 'timeFormat':
                 console.log("timeFormat");
-                TimeFormat(data, condition.params as IdateAndTimeFormat)
+                result = TimeFormat(data, condition.params as IdateAndTimeFormat)
                 break;
 
             case 'charLength':
-                charLength(data, condition.params as IcharLength)
+                result = charLength(data, condition.params as IcharLength)
                 console.log("charLength");
                 break;
             case 'idCodes':
-                IdCodes(data, condition.params as IcompareCodes)
+                result = IdCodes(data, condition.params as IcompareCodes)
                 console.log("idCodes");
                 break;
         }
+        results.push(result)
     });
+    return results;
 }
