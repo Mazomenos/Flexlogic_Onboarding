@@ -1,9 +1,9 @@
 "use client";
 import BrakeRule from "@/components/BrakeRule";
 import { useRouter } from "next/navigation";
-
+import { CreatePartner } from "@/DA/tradingPartnerControllers";
 import { DialogTitle } from "@/components/ui/dialog";
-
+import { TradingPartner } from "@prisma/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -32,21 +32,21 @@ import { FaUpload } from "react-icons/fa6";
 import { ChangeEvent, useRef, useState } from "react";
 
 const FormSchema = z.object({
-  partnerName: z
+  Name: z
     .string({
       required_error: "Please input a trading partner name",
     })
     .min(2, { message: "Please input at least 2 characters" }),
-  delimeters: z.string({
+  Delimiters: z.string({
     required_error: "Please select a set of delimieters",
   }),
-  ediVersion: z.string({ required_error: "Please select an EDI version" }),
-  eol: z.string({ required_error: "Please select an EOL" }),
+  Version: z.string({ required_error: "Please select an EDI version" }),
+  EOL: z.string({ required_error: "Please select an EOL" }),
 });
 
 // !TODO: Change to DB call
 const delimitersOptions = [
-  { value: ",", label: "Comma (,)" },
+  { value: ", - @", label: "Comma (,)" },
   { value: ";", label: "Semicolon (;)" },
   { value: "|", label: "Pipe (|)" },
 ];
@@ -61,7 +61,7 @@ export default function AddPartner() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      partnerName: "",
+      Name: "",
     },
   });
 
@@ -86,11 +86,54 @@ export default function AddPartner() {
   const router = useRouter();
 
   // !TODO: Here we are going to use a POST method to post to DB
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    const newData = {
-      ...data,
-      partnerName: data.partnerName.split(" ").join("_"),
+  async function onSubmit(data: {
+    Name: string,
+    Delimiters: string,
+    Version: string,
+    EOL: string,
+  }) {
+
+    //Proceso de string a array para delimiters
+
+    const DelimitersArr = data.Delimiters.split(" ")
+    console.log(DelimitersArr);
+
+    //Proceso de subir documento a la base y recibir url al storage
+    //PENDING
+
+    const newData: {
+      Name: string,
+      Initial850EDI: string, 
+      Delimiters: string[],
+      Version: string,
+      EOL: string,
+      isVisible: boolean
+      DocsRequired: any[]
+    } = {
+      Name: data.Name.split(" ").join("_"),
+      Initial850EDI: "",
+      Delimiters: DelimitersArr,
+      Version: data.Version,
+      EOL: data.EOL,
+      isVisible: false,
+      DocsRequired: []
+
     };
+
+    //Llamada a la base de datos
+    try {
+      const response = await CreatePartner(newData)
+
+      if (response) {
+        const data = await response;
+        console.log(data)
+        if (data) console.log(data)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+
+
     console.log(JSON.stringify(newData, null, 2));
     console.log(file);
   }
@@ -108,7 +151,7 @@ export default function AddPartner() {
               <div className="flex flex-col">
                 <FormField
                   control={form.control}
-                  name="partnerName"
+                  name="Name"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-base">Partner Name</FormLabel>
@@ -128,7 +171,7 @@ export default function AddPartner() {
               <div className="flex flex-col">
                 <FormField
                   control={form.control}
-                  name="delimeters"
+                  name="Delimiters"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-base"> Delimiters </FormLabel>
@@ -157,7 +200,7 @@ export default function AddPartner() {
               <div className="flex flex-col">
                 <FormField
                   control={form.control}
-                  name="ediVersion"
+                  name="Version"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-base"> EDI Version </FormLabel>
@@ -186,7 +229,7 @@ export default function AddPartner() {
               <div className="flex flex-col">
                 <FormField
                   control={form.control}
-                  name="eol"
+                  name="EOL"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-base"> EOL </FormLabel>

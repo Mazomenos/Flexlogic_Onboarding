@@ -62,7 +62,15 @@ export async function GetPartnershipsFromUser(userId: string) {
 }
 
 
-export async function CreatePartner(data: TradingPartner){
+export async function CreatePartner(data: {
+    Name: string,
+    Initial850EDI: string, 
+    Delimiters: string[],
+    Version: string,
+    EOL: string,
+    isVisible: boolean
+    DocsRequired: any[]
+}){
     try {
         const partner = await prisma.tradingPartner.create({
             
