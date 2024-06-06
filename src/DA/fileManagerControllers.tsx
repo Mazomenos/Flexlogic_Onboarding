@@ -34,7 +34,7 @@ export async function uploadFileToAzure(file: UploadFile, extension: string): Pr
     const fileNameWithoutExtension = match[1];
     const originalExtension = match[2] || ''; 
 
-    const newFileName = `${fileNameWithoutExtension}-${extension}.${originalExtension}`;
+    const newFileName = `${fileNameWithoutExtension}_${extension}.${originalExtension}`;
 
     const blockBlobClient = containerClient.getBlockBlobClient(newFileName);
 
@@ -172,23 +172,6 @@ export async function uploadRecentEDI(data: Array<string>, file: UploadFile): Pr
         throw new Error(`Failed to start: ${(error as Error).message}`);
     }
 }
-
-/**
-   * eeee
-*/
-export async function uploadPDFInstructions(url: string): Promise<String> {
-    try {
-
-        
-        console.log("No se de donde sacar esto")
-        return "hay que hacer cambio a base"
-
-    } catch (error) {
-        throw new Error(`Failed to download file from URL ${url}: ${error}`);
-    }
-}
-
-
 
 /**
    * Funcion asincrona que devuelve la informacion del archivo inicial EDI 850
