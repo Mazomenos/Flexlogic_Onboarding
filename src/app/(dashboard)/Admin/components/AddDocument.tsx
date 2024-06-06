@@ -35,20 +35,20 @@ const FormSchema = z.object({
   eol: z.string({ required_error: "Please select an EOL" }),
 });
 
-// !TODO: Change to DB data
+// #TODO: Change to DB data
 const EdiDocument = [
   { key: "856", label: "EDI 856" },
   { key: "810", label: "EDI 810" },
 ];
 
-// !TODO: Change to DB data
+// #TODO: Change to DB data
 const delimitersOptions = [
   { value: ",", label: "Comma (,)" },
   { value: ";", label: "Semicolon (;)" },
   { value: "|", label: "Pipe (|)" },
 ];
 
-// !TODO: Change to DB data
+// #TODO: Change to DB data
 const eolOptions = [{ value: "LF", label: " ~ " }];
 
 export default function AddDocument() {
@@ -75,7 +75,7 @@ export default function AddDocument() {
     }
   };
 
-  // !TODO: Change to post data to DB, the uploaded file is in the
+  // #TODO: Change to post data to DB, the uploaded file is in the
   // 'file' useState
   function onSubmit(data: z.infer<typeof FormSchema>) {
     console.log(JSON.stringify(data, null, 2));

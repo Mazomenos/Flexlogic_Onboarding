@@ -44,17 +44,17 @@ const FormSchema = z.object({
   eol: z.string({ required_error: "Please select an EOL" }),
 });
 
-// !TODO: Change to DB call
+// #TODO: Change to DB call
 const delimitersOptions = [
   { value: ",", label: "Comma (,)" },
   { value: ";", label: "Semicolon (;)" },
   { value: "|", label: "Pipe (|)" },
 ];
 
-// !TODO: Change to DB call
+// #TODO: Change to DB call
 const ediVersionOptions = [{ value: "4010", label: "X12 4010" }];
 
-// !TODO: Change to DB call
+// #TODO: Change to DB call
 const eolOptions = [{ value: "LF", label: " ~ " }];
 
 export default function AddPartner() {
@@ -85,7 +85,7 @@ export default function AddPartner() {
 
   const router = useRouter();
 
-  // !TODO: Here we are going to use a POST method to post to DB
+  // #TODO: Here we are going to use a POST method to post to DB
   function onSubmit(data: z.infer<typeof FormSchema>) {
     const newData = {
       ...data,
