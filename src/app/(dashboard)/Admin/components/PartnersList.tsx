@@ -1,20 +1,13 @@
 import React from "react";
 import PartnerItem from "./PartnerItem";
-
-type Partner = {
-  id: number;
-  companyName: string;
-  ediDoc: string[];
-  visible: boolean;
-};
-
+import { TradingPartnerCard } from "../page";
 interface Props {
-  Partners: Partner[];
+  Partners: TradingPartnerCard[];
   handleDeleteButton: any;
   handleEditButton: any;
-  temporalPartners: Partner[]
-  setTemporalPartners: React.Dispatch<React.SetStateAction<Partner[]>>
-  handleDeleteTemporalPartner: (id: number) => void;
+  temporalPartners: TradingPartnerCard[]
+  setTemporalPartners: React.Dispatch<React.SetStateAction<TradingPartnerCard[]>>
+  handleDeleteTemporalPartner: (id: string) => void;
 }
 
 export default function PartnersList({
@@ -26,7 +19,7 @@ export default function PartnersList({
   handleDeleteTemporalPartner
 }: Props) {
 
-  const handleUpdatePartner = (updatedPartner: Partner) => {
+  const handleUpdatePartner = (updatedPartner: TradingPartnerCard) => {
     const newPartners = temporalPartners.map((partner) =>
       partner.id === updatedPartner.id ? updatedPartner : partner,
     );

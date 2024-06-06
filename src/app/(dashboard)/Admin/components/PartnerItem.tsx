@@ -6,21 +6,17 @@ import { EyeIcon, EyeSlashIcon } from "@heroicons/react/16/solid";
 import React from "react";
 import ActionsButton from "./ActionsButton";
 import { IoIosSave } from "react-icons/io";
+import { TradingPartnerCard } from "../page";
 
-type Partner = {
-  id: number;
-  companyName: string;
-  ediDoc: string[];
-  visible: boolean;
-};
+
 
 interface Props {
-  partner: Partner;
-  handleUpdatePartner: (partner: Partner) => void;
-  handleDeletePartner: (id: number) => void;
-  handleDeleteButton: (id: number) => void;
-  handleEditButton: (id: number) => void;
-  realPartner: Partner;
+  partner: TradingPartnerCard;
+  handleUpdatePartner: (partner: TradingPartnerCard) => void;
+  handleDeletePartner: (id: string) => void;
+  handleDeleteButton: (id: string) => void;
+  handleEditButton: (id: string) => void;
+  realPartner: TradingPartnerCard;
 }
 
 export default function PartnerItem({
@@ -34,7 +30,7 @@ export default function PartnerItem({
   function handleVisibleClick() {
     handleUpdatePartner({
       ...partner,
-      visible: !partner.visible,
+      isVisible: !partner.isVisible,
     });
     console.log(realPartner);
     console.log(partner);
@@ -42,10 +38,10 @@ export default function PartnerItem({
   return (
     <li className="relative bg-base-100 dark:bg-darkMode-base-100 border-base-300 w-[97%] flex  justify-between items-center flex-row place-items-start mx-1 my-2 px-8 shadow-[0px_0px_10px_1px_#00000024] dark:shadow-[0px_0px_10px_1px_#dadee610] border-1 text-xl py-6">
       <div className="flex flex-row w-full items-center">
-        <p className="basis-3/6">{partner.companyName} </p>
+        <p className="basis-3/6">{partner.Name} </p>
         <div className="basis-1/6 grid justify-items-center content-center">
           <button onClick={() => handleVisibleClick()}>
-            {partner.visible ? (
+            {partner.isVisible ? (
               <div
                 className="tooltip tooltip-primary"
                 data-tip="This partner is visible"

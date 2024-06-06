@@ -1,12 +1,13 @@
 "use client";
 import BrakeRule from "@/components/BrakeRule";
 import { useRouter } from "next/navigation";
-import { CreatePartner } from "@/DA/tradingPartnerControllers";
+import { CreateTradingPartner } from "@/DA/tradingPartnerControllers";
 import { DialogTitle } from "@/components/ui/dialog";
 import { TradingPartner } from "@prisma/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+
 
 import {
   Form,
@@ -30,6 +31,7 @@ import FormModal from "./FormModal";
 import ButtonB from "./ButtonB";
 import { FaUpload } from "react-icons/fa6";
 import { ChangeEvent, useRef, useState } from "react";
+import { TradingPartners } from "../../../../../prisma/TradingPartners";
 
 const FormSchema = z.object({
   Name: z
@@ -68,6 +70,8 @@ export default function AddPartner() {
   const [fileName, setFileName] = useState("");
   const [file, setFile] = useState<File | null>(null);
 
+  
+
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -85,6 +89,29 @@ export default function AddPartner() {
 
   const router = useRouter();
 
+  const newTP = async (newData: 
+    {
+      Name: string,
+      Initial850EDI: string, 
+      Delimiters: string[],
+      Version: string,
+      EOL: string,
+      isVisible: boolean
+      DocsRequired: any[]}) => 
+    {
+    try {
+      const response = await CreateTradingPartner(newData)
+
+      if (response) {
+        const data = await response;
+        console.log(data)
+        if (data) return data
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   // !TODO: Here we are going to use a POST method to post to DB
   async function onSubmit(data: {
     Name: string,
@@ -95,6 +122,7 @@ export default function AddPartner() {
 
     //Proceso de string a array para delimiters
 
+    
     const DelimitersArr = data.Delimiters.split(" ")
     console.log(DelimitersArr);
 
@@ -121,18 +149,7 @@ export default function AddPartner() {
     };
 
     //Llamada a la base de datos
-    try {
-      const response = await CreatePartner(newData)
-
-      if (response) {
-        const data = await response;
-        console.log(data)
-        if (data) console.log(data)
-      }
-    } catch (error) {
-      console.log(error)
-    }
-
+    const newTradingPartner = await newTP(newData)
 
     console.log(JSON.stringify(newData, null, 2));
     console.log(file);
@@ -282,6 +299,8 @@ export default function AddPartner() {
                 disabled={file == null ? true : false}
                 className="w-36 p-1 text-base bg-info dark:bg-darkMode-primary dark:hover:bg-transparent dark:text-darkMode-base-100 dark:hover:text-darkMode-primary font-bold text-info-content transition motion-reduce:transition-none motion-reduce:hover:transform-none hover:bg-transparent hover:text-brand-blue ring-2 ring-primary hover:ring-primary dark:ring-darkMode-primary hover:border-1"
                 type="submit"
+                
+                
               >
                 Create
               </Button>

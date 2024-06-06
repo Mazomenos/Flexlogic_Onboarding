@@ -8,69 +8,94 @@ import AddPartner from "./components/AddPartner";
 import { TrashIcon } from "@heroicons/react/16/solid";
 import { useRouter } from "next/navigation";
 import PartnersList from "./components/PartnersList";
+import { useEffect } from "react";
+import { GetAllTradingPartner, DeleteTradingPartner, UpdateTradingPartner } from "@/DA/tradingPartnerControllers";
 
-type Partner = {
-  id: number;
-  companyName: string;
-  ediDoc: string[];
-  visible: boolean;
+export type TradingPartnerCard = {
+  id: string;
+  Name: string,
+  isVisible: boolean
 };
 
 export default function Home() {
   const [isOpen, setIsOpen] = React.useState(false);
   const [selectedPartnershipId, setSelectedPartnershipId] = React.useState<
-    number | null
-  >(null);
+    string
+  >("");
   const [value, setValue] = React.useState("");
 
   const router = useRouter();
 
-  const [partners, setPartners] = React.useState([
-    {
-      id: 1,
-      companyName: "Amazon",
-      ediDoc: ["850", "855", "810", "860"],
-      visible: true,
-    },
-    {
-      id: 2,
-      companyName: "Walmart",
-      ediDoc: ["850", "855", "810", "860"],
-      visible: true,
-    },
-    {
-      id: 3,
-      companyName: "Autozone",
-      ediDoc: ["850", "855", "810", "860"],
-      visible: true,
-    },
-  ]);
+
+
+  const [TradingPartners, setTradingPartners] = React.useState<TradingPartnerCard[]>([])
 
   // Created a 'Mirror' list of TP, this will prevent db calls when a user changes visibility
   // and will only update in database once the user selects save button.
-  const [temporalPartners, setTemporalPartners] = React.useState(partners);
+  const [temporalPartners, setTemporalPartners] = React.useState<TradingPartnerCard[]>([]);
+
+  //Async GET PARTNERS
+  const getAllTP = async () => {
+    try {
+      const response = await GetAllTradingPartner()
+
+      if (response) {
+        const data = await response;
+        console.log(data)
+        if (data) {
+          setTradingPartners(data)
+          setTemporalPartners(data)
+        }
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    getAllTP()
+  }, [])
+
+
 
   // Function that sets the selected partnership into a state
-  const selectedPartnership = partners.find(
-    (partners) => partners.id === selectedPartnershipId,
+  const selectedPartnership = TradingPartners.find(
+    (TradingPartners) => TradingPartners.id === selectedPartnershipId,
   );
 
   // This function deletes an item from the 'Mirror' temporal partners list, so the user does not need to refresh the page
   // to see the list without the items.
-  const deleteTemporalPartner = (id: number | null) => {
+  const deleteTemporalPartner = (id: string | null) => {
+
     const newPartners = temporalPartners.filter((partner) => partner.id !== id);
     setTemporalPartners(newPartners);
   };
 
   // #FIXME: change this function to controllers.
   // This functions must delete an item from the database
-  function deleteDatabasePartner() {
+  async function deleteDatabasePartner() {
     setIsOpen(false);
+
+     //Agregar funcion async DELETE
+
+     try {
+      const del = await DeleteTradingPartner(selectedPartnershipId)
+
+      if (del) {
+        const data = await del;
+        console.log(data)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+
     deleteTemporalPartner(selectedPartnershipId);
-    const newTradingPartners = partners.filter(
+    /*
+    const newTradingPartners = TradingPartners.filter(
       (partner) => partner.id !== selectedPartnershipId,
     );
-    setPartners(newTradingPartners);
+    setTradingPartners(newTradingPartners);
+    */
   }
 
   // Handler that check's delete modal value
@@ -79,17 +104,17 @@ export default function Home() {
   };
 
   // Function that handles the visibility of delete modal, attached to ActionsButton.tsx
-  const handleDeleteButton = (id: number) => {
+  const handleDeleteButton = (id: string) => {
     setSelectedPartnershipId(id);
     setValue("");
     setIsOpen(true);
   };
 
   // Function that redirects the user to the selected TP
-  const handleEditButton = (id: number) => {
-    partners.map((partner) => {
+  const handleEditButton = (id: string) => {
+    TradingPartners.map((partner) => {
       if (partner.id === id) {
-        router.push(`/Admin/${partner.companyName}`);
+        router.push(`/Admin/${partner.Name}`);
       }
     });
   };
@@ -123,18 +148,18 @@ export default function Home() {
             handleDeleteTemporalPartner={deleteTemporalPartner}
             handleEditButton={handleEditButton}
             handleDeleteButton={handleDeleteButton}
-            Partners={partners}
+            Partners={TradingPartners}
           />
         </div>
       </div>
       <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
         <DialogTitle className="text-2xl">Delete Partner</DialogTitle>
         <DialogTitle className="text-xl">
-          {selectedPartnership?.companyName}
+          {selectedPartnership?.Name}
         </DialogTitle>
         <p>
           To confirm, please type &quot;
-          <span className="font-bold">{selectedPartnership?.companyName}</span>
+          <span className="font-bold">{selectedPartnership?.Name}</span>
           &quot; in the box below
         </p>
         <div className="my-3" />
@@ -142,7 +167,7 @@ export default function Home() {
           <input
             value={value}
             onChange={handleChange}
-            placeholder={`Please type ${selectedPartnership?.companyName} to confirm`}
+            placeholder={`Please type ${selectedPartnership?.Name} to confirm`}
             className="w-full outline-none text-lg placeholder:text-primary-content/40 dark:placeholder:text-darkMode-foreground/40 p-3 bg-inherit border-2 rounded-md appearance-none border-error dark:border-darkMode-error focus:bg-base-200 dark:focus:bg-darkMode-base-200"
             type="text"
             name="name"
@@ -150,7 +175,7 @@ export default function Home() {
           <div className="my-3" />
           <button
             className="disabled:bg-base-300/30 dark:disabled:bg-darkMode-base-300/30 dark:disabled:border-darkMode-foreground/30 disabled:cursor-not-allowed disabled:text-primary-content/30 dark:disabled:text-darkMode-foreground/30 font-bold border-2 enabled:border-error dark:enabled:border-darkMode-error enabled:hover:bg-transparent dark:enabled:hover:bg-transparent enabled:text-error-content/70 dark:enabled:text-darkMode-error-content enabled:bg-error dark:enabled:bg-darkMode-error h-12 transition motion-reduce:transition-none motion-reduce:hover:transform-none rounded"
-            disabled={value === selectedPartnership?.companyName ? false : true}
+            disabled={value === selectedPartnership?.Name ? false : true}
             onClick={deleteDatabasePartner}
           >
             <div className="flex relative justify-center flex-row items-center">
