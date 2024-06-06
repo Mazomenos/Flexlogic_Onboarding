@@ -25,7 +25,7 @@ export default function Home() {
     >
       <div className="bg-info w-screen h-screen dark:bg-darkMode-base-200">
         <div className="flex flex-col items-center justify-center h-full">
-          <div className="mb-20 mt-32">
+          <div className="mb-20 mt-32 sm:scale-110 md:scale-125 lg:scale-150">
             <FlexLogicLogo />
           </div>
           <div className="flex justify-evenly w-full h-full">
