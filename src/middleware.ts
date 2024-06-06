@@ -7,7 +7,7 @@ export async function middleware(req: NextRequest){
 
 
     if (req.nextUrl.pathname === '/') {
-        response.cookies.set("userID", "hola")
+        response.cookies.set("userID", "665a0753b9c7af2580bc0ad5")
     }
 
     if (req.nextUrl.pathname.startsWith('/Cliente')) {

@@ -2,16 +2,47 @@
 
 import { prisma } from "@/libs/prisma";
 
+import { cookies } from "next/headers";
+
 // import { PrismaClient } from '@prisma/client';
 
 // const prisma = new PrismaClient();
 
+//FUNCION PARA OBTENER userID de Cookie
+export async function GetUserId() {
+    try {
+        
+        const cookieId = cookies().get('userID')
 
+        if (!cookieId) throw new Error('User not found')
+
+        return cookieId.value
+
+    } catch (error) {
+        if (error instanceof Error) {
+            console.log(
+                {
+                    message: error.message,
+                },
+                {
+                    status: 500,
+                }
+            );
+        }
+    }
+}
+
+//PRUEBA DE ACCEDER A COOKIE DIRECTO EN CONTROLADOR
 export async function GetUsersPartnerInfo(userId: string) {
     try {
+
+        const cookie = await GetUserId()
+
+        console.log(cookie)
+
         const userPartnerships = await prisma.user.findUnique({
             where: {
-                id: userId
+                id: cookie
             },
             include: {
                 Partnerships: true
