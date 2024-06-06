@@ -9,21 +9,31 @@ import AddButon from "@/components/AddButton";
 import { IoMdDownload } from "react-icons/io";
 import GenericButton from "@/components/GenericButton";
 import ErrorItem from "./ErrorItem";
+import { downloadPreviousEDI } from "@/DA/fileManagerControllers";
+import { saveAs } from 'file-saver';
 
 export default function Errors({
   isOpen,
   setIsOpen,
   setIsUploadOpen,
-  errorLog
+  errorLog,
+  dataUserDoc,
 }: {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setIsUploadOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  errorLog: any[]
+  errorLog: any[];
+  dataUserDoc: Array<string>;
 }) {
 
-  const download = () => {
-    console.log("Downloaded");
+  async function download() {
+    try {             
+      const fileContent = await downloadPreviousEDI(dataUserDoc);
+      const text = String.fromCharCode.apply(null, Array.from(new Uint8Array(fileContent.content)));
+      saveAs(new Blob([text], { type: 'text/plain' }), fileContent.fileName);
+    } catch (err) {
+      console.log('Error downloading file: ' + (err as Error).message);
+    }
   };
 
   return (

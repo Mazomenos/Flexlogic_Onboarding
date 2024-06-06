@@ -36,7 +36,7 @@ export default function Home() {
 
 
   //Variables estaticas temporales
-  let userID = "665a0753b9c7af2580bc0ad5"
+  let userID = "665fd9f3aa66f44e3054f99b"
 
   //Integracion
 
@@ -129,15 +129,11 @@ export default function Home() {
    * Funcion asincrona cuyo proposito es generar el documento
    * que se descargo, este recibe solamente el id del trading partner
   */
-  const downloadPOTest = async () => {
-      try {
-          if (partnershipID) {              
-              const fileContent = await downloadInitial850EDI(partnershipID);
-              const text = String.fromCharCode.apply(null, Array.from(new Uint8Array(fileContent.content)));
-              saveAs(new Blob([text], { type: 'text/plain' }), fileContent.fileName);
-          } else {
-              console.log('No file available for download');
-          }
+  async function downloadPOTest()  {
+      try {             
+          const fileContent = await downloadInitial850EDI(partnerName);
+          const text = String.fromCharCode.apply(null, Array.from(new Uint8Array(fileContent.content)));
+          saveAs(new Blob([text], { type: 'text/plain' }), fileContent.fileName);
       } catch (err) {
           console.log('Error downloading file: ' + (err as Error).message);
       }
@@ -201,8 +197,8 @@ export default function Home() {
           </ListItem>
         ))}
       </div>
-      <Errors isOpen={isErrorModalOpen} setIsOpen={setIsErrorModalOpen} setIsUploadOpen={setIsUploadModalOpen} errorLog={ErrorLog} />
-      <UploadModal isOpen={isUploadModalOpen} setIsOpen={setIsUploadModalOpen} idDoc={TPDocID}></UploadModal>
+      <Errors isOpen={isErrorModalOpen} setIsOpen={setIsErrorModalOpen} setIsUploadOpen={setIsUploadModalOpen} errorLog={ErrorLog} dataUserDoc={[userID, partnerName, TPDocID]} />
+      <UploadModal isOpen={isUploadModalOpen} setIsOpen={setIsUploadModalOpen} dataUserDoc={[userID, partnerName, TPDocID]}></UploadModal>
     </div>
   );
 }

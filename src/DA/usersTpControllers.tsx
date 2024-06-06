@@ -1,14 +1,15 @@
 "use server"
 
-import { prisma } from "@/libs/prisma";
+// import { prisma } from "@/libs/prisma";
 
-// import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 
-// const prisma = new PrismaClient();
+const prisma = new PrismaClient();
 
 
 export async function GetUsersPartnerInfo(userId: string) {
     try {
+        console.log("hola:", userId)
         const userPartnerships = await prisma.user.findUnique({
             where: {
                 id: userId
@@ -18,7 +19,6 @@ export async function GetUsersPartnerInfo(userId: string) {
             }
         })
         if (!userPartnerships) throw new Error('User not found')
-
         const partnerships = userPartnerships.Partnerships;
             
         const data = partnerships.map(partnership => ({

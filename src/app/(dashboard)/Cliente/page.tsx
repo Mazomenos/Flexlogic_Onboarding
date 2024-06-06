@@ -26,7 +26,7 @@ export default function Home() {
   // gets client partnership information
   const getTPInfo = async () => {
     try {
-      const response = await GetUsersPartnerInfo("665a0753b9c7af2580bc0ad5")
+      const response = await GetUsersPartnerInfo("665fd9f3aa66f44e3054f99b")
 
       if (response) {
         const data = await response;
