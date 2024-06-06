@@ -167,25 +167,7 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
       }
     }
   }
-
-  // if (varControlSys < currSystemFile.length - 1 || varControlClient < ClientFile.length) {
-  //   switch(currSystemFile[varControlSys + 1].Requirement) {
-  //     case "M": {
-  //       return { Status: "Failed", Position: varControlClient, Description: `The last Segment ${currSystemFile[varControlSys + 1].Segment} is Mandatory and is not present in your current file!`};
-  //     }
-  //     case "OP": {
-  //       return { Status: "Success" };
-  //     }
-  //   }
-  //   return { Status: "Failed", Position: varControlClient, Description: `There are more segments present in your file than there should be, starting from segment: ${ClientFile[varControlClient - 1].name}` };
-  // } else {
-  //   if (repCounter > currSystemFile[varControlSys].Max) {
-  //     console.log("rep final")
-  //     return { Status: "Failed", Position: varControlClient - 1, Description: `Max repetition limit reached for Segment: ${ClientFile[varControlClient - 1].name}`};
-  //   }
-  //   return { Status: "Success" };
-  // }
-
+  
   if (varControlClient < ClientFile.length) {
     return "Failed more segments present in your file"
   }

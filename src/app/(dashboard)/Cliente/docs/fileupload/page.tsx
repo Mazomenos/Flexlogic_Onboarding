@@ -695,7 +695,7 @@ const SystemFile2 = [
     Position: 3,
     Segment: "ST",
     Requirement: "M",
-    Max: "1",
+    Max: "2",
   },
 ];
 
