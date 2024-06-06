@@ -36,7 +36,7 @@ export default function ActionsButton({
         >
           <MenuItems
             anchor="bottom end"
-            className="w-52 origin-top-right bg-base-100 dark:bg-darkMode-base-100 rounded-xl border border-base-200/80 dark:border-white/5 p-1 text-sm/6 text-primary-content dark:text-darkMode-foreground [--anchor-gap:var(--spacing-1)] focus:outline-none"
+            className="w-52 z-40 origin-top-right bg-base-100 dark:bg-darkMode-base-100 rounded-xl border border-base-200/80 dark:border-white/5 p-1 text-sm/6 text-primary-content dark:text-darkMode-foreground [--anchor-gap:var(--spacing-1)] focus:outline-none"
           >
             <MenuItem>
               <button
