@@ -60,27 +60,13 @@ export default function DrawerDefault({
       </div>
       <div className=" px-3  overflow-y-auto overscroll-none">
         <SidebarItem></SidebarItem>
-        <SidebarItem></SidebarItem>
-        <SidebarItem></SidebarItem>
-        <SidebarItem></SidebarItem>
-        <SidebarItem></SidebarItem>
-        <SidebarItem></SidebarItem>
-        <SidebarItem></SidebarItem>
-        <SidebarItem></SidebarItem>
-        <SidebarItem></SidebarItem>
-        <SidebarItem></SidebarItem>
-        <SidebarItem></SidebarItem>
-        <SidebarItem></SidebarItem>
-        <SidebarItem></SidebarItem>
-        <SidebarItem></SidebarItem>
-        <SidebarItem></SidebarItem>
       </div>
       <div
         className="absolute top-0 left-0 h-full w-2 cursor-ew-resize"
         onMouseDown={handleMouseDown}
       />
 
-      <div className="w-full">
+      <div className="w-full mt-2 flex justify-end">
         <GenericButton onClick={() => {}}>Create </GenericButton>
       </div>
     </Drawer>
