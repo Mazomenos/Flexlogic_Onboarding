@@ -34,3 +34,20 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+## Migrate Database
+
+To be able to migrate and run the seeder first make sure to have all the necessary configurations if you want to run it locally since we are using mongoDB as the main database so you'll need a replica set which you can find how to do it here [Documentation](https://pris.ly/d/mongodb-replica-set)
+We recommend doing it directly on MongoDB Atlas since is easier and faster to set up.
+
+If you have your database in MongoDB ready you just have to run the following lines:
+
+> [!WARNING]
+> The seed command will ERASE all documents and collections in the database that have the same name as those defined in the schema. Make sure to back up any necessary data before running the seed command.
+
+```bash
+npx prisma generate
+# then
+npx prisma db seed
+```
+

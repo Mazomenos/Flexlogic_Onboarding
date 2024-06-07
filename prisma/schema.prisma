@@ -4,16 +4,121 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
-generator client {
-  provider = "prisma-client-js"
-}
-
 datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
-model test {
-  id   String @id @default(auto()) @map("_id") @db.ObjectId
-  data String
+generator client {
+  provider = "prisma-client-js"
 }
+
+// Individual EDI Element structure
+model EDIElement {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  Name    String
+  Element String
+  Type    String
+  Min     Int
+  Max     Int
+  Version String
+}
+
+// Individual EDI Segment structure
+model EDISegments {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  Segment String
+  Name    String
+  Version String
+
+  Elements Element[]
+}
+
+// Individual EDI Document structure
+model EDITemplateDocuments {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  Doc     Int
+  Version String
+
+  Segments Segment[]
+}
+
+model EDITPDocs {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  Segments Segment[]
+}
+
+type Element {
+  Position    String
+  Element     String
+  Requirement String
+
+  Type String?
+  Min  Int?
+  Max  Int?
+
+  Conditions Json[] // Same structure as type Element
+  Composites Json[] // Same structure as type Element
+}
+
+type Segment {
+  Segment     String
+  Requirement String
+  Max         String
+
+  Position Int?
+
+  Segments Json[] // Same structure as type Segment
+  Elements Element[]
+}
+
+// Trading Partner structure -----------------------
+model TradingPartner {
+  id            String          @id @default(auto()) @map("_id") @db.ObjectId
+  Name          String
+  Initial850EDI String? // id of file if saved somewhere else
+  Delimiters    String[]
+  Version       String
+  EOL           String
+  isVisible     Boolean
+  DocsRequired  TPDocRequired[]
+}
+
+type TPDocRequired {
+  idDoc      String // id from TPDocs
+  Doc        String
+  isVisible  Boolean
+  isRequired Boolean
+}
+
+//--------------------------
+
+// User structure -----------------------
+model User {
+  id           String        @id @default(auto()) @map("_id") @db.ObjectId
+  Partnerships Partnership[]
+}
+
+type Partnership {
+  idPartner String
+  Status    String
+  Docs      UserDocs[]
+}
+
+type UserDocs {
+  Doc        String
+  DocFile    String? // id of file if saved somewhere else
+  isRequired Boolean
+  Status     String // Completed, validated & failed
+  LogErrors  LogErrors[]
+}
+
+type LogErrors {
+  Title       String
+  Description String
+  Position    String
+  Type        String
+}
+
+//--------------------------
