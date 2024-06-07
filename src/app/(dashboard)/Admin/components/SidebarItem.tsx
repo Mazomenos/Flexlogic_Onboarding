@@ -154,17 +154,17 @@ export default function SidebarItem({ children }: { children?: ReactNode }) {
             className="mb-5 shadow-md max-w-full w-full collapse bg-base-100 pb-0 dark:bg-darkMode-base-100 hover:bg-base-200 dark:hover:bg-darkMode-base-200 transition motion-reduce:transition-none motion-reduce:hover:transform-none rounded-none"
           >
             <AccordionItem value={`item-${templateSegment.Position}`} className="pb-0 w-full">
-              <AccordionTrigger>
+              <AccordionTrigger className="text-lg">
                 <div className="px-2 flex w-full">
-                  <div className="basis-1/12 w-full flex justify-center self-center">{templateSegment.Segment}</div>
-                  <div className="basis-6/12 overflow-hidden text-ellipsis text-left whitespace-nowrap w-full flex self-center">
+                  <div className="basis-1/12 w-full flex justify-center self-center ">{templateSegment.Segment}</div>
+                  <div className="basis-7/12 overflow-hidden text-ellipsis whitespace-nowrap w-full flex self-center  justify-center text-center">
                     {matchingSegment.Name}
                   </div>
-                  <div className="basis-4/12 w-full flex justify-center self-center">
+                  <div className="basis-3/12 w-full flex justify-center self-center ">
                     {templateSegment.Requirement === "M" ? "Mandatory" : "Optional"}
                   </div>
                   <div className="basis-1/12 flex justify-center self-center">
-                    <MinusCircleIcon className="h-7 w-7 text-darkMode-error-content" />
+                    <MinusCircleIcon className={`h-7 w-7 ${templateSegment.Requirement === "M" ? "text-gray-300" : "text-darkMode-error-content"}`} />
                   </div>
                 </div>
               </AccordionTrigger>
@@ -181,17 +181,17 @@ export default function SidebarItem({ children }: { children?: ReactNode }) {
                       className="w-full collapse bg-base-200 dark:bg-darkMode-base-100 hover:bg-base-200 dark:hover:bg-darkMode-base-200 transition motion-reduce:transition-none motion-reduce:hover:transform-none rounded-none"
                     >
                       <AccordionItem value={`item-${element.Position}`}>
-                        <AccordionTrigger className="text-lg">
+                        <AccordionTrigger className="text-md">
                           <div className="px-2 flex w-full">
                             <div className="basis-2/12 w-full">{element.Position}</div>
-                            <div className="basis-5/12 overflow-hidden text-ellipsis text-left whitespace-nowrap flex self-center">
+                            <div className="basis-5/12 overflow-hidden text-ellipsis whitespace-nowrap flex self-center">
                               {matchingElement.Name}
                             </div>
                             <div className="basis-1/12 flex justify-center self-center">{element.Requirement}</div>
                             <div className="basis-1/12 flex justify-center self-center">{matchingElement.Min}</div>
                             <div className="basis-1/12 flex justify-center self-center">{matchingElement.Max}</div>
                             <div className="basis-1/12 flex justify-center self-center">
-                              <MinusCircleIcon className="h-6 w-6 text-darkMode-error-content" />
+                              <MinusCircleIcon className={`h-6 w-6 ${element.Requirement === "M" ? "text-gray-300" : "text-darkMode-error-content"}`} />
                             </div>
                           </div>
                         </AccordionTrigger>
