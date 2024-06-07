@@ -12,6 +12,7 @@ export const TradingPartners: TradingPartner[] = [
       {
         idDoc: "664d783c5d59cf13115aaec8",
         Doc: "850",
+        instructionsPDF: "",
         isVisible: false,
         isRequired: true
       },
