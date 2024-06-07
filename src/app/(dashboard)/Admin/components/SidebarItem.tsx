@@ -14,6 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { ReactNode } from "react";
+import { MinusCircleIcon } from "@heroicons/react/24/outline";
 
 export default function SidebarItem({ children }: { children?: ReactNode }) {
   return (
@@ -25,11 +26,12 @@ export default function SidebarItem({ children }: { children?: ReactNode }) {
       <AccordionItem value="item-1" className="pb-0 w-full">
         <AccordionTrigger>
           <div className="px-2 flex w-full">
-            <div className="basis-1/12 w-full"> ST </div>
-            <div className="basis-7/12 overflow-hidden text-ellipsis text-left whitespace-nowrap w-full">
+            <div className="basis-1/12 w-full flex justify-center self-center"> ST </div>
+            <div className="basis-6/12 overflow-hidden text-ellipsis text-left whitespace-nowrap w-full flex self-center">
               Transaction set header number
             </div>
-            <div className="basis-4/12 w-full"> Mandatory </div>
+            <div className="basis-4/12 w-full flex justify-center self-center"> Mandatory </div>
+            <div className="basis-1/12 flex justify-center self-center"> <MinusCircleIcon className="h-7 w-7 text-darkMode-error-content"/> </div>
           </div>
         </AccordionTrigger>
         <AccordionContent className="pb-0">
@@ -41,13 +43,14 @@ export default function SidebarItem({ children }: { children?: ReactNode }) {
             <AccordionItem value="item-1">
               <AccordionTrigger className="text-lg">
                 <div className="px-2 flex w-full">
-                  <div className="basis-2/12 w-full"> ST-02 </div>
-                  <div className="basis-6/12 overflow-hidden text-ellipsis text-left whitespace-nowrap">
+                  <div className="basis-2/12 w-full "> ST-02 </div>
+                  <div className="basis-5/12 overflow-hidden text-ellipsis text-left whitespace-nowrap flex self-center">
                     Transaction set control number
                   </div>
-                  <div className="basis-1/12"> M </div>
-                  <div className="basis-1/12"> 3 </div>
-                  <div className="basis-1/12"> 3 </div>
+                  <div className="basis-1/12 flex justify-center self-center"> M </div>
+                  <div className="basis-1/12 flex justify-center self-center"> 3 </div>
+                  <div className="basis-1/12 flex justify-center self-center"> 3 </div>
+                  <div className="basis-1/12 flex justify-center self-center"> <MinusCircleIcon className="h-6 w-6 text-darkMode-error-content"/> </div>
                 </div>
               </AccordionTrigger>
               <AccordionContent className="flex mt-2 justify-center">
