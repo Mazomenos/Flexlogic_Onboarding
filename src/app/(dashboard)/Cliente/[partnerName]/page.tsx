@@ -174,7 +174,6 @@ export default function Home() {
         {TPDocs && TPDocs.map((partnership, index) => (
           <ListItem
             key={index}
-            path={partnership.Status == Status.FAILED ? partnership.Doc : ""}
             onClick={() => {openError(true); getErrorLog(partnership.idDoc)}}
           >
             <div className="flex flex-row w-full items-center">
@@ -187,20 +186,23 @@ export default function Home() {
               <p className="basis-1/5">
                 {partnership.isRequired ? "Mandatory" : "Optional"}{" "}
               </p>
+              <div className="basis-1/5 flex justify-center">
               <Button
                 variant="outline"
+                onClick={()=>{console.log("Downloaded")}}
                 className={
-                  "basis-1/5 dark:bg-darkMode-base-100 hover:dark:bg-darkMode-base-200 dark:border-darkMode-base-200"
+                  "dark:bg-darkMode-base-100 hover:dark:bg-darkMode-base-200 dark:border-darkMode-base-200"
                 }
                 size="icon"
               >
                 <ArrowDownTrayIcon className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
                 <span className="sr-only">Download document</span>
               </Button>
+              </div>
               <div className="basis-1/5 flex justify-end">
                 {partnership.Status == Status.VALIDATE ? (
                   <ValidateButton onClick={() => {openUpload(true); setTPDocID(partnership.idDoc)}}>{partnership.Status}</ValidateButton>
-                ) : (
+                ) : partnership.Status === Status.FAILED ? <ValidateButton onClick={() => {openError(true); setTPDocID(partnership.idDoc)}}>{partnership.Status}</ValidateButton> : (
                   <Badge status={partnership.Status} />
                 )}
               </div>
