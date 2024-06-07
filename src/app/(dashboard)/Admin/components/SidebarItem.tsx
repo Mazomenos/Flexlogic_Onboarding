@@ -18,127 +18,12 @@ import { MinusCircleIcon } from "@heroicons/react/24/outline";
 import { EDITemplateDocument } from "../../../../../prisma/interfaces/EDIInterfaces";
 import { EDIElement } from "../../../../../prisma/interfaces/EDIInterfaces";
 import { EDISegment } from "../../../../../prisma/interfaces/EDIInterfaces";
+import {EDITemplateDocs} from "../../../../../prisma/EDITemplateDocs";
+import {EDIElements} from "../../../../../prisma/EDIElements";
+import {EDISegments} from "../../../../../prisma/EDISegments";
 
 export default function SidebarItem({ children }: { children?: ReactNode }) {
 
-  const EDITemplateDocs: EDITemplateDocument[] = [
-    {
-      Doc: 850,
-      Version: "X12 4010",
-      Segments: [
-        {
-          Position: 1,
-          Segment: "ST",
-          Requirement: "M",
-          Max: "1"
-        },
-        {
-          Position: 2,
-          Segment: "BEG",
-          Requirement: "M",
-          Max: "1"
-        },
-      ],
-    }
-  ];
-
-  const EDISegments: EDISegment[] = [
-    {
-      Segment: "ST",
-      Name: "Transaction Set Header",
-      Version: "X12 4010",
-      Elements: [
-        {
-          Position: "ST-01",
-          Element: "143",
-          Requirement: "M",
-        },
-        {
-          Position: "ST-02",
-          Element: "329",
-          Requirement: "M",
-        },
-      ],
-    },
-    {
-      Segment: "BEG",
-      Name: "Beginning Segment for Purchase Order",
-      Version: "X12 4010",
-      Elements: [
-        {
-          Position: "BEG-01",
-          Element: "353",
-          Requirement: "M",
-        },
-        {
-          Position: "BEG-02",
-          Element: "92",
-          Requirement: "M",
-        },
-        {
-          Position: "BEG-03",
-          Element: "324",
-          Requirement: "M",
-        },
-        {
-          Position: "BEG-04",
-          Element: "328",
-          Requirement: "OP",
-        },
-      ],
-    },
-  ];
-
-  const EDIElements: EDIElement[] = [
-    {
-      Element: "92",
-      Name: "Purchase Order Type Code",
-      Type: "ID",
-      Min: 2,
-      Max: 2,
-      Version: "X12 4010"
-    },
-    {
-      Element: "143",
-      Name: "Transaction Set Identifier Code",
-      Type: "ID",
-      Min: 3,
-      Max: 3,
-      Version: "X12 4010"
-    },
-    {
-      Element: "324",
-      Name: "Purchase Order Number",
-      Type: "AN",
-      Min: 1,
-      Max: 22,
-      Version: "X12 4010"
-    },
-    {
-      Element: "328",
-      Name: "Release Number",
-      Type: "AN",
-      Min: 1,
-      Max: 30,
-      Version: "X12 4010"
-    },
-    {
-      Element: "329",
-      Name: "Transaction Set Control Number",
-      Type: "AN",
-      Min: 4,
-      Max: 9,
-      Version: "X12 4010"
-    },
-    {
-      Element: "353",
-      Name: "Transaction Set Purpose Code",
-      Type: "ID",
-      Min: 2,
-      Max: 2,
-      Version: "X12 4010"
-    },
-  ];
 
   return (
     <div className="my-5">
@@ -157,7 +42,7 @@ export default function SidebarItem({ children }: { children?: ReactNode }) {
               <AccordionTrigger className="text-lg">
                 <div className="px-2 flex w-full">
                   <div className="basis-1/12 w-full flex justify-center self-center ">{templateSegment.Segment}</div>
-                  <div className="basis-7/12 overflow-hidden text-ellipsis whitespace-nowrap w-full flex self-center  justify-center text-center">
+                  <div className="basis-7/12 overflow-hidden text-ellipsis whitespace-nowrap w-full flex self-center text-center">
                     {matchingSegment.Name}
                   </div>
                   <div className="basis-3/12 w-full flex justify-center self-center ">
