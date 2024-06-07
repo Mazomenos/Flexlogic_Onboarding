@@ -91,7 +91,6 @@ export default function Home() {
 
   const selectedDocument = edi.find((edi) => edi.IdDoc === selectedDocumentId);
 
-
   // Function that handles the visibility of delete modal, attached to ActionsButton.tsx
   const handleDeleteActionButton = (id: number) => {
     setSelectedDocumentId(id);
@@ -151,7 +150,9 @@ export default function Home() {
           <div className="my-3" />
           <div className="w-[60%] flex flex-col sm:flex-row justify-between">
             <CancelButton onClick={() => setIsOpen(false)} />
-            <DeleteButton onClick={() => deleteDatabaseItem(selectedDocument?.IdDoc)} />
+            <DeleteButton
+              onClick={() => deleteDatabaseItem(selectedDocument?.IdDoc)}
+            />
           </div>
         </Modal>
       </div>
@@ -159,6 +160,7 @@ export default function Home() {
         open={drawerOpen}
         setOpen={setDrawerOpen}
         idDocument={selectedDocumentId}
+        documentTitle={selectedDocument?.Doc}
       ></DrawerDefault>
     </>
   );
