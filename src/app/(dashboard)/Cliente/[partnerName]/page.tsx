@@ -18,6 +18,8 @@ import UploadModal from "../components/UploadModal";
 import { LogErrors } from "@prisma/client";
 import { saveAs } from 'file-saver';
 import { downloadInitial850EDI } from "@/DA/fileManagerControllers";
+import { Button } from "@/components/ui/button";
+import { ArrowDownTrayIcon } from "@heroicons/react/16/solid";
 
 
 //Tipo especifico para definir lo que se jala de cada doc de la bd
@@ -182,9 +184,19 @@ export default function Home() {
                 className="grid content-center h-full"
                 size={32}
               />
-              <p className="basis-2/5">
+              <p className="basis-1/5">
                 {partnership.isRequired ? "Mandatory" : "Optional"}{" "}
               </p>
+              <Button
+                variant="outline"
+                className={
+                  "basis-1/5 dark:bg-darkMode-base-100 hover:dark:bg-darkMode-base-200 dark:border-darkMode-base-200"
+                }
+                size="icon"
+              >
+                <ArrowDownTrayIcon className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                <span className="sr-only">Download document</span>
+              </Button>
               <div className="basis-1/5 flex justify-end">
                 {partnership.Status == Status.VALIDATE ? (
                   <ValidateButton onClick={() => {openUpload(true); setTPDocID(partnership.idDoc)}}>{partnership.Status}</ValidateButton>
