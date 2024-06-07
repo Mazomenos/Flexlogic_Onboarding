@@ -2,11 +2,22 @@
 import BrakeRule from "@/components/BrakeRule";
 import { useRouter } from "next/navigation";
 import { CreateTradingPartner } from "@/DA/tradingPartnerControllers";
-import { DialogTitle } from "@/components/ui/dialog";
 import { TradingPartner } from "@prisma/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import CloseButton from "@/components/CloseButton";
+import { Button } from "@/components/ui/button";
 
 
 import {
@@ -26,12 +37,12 @@ import {
 } from "@/components/ui/select";
 
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import FormModal from "./FormModal";
 import ButtonB from "./ButtonB";
 import { FaUpload } from "react-icons/fa6";
 import { ChangeEvent, useRef, useState } from "react";
 import { TradingPartners } from "../../../../../prisma/TradingPartners";
+import { revalidatePath } from "next/cache";
 
 const FormSchema = z.object({
   Name: z
@@ -122,7 +133,6 @@ export default function AddPartner() {
 
     //Proceso de string a array para delimiters
 
-    
     const DelimitersArr = data.Delimiters.split(" ")
     console.log(DelimitersArr);
 
@@ -150,14 +160,30 @@ export default function AddPartner() {
 
     //Llamada a la base de datos
     const newTradingPartner = await newTP(newData)
-
+    router.refresh()
+    //router.push(`/Admin/${newData.Name}`)
     console.log(JSON.stringify(newData, null, 2));
     console.log(file);
   }
 
   return (
-    <FormModal buttonText="Add Trading Partner +">
-      <DialogTitle className="text-2xl text-center">
+    <Dialog>
+        <DialogTrigger asChild>
+          <Button
+            className="w-56 h-12 bg-info dark:border-darkMode-primary dark:bg-darkMode-primary dark:hover:bg-transparent dark:text-darkMode-base-100 dark:hover:text-darkMode-primary text-lg font-semibold text-info-content hover:bg-transparent hover:text-info hover:border-info hover:border-2 shadow transition motion-reduce:transition-none motion-reduce:hover:transform-none"
+            variant="outline"
+          >
+            {"Add Trading Partner +"}
+          </Button>
+        </DialogTrigger>
+        <DialogContent>
+          <div className="w-full flex flex-col justify-center">
+            <DialogClose asChild>
+              <div className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-white transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-slate-950 focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-slate-100 data-[state=open]:text-slate-500 dark:ring-offset-slate-950 dark:focus:ring-slate-300 dark:data-[state=open]:bg-slate-800 dark:data-[state=open]:text-slate-400">
+                <CloseButton onClick={() => {}} />
+              </div>
+            </DialogClose>
+            <DialogTitle className="text-2xl text-center">
         Add Trading Partner
       </DialogTitle>
       <BrakeRule classname="my-2" />
@@ -295,6 +321,7 @@ export default function AddPartner() {
               </p>
             </div>
             <div className="p-1 w-full flex justify-center">
+              
               <Button
                 disabled={file == null ? true : false}
                 className="w-36 p-1 text-base bg-info dark:bg-darkMode-primary dark:hover:bg-transparent dark:text-darkMode-base-100 dark:hover:text-darkMode-primary font-bold text-info-content transition motion-reduce:transition-none motion-reduce:hover:transform-none hover:bg-transparent hover:text-brand-blue ring-2 ring-primary hover:ring-primary dark:ring-darkMode-primary hover:border-1"
@@ -304,10 +331,13 @@ export default function AddPartner() {
               >
                 Create
               </Button>
+             
             </div>
           </form>
         </Form>
       </div>
-    </FormModal>
+          </div>
+        </DialogContent>
+      </Dialog>
   );
 }

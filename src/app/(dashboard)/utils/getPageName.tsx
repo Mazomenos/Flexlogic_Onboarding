@@ -59,6 +59,8 @@ function useGetPageName(currentPath: string) {
   }, [])
 
 
+  
+
 
   let pageName = "";
   const pathParts = currentPath.split("/");
@@ -67,9 +69,11 @@ function useGetPageName(currentPath: string) {
   const partnerNames = Partners.map(p => p.Name.replace(/_/g, " ")); 
 
   if (pathParts.length > 2 && !partnershipNames.includes(icp) && !partnerNames.includes(icp)) {
-    router.push("/404");
-    return ""; 
+
+    router.back()
+
   }
+
 
   if (currentPath === "/Cliente") {
     
