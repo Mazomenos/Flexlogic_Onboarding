@@ -4400,4 +4400,1655 @@ export const EDISegments: EDISegment[] = [
       },
     ],
   },
+  {
+    Segment: "BAK",
+    Name: "Beginning Segment for Purchase Order Acknowledgment",
+    Version: "4010",
+    Elements: [
+      {
+        Position: "BAK-01",
+        Element: "353",
+        Requirement: "M",
+      },
+      {
+        Position: "BAK-02",
+        Element: "587",
+        Requirement: "M",
+      },
+      {
+        Position: "BAK-03",
+        Element: "324",
+        Requirement: "M",
+      },
+      {
+        Position: "BAK-04",
+        Element: "373",
+        Requirement: "M",
+      },
+      {
+        Position: "BAK-05",
+        Element: "328",
+        Requirement: "OP",
+      },
+      {
+        Position: "BAK-06",
+        Element: "326",
+        Requirement: "OP",
+      },
+      {
+        Position: "BAK-07",
+        Element: "367",
+        Requirement: "OP",
+      },
+      {
+        Position: "BAK-08",
+        Element: "127",
+        Requirement: "OP",
+      },
+      {
+        Position: "BAK-09",
+        Element: "373",
+        Requirement: "OP",
+      },
+      {
+        Position: "BAK-10",
+        Element: "640",
+        Requirement: "OP",
+      },
+    ]
+  },
+  {
+    Segment: "ACK",
+    Name: "Line Item Acknowledgment",
+    Version: "4010",
+    Elements: [
+      {
+        Position: "ACK-01",
+        Element: "668",
+        Requirement: "M",
+      },
+      {
+        Position: "ACK-02",
+        Element: "380",
+        Requirement: "C",
+      },
+      {
+        Position: "ACK-03",
+        Element: "355",
+        Requirement: "C",
+      },
+      {
+        Position: "ACK-04",
+        Element: "374",
+        Requirement: "OP",
+      },
+      {
+        Position: "ACK-05",
+        Element: "373",
+        Requirement: "C",
+      },
+      {
+        Position: "ACK-06",
+        Element: "326",
+        Requirement: "OP",
+      },
+      {
+        Position: "ACK-07",
+        Element: "235",
+        Requirement: "C",
+      },
+      {
+        Position: "ACK-08",
+        Element: "234",
+        Requirement: "C",
+      },
+      {
+        Position: "ACK-09",
+        Element: "235",
+        Requirement: "C",
+      },
+      {
+        Position: "ACK-10",
+        Element: "234",
+        Requirement: "C",
+      },
+      {
+        Position: "ACK-11",
+        Element: "235",
+        Requirement: "C",
+      },
+      {
+        Position: "ACK-12",
+        Element: "234",
+        Requirement: "C",
+      },
+      {
+        Position: "ACK-13",
+        Element: "235",
+        Requirement: "C",
+      },
+      {
+        Position: "ACK-14",
+        Element: "234",
+        Requirement: "C",
+      },
+      {
+        Position: "ACK-15",
+        Element: "235",
+        Requirement: "C",
+      },
+      {
+        Position: "ACK-16",
+        Element: "234",
+        Requirement: "C",
+      },
+      {
+        Position: "ACK-17",
+        Element: "235",
+        Requirement: "C",
+      },
+      {
+        Position: "ACK-18",
+        Element: "234",
+        Requirement: "C",
+      },
+      {
+        Position: "ACK-19",
+        Element: "235",
+        Requirement: "C",
+      },
+      {
+        Position: "ACK-20",
+        Element: "234",
+        Requirement: "C",
+      },
+      {
+        Position: "ACK-21",
+        Element: "235",
+        Requirement: "C",
+      },
+      {
+        Position: "ACK-22",
+        Element: "234",
+        Requirement: "C",
+      },
+      {
+        Position: "ACK-23",
+        Element: "235",
+        Requirement: "C",
+      },
+      {
+        Position: "ACK-24",
+        Element: "234",
+        Requirement: "C",
+      },
+      {
+        Position: "ACK-25",
+        Element: "235",
+        Requirement: "C",
+      },
+      {
+        Position: "ACK-26",
+        Element: "234",
+        Requirement: "C",
+      },
+      {
+        Position: "ACK-27",
+        Element: "559",
+        Requirement: "C",
+      },
+      {
+        Position: "ACK-28",
+        Element: "822",
+        Requirement: "C",
+      },
+      {
+        Position: "ACK-29",
+        Element: "1271",
+        Requirement: "C",
+      },
+    ]
+  },
+  {
+    Segment: "BSN",
+    Name: "Beginning Segment for Ship Notice",
+    Version: "4010",
+    Elements: [
+      {
+        Position: "BSN-01",
+        Element: "353",
+        Requirement: "M",
+      },
+      {
+        Position: "BSN-02",
+        Element: "396",
+        Requirement: "M",
+      },
+      {
+        Position: "BSN-03",
+        Element: "373",
+        Requirement: "M",
+      },
+      {
+        Position: "BSN-04",
+        Element: "337",
+        Requirement: "M",
+      },
+      {
+        Position: "BSN-05",
+        Element: "1005",
+        Requirement: "OP",
+      },
+      {
+        Position: "BSN-06",
+        Element: "640",
+        Requirement: "C",
+      },
+      {
+        Position: "BSN-07",
+        Element: "641",
+        Requirement: "OP",
+      },
+    ]
+  },
+  {
+    Segment: "HL",
+    Name: "Hierarchical Level",
+    Version: "4010",
+    Elements: [
+      {
+        Position: "HL-01",
+        Element: "628",
+        Requirement: "M",
+      },
+      {
+        Position: "HL-02",
+        Element: "734",
+        Requirement: "OP",
+      },
+      {
+        Position: "HL-03",
+        Element: "735",
+        Requirement: "M",
+      },
+      {
+        Position: "HL-04",
+        Element: "736",
+        Requirement: "OP",
+      },
+    ]
+  },
+  {
+    Segment: "SN1",
+    Name: "Item Detail (Shipment)",
+    Version: "4010",
+    Elements: [
+      {
+        Position: "SN1-01",
+        Element: "350",
+        Requirement: "OP",
+      },
+      {
+        Position: "SN1-02",
+        Element: "382",
+        Requirement: "M",
+      },
+      {
+        Position: "SN1-03",
+        Element: "355",
+        Requirement: "M",
+      },
+      {
+        Position: "SN1-04",
+        Element: "646",
+        Requirement: "OP",
+      },
+      {
+        Position: "SN1-05",
+        Element: "330",
+        Requirement: "C",
+      },
+      {
+        Position: "SN1-06",
+        Element: "355",
+        Requirement: "C",
+      },
+      {
+        Position: "SN1-07",
+        Element: "728",
+        Requirement: "OP",
+      },
+      {
+        Position: "SN1-08",
+        Element: "668",
+        Requirement: "OP",
+      },
+    ]
+  },
+  {
+    Segment: "PRF",
+    Name: "Purchase Order Reference",
+    Version: "4010",
+    Elements: [
+      {
+        Position: "PRF-01",
+        Element: "324",
+        Requirement: "M",
+      },
+      {
+        Position: "PRF-02",
+        Element: "328",
+        Requirement: "OP",
+      },
+      {
+        Position: "PRF-03",
+        Element: "327",
+        Requirement: "OP",
+      },
+      {
+        Position: "PRF-04",
+        Element: "373",
+        Requirement: "OP",
+      },
+      {
+        Position: "PRF-05",
+        Element: "350",
+        Requirement: "OP",
+      },
+      {
+        Position: "PRF-06",
+        Element: "367",
+        Requirement: "OP",
+      },
+      {
+        Position: "PRF-07",
+        Element: "92",
+        Requirement: "OP",
+      },
+    ]
+  },
+  {
+    Segment: "TSD",
+    Name: "Trailer Shipment Details",
+    Version: "4010",
+    Elements: [
+      {
+        Position: "TSD-01",
+        Element: "350",
+        Requirement: "OP",
+      },
+      {
+        Position: "TSD-02",
+        Element: "219",
+        Requirement: "OP",
+      },
+    ]
+  },
+  {
+    Segment: "LH1",
+    Name: "Hazardous Identification Information",
+    Version: "4010",
+    Elements: [
+      {
+        Position: "LH1-01",
+        Element: "355",
+        Requirement: "M",
+      },
+      {
+        Position: "LH1-02",
+        Element: "80",
+        Requirement: "M",
+      },
+      {
+        Position: "LH1-03",
+        Element: "277",
+        Requirement: "OP",
+      },
+      {
+        Position: "LH1-04",
+        Element: "200",
+        Requirement: "OP",
+      },
+      {
+        Position: "LH1-05",
+        Element: "22",
+        Requirement: "OP",
+      },
+      {
+        Position: "LH1-06",
+        Element: "355",
+        Requirement: "OP",
+      },
+      {
+        Position: "LH1-07",
+        Element: "380",
+        Requirement: "OP",
+      },
+      {
+        Position: "LH1-08",
+        Element: "595",
+        Requirement: "OP",
+      },
+      {
+        Position: "LH1-09",
+        Element: "665",
+        Requirement: "OP",
+      },
+      {
+        Position: "LH1-10",
+        Element: "254",
+        Requirement: "OP",
+      },
+      {
+        Position: "LH1-11",
+        Element: "1375",
+        Requirement: "OP",
+      },
+    ]
+  },
+  {
+    Segment: "LH2",
+    Name: "Hazardous Classification Information",
+    Version: "4010",
+    Elements: [
+      {
+        Position: "LH2-01",
+        Element: "215",
+        Requirement: "OP",
+      },
+      {
+        Position: "LH2-02",
+        Element: "983",
+        Requirement: "OP",
+      },
+      {
+        Position: "LH2-03",
+        Element: "218",
+        Requirement: "OP",
+      },
+      {
+        Position: "LH2-04",
+        Element: "222",
+        Requirement: "OP",
+      },
+      {
+        Position: "LH2-05",
+        Element: "759",
+        Requirement: "OP",
+      },
+      {
+        Position: "LH2-06",
+        Element: "355",
+        Requirement: "C",
+      },
+      {
+        Position: "LH2-07",
+        Element: "408",
+        Requirement: "C",
+      },
+      {
+        Position: "LH2-08",
+        Element: "355",
+        Requirement: "C",
+      },
+      {
+        Position: "LH2-09",
+        Element: "408",
+        Requirement: "C",
+      },
+      {
+        Position: "LH2-10",
+        Element: "355",
+        Requirement: "C",
+      },
+      {
+        Position: "LH2-11",
+        Element: "408",
+        Requirement: "C",
+      },
+    ]
+  },
+  {
+    Segment: "LH3",
+    Name: "Hazardous Material Shipping Name",
+    Version: "4010",
+    Elements: [
+      {
+        Position: "LH3-01",
+        Element: "224",
+        Requirement: "C",
+      },
+      {
+        Position: "LH3-02",
+        Element: "984",
+        Requirement: "C",
+      },
+      {
+        Position: "LH3-03",
+        Element: "985",
+        Requirement: "OP",
+      },
+      {
+        Position: "LH3-04",
+        Element: "1073",
+        Requirement: "OP",
+      },
+    ]
+  },
+  {
+    Segment: "LFH",
+    Name: "Freeform Hazardous Material Information",
+    Version: "4010",
+    Elements: [
+      {
+        Position: "LFH-01",
+        Element: "808",
+        Requirement: "M",
+      },
+      {
+        Position: "LFH-02",
+        Element: "809",
+        Requirement: "M",
+      },
+      {
+        Position: "LFH-03",
+        Element: "809",
+        Requirement: "OP",
+      },
+      {
+        Position: "LFH-04",
+        Element: "1023",
+        Requirement: "OP",
+      },
+      {
+        Position: "LFH-05",
+        Element: "355",
+        Requirement: "C",
+      },
+      {
+        Position: "LFH-06",
+        Element: "380",
+        Requirement: "C",
+      },
+      {
+        Position: "LFH-07",
+        Element: "380",
+        Requirement: "OP",
+      },
+    ]
+  },
+  {
+    Segment: "LEP",
+    Name: "EPA Required Data",
+    Version: "4010",
+    Elements: [
+      {
+        Position: "LEP-01",
+        Element: "806",
+        Requirement: "OP",
+      },
+      {
+        Position: "LEP-02",
+        Element: "807",
+        Requirement: "OP",
+      },
+      {
+        Position: "LEP-03",
+        Element: "156",
+        Requirement: "C",
+      },
+      {
+        Position: "LEP-04",
+        Element: "127",
+        Requirement: "C",
+      },
+    ]
+  },
+  {
+    Segment: "LH4",
+    Name: "Canadian Dangerous Requirements",
+    Version: "4010",
+    Elements: [
+      {
+        Position: "LH4-01",
+        Element: "238",
+        Requirement: "OP",
+      },
+      {
+        Position: "LH4-02",
+        Element: "364",
+        Requirement: "OP",
+      },
+      {
+        Position: "LH4-03",
+        Element: "254",
+        Requirement: "OP",
+      },
+      {
+        Position: "LH4-04",
+        Element: "230",
+        Requirement: "OP",
+      },
+      {
+        Position: "LH4-05",
+        Element: "230",
+        Requirement: "OP",
+      },
+      {
+        Position: "LH4-06",
+        Element: "230",
+        Requirement: "OP",
+      },
+      {
+        Position: "LH4-07",
+        Element: "271",
+        Requirement: "OP",
+      },
+      {
+        Position: "LH4-08",
+        Element: "267",
+        Requirement: "C",
+      },
+      {
+        Position: "LH4-09",
+        Element: "805",
+        Requirement: "OP",
+      },
+      {
+        Position: "LH4-10",
+        Element: "986",
+        Requirement: "OP",
+      },
+      {
+        Position: "LH4-11",
+        Element: "364",
+        Requirement: "OP",
+      },
+      {
+        Position: "LH4-12",
+        Element: "355",
+        Requirement: "C",
+      },
+    ]
+  },
+  {
+    Segment: "LHT",
+    Name: "Transborder Hazardous Requirements",
+    Version: "4010",
+    Elements: [
+      {
+        Position: "LHT-01",
+        Element: "215",
+        Requirement: "OP",
+      },
+      {
+        Position: "LHT-02",
+        Element: "218",
+        Requirement: "OP",
+      },
+      {
+        Position: "LHT-03",
+        Element: "222",
+        Requirement: "OP",
+      },
+    ]
+  },
+  {
+    Segment: "LHR",
+    Name: "Hazardous Material Identifying Reference Numbers",
+    Version: "4010",
+    Elements: [
+      {
+        Position: "LHR-01",
+        Element: "128",
+        Requirement: "M",
+      },
+      {
+        Position: "LHR-02",
+        Element: "127",
+        Requirement: "M",
+      },
+      {
+        Position: "LHR-03",
+        Element: "373",
+        Requirement: "OP",
+      },
+    ]
+  },
+  {
+    Segment: "LHE",
+    Name: "Empty Equipment Hazardous Material Information",
+    Version: "4010",
+    Elements: [
+      {
+        Position: "LHE-01",
+        Element: "224",
+        Requirement: "M",
+      },
+      {
+        Position: "LHE-02",
+        Element: "218",
+        Requirement: "M",
+      },
+      {
+        Position: "LHE-03",
+        Element: "128",
+        Requirement: "M",
+      },
+      {
+        Position: "LHE-04",
+        Element: "127",
+        Requirement: "M",
+      },
+      {
+        Position: "LHE-05",
+        Element: "759",
+        Requirement: "OP",
+      },
+    ]
+  },
+  {
+    Segment: "CLD",
+    Name: "Load Detail",
+    Version: "4010",
+    Elements: [
+      {
+        Position: "CLD-01",
+        Element: "622",
+        Requirement: "M",
+      },
+      {
+        Position: "CLD-02",
+        Element: "382",
+        Requirement: "M",
+      },
+      {
+        Position: "CLD-03",
+        Element: "103",
+        Requirement: "OP",
+      },
+      {
+        Position: "CLD-04",
+        Element: "357",
+        Requirement: "C",
+      },
+      {
+        Position: "CLD-05",
+        Element: "355",
+        Requirement: "OP",
+      },
+    ]
+  },
+  {
+    Segment: "DTP",
+    Name: "Date or Time or Period",
+    Version: "4010",
+    Elements: [
+      {
+        Position: "DTP-01",
+        Element: "374",
+        Requirement: "M",
+      },
+      {
+        Position: "DTP-02",
+        Element: "1250",
+        Requirement: "M",
+      },
+      {
+        Position: "DTP-03",
+        Element: "1251",
+        Requirement: "M",
+      },
+    ]
+  },
+  {
+    Segment: "PAL",
+    Name: "Pallet Information",
+    Version: "4010",
+    Elements: [
+      {
+        Position: "PAL-01",
+        Element: "883",
+        Requirement: "OP",
+      },
+      {
+        Position: "PAL-02",
+        Element: "884",
+        Requirement: "OP",
+      },
+      {
+        Position: "PAL-03",
+        Element: "885",
+        Requirement: "OP",
+      },
+      {
+        Position: "PAL-04",
+        Element: "356",
+        Requirement: "OP",
+      },
+      {
+        Position: "PAL-05",
+        Element: "395",
+        Requirement: "C",
+      },
+      {
+        Position: "PAL-06",
+        Element: "355",
+        Requirement: "C",
+      },
+      {
+        Position: "PAL-07",
+        Element: "82",
+        Requirement: "C",
+      },
+      {
+        Position: "PAL-08",
+        Element: "189",
+        Requirement: "C",
+      },
+      {
+        Position: "PAL-09",
+        Element: "65",
+        Requirement: "C",
+      },
+      {
+        Position: "PAL-10",
+        Element: "355",
+        Requirement: "C",
+      },
+      {
+        Position: "PAL-11",
+        Element: "384",
+        Requirement: "C",
+      },
+      {
+        Position: "PAL-12",
+        Element: "355",
+        Requirement: "C",
+      },
+      {
+        Position: "PAL-13",
+        Element: "385",
+        Requirement: "C",
+      },
+      {
+        Position: "PAL-14",
+        Element: "355",
+        Requirement: "C",
+      },
+      {
+        Position: "PAL-15",
+        Element: "399",
+        Requirement: "OP",
+      },
+      {
+        Position: "PAL-16",
+        Element: "810",
+        Requirement: "OP",
+      },
+    ]
+  },
+  {
+    Segment: "ETD",
+    Name: "Excess Transportation Detail",
+    Version: "4010",
+    Elements: [
+      {
+        Position: "ETD-01",
+        Element: "626",
+        Requirement: "M",
+      },
+      {
+        Position: "ETD-02",
+        Element: "627",
+        Requirement: "M",
+      },
+      {
+        Position: "ETD-03",
+        Element: "128",
+        Requirement: "C",
+      },
+      {
+        Position: "ETD-04",
+        Element: "127",
+        Requirement: "C",
+      },
+      {
+        Position: "ETD-05",
+        Element: "743",
+        Requirement: "OP",
+      },
+    ]
+  },
+  {
+    Segment: "GF",
+    Name: "Furnished Goods and Services",
+    Version: "4010",
+    Elements: [
+      {
+        Position: "GF-01",
+        Element: "128",
+        Requirement: "C",
+      },
+      {
+        Position: "GF-02",
+        Element: "127",
+        Requirement: "C",
+      },
+      {
+        Position: "GF-03",
+        Element: "367",
+        Requirement: "OP",
+      },
+      {
+        Position: "GF-04",
+        Element: "782",
+        Requirement: "OP",
+      },
+      {
+        Position: "GF-05",
+        Element: "128",
+        Requirement: "C",
+      },
+      {
+        Position: "GF-06",
+        Element: "127",
+        Requirement: "C",
+      },
+      {
+        Position: "GF-07",
+        Element: "328",
+        Requirement: "OP",
+      },
+      {
+        Position: "GF-08",
+        Element: "128",
+        Requirement: "C",
+      },
+      {
+        Position: "GF-09",
+        Element: "127",
+        Requirement: "C",
+      },
+    ]
+  },
+  {
+    Segment: "YNQ",
+    Name: "Yes/No Question",
+    Version: "4010",
+    Elements: [
+      {
+        Position: "YNQ-01",
+        Element: "1321",
+        Requirement: "C",
+      },
+      {
+        Position: "YNQ-02",
+        Element: "1073",
+        Requirement: "M",
+      },
+      {
+        Position: "YNQ-03",
+        Element: "1250",
+        Requirement: "C",
+      },
+      {
+        Position: "YNQ-04",
+        Element: "1251",
+        Requirement: "C",
+      },
+      {
+        Position: "YNQ-05",
+        Element: "933",
+        Requirement: "OP",
+      },
+      {
+        Position: "YNQ-06",
+        Element: "933",
+        Requirement: "OP",
+      },
+      {
+        Position: "YNQ-07",
+        Element: "933",
+        Requirement: "OP",
+      },
+      {
+        Position: "YNQ-08",
+        Element: "1270",
+        Requirement: "C",
+      },
+      {
+        Position: "YNQ-09",
+        Element: "1271",
+        Requirement: "C",
+      },
+      {
+        Position: "YNQ-10",
+        Element: "933",
+        Requirement: "C",
+      },
+    ]
+  },
+  {
+    Segment: "V1",
+    Name: "Vessel Identification",
+    Version: "4010",
+    Elements: [
+      {
+        Position: "V1-01",
+        Element: "597",
+        Requirement: "C",
+      },
+      {
+        Position: "V1-02",
+        Element: "182",
+        Requirement: "C",
+      },
+      {
+        Position: "V1-03",
+        Element: "26",
+        Requirement: "OP",
+      },
+      {
+        Position: "V1-04",
+        Element: "55",
+        Requirement: "OP",
+      },
+      {
+        Position: "V1-05",
+        Element: "140",
+        Requirement: "OP",
+      },
+      {
+        Position: "V1-06",
+        Element: "249",
+        Requirement: "OP",
+      },
+      {
+        Position: "V1-07",
+        Element: "854",
+        Requirement: "OP",
+      },
+      {
+        Position: "V1-08",
+        Element: "897",
+        Requirement: "OP",
+      },
+      {
+        Position: "V1-09",
+        Element: "91",
+        Requirement: "OP",
+      },
+    ]
+  },
+  {
+    Segment: "R4",
+    Name: "Port or Terminal",
+    Version: "4010",
+    Elements: [
+      {
+        Position: "R4-01",
+        Element: "115",
+        Requirement: "M",
+      },
+      {
+        Position: "R4-02",
+        Element: "309",
+        Requirement: "C",
+      },
+      {
+        Position: "R4-03",
+        Element: "310",
+        Requirement: "C",
+      },
+      {
+        Position: "R4-04",
+        Element: "114",
+        Requirement: "OP",
+      },
+      {
+        Position: "R4-05",
+        Element: "26",
+        Requirement: "OP",
+      },
+      {
+        Position: "R4-06",
+        Element: "174",
+        Requirement: "OP",
+      },
+      {
+        Position: "R4-07",
+        Element: "113",
+        Requirement: "OP",
+      },
+      {
+        Position: "R4-08",
+        Element: "156",
+        Requirement: "OP",
+      },
+    ]
+  },
+  {
+    Segment: "BIG",
+    Name: "Beginning Segment for Invoice",
+    Version: "4010",
+    Elements: [
+      {
+        Position: "BIG-01",
+        Element: "373",
+        Requirement: "M",
+      },
+      {
+        Position: "BIG-02",
+        Element: "76",
+        Requirement: "M",
+      },
+      {
+        Position: "BIG-03",
+        Element: "373",
+        Requirement: "OP",
+      },
+      {
+        Position: "BIG-04",
+        Element: "324",
+        Requirement: "OP",
+      },
+      {
+        Position: "BIG-05",
+        Element: "328",
+        Requirement: "OP",
+      },
+      {
+        Position: "BIG-06",
+        Element: "327",
+        Requirement: "OP",
+      },
+      {
+        Position: "BIG-07",
+        Element: "640",
+        Requirement: "OP",
+      },
+      {
+        Position: "BIG-08",
+        Element: "353",
+        Requirement: "OP",
+      },
+      {
+        Position: "BIG-09",
+        Element: "306",
+        Requirement: "OP",
+      },
+      {
+        Position: "BIG-10",
+        Element: "76",
+        Requirement: "OP",
+      },
+    ]
+  },
+  {
+    Segment: "NTE",
+    Name: "Note/Special Instruction",
+    Version: "4010",
+    Elements: [
+      {
+        Position: "NTE-01",
+        Element: "363",
+        Requirement: "OP",
+      },
+      {
+        Position: "NTE-02",
+        Element: "352",
+        Requirement: "M",
+      },
+    ]
+  },
+  {
+    Segment: "DMG",
+    Name: "Demographic Information",
+    Version: "4010",
+    Elements: [
+      {
+        Position: "DMG-01",
+        Element: "1250",
+        Requirement: "C",
+      },
+      {
+        Position: "DMG-02",
+        Element: "1251",
+        Requirement: "C",
+      },
+      {
+        Position: "DMG-03",
+        Element: "1068",
+        Requirement: "OP",
+      },
+      {
+        Position: "DMG-04",
+        Element: "1067",
+        Requirement: "OP",
+      },
+      {
+        Position: "DMG-05",
+        Element: "1109",
+        Requirement: "OP",
+      },
+      {
+        Position: "DMG-06",
+        Element: "1066",
+        Requirement: "OP",
+      },
+      {
+        Position: "DMG-07",
+        Element: "26",
+        Requirement: "OP",
+      },
+      {
+        Position: "DMG-08",
+        Element: "659",
+        Requirement: "OP",
+      },
+      {
+        Position: "DMG-09",
+        Element: "380",
+        Requirement: "OP",
+      },
+    ]
+  },
+  {
+    Segment: "L7",
+    Name: "Tariff Reference",
+    Version: "4010",
+    Elements: [
+      {
+        Position: "L7-01",
+        Element: "213",
+        Requirement: "OP",
+      },
+      {
+        Position: "L7-02",
+        Element: "168",
+        Requirement: "OP",
+      },
+      {
+        Position: "L7-03",
+        Element: "171",
+        Requirement: "OP",
+      },
+      {
+        Position: "L7-04",
+        Element: "172",
+        Requirement: "OP",
+      },
+      {
+        Position: "L7-05",
+        Element: "169",
+        Requirement: "OP",
+      },
+      {
+        Position: "L7-06",
+        Element: "170",
+        Requirement: "OP",
+      },
+      {
+        Position: "L7-07",
+        Element: "59",
+        Requirement: "OP",
+      },
+      {
+        Position: "L7-08",
+        Element: "173",
+        Requirement: "OP",
+      },
+      {
+        Position: "L7-09",
+        Element: "46",
+        Requirement: "OP",
+      },
+      {
+        Position: "L7-10",
+        Element: "373",
+        Requirement: "OP",
+      },
+      {
+        Position: "L7-11",
+        Element: "119",
+        Requirement: "OP",
+      },
+      {
+        Position: "L7-12",
+        Element: "227",
+        Requirement: "OP",
+      },
+      {
+        Position: "L7-13",
+        Element: "294",
+        Requirement: "OP",
+      },
+      {
+        Position: "L7-14",
+        Element: "295",
+        Requirement: "OP",
+      },
+      {
+        Position: "L7-15",
+        Element: "19",
+        Requirement: "OP",
+      },
+      {
+        Position: "L7-16",
+        Element: "156",
+        Requirement: "OP",
+      },
+    ]
+  },
+  {
+    Segment: "BAL",
+    Name: "Balance Detail",
+    Version: "4010",
+    Elements: [
+      {
+        Position: "BAL-01",
+        Element: "951",
+        Requirement: "M",
+      },
+      {
+        Position: "BAL-02",
+        Element: "522",
+        Requirement: "M",
+      },
+      {
+        Position: "BAL-03",
+        Element: "782",
+        Requirement: "M",
+      },
+    ]
+  },
+  {
+    Segment: "IT1",
+    Name: "Baseline Item Data (Invoice)",
+    Version: "4010",
+    Elements: [
+      {
+        Position: "IT1-01",
+        Element: "350",
+        Requirement: "OP",
+      },
+      {
+        Position: "IT1-02",
+        Element: "358",
+        Requirement: "C",
+      },
+      {
+        Position: "IT1-03",
+        Element: "355",
+        Requirement: "C",
+      },
+      {
+        Position: "IT1-04",
+        Element: "212",
+        Requirement: "C",
+      },
+      {
+        Position: "IT1-05",
+        Element: "639",
+        Requirement: "OP",
+      },
+      {
+        Position: "IT1-06",
+        Element: "235",
+        Requirement: "C",
+      },
+      {
+        Position: "IT1-07",
+        Element: "234",
+        Requirement: "C",
+      },
+      {
+        Position: "IT1-08",
+        Element: "235",
+        Requirement: "C",
+      },
+      {
+        Position: "IT1-09",
+        Element: "234",
+        Requirement: "C",
+      },
+      {
+        Position: "IT1-10",
+        Element: "235",
+        Requirement: "C",
+      },
+      {
+        Position: "IT1-11",
+        Element: "234",
+        Requirement: "C",
+      },
+      {
+        Position: "IT1-12",
+        Element: "235",
+        Requirement: "C",
+      },
+      {
+        Position: "IT1-13",
+        Element: "234",
+        Requirement: "C",
+      },
+      {
+        Position: "IT1-14",
+        Element: "235",
+        Requirement: "C",
+      },
+      {
+        Position: "IT1-15",
+        Element: "234",
+        Requirement: "C",
+      },
+      {
+        Position: "IT1-16",
+        Element: "235",
+        Requirement: "C",
+      },
+      {
+        Position: "IT1-17",
+        Element: "234",
+        Requirement: "C",
+      },
+      {
+        Position: "IT1-18",
+        Element: "235",
+        Requirement: "C",
+      },
+      {
+        Position: "IT1-19",
+        Element: "234",
+        Requirement: "C",
+      },
+      {
+        Position: "IT1-20",
+        Element: "235",
+        Requirement: "C",
+      },
+      {
+        Position: "IT1-21",
+        Element: "234",
+        Requirement: "C",
+      },
+      {
+        Position: "IT1-22",
+        Element: "235",
+        Requirement: "C",
+      },
+      {
+        Position: "IT1-23",
+        Element: "234",
+        Requirement: "C",
+      },
+      {
+        Position: "IT1-24",
+        Element: "235",
+        Requirement: "C",
+      },
+      {
+        Position: "IT1-25",
+        Element: "234",
+        Requirement: "C",
+      },
+    ]
+  },
+  {
+    Segment: "CRC",
+    Name: "Conditions Indicator",
+    Version: "4010",
+    Elements: [
+      {
+        Position: "CRC-01",
+        Element: "1136",
+        Requirement: "M",
+      },
+      {
+        Position: "CRC-02",
+        Element: "1073",
+        Requirement: "M",
+      },
+      {
+        Position: "CRC-03",
+        Element: "1321",
+        Requirement: "M",
+      },
+      {
+        Position: "CRC-04",
+        Element: "1321",
+        Requirement: "OP",
+      },
+      {
+        Position: "CRC-05",
+        Element: "1321",
+        Requirement: "OP",
+      },
+      {
+        Position: "CRC-06",
+        Element: "1321",
+        Requirement: "OP",
+      },
+      {
+        Position: "CRC-07",
+        Element: "1321",
+        Requirement: "OP",
+      },
+    ]
+  },
+  {
+    Segment: "CAD",
+    Name: "Carrier Detail",
+    Version: "4010",
+    Elements: [
+      {
+        Position: "CAD-01",
+        Element: "91",
+        Requirement: "OP",
+      },
+      {
+        Position: "CAD-02",
+        Element: "206",
+        Requirement: "OP",
+      },
+      {
+        Position: "CAD-03",
+        Element: "207",
+        Requirement: "OP",
+      },
+      {
+        Position: "CAD-04",
+        Element: "140",
+        Requirement: "C",
+      },
+      {
+        Position: "CAD-05",
+        Element: "387",
+        Requirement: "C",
+      },
+      {
+        Position: "CAD-06",
+        Element: "368",
+        Requirement: "OP",
+      },
+      {
+        Position: "CAD-07",
+        Element: "128",
+        Requirement: "OP",
+      },
+      {
+        Position: "CAD-08",
+        Element: "127",
+        Requirement: "C",
+      },
+      {
+        Position: "CAD-09",
+        Element: "284",
+        Requirement: "OP",
+      },
+    ]
+  },
+  {
+    Segment: "SR",
+    Name: "Requested Service Schedule",
+    Version: "4010",
+    Elements: [
+      {
+        Position: "SR-01",
+        Element: "350",
+        Requirement: "OP",
+      },
+      {
+        Position: "SR-02",
+        Element: "1430",
+        Requirement: "OP",
+      },
+      {
+        Position: "SR-03",
+        Element: "337",
+        Requirement: "C",
+      },
+      {
+        Position: "SR-04",
+        Element: "337",
+        Requirement: "OP",
+      },
+      {
+        Position: "SR-05",
+        Element: "3",
+        Requirement: "OP",
+      },
+      {
+        Position: "SR-06",
+        Element: "212",
+        Requirement: "OP",
+      },
+      {
+        Position: "SR-07",
+        Element: "380",
+        Requirement: "OP",
+      },
+      {
+        Position: "SR-08",
+        Element: "373",
+        Requirement: "C",
+      },
+      {
+        Position: "SR-09",
+        Element: "373",
+        Requirement: "OP",
+      },
+      {
+        Position: "SR-10",
+        Element: "234",
+        Requirement: "OP",
+      },
+      {
+        Position: "SR-11",
+        Element: "234",
+        Requirement: "OP",
+      },
+    ]
+  }
 ];
