@@ -4,7 +4,7 @@ import AddButton from "@/components/AddButton";
 import BrakeRule from "@/components/BrakeRule";
 import ListItem from "@/components/ListItem";
 import { IoMdDownload } from "react-icons/io";
-import { TfiLayoutLineSolid } from "react-icons/tfi";
+import { DocumentArrowDownIcon } from "@heroicons/react/24/outline";
 import Badge from "../components/Badge";
 import Errors from "../docs/Errors";
 import { useState } from "react";
@@ -82,6 +82,14 @@ export default function Home() {
       </div>
       <BrakeRule />
       <div className="max-h-full flex flex-col items-center w-full overflow-y-auto overscroll-none">
+        <ListItem>
+          <div className="flex flex-row w-full items-center">
+            <p className="basis-2/6">Document</p>
+            <p className="basis-1/6 flex justify-center ">Mandatory</p>
+            <p className="basis-2/6 flex justify-center ">Download</p>
+            <p className="basis-1/6 flex justify-center ">Status</p>
+          </div>
+        </ListItem>
         {edi.map((partnership, index) => (
           <ListItem
             key={index}
@@ -89,16 +97,14 @@ export default function Home() {
             onClick={() => openError(true)}
           >
             <div className="flex flex-row w-full items-center">
-              <p className="basis-2/5">{partnership.EDIDoc} </p>
-              <TfiLayoutLineSolid
-                style={{ transform: "rotate(90deg)" }}
-                className="grid content-center h-full"
-                size={32}
-              />
-              <p className="basis-2/5">
+              <p className="basis-2/6 ">{partnership.EDIDoc} </p>
+              <p className="basis-1/6 flex justify-center ">
                 {partnership.mandatory ? "Mandatory" : "Optional"}{" "}
               </p>
-              <div className="basis-1/5 flex justify-end">
+              <div className="basis-2/6 flex justify-center">
+                <DocumentArrowDownIcon className="h-6 w-6" />
+              </div>
+              <div className="basis-1/6 flex justify-center">
                 {partnership.status == Status.VALIDATE ? (
                   <ValidateButton
                     onClick={() => {
