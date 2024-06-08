@@ -174,7 +174,7 @@ const SystemFile2 = [
   {
     Position: 4,
     Segment: "LOOP",
-    Requirement: "M",
+    Requirement: "OP",
     Max: "2",
     Segments: [
       {
@@ -187,14 +187,14 @@ const SystemFile2 = [
         Position: 2,
         Segment: "MSG",
         Requirement: "OP",
-        Max: "1",
+        Max: "2",
       },
     ],
   },
   {
     Position: 5,
     Segment: "MSG",
-    Requirement: "M",
+    Requirement: "OP",
     Max: "2",
   },
   {
@@ -202,6 +202,32 @@ const SystemFile2 = [
     Segment: "NFT",
     Requirement: "M",
     Max: "2",
+  },
+  {
+    Position: 7,
+    Segment: "LOOP",
+    Requirement: "M",
+    Max: "1",
+    Segments: [
+      {
+        Position: 1,
+        Segment: "MEA",
+        Requirement: "M",
+        Max: "2",
+      },
+      {
+        Position: 2,
+        Segment: "OP",
+        Requirement: "OP",
+        Max: "1",
+      },
+      {
+        Position: 3,
+        Segment: "PT",
+        Requirement: "M",
+        Max: "2",
+      },
+    ],
   },
 ];
 
