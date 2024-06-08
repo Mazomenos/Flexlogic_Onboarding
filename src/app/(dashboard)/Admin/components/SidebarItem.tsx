@@ -22,10 +22,8 @@ import { EDISegments } from "../../../../../prisma/EDISegments";
 export default function SidebarItem({ children }: { children?: ReactNode }) {
   return (
     <div className="my-5">
-      {EDITemplateDocs[0].Segments.map((templateSegment) => {
-        const matchingSegment = EDISegments.find(
-          (segment) => segment.Segment === templateSegment.Segment,
-        );
+      {EDITemplateDocs[0].Segments.filter(templateSegment => templateSegment.Requirement === "M").map((templateSegment) => {
+        const matchingSegment = EDISegments.find(segment => segment.Segment === templateSegment.Segment);
         if (!matchingSegment) return null;
 
         return (
