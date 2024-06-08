@@ -19,3 +19,27 @@ export async function middleware(req: NextRequest){
         } }
     return response
 }
+
+//FUNCION PARA OBTENER userID de Cookie
+export async function GetUserId() {
+    try {
+        
+        const cookieId = cookies().get('userID')
+
+        if (!cookieId) throw new Error('User not found')
+
+        return cookieId.value
+
+    } catch (error) {
+        if (error instanceof Error) {
+            console.log(
+                {
+                    message: error.message,
+                },
+                {
+                    status: 500,
+                }
+            );
+        }
+    }
+}

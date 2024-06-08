@@ -4,33 +4,12 @@ import { prisma } from "@/libs/prisma";
 
 import { cookies } from "next/headers";
 
+import { GetUserId } from "@/middleware";
+
 // import { PrismaClient } from '@prisma/client';
 
 // const prisma = new PrismaClient();
 
-//FUNCION PARA OBTENER userID de Cookie
-export async function GetUserId() {
-    try {
-        
-        const cookieId = cookies().get('userID')
-
-        if (!cookieId) throw new Error('User not found')
-
-        return cookieId.value
-
-    } catch (error) {
-        if (error instanceof Error) {
-            console.log(
-                {
-                    message: error.message,
-                },
-                {
-                    status: 500,
-                }
-            );
-        }
-    }
-}
 
 //PRUEBA DE ACCEDER A COOKIE DIRECTO EN CONTROLADOR
 export async function GetUsersPartnerInfo(userId: string) {
@@ -76,6 +55,8 @@ export async function GetUsersPartnerInfo(userId: string) {
 export async function GetUsersDocs(UserId: string, PartnerName: string) {
     try {
 
+        const cookie = await GetUserId()
+
         const partner = await prisma.tradingPartner.findFirst({
             where: {
                 Name: PartnerName,
@@ -91,7 +72,7 @@ export async function GetUsersDocs(UserId: string, PartnerName: string) {
 
         const user = await prisma.user.findFirst({
             where: {
-                id: UserId,
+                id: cookie,
             },
             include: {
                 Partnerships: true
@@ -136,9 +117,12 @@ export async function GetUsersDocs(UserId: string, PartnerName: string) {
 
 export async function GetUsersLogErrors(PartnerId: string, UserId: string) {
     try {
+
+        const cookie = await GetUserId()
+
         const user = await prisma.user.findUnique({
             where: {
-                id: UserId,
+                id: cookie,
             },
             include: {
                 Partnerships: true
@@ -191,6 +175,8 @@ export async function GetUsersLogErrors(PartnerId: string, UserId: string) {
 export async function GetPartnershipDocLogError(PartnerName: string, UserId: string, DocId: string) {
     try {
 
+        const cookie = await GetUserId()
+
         const partner = await prisma.tradingPartner.findFirst({
             where: {
                 Name: PartnerName,
@@ -207,7 +193,7 @@ export async function GetPartnershipDocLogError(PartnerName: string, UserId: str
 
         const user = await prisma.user.findUnique({
             where: {
-                id: UserId,
+                id: cookie,
             },
             include: {
                 Partnerships: true
@@ -255,9 +241,11 @@ export async function GetPartnershipDocLogError(PartnerName: string, UserId: str
 export async function PostNewPartnership(UserId: string, PartnerId: string) {
     try {
 
+        const cookie = await GetUserId()
+
         const users = await prisma.user.findUnique({
             where: {
-                id: UserId,
+                id: cookie,
             },
             include: {
                 Partnerships: true
