@@ -67,6 +67,7 @@ export default function AddPartner() {
 
   const [fileName, setFileName] = useState("");
   const [file, setFile] = useState<File | null>(null);
+  const [isOpen, setIsOpenForms] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -87,6 +88,7 @@ export default function AddPartner() {
 
   // #TODO: Here we are going to use a POST method to post to DB
   function onSubmit(data: z.infer<typeof FormSchema>) {
+    setIsOpenForms(false);
     const newData = {
       ...data,
       partnerName: data.partnerName.split(" ").join("_"),
@@ -96,7 +98,11 @@ export default function AddPartner() {
   }
 
   return (
-    <FormModal buttonText="Add Trading Partner +">
+    <FormModal
+      buttonText="Add Trading Partner +"
+      isOpen={isOpen}
+      setIsOpen={setIsOpenForms}
+    >
       <DialogTitle className="text-2xl text-center">
         Add Trading Partner
       </DialogTitle>
