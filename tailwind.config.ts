@@ -12,6 +12,9 @@ const config: Config = {
       normal: "0.10em",
     },
     extend: {
+      boxShadow: {
+        custom: "0 0 5px rgba(0, 0, 0, 0.4)",
+      },
       colors: {
         "brand-blue": "#99CEFF",
         "brand-red": "#FFA5A5",

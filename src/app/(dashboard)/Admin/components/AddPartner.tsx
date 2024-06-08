@@ -56,17 +56,17 @@ const FormSchema = z.object({
   EOL: z.string({ required_error: "Please select an EOL" }),
 });
 
-// !TODO: Change to DB call
+// #TODO: Change to DB call
 const delimitersOptions = [
   { value: ", - @", label: "Comma (,)" },
   { value: ";", label: "Semicolon (;)" },
   { value: "|", label: "Pipe (|)" },
 ];
 
-// !TODO: Change to DB call
+// #TODO: Change to DB call
 const ediVersionOptions = [{ value: "4010", label: "X12 4010" }];
 
-// !TODO: Change to DB call
+// #TODO: Change to DB call
 const eolOptions = [{ value: "LF", label: " ~ " }];
 
 export default function AddPartner() {
@@ -79,8 +79,7 @@ export default function AddPartner() {
 
   const [fileName, setFileName] = useState("");
   const [file, setFile] = useState<File | null>(null);
-
-  
+  const [isOpen, setIsOpenForms] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -160,19 +159,23 @@ export default function AddPartner() {
 
     //Llamada a la base de datos
     const newTradingPartner = await newTP(newData)
-   
+    setIsOpenForms(false);
     router.push(`/Admin/${newData.Name}`)
     console.log(JSON.stringify(newData, null, 2));
     console.log(file);
   }
 
   return (
-      <FormModal buttonText="Add Trading Partner +">
-        <DialogTitle className="text-2xl text-center">
-          Add Trading Partner
-        </DialogTitle>
-        <BrakeRule classname="my-2" />
-        <div className="w-full overflow-y-scroll">
+    <FormModal
+      buttonText="Add Trading Partner +"
+      isOpen={isOpen}
+      setIsOpen={setIsOpenForms}
+    >
+      <DialogTitle className="text-2xl text-center">
+        Add Trading Partner
+      </DialogTitle>
+      <BrakeRule classname="my-2" />
+      <div className="w-full overflow-y-scroll">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <div className="grid px-1 grid-cols-1 gap-4 justify-between">

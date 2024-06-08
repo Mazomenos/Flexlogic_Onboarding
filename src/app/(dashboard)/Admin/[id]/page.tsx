@@ -156,6 +156,9 @@ export default function Home() {
           <div className="my-3" />
           <div className="w-[60%] flex flex-col sm:flex-row justify-between">
             <CancelButton onClick={() => setIsOpen(false)} />
+            <DeleteButton
+              onClick={() => deleteDatabaseItem(selectedDocument?.IdDoc)}
+            />
             <DeleteButton onClick={() => selectedDocument && selectedDocument.idDoc && deleteDatabaseItem(selectedDocument.idDoc)} />
           </div>
         </Modal>
@@ -165,6 +168,7 @@ export default function Home() {
         open={drawerOpen}
         setOpen={setDrawerOpen}
         idDocument={selectedDocumentId}
+        documentTitle={selectedDocument?.Doc}
       ></DrawerDefault>
     </>
   );

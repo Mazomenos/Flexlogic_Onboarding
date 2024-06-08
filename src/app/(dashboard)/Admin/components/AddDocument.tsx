@@ -4,7 +4,7 @@ import React, { useState, useRef, ChangeEvent } from "react";
 import BrakeRule from "@/components/BrakeRule";
 import { FaUpload } from "react-icons/fa";
 
-import { DialogTitle } from "@/components/ui/dialog";
+import { DialogClose, DialogFooter, DialogTitle } from "@/components/ui/dialog";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -35,20 +35,20 @@ const FormSchema = z.object({
   eol: z.string({ required_error: "Please select an EOL" }),
 });
 
-// !TODO: Change to DB data
+// #TODO: Change to DB data
 const EdiDocument = [
   { key: "856", label: "EDI 856" },
   { key: "810", label: "EDI 810" },
 ];
 
-// !TODO: Change to DB data
+// #TODO: Change to DB data
 const delimitersOptions = [
   { value: ",", label: "Comma (,)" },
   { value: ";", label: "Semicolon (;)" },
   { value: "|", label: "Pipe (|)" },
 ];
 
-// !TODO: Change to DB data
+// #TODO: Change to DB data
 const eolOptions = [{ value: "LF", label: " ~ " }];
 
 export default function AddDocument() {
@@ -75,14 +75,19 @@ export default function AddDocument() {
     }
   };
 
-  // !TODO: Change to post data to DB, the uploaded file is in the
+  // #TODO: Change to post data to DB, the uploaded file is in the
   // 'file' useState
   function onSubmit(data: z.infer<typeof FormSchema>) {
+    setIsOpenForms(false);
     console.log(JSON.stringify(data, null, 2));
   }
 
   return (
-    <FormModal buttonText="Add Document +">
+    <FormModal
+      isOpen={isOpen}
+      setIsOpen={setIsOpenForms}
+      buttonText="Add Document +"
+    >
       <DialogTitle className="text-2xl text-center">
         Create Document
       </DialogTitle>
@@ -199,8 +204,8 @@ export default function AddDocument() {
 
             <div className="p-1 w-full flex justify-center">
               <Button
-                className="w-28 p-1 text-base bg-info dark:bg-darkMode-primary dark:hover:bg-transparent dark:text-darkMode-base-100 dark:hover:text-darkMode-primary font-bold text-info-content transition motion-reduce:transition-none motion-reduce:hover:transform-none hover:bg-transparent hover:text-brand-blue ring-2 ring-primary hover:ring-primary dark:ring-darkMode-primary hover:border-1"
                 disabled={file == null ? true : false}
+                className="w-28 p-1 text-base bg-info dark:bg-darkMode-primary dark:hover:bg-transparent dark:text-darkMode-base-100 dark:hover:text-darkMode-primary font-bold text-info-content transition motion-reduce:transition-none motion-reduce:hover:transform-none hover:bg-transparent hover:text-brand-blue ring-2 ring-primary hover:ring-primary dark:ring-darkMode-primary hover:border-1"
                 type="submit"
               >
                 Create
