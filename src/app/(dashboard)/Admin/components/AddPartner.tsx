@@ -100,8 +100,7 @@ export default function AddPartner() {
       <DialogTitle className="text-2xl text-center">
         Add Trading Partner
       </DialogTitle>
-      <BrakeRule classname="my-2" />
-      <div className="w-full overflow-y-scroll">
+      <div className="w-full">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <div className="grid px-1 grid-cols-1 gap-4 justify-between">
@@ -215,11 +214,11 @@ export default function AddPartner() {
             </div>
             <p>EDI 850 document sample </p>
             <div
-              className="flex flex-col mt-0 text-primary-content/40 dark:text-darkMode-foreground/40 items-center hover:bg-info/30 hover:text-info-content dark:hover:bg-darkMode-info dark:hover:text-darkMode-info-content justify-center border-2 border-dashed border-primary-content/40 dark:border-darkMode-foreground/40 p-6 rounded-lg cursor-pointer hover:border-info-content dark:hover:border-darkMode-info-content transition motion-reduce:transition-none motion-reduce:hover:transform-none"
+              className="flex flex-col text-primary-content/40 dark:text-darkMode-foreground/40 items-center hover:bg-info/30 hover:text-info-content dark:hover:bg-darkMode-info dark:hover:text-darkMode-info-content justify-center border-2 border-dashed border-primary-content/40 dark:border-darkMode-foreground/40 p-6 rounded-lg cursor-pointer hover:border-info-content dark:hover:border-darkMode-info-content transition motion-reduce:transition-none motion-reduce:hover:transform-none"
               onClick={handleUploadClick}
-              style={{ marginTop: "0.8rem" }}
+              style={{ marginTop: "0.4rem" }}
             >
-              <FaUpload className="text-6xl mb-4" />
+              <FaUpload className="text-4xl mb-2" />
               <input
                 type="file"
                 id="fileInput"
@@ -234,7 +233,7 @@ export default function AddPartner() {
                   : "Drag & drop a file here or click to upload"}
               </p>
             </div>
-            <div className="p-1 w-full flex justify-center">
+            <div className="w-full flex justify-center">
               <Button
                 disabled={file == null ? true : false}
                 className="w-36 p-1 text-base bg-info dark:bg-darkMode-primary dark:hover:bg-transparent dark:text-darkMode-base-100 dark:hover:text-darkMode-primary font-bold text-info-content transition motion-reduce:transition-none motion-reduce:hover:transform-none hover:bg-transparent hover:text-brand-blue ring-2 ring-primary hover:ring-primary dark:ring-darkMode-primary hover:border-1"
