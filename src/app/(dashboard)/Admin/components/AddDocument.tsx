@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, ChangeEvent } from "react";
 import BrakeRule from "@/components/BrakeRule";
-import { FaUpload } from "react-icons/fa";
+import { FaUpload } from "react-icons/fa6";
 
 import { DialogTitle } from "@/components/ui/dialog";
 
@@ -86,8 +86,7 @@ export default function AddDocument() {
       <DialogTitle className="text-2xl text-center">
         Create Document
       </DialogTitle>
-      <BrakeRule classname="my-2" />
-      <div className="w-full overflow-y-scroll">
+      <div className="w-full">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <div className="grid px-1 grid-cols-1 sm:grid-cols-3 gap-4 justify-between">
@@ -181,7 +180,7 @@ export default function AddDocument() {
               onClick={handleUploadClick}
               style={{ marginTop: "0.8rem" }}
             >
-              <FaUpload className="text-6xl mb-4" />
+              <FaUpload className="text-4xl mb-2" />
               <input
                 type="file"
                 id="fileInput"
