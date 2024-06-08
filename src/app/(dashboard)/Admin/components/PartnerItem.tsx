@@ -7,7 +7,7 @@ import React from "react";
 import ActionsButton from "./ActionsButton";
 import { IoIosSave } from "react-icons/io";
 import { TradingPartnerCard } from "../page";
-
+import { UpdateTradingPartner } from "@/DA/tradingPartnerControllers";
 
 
 interface Props {
@@ -18,6 +18,30 @@ interface Props {
   handleEditButton: (id: string) => void;
   realPartner: TradingPartnerCard;
 }
+
+async function UpdateTPVisible (id: string, data: {
+  Name?: string,
+  Initial850EDI?: string, 
+  Delimiters?: string[],
+  Version?: string,
+  EOL?: string,
+  isVisible?: boolean, 
+  }) {
+    try {
+      const response = await UpdateTradingPartner(id, data)
+  
+      if (response) {
+        const data = await response;
+        console.log(data)
+        if (data) console.log(data)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+}
+
+
+
 
 export default function PartnerItem({
   partner,
@@ -32,9 +56,8 @@ export default function PartnerItem({
       ...partner,
       isVisible: !partner.isVisible,
     });
-    console.log(realPartner);
-    console.log(partner);
   }
+
   return (
     <li className="relative bg-base-100 dark:bg-darkMode-base-100 border-base-300 w-[97%] flex  justify-between items-center flex-row place-items-start mx-1 my-2 px-8 shadow-[0px_0px_10px_1px_#00000024] dark:shadow-[0px_0px_10px_1px_#dadee610] border-1 text-xl py-6">
       <div className="flex flex-row w-full items-center">
@@ -75,6 +98,7 @@ export default function PartnerItem({
             data-tip="Make some changes before saving"
           >
             <button
+            onClick={() => {UpdateTPVisible(partner.id, {isVisible: partner.isVisible});}}
               disabled={JSON.stringify(partner) == JSON.stringify(realPartner)}
               className="bg-info dark:bg-darkMode-info ring-1 border-info-content dark:ring-darkMode-info-content text-info-content dark:text-darkMode-info-content disabled:bg-transparent dark:disabled:bg-darkMode-base-100 disabled:ring-base-300 dark:disabled:ring-darkMode-base-300 disabled:text-base-300 dark:disabled:text-darkMode-foreground/20 rounded p-2"
             >

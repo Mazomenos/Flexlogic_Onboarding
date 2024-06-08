@@ -12,9 +12,8 @@ import {
   DialogContent,
   DialogDescription,
   DialogFooter,
-  DialogHeader,
+
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import CloseButton from "@/components/CloseButton";
 import { Button } from "@/components/ui/button";
@@ -117,6 +116,7 @@ export default function AddPartner() {
         const data = await response;
         console.log(data)
         if (data) return data
+
       }
     } catch (error) {
       console.log(error)
@@ -160,34 +160,19 @@ export default function AddPartner() {
 
     //Llamada a la base de datos
     const newTradingPartner = await newTP(newData)
-    router.refresh()
-    //router.push(`/Admin/${newData.Name}`)
+   
+    router.push(`/Admin/${newData.Name}`)
     console.log(JSON.stringify(newData, null, 2));
     console.log(file);
   }
 
   return (
-    <Dialog>
-        <DialogTrigger asChild>
-          <Button
-            className="w-56 h-12 bg-info dark:border-darkMode-primary dark:bg-darkMode-primary dark:hover:bg-transparent dark:text-darkMode-base-100 dark:hover:text-darkMode-primary text-lg font-semibold text-info-content hover:bg-transparent hover:text-info hover:border-info hover:border-2 shadow transition motion-reduce:transition-none motion-reduce:hover:transform-none"
-            variant="outline"
-          >
-            {"Add Trading Partner +"}
-          </Button>
-        </DialogTrigger>
-        <DialogContent>
-          <div className="w-full flex flex-col justify-center">
-            <DialogClose asChild>
-              <div className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-white transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-slate-950 focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-slate-100 data-[state=open]:text-slate-500 dark:ring-offset-slate-950 dark:focus:ring-slate-300 dark:data-[state=open]:bg-slate-800 dark:data-[state=open]:text-slate-400">
-                <CloseButton onClick={() => {}} />
-              </div>
-            </DialogClose>
-            <DialogTitle className="text-2xl text-center">
-        Add Trading Partner
-      </DialogTitle>
-      <BrakeRule classname="my-2" />
-      <div className="w-full overflow-y-scroll">
+      <FormModal buttonText="Add Trading Partner +">
+        <DialogTitle className="text-2xl text-center">
+          Add Trading Partner
+        </DialogTitle>
+        <BrakeRule classname="my-2" />
+        <div className="w-full overflow-y-scroll">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <div className="grid px-1 grid-cols-1 gap-4 justify-between">
@@ -335,9 +320,9 @@ export default function AddPartner() {
             </div>
           </form>
         </Form>
-      </div>
-          </div>
-        </DialogContent>
-      </Dialog>
-  );
+
+        </div>
+      </FormModal>
+    );
 }
+
