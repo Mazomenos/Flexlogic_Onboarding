@@ -4,6 +4,7 @@ function checkRep(repCounter: number, posClient: number, sysFileMax: string, seg
     console.log("No paso rep")
     // Verifica si el loop esta en el recorrido principal
     if (isFirst === true) {
+      console.log("error bien")
       return { status: "Failed", Position: posClient, Description: "Max repetition limit reached for Segment:" + segClientName};
     } else {
       // Verifica si el loop tiene requerimiento obligatorio
@@ -34,6 +35,9 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
   while (varControlSys < currSystemFile.length) {
     console.log("inicia loop-----------------------------------------");
 
+
+
+
     // Cuando se acabe los segmentos de cliente
     if (varControlClient >= ClientFile.length) {
       console.log("se termino el cliente");
@@ -60,6 +64,7 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
       // Ambos segmentos son iguales, avanza cliente y repetidor
       if ( ClientFile[varControlClient].name === currSystemFile[varControlSys].Segment && 
         repCounter <= +currSystemFile[varControlSys].Max) {
+        console.log("iguales")
         repCounter++;
         varControlClient++;
         isValidated = true;
@@ -76,7 +81,9 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
           let varControlLoop = 0;
           let diff = 1;
           let result, result2;
+          let lastSegment = false;
           console.log(currSystemFile[varControlSys].Max)
+
           while (varControlLoop < +currSystemFile[varControlSys].Max && diff > 0) {
             console.log("Loop")
 
@@ -87,11 +94,23 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
 
             console.log("ResultPrincipio-------------------------------")
             console.log(result);
+            console.log("cl: ", varControlClient, " sys: ", varControlSys);
+            console.log("largo del sistema actual: ", currSystemFile.length)
+
+
+
+
+            // Checa si hay segmentos siguientes, por ejemplo si un loop dentro de otro loop es el ultimo segmento del mismo
+            if (varControlSys >= currSystemFile.length - 1) {
+              console.log("ultima posicion del sistema actual")
+              lastSegment = true;
+            }
+          
             
 
             // Terminar de definir bien esta seccion
             //Checa si hay otro loop enfrente del loop que se esta checando y que ambos loops empiecen con el mismo segmento
-            if (currSystemFile[varControlSys + 1].Segment === "LOOP" && 
+            if (!lastSegment  && currSystemFile[varControlSys + 1].Segment === "LOOP" && 
             currSystemFile[varControlSys].Segments[0].Segment  === 
             currSystemFile[varControlSys + 1].Segments[0].Segment
             ) {
@@ -120,7 +139,7 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
 
             } else if (result.status === "ErrorNotEqual") {
               varControlClient = result.posClient
-              varControlSys++;
+              //varControlSys++;
               diff = result.posClient - varControlClient
               console.log("diff:", diff)
               break;
@@ -135,9 +154,11 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
 
               // Si el ultimo segmento del loop es el que se repite 
               if (result.lastItem) {
+
+                // ADAPTAR POR SI HAY ALGUN SEGMENTO QUE SEA IGUAL AL FINAL DE
               
                 // Checa si la siguiente posicion en el sistema es igual al ultimo segmento con el error
-                if (currSystemFile[varControlSys + 1].Segment === ClientFile[result.posClient - 1].name) {
+                if (!lastSegment && currSystemFile[varControlSys + 1].Segment === ClientFile[result.posClient - 1].name) {
                   varControlClient = result.posClient - 1;
                   break;
 
@@ -147,7 +168,11 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
                   varControlClient = result.posClient - 1;
                   break;
                 }
+                varControlClient = result.posClient - 1 
+                console.log(varControlLoop)
                 console.log("Despues de errorLoop, continua el ciclo")
+
+
               } else {
                 return { status: "Failed" }
               }
@@ -157,11 +182,13 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
             } else if (result.status === "ErrorEndSystem") {
 
               console.log("ErrorEndSystem")
+              console.log("Cl:", ClientFile[varControlClient].name, " Pos: ", varControlClient, " Sys:", currSystemFile[varControlSys].Segment, " Pos: ", varControlSys);
 
 
 
               // Probar mas la seccion de loop ----------------------------------------
               
+
                 
               // Si el siguiente segmento del cliente es igual a la primer posicion del loop, que continue el loop
               if (currSystemFile[varControlSys].Segments[0].Segment === ClientFile[result.posClient].name) {
@@ -171,13 +198,9 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
                 varControlClient = result.posClient;
 
                 continue
+
                 // Si el segmento de cliente anterior es igual al siguiente segmento del sistema, se regresa uno para verificar ese
-              } else if (currSystemFile[varControlSys + 1].Segment === "LOOP") {
-                console.log("siguiente segmento es loop")
-                varControlClient = result.posClient;
-                break;
-                // Cuando el siguiente segmento es un loop
-              } else if (ClientFile[varControlClient - 1].name === currSystemFile[varControlSys + 1].Segment) {
+              } else if (!lastSegment && ClientFile[varControlClient - 1].name === currSystemFile[varControlSys + 1].Segment) {
                 varControlClient--;
                 repCounter = 0;
                 break;
@@ -186,8 +209,18 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
               } else if (currSystemFile[varControlSys].Segments[0].Segment !== ClientFile[varControlClient].name) {
                 console.log("hola")
                 break;
-        
+                
+                // Cuando el siguiente segmento es un loop 
+              } else if (!lastSegment && currSystemFile[varControlSys + 1].Segment === "LOOP") {
+                console.log("siguiente segmento es loop")
+                varControlClient = result.posClient;
+                break;
               }
+              varControlClient = result.posClient;
+              console.log(result)
+              break;
+
+              console.log("nada")
 
             }
           }
@@ -233,6 +266,8 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
       if (varControlSys >= currSystemFile.length) {
         break;
       }
+      console.log(isFirst)
+      console.log("Largo del sistema: ", currSystemFile.length);
 
       // Chequeo de repeticiones
       result = checkRep(repCounter, varControlClient - 1, currSystemFile[varControlSys].Max, ClientFile[varControlClient - 1].name, isFirst);
@@ -244,11 +279,23 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
         // Dio error pero estabamos dentro de un loop
       } else if ( result.status === "ErrorRep") {
 
+
+        console.log("debugeo en errorrep ----------------")
+
+        console.log(varControlSys)
+        console.log(currSystemFile.length - 1)
+
         // El segmento repetido es el ultimo
         if (varControlSys  === currSystemFile.length - 1) {
           console.log("Ultimo segmento del loop: ", currSystemFile[varControlSys])
           return  { status: result.status, posClient: varControlClient, lastItem: true };
         }
+
+        console.log("Aquii")
+
+
+        
+
         return  { status: "Failed" };
       }
     }
@@ -264,7 +311,18 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
     }
     // Dentro de loop por lo que aun podria haber segmentos en sistema
 
-    return {status: "ErrorEndSystem", posClient: varControlClient, firstSeg: currSystemFile[0]}
+    console.log("lo que busco")
+    console.log("cl: ", varControlClient, " sys: ", varControlSys);
+
+
+    // Checa si viene de un loop o no
+    if (currSystemFile[varControlSys - 1].Segment === "LOOP") {
+      console.log("era loop")
+      return {status: "ErrorEndSystem", posClient: varControlClient, firstSeg: currSystemFile[0]}
+    } else {
+      return {status: "ErrorEndSystem", posClient: varControlClient, firstSeg: currSystemFile[0].Segment, lastSegSys: currSystemFile[varControlSys - 1].Segment}
+    }
+
   }
 
 

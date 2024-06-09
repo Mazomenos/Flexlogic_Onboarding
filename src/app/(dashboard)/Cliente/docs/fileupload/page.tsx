@@ -189,19 +189,47 @@ const SystemFile2 = [
         Requirement: "M",
         Max: "2",
       },
+      {
+        Position: 3,
+        Segment: "LOOP",
+        Requirement: "M",
+        Max: "2",
+        Segments: [
+          {
+            Position: 1,
+            Segment: "ST",
+            Requirement: "M",
+            Max: "2",
+          },
+        ],
+      },
+      {
+        Position: 4,
+        Segment: "LOOP",
+        Requirement: "OP",
+        Max: "2",
+        Segments: [
+          {
+            Position: 1,
+            Segment: "OP",
+            Requirement: "M",
+            Max: "2",
+          },
+        ],
+      },
     ],
   },
   {
     Position: 5,
     Segment: "LOOP",
     Requirement: "M",
-    Max: "2",
+    Max: "3",
     Segments: [
       {
         Position: 1,
         Segment: "MT",
         Requirement: "M",
-        Max: "2",
+        Max: "1",
       },
       {
         Position: 2,
@@ -213,7 +241,7 @@ const SystemFile2 = [
   },
   {
     Position: 6,
-    Segment: "MSG",
+    Segment: "MTG",
     Requirement: "OP",
     Max: "2",
   },
