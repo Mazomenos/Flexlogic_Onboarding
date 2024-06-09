@@ -70,7 +70,7 @@ function useGetPageName(currentPath: string) {
 
   if (pathParts.length > 2 && !partnershipNames.includes(icp) && !partnerNames.includes(icp)) {
 
-    router.back()
+    //router.back()
 
   }
 

@@ -2,11 +2,17 @@
 
 import { prisma } from "@/libs/prisma"
 
+import { cookies } from "next/headers";
+import { GetUserId } from "@/middleware";
+
 export async function GetClient(clientId: string) {
+
+    const userId = await GetUserId()
+
     try {
         const client = await prisma.user.findFirst({
             where: {
-                id: clientId
+                id: userId
             }
         });
         return client;

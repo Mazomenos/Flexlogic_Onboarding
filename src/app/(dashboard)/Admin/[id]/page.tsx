@@ -165,7 +165,7 @@ export default function Home() {
         open={drawerOpen}
         setOpen={setDrawerOpen}
         idDocument={selectedDocumentId}
-        documentTitle={selectedDocument!.Doc}
+        documentTitle={selectedDocument?.Doc}
       ></DrawerDefault>
     </>
   );

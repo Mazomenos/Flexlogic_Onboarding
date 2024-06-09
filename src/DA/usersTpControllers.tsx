@@ -4,10 +4,15 @@
 
 import { PrismaClient } from '@prisma/client';
 
+import { GetUserId } from '@/middleware';
+
 const prisma = new PrismaClient();
 
 
-export async function GetUsersPartnerInfo(userId: string) {
+export async function GetUsersPartnerInfo(userIda: string) {
+
+    const userId = await GetUserId()
+
     try {
         console.log("hola:", userId)
         const userPartnerships = await prisma.user.findUnique({
@@ -43,6 +48,9 @@ export async function GetUsersPartnerInfo(userId: string) {
 }
 
 export async function GetUsersDocs(UserId: string, PartnerName: string) {
+
+    const userId = await GetUserId()
+
     try {
 
         const partner = await prisma.tradingPartner.findFirst({
@@ -60,7 +68,7 @@ export async function GetUsersDocs(UserId: string, PartnerName: string) {
 
         const user = await prisma.user.findFirst({
             where: {
-                id: UserId,
+                id: userId,
             },
             include: {
                 Partnerships: true
@@ -104,10 +112,13 @@ export async function GetUsersDocs(UserId: string, PartnerName: string) {
 }
 
 export async function GetUsersLogErrors(PartnerId: string, UserId: string) {
+
+    const userId = await GetUserId()
+
     try {
         const user = await prisma.user.findUnique({
             where: {
-                id: UserId,
+                id: userId,
             },
             include: {
                 Partnerships: true
@@ -158,6 +169,9 @@ export async function GetUsersLogErrors(PartnerId: string, UserId: string) {
 
 //this controller is used to get the log of Errors of a single partnership file
 export async function GetPartnershipDocLogError(PartnerName: string, UserId: string, DocId: string) {
+
+    const userId = await GetUserId()
+
     try {
 
         const partner = await prisma.tradingPartner.findFirst({
@@ -176,7 +190,7 @@ export async function GetPartnershipDocLogError(PartnerName: string, UserId: str
 
         const user = await prisma.user.findUnique({
             where: {
-                id: UserId,
+                id: userId,
             },
             include: {
                 Partnerships: true
@@ -222,11 +236,14 @@ export async function GetPartnershipDocLogError(PartnerName: string, UserId: str
 }
 
 export async function PostNewPartnership(UserId: string, PartnerId: string) {
+
+    const userId = await GetUserId()
+
     try {
 
         const users = await prisma.user.findUnique({
             where: {
-                id: UserId,
+                id: userId,
             },
             include: {
                 Partnerships: true
