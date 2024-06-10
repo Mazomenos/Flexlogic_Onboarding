@@ -12,6 +12,7 @@ import { Status } from "../enums/Status";
 import ValidateButton from "../components/ValidateButton";
 import BackButton from "@/components/BackButton";
 import { useRouter } from "next/navigation";
+import ListHeader from "@/components/ListHeader";
 
 type EDI = {
   id: number;
@@ -30,13 +31,13 @@ export default function Home() {
       id: 1,
       EDIDoc: "EDI 850 Purchase Order",
       mandatory: true,
-      status: "Validate",
+      status: "Pending",
     },
     {
       id: 2,
       EDIDoc: "EDI 860 Purchase Order Change Request ",
       mandatory: false,
-      status: "Validate",
+      status: "Pending",
     },
     {
       id: 3,
@@ -48,7 +49,7 @@ export default function Home() {
       id: 4,
       EDIDoc: "EDI 856 Ship Notice/Manifest",
       mandatory: true,
-      status: "Validate",
+      status: "Pending",
     },
     {
       id: 5,
@@ -82,39 +83,57 @@ export default function Home() {
       </div>
       <BrakeRule />
       <div className="max-h-full flex flex-col items-center w-full overflow-y-auto overscroll-none">
-        <ListItem>
+        <ListHeader>
           <div className="flex flex-row w-full items-center">
             <p className="basis-2/6">Document</p>
             <p className="basis-1/6 flex justify-center ">Mandatory</p>
-            <p className="basis-2/6 flex justify-center ">Download</p>
+            <p className="basis-1/6 flex justify-center ">Download</p>
             <p className="basis-1/6 flex justify-center ">Status</p>
+            <p className="basis-1/6 flex justify-center ">Actions</p>
           </div>
-        </ListItem>
+        </ListHeader>
         {edi.map((partnership, index) => (
-          <ListItem
-            key={index}
-            path={partnership.status == Status.FAILED ? partnership.EDIDoc : ""}
-            onClick={() => openError(true)}
-          >
+          <ListItem key={index}>
             <div className="flex flex-row w-full items-center">
               <p className="basis-2/6 ">{partnership.EDIDoc} </p>
               <p className="basis-1/6 flex justify-center ">
                 {partnership.mandatory ? "Mandatory" : "Optional"}{" "}
               </p>
-              <div className="basis-2/6 flex justify-center">
+              <div className="basis-1/6 flex justify-center">
                 <DocumentArrowDownIcon className="h-6 w-6" />
               </div>
               <div className="basis-1/6 flex justify-center">
-                {partnership.status == Status.VALIDATE ? (
-                  <ValidateButton
-                    onClick={() => {
-                      console.log(partnership.id);
-                    }}
-                  >
-                    {partnership.status}
-                  </ValidateButton>
+                <Badge status={partnership.status} />
+              </div>
+              <div className="basis-1/6 flex justify-center">
+                {partnership.status !== Status.FAILED ? (
+                  partnership.status == Status.PENDING ? (
+                    <button
+                      className="w-28 p-1 text-base dark:disabled:ring-darkMode-primary/30 bg-info disabled:bg-info/50 disabled:text-info-content/30 dark:bg-darkMode-primary dark:disabled:bg-darkMode-primary/30 dark:hover:enabled:bg-transparent  dark:text-darkMode-base-100 dark:disabled:text-darkMode-info-content/50 dark:hover:enabled:text-darkMode-primary font-bold text-info-content transition motion-reduce:transition-none motion-reduce:hover:transform-none hover:enabled:bg-transparent hover:enabled:text-brand-blue ring-2 ring-primary disabled:ring-primary/50 hover:enabled:ring-primary dark:ring-darkMode-primary hover:border-1"
+                      disabled={false}
+                    >
+                      <div className=""> Validate </div>
+                    </button>
+                  ) : (
+                    <div
+                      className="tooltip tooltip-warning"
+                      data-tip="Document has already been validated "
+                    >
+                      <button
+                        className="w-28 p-1 text-base dark:disabled:ring-darkMode-primary/30 bg-info disabled:bg-info/50 disabled:text-info-content/30 dark:bg-darkMode-primary dark:disabled:bg-darkMode-primary/30 dark:hover:enabled:bg-transparent  dark:text-darkMode-base-100 dark:disabled:text-darkMode-info-content/50 dark:hover:enabled:text-darkMode-primary font-bold text-info-content transition motion-reduce:transition-none motion-reduce:hover:transform-none hover:enabled:bg-transparent hover:enabled:text-brand-blue ring-2 ring-primary disabled:ring-primary/50 hover:enabled:ring-primary dark:ring-darkMode-primary hover:border-1"
+                        disabled={true}
+                      >
+                        <div className=""> Validate </div>
+                      </button>
+                    </div>
+                  )
                 ) : (
-                  <Badge status={partnership.status} />
+                  <button
+                    onClick={() => openError(true)}
+                    className="w-28 p-1 text-base bg-error dark:bg-darkMode-error-content dark:hover:bg-transparent dark:text-darkMode-base-100 dark:hover:text-darkMode-error-content font-bold text-error-content transition motion-reduce:transition-none motion-reduce:hover:transform-none hover:bg-transparent hover:text-error-content ring-2 ring-error hover:ring-error dark:ring-darkMode-error-content hover:border-1"
+                  >
+                    Error Log
+                  </button>
                 )}
               </div>
             </div>
