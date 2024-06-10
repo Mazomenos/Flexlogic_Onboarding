@@ -13,6 +13,7 @@ import AddDocument from "../components/AddDocument";
 import DocumentsList from "../components/DocumentsList";
 import { GetTPDocsRequired } from "@/DA/usersTpControllers";
 import { deleteTPDoc } from "@/DA/TpDocsController";
+import { useParams } from "next/navigation";
 
 type EDI = {
   idDoc: string;
@@ -22,7 +23,12 @@ type EDI = {
 };
 
 export default function Home() {
+  
   const router = useRouter();
+  const { partnerName } = useParams<{ partnerName: string }>(); // Specify the param type
+
+  console.log(partnerName)
+
 
   const [isOpen, setIsOpen] = React.useState(false);
   const [selectedDocumentId, setSelectedDocumentId] = React.useState<string | null>(null);
@@ -33,7 +39,7 @@ export default function Home() {
   // created db call to fetch docsRequired 
   const getTPDocsRequired = async () => {
     try {
-      const response = await GetTPDocsRequired("664d76a8d7412ac29ddf6a1b");
+      const response = await GetTPDocsRequired(partnerName);
       if (response) {
         const data = await response;
         if (data) {
@@ -42,8 +48,8 @@ export default function Home() {
         }
       }
     } catch (error) {
-      {router.push("/404")}
-      console.log(error)
+      console.log("error", error)
+      router.push("/404")
     }
   }
   useEffect(() => {

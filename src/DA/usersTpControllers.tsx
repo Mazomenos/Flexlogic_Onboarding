@@ -47,7 +47,7 @@ export async function GetUsersPartnerInfo() {
     }
 }
 
-export async function GetUsersDocs(UserId: string, PartnerName: string) {
+export async function GetUsersDocs(PartnerName: string) {
 
     const userId = await GetUserId()
 
@@ -104,7 +104,7 @@ export async function GetUsersDocs(UserId: string, PartnerName: string) {
     }
 }
 
-export async function GetUsersLogErrors(PartnerId: string, UserId: string) {
+export async function GetUsersLogErrors(PartnerId: string) {
 
     const userId = await GetUserId()
 
@@ -161,7 +161,7 @@ export async function GetUsersLogErrors(PartnerId: string, UserId: string) {
 
 
 //this controller is used to get the log of Errors of a single partnership file
-export async function GetPartnershipDocLogError(PartnerName: string, UserId: string, DocId: string) {
+export async function GetPartnershipDocLogError(PartnerName: string, DocId: string) {
 
     const userId = await GetUserId()
 
@@ -228,7 +228,7 @@ export async function GetPartnershipDocLogError(PartnerName: string, UserId: str
     }
 }
 
-export async function PostNewPartnership(UserId: string, PartnerId: string) {
+export async function PostNewPartnership(PartnerId: string) {
 
     const userId = await GetUserId()
 
@@ -274,7 +274,7 @@ export async function PostNewPartnership(UserId: string, PartnerId: string) {
         };
 
         const updatedUser = await prisma.user.update({
-            where: { id: UserId },
+            where: { id: userId },
             data: {
                 Partnerships: {
                     push: newPartnership
@@ -331,11 +331,12 @@ export async function GetTPVisible() {
     }
 }
 
-export async function GetTPDocsRequired(PartnerId: string) {
+export async function GetTPDocsRequired(PartnerName: string) {
+    console.log(PartnerName)
     try {
         const tradingPartner = await prisma.tradingPartner.findFirst({
             where: {
-                id: PartnerId
+                Name: PartnerName
             },
             include: {
                 DocsRequired: true
@@ -358,14 +359,7 @@ export async function GetTPDocsRequired(PartnerId: string) {
 
     } catch (error) {
         if (error instanceof Error) {
-            console.log(
-                {
-                    message: error.message,
-                },
-                {
-                    status: 500,
-                }
-            );
+            return Error
         }
     }
 }

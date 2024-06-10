@@ -33,10 +33,8 @@ type EDI = {
 export default function Home() {
   const router = useRouter();
   const { partnerName } = useParams<{ partnerName: string }>(); // Specify the param type
-
-
   //Variables estaticas temporales
-  let userID = "665a0753b9c7af2580bc0ad5"
+
 
   //Integracion
 
@@ -82,7 +80,7 @@ export default function Home() {
   
   const getTPDocs = async () => {
     try {
-      const response = await GetUsersDocs(userID,partnerName)
+      const response = await GetUsersDocs(partnerName)
 
       if (response) {
         const data = await response;
@@ -115,7 +113,7 @@ export default function Home() {
   const getErrorLog = async (idDoc: string) => {
     setTPDocID(idDoc)
     try {
-      const response = await GetPartnershipDocLogError(partnerName,userID, idDoc)
+      const response = await GetPartnershipDocLogError(partnerName, idDoc)
 
       if (response) {
         const data = await response;
@@ -199,7 +197,7 @@ export default function Home() {
         ))}
       </div>
       <Errors isOpen={isErrorModalOpen} setIsOpen={setIsErrorModalOpen} setIsUploadOpen={setIsUploadModalOpen} errorLog={ErrorLog} dataUserDoc={[userID, partnerName, TPDocID]} />
-      <UploadModal isOpen={isUploadModalOpen} setIsOpen={setIsUploadModalOpen} dataUserDoc={[userID, partnerName, TPDocID]}></UploadModal>
+      <UploadModal isOpen={isUploadModalOpen} setIsOpen={setIsUploadModalOpen} dataUserDoc={[partnerName, TPDocID]}></UploadModal>
     </div>
   );
 }
