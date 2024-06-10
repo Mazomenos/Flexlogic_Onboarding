@@ -45,7 +45,7 @@ export default function Home() {
     });
   };
 
-  // TODO: Change to actual DB call
+  // #TODO: Change to actual DB call
   const [partnerships, setPartnerships] = React.useState<Partnership[]>([
     { id: 1, name: "Amazon", status: "Complete" },
     { id: 2, name: "Walmart", status: "In Process" },
@@ -71,7 +71,7 @@ export default function Home() {
   const [temporalPartnerships, setTemporalPartnersips] =
     React.useState(partnerships);
 
-  const deleteTemporalPartner = (id: number | null) => {
+  const deleteTemporalPartnership = (id: number | null) => {
     const newPartnerships = temporalPartnerships.filter(
       (partnership) => partnership.id !== id,
     );
@@ -84,9 +84,9 @@ export default function Home() {
 
   // #FIXME: change this function to controllers.
   // This functions must delete an item from the database
-  function deleteDatabasePartner() {
+  function deleteDatabasePartnership() {
     setIsOpen(false);
-    deleteTemporalPartner(selectedPartnershipId);
+    deleteTemporalPartnership(selectedPartnershipId);
     const newPartnerships = partnerships.filter(
       (partnerhip) => partnerhip.id !== selectedPartnershipId,
     );
@@ -145,7 +145,7 @@ export default function Home() {
         setIsOpen={setIsOpen}
         handleChange={handleChange}
         selectedPartnership={selectedPartnership}
-        deleteDatabasePartner={deleteDatabasePartner}
+        deleteDatabasePartnership={deleteDatabasePartnership}
         value={value}
       />
     </div>
