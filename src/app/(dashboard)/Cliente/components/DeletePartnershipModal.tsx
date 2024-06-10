@@ -13,7 +13,7 @@ type Props = {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   handleChange: any;
   selectedPartnership: Partnership | undefined;
-  deleteDatabasePartner: any;
+  deleteDatabasePartnership: any;
   value: string;
 };
 
@@ -22,7 +22,7 @@ export default function DeletePartnershipModal({
   setIsOpen,
   handleChange,
   selectedPartnership,
-  deleteDatabasePartner,
+  deleteDatabasePartnership,
   value,
 }: Props) {
   return (
@@ -48,7 +48,7 @@ export default function DeletePartnershipModal({
         <button
           className="disabled:bg-base-300/30 dark:disabled:bg-darkMode-base-300/30 dark:disabled:border-darkMode-foreground/30 disabled:cursor-not-allowed disabled:text-primary-content/30 dark:disabled:text-darkMode-foreground/30 font-bold border-2 enabled:border-error dark:enabled:border-darkMode-error enabled:hover:bg-transparent dark:enabled:hover:bg-transparent enabled:text-error-content/70 dark:enabled:text-darkMode-error-content enabled:bg-error dark:enabled:bg-darkMode-error h-12 transition motion-reduce:transition-none motion-reduce:hover:transform-none rounded"
           disabled={value === selectedPartnership?.name ? false : true}
-          onClick={deleteDatabasePartner}
+          onClick={deleteDatabasePartnership}
         >
           <div className="flex relative justify-center flex-row items-center">
             <TrashIcon className="size-6 absolute left-2" />
