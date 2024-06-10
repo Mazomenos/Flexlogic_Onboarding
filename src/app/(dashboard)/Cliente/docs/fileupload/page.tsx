@@ -192,7 +192,7 @@ const SystemFile2 = [
       {
         Position: 3,
         Segment: "LOOP",
-        Requirement: "M",
+        Requirement: "OP",
         Max: "2",
         Segments: [
           {
@@ -253,6 +253,93 @@ const SystemFile2 = [
   },
 ];
 
+const SystemFile3 = [
+  {
+    Position: 1,
+    Segment: "ISA",
+    Requirement: "M",
+    Max: "1",
+  },
+  {
+    Position: 2,
+    Segment: "GS",
+    Requirement: "M",
+    Max: "1",
+  },
+  {
+    Position: 3,
+    Segment: "LOOP",
+    Requirement: "M",
+    Max: "2",
+    Segments: [
+      {
+        Position: 1,
+        Segment: "N1",
+        Requirement: "M",
+        Max: "1",
+      },
+      {
+        Position: 2,
+        Segment: "N2",
+        Requirement: "OP",
+        Max: "1",
+      },
+      {
+        Position: 3,
+        Segment: "N3",
+        Requirement: "M",
+        Max: "1",
+      },
+      {
+        Position: 4,
+        Segment: "N4",
+        Requirement: "M",
+        Max: "1",
+      },
+    ],
+  },
+  {
+    Position: 4,
+    Segment: "LOOP",
+    Requirement: "M",
+    Max: "2",
+    Segments: [
+      {
+        Position: 1,
+        Segment: "N1",
+        Requirement: "M",
+        Max: "1",
+      },
+    ],
+  },
+  {
+    Position: 5,
+    Segment: "LOOP",
+    Requirement: "M",
+    Max: "1",
+    Segments: [
+      {
+        Position: 1,
+        Segment: "N1",
+        Requirement: "M",
+        Max: "1",
+      },
+      {
+        Position: 2,
+        Segment: "MTY",
+        Requirement: "OP",
+        Max: "1",
+      },
+    ],
+  },
+  {
+    Position: 6,
+    Segment: "ITD",
+    Requirement: "M",
+    Max: "1",
+  },
+];
+
 // Read stream code by Russell Briggs: https://medium.com/@dupski/nodejs-creating-a-readable-stream-from-a-string-e0568597387f
 class ReadableString extends Readable {
   private sent = false;
@@ -294,7 +381,7 @@ export default function Home() {
   const uploadAndParseFile = async () => {
     const contentStream = new ReadableString(String(fileContent));
     const Segments = await ParseEDIfile(contentStream);
-    console.log(ValStructure(SystemFile2, Segments, 0, "M", true));
+    console.log(ValStructure(SystemFile3, Segments, 0, "M", true));
   };
 
   return (
