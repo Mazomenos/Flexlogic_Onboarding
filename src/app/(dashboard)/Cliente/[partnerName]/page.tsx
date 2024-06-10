@@ -18,6 +18,7 @@ import UploadModal from "../components/UploadModal";
 import { LogErrors } from "@prisma/client";
 import { saveAs } from 'file-saver';
 import { downloadInitial850EDI } from "@/DA/fileManagerControllers";
+import { FailedAction } from "@/components/toasters";
 
 
 //Tipo especifico para definir lo que se jala de cada doc de la bd
@@ -89,7 +90,8 @@ export default function Home() {
       }
     } catch (error) {
       console.log("error", error)
-      router.push("/404")
+      FailedAction(`Partner ${partnerName} invalid`)
+      router.push("/Cliente")
     }
   }
   

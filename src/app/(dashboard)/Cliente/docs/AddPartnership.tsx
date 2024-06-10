@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import { GetTPDocsRequired, GetTPVisible, GetUsersPartnerInfo, PostNewPartnership } from "@/DA/usersTpControllers";
 
 import { useHeaderContext } from "@/app/context/headerTrigger";
+import { SuccessAction } from "@/components/toasters";
 
 type TPDocsRequired = {
   idDoc: string;
@@ -95,7 +96,7 @@ export default function AddPartnership() {
   //posts a new partnership
   const postNewPartnership = async (idPartner:string) => {
     try {
-      const response = await PostNewPartnership("665a0753b9c7af2580bc0ad5",idPartner)
+      const response = await PostNewPartnership(idPartner)
       setHeaderTrigger(!headerTrigger)
     } catch (error) {
       console.log(error)
@@ -115,6 +116,7 @@ export default function AddPartnership() {
     try {
       await postNewPartnership(idPartner);
       setIsModal2(false);
+      SuccessAction("Partnership Created")
       router.push(`/Cliente/${partnerName}`);
     } catch (error) {
       console.log(error);
