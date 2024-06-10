@@ -32,12 +32,6 @@ export default function Header() {
     }
   }
 
-
-  useEffect(() => {
-    console.log("trigger header refresh")
-    getAllTp()
-  }, [headerTrigger])
-
   const getAllPartnershipsUser = async () => {
     try {
       const response = await GetUsersPartnerInfo()
@@ -53,8 +47,9 @@ export default function Header() {
   }
 
   useEffect(() => {
+    getAllTp()
     getAllPartnershipsUser()
-  }, [])
+  }, [headerTrigger])
 
 
 

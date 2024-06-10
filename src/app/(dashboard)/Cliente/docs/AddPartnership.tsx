@@ -11,6 +11,8 @@ import AddButton from "@/components/AddButton";
 import { useRouter } from "next/navigation";
 import { GetTPDocsRequired, GetTPVisible, GetUsersPartnerInfo, PostNewPartnership } from "@/DA/usersTpControllers";
 
+import { useHeaderContext } from "@/app/context/headerTrigger";
+
 type TPDocsRequired = {
   idDoc: string;
   Doc: string;
@@ -30,6 +32,9 @@ type TPVisible = {
 }
 
 export default function AddPartnership() {
+
+  const {headerTrigger, setHeaderTrigger} = useHeaderContext()
+
   const router = useRouter();
 
   const [isOpen, setIsOpen] = React.useState(false);
@@ -62,7 +67,7 @@ export default function AddPartnership() {
   // gets a client partnership info 
   const getUsersPartnerInfo = async () => {
     try {
-      const response = await GetUsersPartnerInfo("665a0753b9c7af2580bc0ad5")
+      const response = await GetUsersPartnerInfo()
 
       if (response) {
         const data = await response;
@@ -91,6 +96,7 @@ export default function AddPartnership() {
   const postNewPartnership = async (idPartner:string) => {
     try {
       const response = await PostNewPartnership("665a0753b9c7af2580bc0ad5",idPartner)
+      setHeaderTrigger(!headerTrigger)
     } catch (error) {
       console.log(error)
     }

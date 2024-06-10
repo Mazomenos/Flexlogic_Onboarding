@@ -42,6 +42,7 @@ export default function Home() {
         }
       }
     } catch (error) {
+      {router.push("/404")}
       console.log(error)
     }
   }
