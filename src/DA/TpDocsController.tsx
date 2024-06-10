@@ -171,14 +171,7 @@ export async function postTPDoc(TPId: string, DocTemplateNum: number) {
         return updatedDocs;
     } catch (error) {
         if (error instanceof Error) {
-            console.log(
-                {
-                    message: error.message,
-                },
-                {
-                    status: 500,
-                }
-            );
+            return Error
         }
     }
 }

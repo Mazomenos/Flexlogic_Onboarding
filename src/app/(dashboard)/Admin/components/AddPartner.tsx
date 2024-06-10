@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/dialog";
 import CloseButton from "@/components/CloseButton";
 import { Button } from "@/components/ui/button";
+import { useHeaderContext } from "@/app/context/headerTrigger";
 
 
 import {
@@ -83,6 +84,8 @@ export default function AddPartner() {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const {headerTrigger, setHeaderTrigger} = useHeaderContext()
+
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       setFileName(event.target.files[0].name);
@@ -114,8 +117,10 @@ export default function AddPartner() {
       if (response) {
         const data = await response;
         console.log(data)
-        if (data) return data
-
+        if (data) {
+          setHeaderTrigger(!headerTrigger)
+          return data
+        }
       }
     } catch (error) {
       console.log(error)
@@ -160,6 +165,7 @@ export default function AddPartner() {
     //Llamada a la base de datos
     const newTradingPartner = await newTP(newData)
     setIsOpenForms(false);
+    //router.refresh()
     router.push(`/Admin/${newData.Name}`)
     console.log(JSON.stringify(newData, null, 2));
     console.log(file);

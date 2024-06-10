@@ -9,7 +9,7 @@ import { GetUserId } from '@/middleware';
 const prisma = new PrismaClient();
 
 
-export async function GetUsersPartnerInfo(userIda: string) {
+export async function GetUsersPartnerInfo() {
 
     const userId = await GetUserId()
 
@@ -99,14 +99,7 @@ export async function GetUsersDocs(UserId: string, PartnerName: string) {
 
     } catch (error) {
         if (error instanceof Error) {
-            console.log(
-                {
-                    message: error.message,
-                },
-                {
-                    status: 500,
-                }
-            );
+            return Error
         }
     }
 }

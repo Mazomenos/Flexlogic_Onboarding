@@ -90,7 +90,8 @@ export default function Home() {
         if (data) setTPDocs(data)
       }
     } catch (error) {
-      console.log(error)
+      console.log("error", error)
+      router.push("/404")
     }
   }
   
