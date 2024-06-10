@@ -8,6 +8,7 @@ import AddPartner from "./components/AddPartner";
 import { TrashIcon } from "@heroicons/react/16/solid";
 import { useRouter } from "next/navigation";
 import PartnersList from "./components/PartnersList";
+import ListHeader from "@/components/ListHeader";
 
 type Partner = {
   id: number;
@@ -101,7 +102,7 @@ export default function Home() {
       </div>
       <BrakeRule />
       <div className="max-h-full flex flex-col items-center w-full overflow-y-auto overscroll-none">
-        <ListItem>
+        <ListHeader>
           <div className="flex flex-row w-full items-center">
             <p className="basis-3/6">Trading Partner</p>
             <p className="basis-1/6 grid justify-items-center content-center">
@@ -114,7 +115,7 @@ export default function Home() {
               Save Changes
             </p>
           </div>
-        </ListItem>
+        </ListHeader>
 
         <div className="max-h-full flex flex-col items-center w-full overflow-y-auto overscroll-none">
           <PartnersList

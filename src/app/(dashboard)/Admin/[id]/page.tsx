@@ -11,6 +11,7 @@ import CancelButton from "@/components/CancelButton";
 import DrawerDefault from "../components/DrawerDefault";
 import AddDocument from "../components/AddDocument";
 import DocumentsList from "../components/DocumentsList";
+import ListHeader from "@/components/ListHeader";
 
 type EDI = {
   IdDoc: number;
@@ -91,7 +92,6 @@ export default function Home() {
 
   const selectedDocument = edi.find((edi) => edi.IdDoc === selectedDocumentId);
 
-
   // Function that handles the visibility of delete modal, attached to ActionsButton.tsx
   const handleDeleteActionButton = (id: number) => {
     setSelectedDocumentId(id);
@@ -113,7 +113,7 @@ export default function Home() {
         </div>
         <BrakeRule />
         <div className="max-h-full flex flex-col items-center w-full overflow-y-auto overscroll-none">
-          <ListItem>
+          <ListHeader>
             <div className="flex flex-row w-full items-center">
               <p className="basis-2/6">Documents</p>
               <p className="basis-1/6 grid justify-items-center content-center">
@@ -129,7 +129,7 @@ export default function Home() {
                 Save Changes
               </p>
             </div>
-          </ListItem>
+          </ListHeader>
           <DocumentsList
             handleDeleteDocument={deleteTemporalItem}
             temporalDocuments={temporalDocument}
