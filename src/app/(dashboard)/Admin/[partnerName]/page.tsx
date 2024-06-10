@@ -49,7 +49,7 @@ export default function Home() {
       }
     } catch (error) {
       console.log("error", error)
-      router.push("/404")
+      router.push("/Admin")
     }
   }
   useEffect(() => {
@@ -147,6 +147,7 @@ export default function Home() {
             Documents={edi}
             handleDeleteButton={handleDeleteActionButton}
             handleEditButton={handleEditButton}
+            partner={partnerName}
           />
 
         </div>

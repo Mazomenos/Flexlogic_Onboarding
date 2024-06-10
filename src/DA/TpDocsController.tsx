@@ -176,12 +176,12 @@ export async function postTPDoc(TPId: string, DocTemplateNum: number) {
     }
 }
 
-export async function updateTPDoc(PartnerId: string, TPDocId: string, newDocument: any) {
+export async function updateTPDoc(PartnerName: string, TPDocId: string, newDocument: any) {
     try {
         // Find the trading partner
-        const partner = await prisma.tradingPartner.findUnique({
+        const partner = await prisma.tradingPartner.findFirst({
             where: {
-                id: PartnerId
+                Name: PartnerName
             },
             include: {
                 DocsRequired: true
@@ -213,7 +213,7 @@ export async function updateTPDoc(PartnerId: string, TPDocId: string, newDocumen
         // Update the trading partner with the filtered DocsRequired
         const updatedPartner = await prisma.tradingPartner.update({
             where: {
-                id: PartnerId
+                id: partner.id
             },
             data: {
                 DocsRequired: {

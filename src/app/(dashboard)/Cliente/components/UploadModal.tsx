@@ -41,7 +41,7 @@ export default function UploadModal({
 
   const [fileContent, setFileContent] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const TPDocID = dataUserDoc[2];
+  const TPDocID = dataUserDoc[1];
 
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {

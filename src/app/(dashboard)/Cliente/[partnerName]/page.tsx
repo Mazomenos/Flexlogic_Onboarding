@@ -196,7 +196,7 @@ export default function Home() {
           </ListItem>
         ))}
       </div>
-      <Errors isOpen={isErrorModalOpen} setIsOpen={setIsErrorModalOpen} setIsUploadOpen={setIsUploadModalOpen} errorLog={ErrorLog} dataUserDoc={[userID, partnerName, TPDocID]} />
+      <Errors isOpen={isErrorModalOpen} setIsOpen={setIsErrorModalOpen} setIsUploadOpen={setIsUploadModalOpen} errorLog={ErrorLog} dataUserDoc={[partnerName, TPDocID]} />
       <UploadModal isOpen={isUploadModalOpen} setIsOpen={setIsUploadModalOpen} dataUserDoc={[partnerName, TPDocID]}></UploadModal>
     </div>
   );

@@ -16,6 +16,7 @@ interface Props {
   temporalDocuments: EDI[]
   setTemporalDocuments : React.Dispatch<React.SetStateAction<EDI[]>>
   handleDeleteDocument: (id: string) => void;
+  partner: string
 }
 
 export default function DocumentsList({
@@ -24,12 +25,13 @@ export default function DocumentsList({
   handleDeleteButton,
   temporalDocuments,
   setTemporalDocuments,
-  handleDeleteDocument
+  handleDeleteDocument,
+  partner
 }: Props) {
   
   const handleUpdateDocument = async (updatedDocument: EDI) => {
     try{
-      await updateTPDoc("664d76a8d7412ac29ddf6a1b", updatedDocument.idDoc, updatedDocument)
+      await updateTPDoc(partner, updatedDocument.idDoc, updatedDocument)
       const newDocuments = temporalDocuments.map((document) =>
         document.idDoc === updatedDocument.idDoc ? updatedDocument : document,
       );
