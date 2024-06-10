@@ -315,8 +315,8 @@ const SystemFile3 = [
   {
     Position: 5,
     Segment: "LOOP",
-    Requirement: "M",
-    Max: "1",
+    Requirement: "OP",
+    Max: "2",
     Segments: [
       {
         Position: 1,
@@ -327,7 +327,7 @@ const SystemFile3 = [
       {
         Position: 2,
         Segment: "MTY",
-        Requirement: "OP",
+        Requirement: "M",
         Max: "1",
       },
     ],

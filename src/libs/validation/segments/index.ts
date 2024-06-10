@@ -1,3 +1,4 @@
+import { stat } from "fs";
 
 function checkRep(repCounter: number, posClient: number, sysFileMax: string, segClientName: string, isFirst: Boolean) {
   if (repCounter > +sysFileMax && sysFileMax !== ">1") {
@@ -16,11 +17,6 @@ function checkRep(repCounter: number, posClient: number, sysFileMax: string, seg
 } 
 
 
-function checkRequirement() {
-  console.log("chequeo de requerimiento")
-}
-
-
 
 export default function ValStructure(currSystemFile: Array<any>, ClientFile: Array<any>, varControlClient: number, reqLoop: string, isFirst: Boolean): any {
   let isValidated = false;
@@ -28,6 +24,7 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
   let varControlSys = 0;
   let segmentsValidated = 0;
   let result;
+  let rightNextLoop = false
   console.log("Largo del sistema: ", currSystemFile.length);
   console.log("Largo del cliente: ", ClientFile.length);
 
@@ -107,6 +104,7 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
                 console.log("Guardando elemento de segmento igual --------------------------------------------------------")
                 console.log(ClientFile[varControlClient][1])
                 segInitialLoop = ClientFile[varControlClient][1];
+                rightNextLoop = true;
               }
 
 
@@ -147,6 +145,9 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
                 //varControlSys++;
                 diff = result.posClient - varControlClient
                 console.log("diff:", diff)
+                if (reqLoop === "M") {
+                  return {status: "Failed"}
+                }
                 break;
 
                 // Checar condiciones cuando hay un error de repeticiones en un loop
@@ -180,10 +181,10 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
                     break;
                   }
 
-                  if (segInitialLoop !== ClientFile[result.posClient][1]) {
+                  if (rightNextLoop && segInitialLoop !== ClientFile[result.posClient][1]) {
                     console.log("es diferente tambien el siguiente")
                     varControlClient = result.posClient - 1;
-                    break;
+                    
                   } else {
                     console.log(varControlClient)
                     console.log("Despues de errorLoop, continua el ciclo")
@@ -211,21 +212,22 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
                   console.log(result.posClient)
                   console.log("Continua el loop despues de errorendsystem")
 
-                  if (!lastSegment && ClientFile[result.posClient].name === currSystemFile[varControlSys + 1].Segments[0].Segment) {
+
+                  if (!lastSegment && currSystemFile[varControlSys + 1] === "LOOP" && ClientFile[result.posClient].name === currSystemFile[varControlSys + 1].Segments[0].Segment) {
                     console.log("es igual al siguiente")
 
                     console.log(segInitialLoop)
                     console.log(ClientFile[result.posClient][1])
+                    if (rightNextLoop && segInitialLoop !== ClientFile[result.posClient][1]) {
+                      console.log("es diferente tambien el siguiente")
+                      varControlClient = result.posClient;
+                      rightNextLoop = false;
+                      break;
+                    }
                   }
-                  
-                  if (segInitialLoop !== ClientFile[result.posClient][1]) {
-                    console.log("es diferente tambien el siguiente")
-                    varControlClient = result.posClient;
-                    break;
-                  }
-                  console.log("no paso Si el siguiente segmento del cliente es igual a la primer posicion del loop, que continue el loop")
-                  varControlClient = result.posClient;
 
+                  varControlClient = result.posClient;
+                  console.log("no paso Si el siguiente segmento del cliente es igual a la primer posicion del loop, que continue el loop")
                   continue
 
                   // Si el segmento de cliente anterior es igual al siguiente segmento del sistema, se regresa uno para verificar ese
@@ -246,6 +248,8 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
 
                   break;
                 }
+
+
                 varControlClient = result.posClient;
                 console.log(result)
                 break;

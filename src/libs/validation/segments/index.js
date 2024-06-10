@@ -16,15 +16,13 @@ function checkRep(repCounter, posClient, sysFileMax, segClientName, isFirst) {
     console.log("chequeo de repeticiones");
     return { status: "Continue" };
 }
-function checkRequirement() {
-    console.log("chequeo de requerimiento");
-}
 function ValStructure(currSystemFile, ClientFile, varControlClient, reqLoop, isFirst) {
     var isValidated = false;
     var repCounter = 0;
     var varControlSys = 0;
     var segmentsValidated = 0;
     var result;
+    var rightNextLoop = false;
     console.log("Largo del sistema: ", currSystemFile.length);
     console.log("Largo del cliente: ", ClientFile.length);
     // Mientras haya segmentos en el sistema o loop
@@ -81,9 +79,10 @@ function ValStructure(currSystemFile, ClientFile, varControlClient, reqLoop, isF
                         }
                         // Manejo de loops con segmentos iniciales iguales
                         if (!lastSegment && currSystemFile[varControlSys + 1].Segment === "LOOP" && currSystemFile[varControlSys].Segments[0].Segment === currSystemFile[varControlSys + 1].Segments[0].Segment) {
-                            console.log(ClientFile[varControlClient][1]);
                             console.log("Guardando elemento de segmento igual --------------------------------------------------------");
+                            console.log(ClientFile[varControlClient][1]);
                             segInitialLoop = ClientFile[varControlClient][1];
+                            rightNextLoop = true;
                         }
                         result_1 = ValStructure(currSystemFile[varControlSys].Segments, ClientFile, varControlClient, currSystemFile[varControlSys].Requirement, false);
                         varControlLoop++;
@@ -116,6 +115,9 @@ function ValStructure(currSystemFile, ClientFile, varControlClient, reqLoop, isF
                             //varControlSys++;
                             diff = result_1.posClient - varControlClient;
                             console.log("diff:", diff);
+                            if (reqLoop === "M") {
+                                return { status: "Failed" };
+                            }
                             break;
                             // Checar condiciones cuando hay un error de repeticiones en un loop
                         }
@@ -142,10 +144,9 @@ function ValStructure(currSystemFile, ClientFile, varControlClient, reqLoop, isF
                                     varControlClient = result_1.posClient - 1;
                                     break;
                                 }
-                                if (segInitialLoop !== ClientFile[result_1.posClient][1]) {
+                                if (rightNextLoop && segInitialLoop !== ClientFile[result_1.posClient][1]) {
                                     console.log("es diferente tambien el siguiente");
                                     varControlClient = result_1.posClient - 1;
-                                    break;
                                 }
                                 else {
                                     console.log(varControlClient);
@@ -165,18 +166,19 @@ function ValStructure(currSystemFile, ClientFile, varControlClient, reqLoop, isF
                                 console.log(varControlClient);
                                 console.log(result_1.posClient);
                                 console.log("Continua el loop despues de errorendsystem");
-                                if (!lastSegment && ClientFile[result_1.posClient].name === currSystemFile[varControlSys + 1].Segments[0].Segment) {
+                                if (!lastSegment && currSystemFile[varControlSys + 1] === "LOOP" && ClientFile[result_1.posClient].name === currSystemFile[varControlSys + 1].Segments[0].Segment) {
                                     console.log("es igual al siguiente");
                                     console.log(segInitialLoop);
                                     console.log(ClientFile[result_1.posClient][1]);
+                                    if (rightNextLoop && segInitialLoop !== ClientFile[result_1.posClient][1]) {
+                                        console.log("es diferente tambien el siguiente");
+                                        varControlClient = result_1.posClient;
+                                        rightNextLoop = false;
+                                        break;
+                                    }
                                 }
-                                if (segInitialLoop !== ClientFile[result_1.posClient][1]) {
-                                    console.log("es diferente tambien el siguiente");
-                                    varControlClient = result_1.posClient;
-                                    break;
-                                }
-                                console.log("no paso Si el siguiente segmento del cliente es igual a la primer posicion del loop, que continue el loop");
                                 varControlClient = result_1.posClient;
+                                console.log("no paso Si el siguiente segmento del cliente es igual a la primer posicion del loop, que continue el loop");
                                 continue;
                                 // Si el segmento de cliente anterior es igual al siguiente segmento del sistema, se regresa uno para verificar ese
                             }
