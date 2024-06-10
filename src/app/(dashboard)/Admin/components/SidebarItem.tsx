@@ -51,10 +51,8 @@ export default function SidebarItem({ children }: { children?: ReactNode }) {
 
   return (
     <div>
-      <div className="flex justify-between items-end">
-        <div className="flex items-center">
-          <AddButton onClick={openModal}> Add Segment </AddButton>
-        </div>
+      <div className="flex justify-end">
+        <AddButton onClick={openModal}> Add Segment </AddButton>
       </div>
 
       <div className="my-5">
@@ -90,11 +88,10 @@ export default function SidebarItem({ children }: { children?: ReactNode }) {
                     </div>
                     <div className="basis-1/12 flex-shrink-0 flex justify-center self-center">
                       <MinusCircleIcon
-                        className={`h-7 w-7 ${
-                          templateSegment.Requirement === "M"
+                        className={`h-7 w-7 ${templateSegment.Requirement === "M"
                             ? "text-gray-300"
                             : "text-darkMode-error-content cursor-pointer"
-                        }`}
+                          }`}
                         onClick={() => {
                           if (templateSegment.Requirement !== "M") {
                             removeSegment(templateSegment.Segment);
@@ -138,11 +135,10 @@ export default function SidebarItem({ children }: { children?: ReactNode }) {
                               </div>
                               <div className="basis-1/12 flex-shrink-0 flex justify-center self-center">
                                 <MinusCircleIcon
-                                  className={`h-6 w-6 ${
-                                    element.Requirement === "M"
+                                  className={`h-6 w-6 ${element.Requirement === "M"
                                       ? "text-gray-300"
                                       : "text-darkMode-error-content"
-                                  }`}
+                                    }`}
                                 />
                               </div>
                             </div>
