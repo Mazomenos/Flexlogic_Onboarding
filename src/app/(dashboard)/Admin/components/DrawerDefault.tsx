@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { Drawer } from "@material-tailwind/react";
 import CloseButton from "@/components/CloseButton";
 import GenericButton from "@/components/GenericButton";
-import SidebarItem from "./SidebarItem";
+import SidebarItem from "./sidebar/SidebarItem";
 import { ACTION_PREFETCH } from "next/dist/client/components/router-reducer/router-reducer-types";
 
 interface Props {
