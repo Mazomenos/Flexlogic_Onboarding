@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -13,17 +14,32 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ReactNode } from "react";
 import { MinusCircleIcon } from "@heroicons/react/24/outline";
-import { EDITemplateDocs } from "../../../../../prisma/EDITemplateDocs";
-import { EDIElements } from "../../../../../prisma/EDIElements";
-import { EDISegments } from "../../../../../prisma/EDISegments";
+import { EDITemplateDocs } from "../../../../../../prisma/EDITemplateDocs";
+import { EDIElements } from "../../../../../../prisma/EDIElements";
+import { EDISegments } from "../../../../../../prisma/EDISegments";
+import ConditionSelector from "./ConditionSelector";
 
 export default function SidebarItem({ children }: { children?: ReactNode }) {
+  const [conditionSelections, setConditionSelections] = useState<{
+    [key: string]: string;
+  }>({});
+
+  const handleSelectionChange = (key: string, value: string) => {
+    setConditionSelections((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
+
   return (
     <div className="my-5">
-      {EDITemplateDocs[0].Segments.filter(templateSegment => templateSegment.Requirement === "M").map((templateSegment) => {
-        const matchingSegment = EDISegments.find(segment => segment.Segment === templateSegment.Segment);
+      {EDITemplateDocs[0].Segments.filter(
+        (templateSegment) => templateSegment.Requirement === "M",
+      ).map((templateSegment) => {
+        const matchingSegment = EDISegments.find(
+          (segment) => segment.Segment === templateSegment.Segment,
+        );
         if (!matchingSegment) return null;
 
         return (
@@ -58,7 +74,7 @@ export default function SidebarItem({ children }: { children?: ReactNode }) {
                 </div>
               </AccordionTrigger>
               <AccordionContent className="pb-0">
-                {matchingSegment.Elements.map((element) => {
+                {matchingSegment.Elements.map((element, index) => {
                   const matchingElement = EDIElements.find(
                     (e) => e.Element === element.Element,
                   );
@@ -97,34 +113,20 @@ export default function SidebarItem({ children }: { children?: ReactNode }) {
                           </div>
                         </AccordionTrigger>
                         <AccordionContent className="flex mt-2 justify-center">
-                          <div className="p-2 bg-base-100 flex items-center dark:bg-darkMode-base-100 hover:bg-base-200 dark:hover:bg-darkMode-base-200 border-base-300 w-[95%] shadow-md border-1 transition motion-reduce:transition-none motion-reduce:hover:transform-none">
-                            <p className="text-lg basis-3/12">Conditional</p>
-                            <div className="basis-7/12 self-start">
-                              <Select>
-                                <SelectTrigger className="w-[180px]">
-                                  <SelectValue placeholder="Select a fruit" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  <SelectGroup>
-                                    <SelectLabel>Fruits</SelectLabel>
-                                    <SelectItem value="apple">Apple</SelectItem>
-                                    <SelectItem value="banana">
-                                      Banana
-                                    </SelectItem>
-                                    <SelectItem value="blueberry">
-                                      Blueberry
-                                    </SelectItem>
-                                    <SelectItem value="grapes">
-                                      Grapes
-                                    </SelectItem>
-                                    <SelectItem value="pineapple">
-                                      Pineapple
-                                    </SelectItem>
-                                  </SelectGroup>
-                                </SelectContent>
-                              </Select>
-                            </div>
-                          </div>
+                          <ConditionSelector
+                            index={index}
+                            selection={
+                              conditionSelections[
+                                `element-${element.Position}`
+                              ] || ""
+                            }
+                            onSelectionChange={(value) =>
+                              handleSelectionChange(
+                                `element-${element.Position}`,
+                                value,
+                              )
+                            }
+                          />
                         </AccordionContent>
                       </AccordionItem>
                     </Accordion>
