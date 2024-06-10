@@ -4,4 +4,5 @@ export enum Status {
     FAILED = "Failed",
     UNKNOWN = "unknown",
     VALIDATE = "Validate",
+    PENDING = "Pending",
 }
