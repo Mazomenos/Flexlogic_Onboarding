@@ -10,6 +10,10 @@ import ListItem from "@/components/ListItem";
 import Badge from "./components/Badge";
 import AddPartnership from "./docs/AddPartnership";
 import { useRouter } from "next/navigation";
+import ActionsButton from "@/components/ActionsButton";
+import React from "react";
+import DeletePartnershipModal from "./components/DeletePartnershipModal";
+import ListHeader from "@/components/ListHeader";
 
 type Partnership = {
   id: number;
@@ -19,9 +23,30 @@ type Partnership = {
 
 export default function Home() {
   const router = useRouter();
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [selectedPartnershipId, setSelectedPartnershipId] = React.useState<
+    number | null
+  >(null);
+  const [value, setValue] = React.useState("");
+
+  // Function that handles the visibility of delete modal, attached to ActionsButton.tsx
+  const handleDeleteButton = (id: number) => {
+    setSelectedPartnershipId(id);
+    setValue("");
+    setIsOpen(true);
+  };
+
+  // Function that redirects the user to the selected TP
+  const handleEditButton = (id: number) => {
+    partnerships.map((partnership) => {
+      if (partnership.id === id) {
+        router.push(`/Cliente/${partnership.name}`);
+      }
+    });
+  };
 
   // TODO: Change to actual DB call
-  const partnerships: Partnership[] = [
+  const [partnerships, setPartnerships] = React.useState<Partnership[]>([
     { id: 1, name: "Amazon", status: "Complete" },
     { id: 2, name: "Walmart", status: "In Process" },
     { id: 3, name: "Partner X", status: "Unknown" },
@@ -37,7 +62,36 @@ export default function Home() {
     { id: 13, name: "Amazon", status: "Complete" },
     { id: 14, name: "Walmart", status: "In Process" },
     { id: 15, name: "Partner X", status: "Complete" },
-  ];
+  ]);
+
+  const selectedPartnership = partnerships.find(
+    (partnerships) => partnerships.id === selectedPartnershipId,
+  );
+
+  const [temporalPartnerships, setTemporalPartnersips] =
+    React.useState(partnerships);
+
+  const deleteTemporalPartner = (id: number | null) => {
+    const newPartnerships = temporalPartnerships.filter(
+      (partnership) => partnership.id !== id,
+    );
+    setTemporalPartnersips(newPartnerships);
+  };
+
+  const handleChange = (e: any) => {
+    setValue(e.target.value);
+  };
+
+  // #FIXME: change this function to controllers.
+  // This functions must delete an item from the database
+  function deleteDatabasePartner() {
+    setIsOpen(false);
+    deleteTemporalPartner(selectedPartnershipId);
+    const newPartnerships = partnerships.filter(
+      (partnerhip) => partnerhip.id !== selectedPartnershipId,
+    );
+    setPartnerships(newPartnerships);
+  }
 
   function handlePartnershipRedirect(id: number) {
     partnerships.map((partnership) => {
@@ -45,7 +99,6 @@ export default function Home() {
         router.push(`/Cliente/${partnership.name}`);
       }
     });
-    
   }
 
   return (
@@ -55,17 +108,46 @@ export default function Home() {
       </div>
       <BrakeRule />
       <div className="max-h-full flex flex-col items-center w-full overflow-y-auto overscroll-none">
+        <ListHeader>
+          <div className="basis-8/12 flex flex-row w-full items-center">
+            <p className="">Partnership</p>
+          </div>
+          <div className="basis-2/12 flex w-full justify-center">
+            <p className=" flex justify-center ">Status</p>
+          </div>
+          <div className="basis-2/12 flex w-full justify-center">
+            <p className=" flex justify-center ">Actions</p>
+          </div>
+        </ListHeader>
         {partnerships.map((partnership, index) => (
           <ListItem
             key={index}
-            path={partnership.id.toString()}
             onClick={() => handlePartnershipRedirect(partnership.id)}
           >
-            <p>{partnership.name} </p>
-            <Badge status={partnership.status} />
+            <div className="basis-8/12">
+              <p>{partnership.name} </p>
+            </div>
+            <div className="basis-2/12 flex justify-center">
+              <Badge status={partnership.status} />
+            </div>
+            <div className="basis-2/12 flex justify-center">
+              <ActionsButton
+                itemId={partnership.id}
+                handleDeleteButton={() => handleDeleteButton(partnership.id)}
+                handleEditButton={handleEditButton}
+              />
+            </div>
           </ListItem>
         ))}
       </div>
+      <DeletePartnershipModal
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        handleChange={handleChange}
+        selectedPartnership={selectedPartnership}
+        deleteDatabasePartner={deleteDatabasePartner}
+        value={value}
+      />
     </div>
   );
 }
