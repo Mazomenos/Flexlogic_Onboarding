@@ -43,9 +43,20 @@ export default function UploadModal({
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const TPDocID = dataUserDoc[2];
 
-  function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files ? event.target.files[0] : null;
-    setSelectedFile(file);
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const text = e.target?.result;
+        setFileContent(text as string);
+        setSelectedFile(file);
+      };
+      reader.readAsText(file);
+    } else {
+      console.log("Error reading file");
+    }
   };
 
   //---------------Integracion-----------------//
@@ -77,6 +88,10 @@ export default function UploadModal({
         if (info){
           const contentStream = new ReadableString(String(fileContent));
           const Segments = await ParseEDIfile(contentStream);
+            if (Segments) {
+              console.log(ValStructure(info.Segments, Segments, 0, "M", true));
+              data(info.Segments, Segments, [])
+            }
           console.log(ValStructure(info.Segments, Segments, 0, "M", true));
           data(info.Segments, Segments, [])
         }
