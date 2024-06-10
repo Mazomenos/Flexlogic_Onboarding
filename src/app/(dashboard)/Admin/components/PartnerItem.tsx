@@ -2,9 +2,10 @@
 // A partner it needs handlers as props, so it
 // Remains as a pure Component.
 
+import ActionsButton from "@/components/ActionsButton";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/16/solid";
 import React from "react";
-import ActionsButton from "./ActionsButton";
+
 import { IoIosSave } from "react-icons/io";
 import { TradingPartnerCard } from "../page";
 import { UpdateTradingPartner } from "@/DA/tradingPartnerControllers";

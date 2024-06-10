@@ -4,7 +4,7 @@
 
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/16/solid";
 import React from "react";
-import ActionsButton from "./ActionsButton";
+import ActionsButton from "@/components/ActionsButton";
 import { IoIosSave } from "react-icons/io";
 
 type EDI = {

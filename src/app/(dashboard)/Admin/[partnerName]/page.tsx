@@ -14,6 +14,7 @@ import DocumentsList from "../components/DocumentsList";
 import { GetTPDocsRequired } from "@/DA/usersTpControllers";
 import { deleteTPDoc } from "@/DA/TpDocsController";
 import { useParams } from "next/navigation";
+import ListHeader from "@/components/ListHeader";
 
 type EDI = {
   idDoc: string;
@@ -121,8 +122,7 @@ export default function Home() {
 
         <BrakeRule />
         <div className="max-h-full flex flex-col items-center w-full overflow-y-auto overscroll-none">
-
-          <ListItem>
+          <ListHeader>
             <div className="flex flex-row w-full items-center">
               <p className="basis-2/6">Documents</p>
               <p className="basis-1/6 grid justify-items-center content-center">
@@ -138,8 +138,7 @@ export default function Home() {
                 Save Changes
               </p>
             </div>
-          </ListItem>
-
+          </ListHeader>
           <DocumentsList
             handleDeleteDocument={deleteTemporalItem}
             temporalDocuments={temporalDocument}

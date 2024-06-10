@@ -4,6 +4,7 @@ export enum Status {
   FAILED = "Failed",
   UNKNOWN = "unknown",
   VALIDATE = "Validate",
+  PENDING = "Pending",
 }
 
 export const statusColors: Record<Status, string> = {
@@ -16,5 +17,7 @@ export const statusColors: Record<Status, string> = {
   [Status.UNKNOWN]:
     "text-base-content dark:text-darkMode-info-content bg-info/40 dark:bg-darkMode-info ring-info dark:ring-darkMode-info-content",
   [Status.VALIDATE]:
-    "text-base-content dark:text-primary  bg-primary/40 ring-primary",
+    "text-base-content dark:text-darkMode-info-content bg-info/40 dark:bg-darkMode-info ring-info dark:ring-darkMode-info-content",
+  [Status.PENDING]:
+    "text-warning-content dark:text-darkMode-warning-content bg-warning/40 dark:bg-darkMode-warning ring-warning dark:ring-darkMode-warning-content",
 };

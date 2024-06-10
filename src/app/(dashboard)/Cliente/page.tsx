@@ -12,6 +12,10 @@ import AddPartnership from "./docs/AddPartnership";
 import { useRouter} from "next/navigation";
 import { useState, useEffect } from "react";
 import { GetUsersPartnerInfo } from "@/DA/usersTpControllers";
+import ActionsButton from "@/components/ActionsButton";
+import React from "react";
+import DeletePartnershipModal from "./components/DeletePartnershipModal";
+import ListHeader from "@/components/ListHeader";
 
 type Partnership = {
   idPartner: string;
@@ -21,6 +25,7 @@ type Partnership = {
 
 export default function Home() {
   const router = useRouter();
+
   const [TPInfo, setTPInfo] = useState<Partnership[] | null>(null);
 
   // gets client partnership information
@@ -42,6 +47,33 @@ export default function Home() {
     getTPInfo()
   }, [])
 
+
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [selectedPartnershipId, setSelectedPartnershipId] = React.useState<
+    string | null
+  >(null);
+  const [value, setValue] = React.useState("");
+
+  // Function that handles the visibility of delete modal, attached to ActionsButton.tsx
+  const handleDeleteButton = (id: string) => {
+    setSelectedPartnershipId(id);
+    setValue("");
+    setIsOpen(true);
+  };
+
+  // Function that redirects the user to the selected TP
+  const handleEditButton = (id: string) => {
+    TPInfo && TPInfo.map((partner) => {
+      if (partner.idPartner === id) {
+        router.push(`/Cliente/${partner.Name}`);
+      }
+    });
+  };
+
+
+
+
+
   function handlePartnershipRedirect(path: string) {
     router.push(`/Cliente/${path}`);
   }
@@ -57,18 +89,41 @@ export default function Home() {
       <BrakeRule />
       {/* Maps client current partnerships */}
       <div className="max-h-full flex flex-col items-center w-full overflow-y-auto overscroll-none">
+        <ListHeader>
+          <div className="basis-8/12 flex flex-row w-full items-center">
+            <p className="">Partnership</p>
+          </div>
+          <div className="basis-2/12 flex w-full justify-center">
+            <p className=" flex justify-center ">Status</p>
+          </div>
+          <div className="basis-2/12 flex w-full justify-center">
+            <p className=" flex justify-center ">Actions</p>
+          </div>
+        </ListHeader>
         {TPInfo && TPInfo.map((partnership, index) => (
           <ListItem
             key={index}
             path={partnership.Name}
-            onClick={() => handlePartnershipRedirect(partnership.Name)}
+            
           >
-            <p>{partnership.Name} </p>
-            <Badge status={partnership.Status} />
+            <div className="basis-8/12">
+              <p>{partnership.Name} </p>
+            </div>
+            <div className="basis-2/12 flex justify-center">
+              <Badge status={partnership.Status} />
+            </div>
+            <div className="basis-2/12 flex justify-center">
+              <ActionsButton
+                itemId={partnership.idPartner}
+                handleDeleteButton={() => handleDeleteButton(partnership.idPartner)}
+                handleEditButton={handleEditButton}
+              />
+            </div>
           </ListItem>
+          
         ))}
       </div>
-
+      
     </div>
   );
 }
