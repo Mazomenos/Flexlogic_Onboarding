@@ -96,8 +96,8 @@ export default function Errors({
       <AddButon onClick={() => download()}>
         Download All <IoMdDownload />
       </AddButon>
-      <BrakeRule classname="my-3" />
-      <div className="absolute bottom-4 w-full flex justify-center ">
+      <BrakeRule classname="my-1" />
+      <div className="bottom-4 w-full flex justify-center ">
         <GenericButton onClick={() => setIsOpen(false)}>Validate</GenericButton>
       </div>
     </Modal>
