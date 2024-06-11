@@ -6,6 +6,7 @@ import { TradingPartner } from "@prisma/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { uploadFileToAzure } from "@/DA/fileManagerControllers";
 import {
   Dialog,
   DialogClose,
@@ -63,7 +64,7 @@ const delimitersOptions = [
 ];
 
 // #TODO: Change to DB call
-const ediVersionOptions = [{ value: "4010", label: "X12 4010" }];
+const ediVersionOptions = [{ value: "X12_4010", label: "X12 4010" }];
 
 // #TODO: Change to DB call
 const eolOptions = [{ value: "LF", label: " ~ " }];
@@ -138,7 +139,16 @@ export default function AddPartner() {
     console.log(DelimitersArr);
 
     //Proceso de subir documento a la base y recibir url al storage
-    //PENDING
+
+    let fileURL = ""
+    if (file) {
+      const base64 = await readFileAsBase64(file);
+      fileURL = await uploadFileToAzure({
+        name: file.name,
+        type: file.type,
+        data: base64,
+      },data.Name.split(" ").join("_") + "_" + data.Version);
+    }
 
     const newData: {
       Name: string,
@@ -150,7 +160,7 @@ export default function AddPartner() {
       DocsRequired: any[]
     } = {
       Name: data.Name.split(" ").join("_"),
-      Initial850EDI: "",
+      Initial850EDI: fileURL,
       Delimiters: DelimitersArr,
       Version: data.Version,
       EOL: data.EOL,
@@ -168,6 +178,16 @@ export default function AddPartner() {
     console.log(file);
   }
 
+  function readFileAsBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            resolve(reader.result as string);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+    });
+  };
 
   return (
     <FormModal

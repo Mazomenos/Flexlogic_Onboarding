@@ -9,6 +9,7 @@ import { DialogClose, DialogFooter, DialogTitle } from "@/components/ui/dialog";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { uploadFileToAzure } from "@/DA/fileManagerControllers";
 
 import {
   Form,
@@ -27,6 +28,7 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import FormModal from "./FormModal";
+import { url } from "inspector";
 
 // Form main schema, here Zod knows how to validate form data
 const FormSchema = z.object({
@@ -77,10 +79,34 @@ export default function AddDocument() {
 
   // #TODO: Change to post data to DB, the uploaded file is in the
   // 'file' useState
-  function onSubmit(data: z.infer<typeof FormSchema>) {
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
     setIsOpenForms(false);
     console.log(JSON.stringify(data, null, 2));
+
+    // Use url for db
+    // #TODO: Add new parameter to TradingPartner to store the URL
+    let url = ""
+    if (file) {
+      const base64 = await readFileAsBase64(file);
+      url = await uploadFileToAzure({
+        name: file.name,
+        type: file.type,
+        data: base64,
+      },"");
+    }
+    console.log(url);
   }
+
+  function readFileAsBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            resolve(reader.result as string);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+    });
+  };
 
   return (
     <FormModal

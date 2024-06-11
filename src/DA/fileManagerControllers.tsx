@@ -35,7 +35,7 @@ export async function uploadFileToAzure(file: UploadFile, extension: string): Pr
     const fileNameWithoutExtension = match[1];
     const originalExtension = match[2] || ''; 
 
-    const newFileName = `${fileNameWithoutExtension}-${extension}.${originalExtension}`;
+    const newFileName = `${fileNameWithoutExtension}_${extension}.${originalExtension}`;
 
     const blockBlobClient = containerClient.getBlockBlobClient(newFileName);
 
@@ -182,23 +182,6 @@ export async function uploadRecentEDI(data: Array<string>, file: UploadFile): Pr
 }
 
 /**
-   * eeee
-*/
-export async function uploadPDFInstructions(url: string): Promise<String> {
-    try {
-
-        
-        console.log("No se de donde sacar esto")
-        return "hay que hacer cambio a base"
-
-    } catch (error) {
-        throw new Error(`Failed to download file from URL ${url}: ${error}`);
-    }
-}
-
-
-
-/**
    * Funcion asincrona que devuelve la informacion del archivo inicial EDI 850
    * o PO del id del trading partner que recibio como parametro, utiliza la funcion
    * downloadFileContent despues de obtener la Url correspondiente de la base de datos.
@@ -279,16 +262,37 @@ export async function downloadPreviousEDI(data: Array<string>): Promise<{ conten
 }
 
 /**
-   * eeee
+   * Funcion asincronica que busca el url del pdf de instrucciones del nombre del 
+   * partner y del id del documento del cliente y lo devuelve en forma de string.
 */
-export async function downloadPDFInstructions(url: string): Promise<String> {
-    try {
+export async function downloadPDFInstructions(partnerName: string, idDoc: string): Promise<string | URL | undefined> {
+    try {   
+        console.log(partnerName)
+        console.log(idDoc)
 
+        const urlPDF = await prisma.tradingPartner.findFirst({
+            where: { Name: partnerName },
+            include: {
+              DocsRequired: true,
+            },
+        });
+
+        if (!urlPDF) {
+            throw new Error(`TradingPartner with name ${partnerName} not found`);
+        }
+
+        const docRequired = urlPDF.DocsRequired.find(doc => doc.idDoc === idDoc);
+
+        if (!docRequired) {
+            throw new Error(`Document with idDoc ${idDoc} not found for partner ${partnerName}`);
+        }
+
+        console.log(docRequired);
+
+        return docRequired.instructionsPDF;
         
-        console.log("No se de donde sacar esto")
-        return "hay que hacer cambio a base"
 
     } catch (error) {
-        throw new Error(`Failed to download file from URL ${url}: ${error}`);
+        throw new Error(`Failed to download file from URL`);
     }
 }

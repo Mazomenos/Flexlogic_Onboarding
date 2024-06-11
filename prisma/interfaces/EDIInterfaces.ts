@@ -74,6 +74,7 @@ export interface EDITPDocument {
 type DocumentsRequired = {
   idDoc: string;
   Doc: string;
+  instructionsPDF: string;
   isVisible: boolean;
   isRequired: boolean;
 };
