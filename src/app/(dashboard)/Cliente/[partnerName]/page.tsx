@@ -25,7 +25,8 @@ import { downloadPDFInstructions } from "@/DA/fileManagerControllers";
 import { Button } from "@/components/ui/button";
 import { ArrowDownTrayIcon } from "@heroicons/react/16/solid";
 import { FailedAction } from "@/components/toasters";
-
+import ListHeader from "@/components/ListHeader";
+import { DocumentArrowDownIcon } from "@heroicons/react/24/outline";
 
 //Tipo especifico para definir lo que se jala de cada doc de la bd
 type EDI = {
@@ -39,7 +40,6 @@ export default function Home() {
   const router = useRouter();
   const { partnerName } = useParams<{ partnerName: string }>(); // Specify the param type
   //Variables estaticas temporales
-
 
   //Integracion
 
@@ -80,12 +80,12 @@ export default function Home() {
   /**
    * Esta funcion asyncronica llama el controlador
    * GetUsersDocs y nos devuelve los documentos
-   * de la partnership.
+   * de la document.
    */
 
   const getTPDocs = async () => {
     try {
-      const response = await GetUsersDocs(partnerName)
+      const response = await GetUsersDocs(partnerName);
 
       if (response) {
         const data = await response;
@@ -93,9 +93,9 @@ export default function Home() {
         if (data) setTPDocs(data);
       }
     } catch (error) {
-      console.log("error", error)
-      FailedAction(`Partner ${partnerName} invalid`)
-      router.push("/Cliente")
+      console.log("error", error);
+      FailedAction(`Partner ${partnerName} invalid`);
+      router.push("/Cliente");
     }
   };
 
@@ -117,7 +117,7 @@ export default function Home() {
   const getErrorLog = async (idDoc: string) => {
     setTPDocID(idDoc);
     try {
-      const response = await GetPartnershipDocLogError(partnerName, idDoc)
+      const response = await GetPartnershipDocLogError(partnerName, idDoc);
 
       if (response) {
         const data = await response;
@@ -137,7 +137,7 @@ export default function Home() {
       const fileContent = await downloadInitial850EDI(partnerName);
       const text = String.fromCharCode.apply(
         null,
-        Array.from(new Uint8Array(fileContent.content))
+        Array.from(new Uint8Array(fileContent.content)),
       );
       saveAs(new Blob([text], { type: "text/plain" }), fileContent.fileName);
     } catch (err) {
@@ -176,80 +176,70 @@ export default function Home() {
           />
         </div>
         <AddButton onClick={() => downloadPOTest()}>
-          Download PO Test {partnerName}
-          <IoMdDownload />
+          Download PO Test <IoMdDownload />
         </AddButton>
-        <div>{}</div>
       </div>
       <BrakeRule />
       <div className="max-h-full flex flex-col items-center w-full overflow-y-auto overscroll-none">
+        <ListHeader>
+          <div className="flex flex-row w-full items-center">
+            <p className="basis-2/6">Document</p>
+            <p className="basis-1/6 flex justify-center ">Mandatory</p>
+            <p className="basis-1/6 flex justify-center ">Download</p>
+            <p className="basis-1/6 flex justify-center ">Status</p>
+            <p className="basis-1/6 flex justify-center ">Actions</p>
+          </div>
+        </ListHeader>
         {TPDocs &&
-          TPDocs.map((partnership, index) => (
-            <ListItem
-              key={index}
-              onClick={() => {
-                openError(true);
-                getErrorLog(partnership.idDoc);
-              }}
-            >
+          TPDocs.map((document, index) => (
+            <ListItem key={index}>
               <div className="flex flex-row w-full items-center">
-                <p className="basis-2/5">{partnership.Doc} </p>
-                <TfiLayoutLineSolid
-                  style={{ transform: "rotate(90deg)" }}
-                  className="grid content-center h-full"
-                  size={32}
-                />
-                <p className="basis-1/5">
-                  {partnership.isRequired ? "Mandatory" : "Optional"}{" "}
+                <p className="basis-2/6 ">{document.Doc} </p>
+                <p className="basis-1/6 flex justify-center ">
+                  {document.isRequired ? "Mandatory" : "Optional"}{" "}
                 </p>
-                <div className="basis-1/5 flex justify-center">
-                  <Button
-                    variant="outline"
-                    onClick={() => {
-                      downloadPDFURL(partnership.idDoc);
-                    }}
-                    className={
-                      "dark:bg-darkMode-base-100 hover:dark:bg-darkMode-base-200 dark:border-darkMode-base-200"
-                    }
-                    size="icon"
-                  >
-                    <ArrowDownTrayIcon className="h-[1.2rem] w-[1.2rem]  scale-100 transition-all" />
-                    <span className="sr-only">Download document</span>
-                  </Button>
+                <div className="basis-1/6 flex justify-center">
+                  <DocumentArrowDownIcon className="h-6 w-6" />
                 </div>
-                <div className="basis-1/5 flex justify-end">
-                  {partnership.Status == Status.VALIDATE ? (
-                    <ValidateButton
-                      onClick={() => {
-                        openUpload(true);
-                        setTPDocID(partnership.idDoc);
-                      }}
-                    >
-                      {partnership.Status}
-                    </ValidateButton>
-                  ) : partnership.Status === Status.FAILED ? (
-                    <button
-                    className="h-10 text-base w-36 border-error dark:border-darkMode-error border-2 bg-error dark:bg-darkMode-error-content text-error-content dark:text-darkMode-foreground font-bold hover:bg-transparent dark:hover:bg-transparent hover:text-error-content/70  dark:hover:text-darkMode-error-content hover:border-error dark:hover:border-darkMode-error-content transition motion-reduce:transition-none motion-reduce:hover:transform-none"
-                    onClick={() => {
-                      openError(true);
-                      setTPDocID(partnership.idDoc);
-                    }}
-                  >
-                    <div> Failed </div>
-                  </button>
-                     
-                    
-
+                <div className="basis-1/6 flex justify-center">
+                  <Badge status={document.Status} />
+                </div>
+                <div className="basis-1/6 flex justify-center">
+                  {document.Status !== Status.FAILED ? (
+                    document.Status == Status.PENDING ? (
+                      <button
+                        className="w-28 p-1 text-base dark:disabled:ring-darkMode-primary/30 bg-info disabled:bg-info/50 disabled:text-info-content/30 dark:bg-darkMode-primary dark:disabled:bg-darkMode-primary/30 dark:hover:enabled:bg-transparent  dark:text-darkMode-base-100 dark:disabled:text-darkMode-info-content/50 dark:hover:enabled:text-darkMode-primary font-bold text-info-content transition motion-reduce:transition-none motion-reduce:hover:transform-none hover:enabled:bg-transparent hover:enabled:text-brand-blue ring-2 ring-primary disabled:ring-primary/50 hover:enabled:ring-primary dark:ring-darkMode-primary hover:border-1"
+                        disabled={false}
+                      >
+                        <div className=""> Validate </div>
+                      </button>
+                    ) : (
+                      <div
+                        className="tooltip tooltip-warning"
+                        data-tip="Document has already been validated "
+                      >
+                        <button
+                          className="cursor-not-allowed w-28 p-1 text-base dark:disabled:ring-darkMode-primary/30 bg-info disabled:bg-info/50 disabled:text-info-content/30 dark:bg-darkMode-primary dark:disabled:bg-darkMode-primary/30 dark:hover:enabled:bg-transparent  dark:text-darkMode-base-100 dark:disabled:text-darkMode-info-content/50 dark:hover:enabled:text-darkMode-primary font-bold text-info-content transition motion-reduce:transition-none motion-reduce:hover:transform-none hover:enabled:bg-transparent hover:enabled:text-brand-blue ring-2 ring-primary disabled:ring-primary/50 hover:enabled:ring-primary dark:ring-darkMode-primary hover:border-1"
+                          disabled={true}
+                        >
+                          <div className=""> Validate </div>
+                        </button>
+                      </div>
+                    )
                   ) : (
-                    <Badge status={partnership.Status} />
+                    <button
+                      onClick={() => openError(true)}
+                      className="w-28 p-1 text-base bg-error dark:bg-darkMode-error-content dark:hover:bg-transparent dark:text-darkMode-base-100 dark:hover:text-darkMode-error-content font-bold text-error-content transition motion-reduce:transition-none motion-reduce:hover:transform-none hover:bg-transparent hover:text-error-content ring-2 ring-error hover:ring-error dark:ring-darkMode-error-content hover:border-1"
+                    >
+                      Error Log
+                    </button>
                   )}
                 </div>
               </div>
             </ListItem>
           ))}
       </div>
-      <Errors isOpen={isErrorModalOpen} setIsOpen={setIsErrorModalOpen} setIsUploadOpen={setIsUploadModalOpen} errorLog={ErrorLog} dataUserDoc={[partnerName, TPDocID]} />
-      <UploadModal isOpen={isUploadModalOpen} setIsOpen={setIsUploadModalOpen} dataUserDoc={[partnerName, TPDocID]}></UploadModal>
+      <Errors isOpen={isErrorModalOpen} setIsOpen={setIsErrorModalOpen} />
     </div>
   );
 }
