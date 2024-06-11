@@ -51,7 +51,7 @@ export default function Home() {
     en el reload inicial se actualiza por la lista de datos
     o queda vacia.
   */
-  const [TPDocs, setTPDocs] = useState<EDI[] | null>(null);
+  const [TPDocs, setTPDocs] = useState<EDI[]>([]);
 
   /**
    * Estos useState se utilizan para manejar los modales de
@@ -93,11 +93,11 @@ export default function Home() {
         const data = await response;
         console.log(data);
         if (data) setTPDocs(data);
+      } else {
+        FailedAction(`Partner ${partnerName} invalid`);
+        router.push("/Cliente");
       }
     } catch (error) {
-      console.log("error", error);
-      FailedAction(`Partner ${partnerName} invalid`);
-      router.push("/Cliente");
     } finally {
       setIsLoading(false);
     }

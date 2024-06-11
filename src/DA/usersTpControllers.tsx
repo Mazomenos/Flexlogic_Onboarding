@@ -99,7 +99,14 @@ export async function GetUsersDocs(PartnerName: string) {
 
     } catch (error) {
         if (error instanceof Error) {
-            return Error
+            console.log(
+                {
+                    message: error.message,
+                },
+                {
+                    status: 500,
+                }
+            );
         }
     }
 }
