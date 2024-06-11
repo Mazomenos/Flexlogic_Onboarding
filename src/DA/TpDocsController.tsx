@@ -54,7 +54,6 @@ export async function GetTPDocsFromPartnership(TPId: string) {
     }
 }
 
-/*
 export async function postTPDoc(TPId: string, DocTemplateNum: number) {
     try {
         const tradingPartner = await prisma.tradingPartner.findFirst({
@@ -203,4 +202,3 @@ export async function deleteTPDoc(TPDocId: string) {
         }
     }
 }
-*/

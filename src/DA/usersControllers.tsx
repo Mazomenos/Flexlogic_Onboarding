@@ -1,13 +1,15 @@
+"use server"
+
 import { prisma } from "@/libs/prisma"
 
-export async function GetUser(userId: string) {
+export async function GetClient(clientId: string) {
     try {
-        const user = await prisma.user.findFirst({
+        const client = await prisma.user.findFirst({
             where: {
-                id: userId
+                id: clientId
             }
         });
-        return user;
+        return client;
     } catch (error) {
         if (error instanceof Error) {
             console.log(
@@ -21,5 +23,28 @@ export async function GetUser(userId: string) {
         }
     }
 }
+
+export async function GetTradingPartner(PartnerId: string) {
+    try {
+        const tradingPartner = await prisma.tradingPartner.findFirst({
+            where: {
+                id: PartnerId
+            }
+        });
+        return tradingPartner;
+    } catch (error) {
+        if (error instanceof Error) {
+            console.log(
+                {
+                    message: error.message,
+                },
+                {
+                    status: 500,
+                }
+            );
+        }
+    }
+}
+
 
 
