@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 
 interface IError {
-  title: string;
+  Title: string;
   children: React.ReactNode;
-  type: string;
+  Type: string;
+  Position: string
 }
 
-export default function ErrorItem({ title, children, type }: IError) {
+export default function ErrorItem({ Title, children, Type, Position }: IError) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -25,9 +26,9 @@ export default function ErrorItem({ title, children, type }: IError) {
         >
           <p className="text-error-content/50 dark:text-darkMode-foreground/90 flex-1">
             <span className="font-bold text-error-content/80 dark:text-darkMode-error-content">
-              {type} Error:
+              {Type} {Position} Error: 
             </span>{" "}
-            {title}
+            {Title}
           </p>
           <div className="text-error-content/50 dark:text-darkMode-foreground">
             {isOpen ? (

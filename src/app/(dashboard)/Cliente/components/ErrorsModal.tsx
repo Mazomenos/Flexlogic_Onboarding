@@ -42,14 +42,14 @@ export default function Errors({
       <BrakeRule classname="my-3" />
       <div className="h-full justify-center flex-col overflow-y-auto w-full">
         {errorLog && errorLog.map((error, index) => (
-          <ErrorItem key={index} type={error.Type} title={error.Title}>
+          <ErrorItem key={index} Type={error.Type} Title={error.Title} Position={error.Position}>
             {error.Description}
           </ErrorItem>
         ))}
       </div>
       <BrakeRule classname="my-3" />
       <AddButon onClick={() => download()}>
-        Download All <IoMdDownload />
+        Download Last Attempt <IoMdDownload />
       </AddButon>
       <BrakeRule classname="my-2" />
       <div className="bottom-4 w-full flex justify-center ">

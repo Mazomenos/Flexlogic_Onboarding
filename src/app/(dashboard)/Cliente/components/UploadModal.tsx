@@ -103,7 +103,8 @@ export default function UploadModal({
               data(info.Segments, Segments, [])
             }
           console.log(ValStructure(info.Segments, Segments, 0, "M", true));
-          data(info.Segments, Segments, [])
+          const elementErrors = data(info.Segments, Segments, [])
+          console.log("elementErrors",elementErrors)
         }
       }
     } catch (error) {
