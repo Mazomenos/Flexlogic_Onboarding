@@ -19,7 +19,7 @@ export default function DrawerDefault({
   idDocument,
   documentTitle,
 }: Props) {
-  const [drawerWidth, setDrawerWidth] = useState(550); // Initial width
+  const [drawerWidth, setDrawerWidth] = useState(600); // Initial width
   const drawerRef = useRef<HTMLDivElement>(null);
 
   const openDrawer = () => setOpen(true);
@@ -58,16 +58,15 @@ export default function DrawerDefault({
         </p>
         <CloseButton onClick={closeDrawer} />
       </div>
-      <div className=" px-3  overflow-y-auto overscroll-none">
-        <SidebarItem></SidebarItem>
+      <div className="flex-1 overflow-y-auto px-3">
+        <SidebarItem />
       </div>
       <div
         className="absolute top-0 left-0 h-full w-2 cursor-ew-resize"
         onMouseDown={handleMouseDown}
       />
-
       <div className="w-full mt-2 flex justify-end">
-        <GenericButton onClick={() => {}}>Create </GenericButton>
+        <GenericButton onClick={() => {}}>Create</GenericButton>
       </div>
     </Drawer>
   );
