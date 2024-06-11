@@ -230,8 +230,13 @@ export async function downloadInitial850EDI(namePartner: string): Promise<{ cont
 */
 export async function downloadPreviousEDI(data: Array<string>): Promise<{ content: Uint8Array, fileName: string, fileType: string }> {
     try {
-        const [idUser, partnerName, TPDocID] = data;
+        
+        const userId = await GetUserId()
 
+        if (userId){
+            data.push(userId)
+        }
+        const [partnerName, TPDocID, idUser] = data;
         const user = await prisma.user.findFirst({
             where: { id: idUser },
             select: { Partnerships: true }
