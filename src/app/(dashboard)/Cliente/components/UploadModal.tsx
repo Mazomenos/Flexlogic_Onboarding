@@ -12,6 +12,7 @@ import data from "@/libs/validation/elements";
 import { GetTPDocById } from "@/DA/TpDocsController";
 import { uploadRecentEDI } from "@/DA/fileManagerControllers";
 import { FaUpload } from "react-icons/fa6";
+import BrakeRule from "@/components/BrakeRule";
 
 // Read stream code by Russell Briggs: https://medium.com/@dupski/nodejs-creating-a-readable-stream-from-a-string-e0568597387f
 class ReadableString extends Readable {
@@ -127,8 +128,9 @@ export default function UploadModal({
     <>
       <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
         <DialogTitle className="text-2xl">Upload your document {TPDocID}</DialogTitle>
+        <BrakeRule classname="my-2" />
         <div onClick ={() => handleUploadClick()}className="flex w-full flex-col mt-0 text-primary-content/40 dark:text-darkMode-foreground/40 items-center hover:bg-info/30 hover:text-info-content dark:hover:bg-darkMode-info dark:hover:text-darkMode-info-content justify-center border-2 border-dashed border-primary-content/40 dark:border-darkMode-foreground/40 p-6 rounded-lg cursor-pointer hover:border-info-content dark:hover:border-darkMode-info-content transition motion-reduce:transition-none motion-reduce:hover:transform-none">
-         <FaUpload className="text-7xl mb-2" />
+         <FaUpload className="text-6xl mb-2" />
          <input type="file" ref={fileInputRef} id="fileInput" className="hidden" onChange={handleFileChange} />
           {/* {error && <p>Error: {error}</p>}
           {message && <p>{message}</p>} */}
@@ -138,6 +140,7 @@ export default function UploadModal({
               : "Click to upload a file"}
           </p>
         </div>
+        <BrakeRule classname="my-2" />
         <div className="flex w-full justify-end">
           <div className="w-full flex justify-end mr-2">
             <CancelButton onClick={() => setIsOpen(false)} />
