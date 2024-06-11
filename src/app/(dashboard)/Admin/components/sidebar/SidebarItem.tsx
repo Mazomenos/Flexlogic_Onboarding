@@ -71,7 +71,7 @@ export default function SidebarItem({ children }: { children?: ReactNode }) {
   return (
     <div className="flex flex-col h-full">
       <div className="flex justify-end">
-        <AddButton onClick={openModal}> Add Segment </AddButton>
+        <AddButton onClick={openModal}> Add Item </AddButton>
       </div>
       <div className="my-5 no-scrollbar flex-1 overflow-y-auto overscroll-none">
         {segments.map((templateSegment) => {
