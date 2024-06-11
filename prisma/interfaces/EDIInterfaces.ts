@@ -114,3 +114,9 @@ type UserPartnerships = {
 export interface User {
   Partnerships: UserPartnerships[];
 }
+export interface LogErrors {
+  Title: string;
+  Description: string;
+  Position: string;
+  Type: string;
+}

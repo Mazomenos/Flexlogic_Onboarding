@@ -11,6 +11,8 @@ import ValStructure from "@/libs/validation/segments";
 import data from "@/libs/validation/elements";
 import { GetTPDocById } from "@/DA/TpDocsController";
 import { uploadRecentEDI } from "@/DA/fileManagerControllers";
+import { UpdateUserLogErrors } from "@/DA/usersTpControllers";
+import { Description } from "@radix-ui/react-toast";
 
 // Read stream code by Russell Briggs: https://medium.com/@dupski/nodejs-creating-a-readable-stream-from-a-string-e0568597387f
 class ReadableString extends Readable {
@@ -77,8 +79,16 @@ export default function UploadModal({
         if (info){
           const contentStream = new ReadableString(String(fileContent));
           const Segments = await ParseEDIfile(contentStream);
-          console.log(ValStructure(info.Segments, Segments, 0, "M", true));
-          data(info.Segments, Segments, [])
+          const resultValStructure = ValStructure(info.Segments, Segments, 0, "M", true)
+          if (resultValStructure.status === "Success") {
+            data(info.Segments, Segments, [])
+
+          } else {
+            // Aqui deberia de ir el controlador de si encontro un error, subirlo a la base de datos
+            UpdateUserLogErrors(dataUserDoc[0],dataUserDoc[1], dataUserDoc[2], [{Title:"", Description: resultValStructure.Description ,Position: resultValStructure.Position, Type:"Structure"}]);
+
+          }
+
         }
       }
     } catch (error) {

@@ -6,10 +6,10 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
+import { LogErrors } from '../../prisma/interfaces/EDIInterfaces';
 
 export async function GetUsersPartnerInfo(userId: string) {
     try {
-        console.log("hola:", userId)
         const userPartnerships = await prisma.user.findUnique({
             where: {
                 id: userId
@@ -208,6 +208,52 @@ export async function GetPartnershipDocLogError(PartnerName: string, UserId: str
         return newData
 
     } catch (error) {
+        if (error instanceof Error) {
+            console.log(
+                {
+                    message: error.message,
+                },
+                {
+                    status: 500,
+                }
+            );
+        }
+    }
+}
+
+export async function UpdateUserLogErrors(UserId: string, DocId: string, PartnerName: string, newLogError: LogErrors[]) {
+    try {
+        const updatedUser = await prisma.user.update({
+            where: {
+                id: UserId,
+            },
+            data: {
+                Partnerships: {
+                    updateMany: {
+                        where: {
+                            Name: PartnerName,
+                            Docs: {
+                                some: {
+                                    idDoc: DocId,
+                                },
+                            },
+                        },
+                        data: {
+                            Docs: {
+                                updateMany: {
+                                    where: { idDoc: DocId },
+                                    data: {
+                                        LogErrors: { set: newLogError },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+        });
+        return updatedUser;
+    } catch(error) {
         if (error instanceof Error) {
             console.log(
                 {
