@@ -64,7 +64,7 @@ export default function PartnerItem({
     <li className="relative bg-base-100 dark:bg-darkMode-base-100 border-base-300 w-[97%] flex  justify-between items-center flex-row place-items-start mx-1 my-2 px-8 shadow-[0px_0px_10px_1px_#00000024] dark:shadow-[0px_0px_10px_1px_#dadee610] border-1 text-xl py-6">
       <div className="flex flex-row w-full items-center">
         <p className="basis-3/6">{partner.Name} </p>
-        <div className="basis-1/6 grid justify-items-center content-center">
+        <div className="basis-2/6 grid justify-items-center content-center">
           <button onClick={() => handleVisibleClick()}>
             {partner.isVisible ? (
               <div
