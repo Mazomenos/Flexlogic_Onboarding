@@ -223,7 +223,7 @@ export default function AddDocument() {
               <p className="">
                 {fileName
                   ? fileName
-                  : "Drag & drop a file here or click to upload"}
+                  : "Click to upload a file"}
               </p>
             </div>
 
