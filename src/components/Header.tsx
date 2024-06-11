@@ -56,8 +56,8 @@ export default function Header() {
   let pageName = "";
   const pathParts = currentPath.split("/");
   const icp = pathParts[2]?.replace(/_/g, " ");
-  const partnershipNames = Partnerships.map(p => p.Name.replace(/_/g, " "));
-  const partnerNames = Partners.map(p => p.Name.replace(/_/g, " ")); 
+  const partnershipNames = Partnerships.map((p: any) => p.Name.replace(/_/g, " "));
+  const partnerNames = Partners.map((p: any) => p.Name.replace(/_/g, " ")); 
 
 
   if (currentPath === "/Cliente") {
