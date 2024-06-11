@@ -101,11 +101,7 @@ export default function Home() {
           </div>
         </ListHeader>
         {TPInfo && TPInfo.map((partnership, index) => (
-          <ListItem
-            key={index}
-            path={partnership.Name}
-            
-          >
+          <ListItem key={index}>
             <div className="basis-8/12">
               <p>{partnership.Name} </p>
             </div>
