@@ -365,3 +365,37 @@ export async function GetTPDocsRequired(partnerId: string) {
         }
     }
 }
+
+export async function GetTPDocs(partnerName: string) {
+    console.log(partnerName)
+    try {
+        const tradingPartner = await prisma.tradingPartner.findFirst({
+            where: {
+                Name: partnerName
+            },
+            include: {
+                DocsRequired: true
+            }
+        });
+
+        if (!tradingPartner) throw new Error('User not found')
+
+        let newData: any[] = []
+        for (let i = 0; i < tradingPartner.DocsRequired.length; i++) {
+            let docData = tradingPartner.DocsRequired[i]
+            newData.push({
+                idDoc: docData.idDoc,
+                Doc: docData.Doc,
+                isVisible: docData.isVisible,
+                isRequired: docData.isRequired,
+                instructionsPDF: docData.instructionsPDF
+            })
+        }
+        return newData;
+
+    } catch (error) {
+        if (error instanceof Error) {
+            return Error
+        }
+    }
+}

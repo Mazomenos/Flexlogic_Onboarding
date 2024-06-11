@@ -11,7 +11,7 @@ import CancelButton from "@/components/CancelButton";
 import DrawerDefault from "../components/DrawerDefault";
 import AddDocument from "../components/AddDocument";
 import DocumentsList from "../components/DocumentsList";
-import { GetTPDocsRequired } from "@/DA/usersTpControllers";
+import { GetTPDocs, GetTPDocsRequired } from "@/DA/usersTpControllers";
 import { deleteTPDoc } from "@/DA/TpDocsController";
 import { useParams } from "next/navigation";
 
@@ -41,7 +41,7 @@ export default function Home() {
   // created db call to fetch docsRequired
   const getTPDocsRequired = async () => {
     try {
-      const response = await GetTPDocsRequired(partnerName);
+      const response = await GetTPDocs(partnerName);
       if (response) {
         const data = await response;
         if (data) {
@@ -82,7 +82,7 @@ export default function Home() {
   // This function deletes an item from the database
   const deleteDatabaseItem = async (id: string) => {
     try {
-      await deleteTPDoc("664d76a8d7412ac29ddf6a1b", id);
+      await deleteTPDoc(partnerName, id);
 
       // Check if this
       setIsOpen(false);
@@ -127,7 +127,7 @@ export default function Home() {
         <div className="max-h-full flex flex-col items-center w-full overflow-y-auto overscroll-none">
           <ListItem>
             <div className="flex flex-row w-full items-center">
-              <p className="basis-2/6">Documents</p>
+              <p className="basis-3/6">Documents</p>
               <p className="basis-1/6 grid justify-items-center content-center">
                 Mandatory
               </p>
@@ -136,9 +136,6 @@ export default function Home() {
               </p>
               <p className="basis-1/6 grid justify-items-center content-center">
                 Actions
-              </p>
-              <p className="basis-1/6 grid justify-items-center content-center">
-                Save Changes
               </p>
             </div>
           </ListItem>
@@ -150,6 +147,7 @@ export default function Home() {
             Documents={edi}
             handleDeleteButton={handleDeleteActionButton}
             handleEditButton={handleEditButton}
+            partner={partnerName}
           />
         </div>)}
 

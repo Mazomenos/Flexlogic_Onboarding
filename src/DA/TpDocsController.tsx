@@ -243,12 +243,12 @@ export async function updateTPDoc(PartnerName: string, TPDocId: string, newDocum
     }
 }
 
-export async function deleteTPDoc(PartnerId: string, TPDocId: string) {
+export async function deleteTPDoc(partnerName: string, TPDocId: string) {
     try {
         // Find the trading partner
-        const partner = await prisma.tradingPartner.findUnique({
+        const partner = await prisma.tradingPartner.findFirst({
             where: {
-                id: PartnerId
+                Name: partnerName
             },
             include: {
                 DocsRequired: true

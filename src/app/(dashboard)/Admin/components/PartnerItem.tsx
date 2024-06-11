@@ -54,10 +54,12 @@ export default function PartnerItem({
   realPartner,
 }: Props) {
   function handleVisibleClick() {
+    UpdateTPVisible(partner.id, {isVisible: !partner.isVisible})
     handleUpdatePartner({
       ...partner,
       isVisible: !partner.isVisible,
     });
+    SuccessAction("wowww")
   }
 
   return (

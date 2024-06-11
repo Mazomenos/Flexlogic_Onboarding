@@ -1,6 +1,8 @@
 import React from "react";
 import PartnerItem from "./PartnerItem";
 import { TradingPartnerCard } from "../page";
+import { updateTPDoc } from "@/DA/TpDocsController";
+import { UpdateTradingPartner } from "@/DA/tradingPartnerControllers";
 interface Props {
   Partners: TradingPartnerCard[];
   handleDeleteButton: any;
@@ -19,7 +21,7 @@ export default function PartnersList({
   handleDeleteTemporalPartner
 }: Props) {
 
-  const handleUpdatePartner = (updatedPartner: TradingPartnerCard) => {
+  const handleUpdatePartner = async (updatedPartner: TradingPartnerCard) => {
     const newPartners = temporalPartners.map((partner) =>
       partner.id === updatedPartner.id ? updatedPartner : partner,
     );

@@ -124,7 +124,7 @@ export async function CreateTradingPartner(data: {
 }
 
 //Testing pending
-export async function UpdateTradingPartner(id: string, data: {
+export async function UpdateTradingPartner(partnerId: string, data: {
     Name?: string,
     Initial850EDI?: string, 
     Delimiters?: string[],
@@ -135,7 +135,7 @@ export async function UpdateTradingPartner(id: string, data: {
     try {
         const partnership = await prisma.tradingPartner.update({
             where: {
-                id
+                id: partnerId
             },
             data: data
         })
