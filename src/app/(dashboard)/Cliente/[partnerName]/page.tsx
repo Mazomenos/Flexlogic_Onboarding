@@ -210,6 +210,10 @@ export default function Home() {
                       <button
                         className="w-28 p-1 text-base dark:disabled:ring-darkMode-primary/30 bg-info disabled:bg-info/50 disabled:text-info-content/30 dark:bg-darkMode-primary dark:disabled:bg-darkMode-primary/30 dark:hover:enabled:bg-transparent  dark:text-darkMode-base-100 dark:disabled:text-darkMode-info-content/50 dark:hover:enabled:text-darkMode-primary font-bold text-info-content transition motion-reduce:transition-none motion-reduce:hover:transform-none hover:enabled:bg-transparent hover:enabled:text-brand-blue ring-2 ring-primary disabled:ring-primary/50 hover:enabled:ring-primary dark:ring-darkMode-primary hover:border-1"
                         disabled={false}
+                        onClick={() => {
+                          openUpload(true);
+                          setTPDocID(document.idDoc);
+                        }}
                       >
                         <div className=""> Validate </div>
                       </button>
@@ -239,6 +243,11 @@ export default function Home() {
             </ListItem>
           ))}
       </div>
+      <UploadModal
+        isOpen={isUploadModalOpen}
+        setIsOpen={setIsUploadModalOpen}
+        dataUserDoc={[partnerName, TPDocID]}
+      ></UploadModal>
       <Errors isOpen={isErrorModalOpen} setIsOpen={setIsErrorModalOpen} />
     </div>
   );
