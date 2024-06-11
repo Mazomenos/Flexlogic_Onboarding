@@ -38,6 +38,8 @@ type EDI = {
 
 export default function Home() {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
+
   const { partnerName } = useParams<{ partnerName: string }>(); // Specify the param type
   //Variables estaticas temporales
 
@@ -96,6 +98,8 @@ export default function Home() {
       console.log("error", error);
       FailedAction(`Partner ${partnerName} invalid`);
       router.push("/Cliente");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -180,6 +184,11 @@ export default function Home() {
         </AddButton>
       </div>
       <BrakeRule />
+      {isLoading ? (
+        <div className="flex justify-center items-center h-full">
+          <span className="loading loading-dots loading-lg"></span>
+        </div>
+      ) : (
       <div className="max-h-full flex flex-col items-center w-full overflow-y-auto overscroll-none">
         <ListHeader>
           <div className="flex flex-row w-full items-center">
@@ -242,7 +251,7 @@ export default function Home() {
               </div>
             </ListItem>
           ))}
-      </div>
+      </div> )}
       <UploadModal
         isOpen={isUploadModalOpen}
         setIsOpen={setIsUploadModalOpen}
