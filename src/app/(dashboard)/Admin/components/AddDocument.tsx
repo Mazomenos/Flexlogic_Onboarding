@@ -2,9 +2,9 @@
 
 import React, { useState, useRef, ChangeEvent } from "react";
 import BrakeRule from "@/components/BrakeRule";
-import { FaUpload } from "react-icons/fa";
+import { FaUpload } from "react-icons/fa6";
 
-import { DialogTitle } from "@/components/ui/dialog";
+import { DialogClose, DialogFooter, DialogTitle } from "@/components/ui/dialog";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -80,6 +80,7 @@ export default function AddDocument() {
   // #TODO: Change to post data to DB, the uploaded file is in the
   // 'file' useState
   async function onSubmit(data: z.infer<typeof FormSchema>) {
+    setIsOpenForms(false);
     console.log(JSON.stringify(data, null, 2));
 
     // Use url for db
@@ -108,12 +109,15 @@ export default function AddDocument() {
   };
 
   return (
-    <FormModal buttonText="Add Document +">
+    <FormModal
+      isOpen={isOpen}
+      setIsOpen={setIsOpenForms}
+      buttonText="Add Document +"
+    >
       <DialogTitle className="text-2xl text-center">
         Create Document
       </DialogTitle>
-      <BrakeRule classname="my-2" />
-      <div className="w-full overflow-y-scroll">
+      <div className="w-full">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <div className="grid px-1 grid-cols-1 sm:grid-cols-3 gap-4 justify-between">
@@ -207,7 +211,7 @@ export default function AddDocument() {
               onClick={handleUploadClick}
               style={{ marginTop: "0.8rem" }}
             >
-              <FaUpload className="text-6xl mb-4" />
+              <FaUpload className="text-4xl mb-2" />
               <input
                 type="file"
                 id="fileInput"
@@ -219,14 +223,14 @@ export default function AddDocument() {
               <p className="">
                 {fileName
                   ? fileName
-                  : "Drag & drop a file here or click to upload"}
+                  : "Click to upload a file"}
               </p>
             </div>
 
             <div className="p-1 w-full flex justify-center">
               <Button
-                className="w-28 p-1 text-base bg-info dark:bg-darkMode-primary dark:hover:bg-transparent dark:text-darkMode-base-100 dark:hover:text-darkMode-primary font-bold text-info-content transition motion-reduce:transition-none motion-reduce:hover:transform-none hover:bg-transparent hover:text-brand-blue ring-2 ring-primary hover:ring-primary dark:ring-darkMode-primary hover:border-1"
                 disabled={file == null ? true : false}
+                className="w-28 p-1 text-base bg-info dark:bg-darkMode-primary dark:hover:bg-transparent dark:text-darkMode-base-100 dark:hover:text-darkMode-primary font-bold text-info-content transition motion-reduce:transition-none motion-reduce:hover:transform-none hover:bg-transparent hover:text-brand-blue ring-2 ring-primary hover:ring-primary dark:ring-darkMode-primary hover:border-1"
                 type="submit"
               >
                 Create

@@ -53,6 +53,7 @@ type EDITPSegmentElement = {
   Type: string;
   Min: number;
   Max: number;
+  Conditions?: JSON[]
 };
 type EDITPSegment = {
   Position: number;

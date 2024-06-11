@@ -1,13 +1,25 @@
 "use client";
 import BrakeRule from "@/components/BrakeRule";
 import { useRouter } from "next/navigation";
-import { CreatePartner } from "@/DA/tradingPartnerControllers";
-import { DialogTitle } from "@/components/ui/dialog";
+import { CreateTradingPartner } from "@/DA/tradingPartnerControllers";
 import { TradingPartner } from "@prisma/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { uploadFileToAzure } from "@/DA/fileManagerControllers";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+
+  DialogTitle,
+} from "@/components/ui/dialog";
+import CloseButton from "@/components/CloseButton";
+import { Button } from "@/components/ui/button";
+import { useHeaderContext } from "@/app/context/headerTrigger";
+
 
 import {
   Form,
@@ -26,11 +38,11 @@ import {
 } from "@/components/ui/select";
 
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import FormModal from "./FormModal";
 import ButtonB from "./ButtonB";
 import { FaUpload } from "react-icons/fa6";
 import { ChangeEvent, useRef, useState } from "react";
+import { SuccessAction } from "@/components/toasters";
 
 const FormSchema = z.object({
   Name: z
@@ -68,8 +80,11 @@ export default function AddPartner() {
 
   const [fileName, setFileName] = useState("");
   const [file, setFile] = useState<File | null>(null);
+  const [isOpen, setIsOpenForms] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const {headerTrigger, setHeaderTrigger} = useHeaderContext()
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -86,7 +101,32 @@ export default function AddPartner() {
 
   const router = useRouter();
 
-  // !TODO: Here we are going to use a POST method to post to DB
+  const newTP = async (newData: 
+    {
+      Name: string,
+      Initial850EDI: string, 
+      Delimiters: string[],
+      Version: string,
+      EOL: string,
+      isVisible: boolean
+      DocsRequired: any[]}) => 
+    {
+    try {
+      const response = await CreateTradingPartner(newData)
+
+      if (response) {
+        const data = await response;
+        console.log(data)
+        if (data) {
+          setHeaderTrigger(!headerTrigger)
+          return data
+        }
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   async function onSubmit(data: {
     Name: string,
     Delimiters: string,
@@ -131,19 +171,11 @@ export default function AddPartner() {
     };
 
     //Llamada a la base de datos
-    try {
-      const response = await CreatePartner(newData)
-
-      if (response) {
-        const data = await response;
-        console.log(data)
-        if (data) console.log(data)
-      }
-    } catch (error) {
-      console.log(error)
-    }
-
-
+    const newTradingPartner = await newTP(newData)
+    setIsOpenForms(false);
+    SuccessAction(`Succesfully Created ${newData.Name} Partner`)
+    //router.refresh()
+    router.push(`/Admin/${newData.Name}`)
     console.log(JSON.stringify(newData, null, 2));
     console.log(file);
   }
@@ -160,12 +192,15 @@ export default function AddPartner() {
   };
 
   return (
-    <FormModal buttonText="Add Trading Partner +">
+    <FormModal
+      buttonText="Add Trading Partner +"
+      isOpen={isOpen}
+      setIsOpen={setIsOpenForms}
+    >
       <DialogTitle className="text-2xl text-center">
         Add Trading Partner
       </DialogTitle>
-      <BrakeRule classname="my-2" />
-      <div className="w-full overflow-y-scroll">
+      <div className="w-full">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <div className="grid px-1 grid-cols-1 gap-4 justify-between">
@@ -279,11 +314,11 @@ export default function AddPartner() {
             </div>
             <p>EDI 850 document sample </p>
             <div
-              className="flex flex-col mt-0 text-primary-content/40 dark:text-darkMode-foreground/40 items-center hover:bg-info/30 hover:text-info-content dark:hover:bg-darkMode-info dark:hover:text-darkMode-info-content justify-center border-2 border-dashed border-primary-content/40 dark:border-darkMode-foreground/40 p-6 rounded-lg cursor-pointer hover:border-info-content dark:hover:border-darkMode-info-content transition motion-reduce:transition-none motion-reduce:hover:transform-none"
+              className="flex flex-col text-primary-content/40 dark:text-darkMode-foreground/40 items-center hover:bg-info/30 hover:text-info-content dark:hover:bg-darkMode-info dark:hover:text-darkMode-info-content justify-center border-2 border-dashed border-primary-content/40 dark:border-darkMode-foreground/40 p-6 rounded-lg cursor-pointer hover:border-info-content dark:hover:border-darkMode-info-content transition motion-reduce:transition-none motion-reduce:hover:transform-none"
               onClick={handleUploadClick}
-              style={{ marginTop: "0.8rem" }}
+              style={{ marginTop: "0.4rem" }}
             >
-              <FaUpload className="text-6xl mb-4" />
+              <FaUpload className="text-4xl mb-2" />
               <input
                 type="file"
                 id="fileInput"
@@ -298,18 +333,23 @@ export default function AddPartner() {
                   : "Drag & drop a file here or click to upload"}
               </p>
             </div>
-            <div className="p-1 w-full flex justify-center">
+            <div className="w-full flex justify-center">
               <Button
                 disabled={file == null ? true : false}
                 className="w-36 p-1 text-base bg-info dark:bg-darkMode-primary dark:hover:bg-transparent dark:text-darkMode-base-100 dark:hover:text-darkMode-primary font-bold text-info-content transition motion-reduce:transition-none motion-reduce:hover:transform-none hover:bg-transparent hover:text-brand-blue ring-2 ring-primary hover:ring-primary dark:ring-darkMode-primary hover:border-1"
                 type="submit"
+                
+                
               >
                 Create
               </Button>
+             
             </div>
           </form>
         </Form>
-      </div>
-    </FormModal>
-  );
+
+        </div>
+      </FormModal>
+    );
 }
+

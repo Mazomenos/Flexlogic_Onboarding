@@ -12,7 +12,7 @@ import React from "react";
 interface Props {
   handleDeleteButton: any;
   handleEditButton?: any;
-  itemId: number;
+  itemId: string;
 }
 
 export default function ActionsButton({

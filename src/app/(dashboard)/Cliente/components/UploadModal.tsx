@@ -2,7 +2,7 @@
 
 import { DialogTitle } from "@headlessui/react";
 import Modal from "@/components/Modal";
-import React, { useState} from "react";
+import React, { useRef, useState} from "react";
 import CancelButton from "@/components/CancelButton";
 import GenericButton from "@/components/GenericButton";
 import { ParseEDIfile } from "@/libs/X12parser/lib/parseEDIfile";
@@ -11,6 +11,8 @@ import ValStructure from "@/libs/validation/segments";
 import data from "@/libs/validation/elements";
 import { GetTPDocById } from "@/DA/TpDocsController";
 import { uploadRecentEDI } from "@/DA/fileManagerControllers";
+import { FaUpload } from "react-icons/fa6";
+import BrakeRule from "@/components/BrakeRule";
 import { UpdateUserLogErrors } from "@/DA/usersTpControllers";
 import { Description } from "@radix-ui/react-toast";
 
@@ -43,11 +45,30 @@ export default function UploadModal({
 
   const [fileContent, setFileContent] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const TPDocID = dataUserDoc[2];
+  const TPDocID = dataUserDoc[1];
+  
+  
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files ? event.target.files[0] : null;
-    setSelectedFile(file);
+  const handleUploadClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const text = e.target?.result;
+        setFileContent(text as string);
+        setSelectedFile(file);
+      };
+      reader.readAsText(file);
+    } else {
+      console.log("Error reading file");
+    }
   };
 
   //---------------Integracion-----------------//
@@ -113,11 +134,19 @@ export default function UploadModal({
     <>
       <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
         <DialogTitle className="text-2xl">Upload your document {TPDocID}</DialogTitle>
-        <div className="flex flex-col-reverse items-center w-full">
-          <input type="file" onChange={handleFileChange} />
+        <BrakeRule classname="my-2" />
+        <div onClick ={() => handleUploadClick()}className="flex w-full flex-col mt-0 text-primary-content/40 dark:text-darkMode-foreground/40 items-center hover:bg-info/30 hover:text-info-content dark:hover:bg-darkMode-info dark:hover:text-darkMode-info-content justify-center border-2 border-dashed border-primary-content/40 dark:border-darkMode-foreground/40 p-6 rounded-lg cursor-pointer hover:border-info-content dark:hover:border-darkMode-info-content transition motion-reduce:transition-none motion-reduce:hover:transform-none">
+         <FaUpload className="text-6xl mb-2" />
+         <input type="file" ref={fileInputRef} id="fileInput" className="hidden" onChange={handleFileChange} />
           {/* {error && <p>Error: {error}</p>}
           {message && <p>{message}</p>} */}
+          <p className="">
+            {selectedFile
+              ? selectedFile.name
+              : "Click to upload a file"}
+          </p>
         </div>
+        <BrakeRule classname="my-2" />
         <div className="flex w-full justify-end">
           <div className="w-full flex justify-end mr-2">
             <CancelButton onClick={() => setIsOpen(false)} />

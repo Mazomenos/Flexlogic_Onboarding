@@ -5,7 +5,32 @@ import { prisma } from "@/libs/prisma";
 import { Partnership, TPDocRequired, TradingPartner } from "@prisma/client";
 
 
-
+export async function GetAllTradingPartner() {
+    try {
+        const tradingPartner = await prisma.tradingPartner.findMany({
+            select: {
+                id: true,
+                Name: true,
+                isVisible: true
+            }
+            
+        });
+        
+        return tradingPartner;
+        
+    } catch (error) {
+        if (error instanceof Error) {
+            console.log(
+                {
+                    message: error.message,
+                },
+                {
+                    status: 500,
+                }
+            );
+        }
+    }
+}
 
 export async function GetTradingPartner(PartnerId: string) {
     try {
@@ -62,7 +87,7 @@ export async function GetPartnershipsFromUser(userId: string) {
 }
 
 
-export async function CreatePartner(data: {
+export async function CreateTradingPartner(data: {
     Name: string,
     Initial850EDI: string, 
     Delimiters: string[],
@@ -99,19 +124,20 @@ export async function CreatePartner(data: {
 }
 
 //Testing pending
-export async function UpdatePartnership(id: string, Name: string, Initial850EDI: string, Delimiters: string[], EDIVersion: string, EOL: string, DocsRequired: TPDocRequired[]) {
+export async function UpdateTradingPartner(partnerId: string, data: {
+    Name?: string,
+    Initial850EDI?: string, 
+    Delimiters?: string[],
+    Version?: string,
+    EOL?: string,
+    isVisible?: boolean, 
+    }){
     try {
         const partnership = await prisma.tradingPartner.update({
             where: {
-                id
+                id: partnerId
             },
-            data: {
-                Name,
-                Initial850EDI,
-                Delimiters,
-                EOL,
-                DocsRequired
-            }
+            data: data
         })
         return partnership
     } catch (error) {
@@ -129,7 +155,7 @@ export async function UpdatePartnership(id: string, Name: string, Initial850EDI:
 }
 
 //Testing pending
-export async function DeletePartnership(id: string) {
+export async function DeleteTradingPartner(id: string) {
     try {
         const partnership = await prisma.tradingPartner.delete({
             where: {

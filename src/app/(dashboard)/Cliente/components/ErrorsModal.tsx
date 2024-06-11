@@ -41,18 +41,18 @@ export default function Errors({
       <DialogTitle className="text-2xl">ERRORS</DialogTitle>
       <BrakeRule classname="my-3" />
       <div className="h-full justify-center flex-col overflow-y-auto w-full">
-        {errorLog.map((error, index) => (
-          <ErrorItem key={index} type={error.Type} title={error.Title}>
+        {errorLog && errorLog.map((error, index) => (
+          <ErrorItem key={index} Type={error.Type} Title={error.Title} Position={error.Position}>
             {error.Description}
           </ErrorItem>
         ))}
       </div>
       <BrakeRule classname="my-3" />
       <AddButon onClick={() => download()}>
-        Download All <IoMdDownload />
+        Download Last Attempt <IoMdDownload />
       </AddButon>
-      <BrakeRule classname="my-3" />
-      <div className="absolute bottom-4 w-full flex justify-center ">
+      <BrakeRule classname="my-2" />
+      <div className="bottom-4 w-full flex justify-center ">
         <GenericButton onClick={() => {setIsOpen(false); setIsUploadOpen(true)}}>Validate</GenericButton>
       </div>
     </Modal>
