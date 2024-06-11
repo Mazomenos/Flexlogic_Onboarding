@@ -19,6 +19,8 @@
     * -------------------------------------------------------------
 */
 
+import { Description } from "@radix-ui/react-toast";
+
 /**
     * Funcion encargada de checar la repeticion de un segmento dependiendo
     * de los parametros obtenidos, recibe el contador de repeticion del
@@ -79,7 +81,7 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
       } else {
         // Debe de hacer recorrido de los segmentos que quedan
         if (currSystemFile[varControlSys].Requirement === "M") {
-          return { status: "Failed" } 
+          return { status: "Failed", Position: varControlClient, Description: "Max repetition limit reached for Segment" } 
         }
         // Avanza si segmento de sistema no es obligatorio
         varControlSys++;
@@ -180,7 +182,7 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
               */
             } else if (result.status === "Failed") {
               varControlSys++
-              return { status: "Failed", Description: result.Description}
+              return { status: "Failed", Position: varControlClient, Description: result.Description }
 
               /**
                 * Esta condicion esta hecha cuando se encontro un error de comparacion entre dos
@@ -192,7 +194,7 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
               varControlClient = result.posClient
               diff = result.posClient - varControlClient
               if (reqLoop === "M") {
-                return {status: "Failed", Description: "Segment" + currSystemFile[varControlSys] + " should be present in your file in the " + varControlClient + "column in your file! Be sure to see the guidelines for this document!"}
+                return {status: "Failed", Position: varControlClient, Description: "Segment" + currSystemFile[varControlSys] + " should be present in your file in the " + varControlClient + "column in your file! Be sure to see the guidelines for this document!"}
               }
               break;
 
@@ -223,7 +225,7 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
                   
                 }
               } else {
-                return { status: "Failed", Description: "Max repetition limit reached for segment " + ClientFile[result.posClient].name + " in the " + result.posClient + " column in your file! Be sure to see the guidelines for this document!" }
+                return { status: "Failed", Position: varControlClient, Description: "Max repetition limit reached for segment " + ClientFile[result.posClient].name + " in the " + result.posClient + " column in your file! Be sure to see the guidelines for this document!" }
               }
 
               /**
@@ -288,11 +290,11 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
 
             // No estamos en un loop
             if (isFirst) {
-              return { status: "Failed",  Description: "Segment " +  currSystemFile[varControlSys].Segment + " should be present in your file!"}
+              return { status: "Failed", Position: varControlClient, Description: "Segment " +  currSystemFile[varControlSys].Segment + " should be present in your file!"}
 
               // Estamos en un loop obligatorio
             } else if (reqLoop === "M") {
-              return { status: "Failed", Position: varControlClient , Description: "Segment " +  currSystemFile[varControlSys].Segment + " should be present in your file and is inside one of your loops near"}
+              return { status: "Failed", Position: varControlClient,  Description: "Segment " +  currSystemFile[varControlSys].Segment + " should be present in your file and is inside one of your loops near"}
             }
               // Estamos en un loop no obligatorio
             return { status: "ErrorNotEqual", posClient: varControlClient, segValidated: segmentsValidated };
@@ -319,7 +321,7 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
 
       // El chequeo dio error donde el maximo estaba fuera de cualquier loop
       if (result.status === "Failed"){
-        return { status: "Failed", Description: result.Description}
+        return { status: "Failed", Position: varControlClient,Description: result.Description}
 
         // Dio error pero estabamos dentro de un loop
       } else if ( result.status === "ErrorRep") {
@@ -332,7 +334,7 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
           // Checa si hay algun segmento adelante que sea obligatorio, si lo es, debera tenerse el validador
           for (const indSeg of currSystemFile.slice(varControlSys + 1)) {
             if (indSeg.Requirement === "M") {
-              return  { status: "Failed", Description: "Max repetition limit reach por segment " + ClientFile[varControlClient].name };
+              return  { status: "Failed", Position: varControlClient, Description: "Max repetition limit reach por segment " + ClientFile[varControlClient].name };
             }
           }
           return { status: result.status, posClient: varControlClient, lastItem: true, segValidated: segmentsValidated };
@@ -357,7 +359,7 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
 
     // Fuera de loop, significa que hay mas segmentos en cliente que los que deberia
     if (isFirst) {
-      return {status: "Failed", Desc: "Failed more segments present in your file than there should be, see manual for more information regarding the necessary segments!"}
+      return {status: "Failed", Position: varControlClient, Description: "Failed more segments present in your file than there should be, see manual for more information regarding the necessary segments!"}
     }
 
     // Checa si viene de un loop o no
