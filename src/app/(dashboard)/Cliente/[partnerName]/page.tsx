@@ -98,6 +98,7 @@ export default function Home() {
         router.push("/Cliente");
       }
     } catch (error) {
+      console.log(error);
     } finally {
       setIsLoading(false);
     }

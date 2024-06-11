@@ -14,6 +14,7 @@ import DocumentsList from "../components/DocumentsList";
 import { GetTPDocs, GetTPDocsRequired } from "@/DA/usersTpControllers";
 import { deleteTPDoc } from "@/DA/TpDocsController";
 import { useParams } from "next/navigation";
+import { FailedAction } from "@/components/toasters";
 
 type EDI = {
   idDoc: string;
@@ -48,10 +49,13 @@ export default function Home() {
           console.log(data);
           setEdi(data);
           setTemporalDocuments(data);
-        }
+        } 
+      } else {
+          FailedAction(`Partner ${partnerName} invalid`);
+          router.push("/Admin");
       }
     } catch (error) {
-      console.log("error", error);
+      console.log(error);
     } finally {
           setIsLoading(false);
         }

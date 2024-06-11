@@ -402,7 +402,14 @@ export async function GetTPDocs(partnerName: string) {
 
     } catch (error) {
         if (error instanceof Error) {
-            return Error
+            console.log(
+                {
+                    message: error.message,
+                },
+                {
+                    status: 500,
+                }
+            );
         }
     }
 }
