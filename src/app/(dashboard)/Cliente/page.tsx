@@ -88,8 +88,6 @@ export default function Home() {
       </div>
 
       <BrakeRule />
-
-      {/* Muestra un componente de carga mientras se obtienen los datos */}
       {isLoading ? (
         <div className="flex justify-center items-center h-full">
           <span className="loading loading-dots loading-lg"></span>

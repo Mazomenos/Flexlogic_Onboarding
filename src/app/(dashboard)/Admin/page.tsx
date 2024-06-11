@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import BrakeRule from "@/components/BrakeRule";
 import ListItem from "@/components/ListItem";
 import Modal from "@/components/Modal";
@@ -19,6 +19,8 @@ export type TradingPartnerCard = {
 };
 
 export default function Home() {
+  const [isLoading, setIsLoading] = useState(true);
+
   const [isOpen, setIsOpen] = React.useState(false);
   const [selectedPartnershipId, setSelectedPartnershipId] = React.useState<
     string
@@ -50,7 +52,9 @@ export default function Home() {
       }
     } catch (error) {
       console.log(error)
-    }
+    } finally {
+          setIsLoading(false);
+        }
   }
 
   useEffect(() => {
@@ -126,6 +130,11 @@ export default function Home() {
         <AddPartner />
       </div>
       <BrakeRule />
+      {isLoading ? (
+        <div className="flex justify-center items-center h-full">
+          <span className="loading loading-dots loading-lg"></span>
+        </div>
+      ) : (
       <div className="max-h-full flex flex-col items-center w-full overflow-y-auto overscroll-none">
         <ListHeader>
           <div className="flex flex-row w-full items-center">
@@ -150,6 +159,7 @@ export default function Home() {
           />
         </div>
       </div>
+      )}
       <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
         <DialogTitle className="text-2xl">Delete Partner</DialogTitle>
         <DialogTitle className="text-xl">

@@ -20,43 +20,45 @@ type EDI = {
   Doc: string;
   isVisible: boolean;
   isRequired: boolean;
-  instructionsPDF: string
+  instructionsPDF: string;
 };
 
 export default function Home() {
-  
+  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
   const { partnerName } = useParams<{ partnerName: string }>(); // Specify the param type
 
-  console.log(partnerName)
-
+  console.log(partnerName);
 
   const [isOpen, setIsOpen] = React.useState(false);
-  const [selectedDocumentId, setSelectedDocumentId] = React.useState<string | null>(null);
+  const [selectedDocumentId, setSelectedDocumentId] = React.useState<
+    string | null
+  >(null);
   const [drawerOpen, setDrawerOpen] = React.useState(false);
 
   const [edi, setEdi] = useState<EDI[]>([]);
 
-  // created db call to fetch docsRequired 
+  // created db call to fetch docsRequired
   const getTPDocsRequired = async () => {
     try {
       const response = await GetTPDocsRequired(partnerName);
       if (response) {
         const data = await response;
         if (data) {
-          console.log(data)
-          setEdi(data)
-          setTemporalDocuments(data)
+          console.log(data);
+          setEdi(data);
+          setTemporalDocuments(data);
         }
       }
     } catch (error) {
-      console.log("error", error)
-      
-    }
-  }
+      console.log("error", error);
+    } finally {
+          setIsLoading(false);
+        }
+  };
   useEffect(() => {
-    getTPDocsRequired()
-  }, [])
+    getTPDocsRequired();
+  }, []);
 
   // Created a 'Mirror' list, this will prevent db calls when a user changes visibility or mandatory status,
   // and will only update in database once the user selects save button.
@@ -80,23 +82,20 @@ export default function Home() {
   // This function deletes an item from the database
   const deleteDatabaseItem = async (id: string) => {
     try {
-      
       await deleteTPDoc("664d76a8d7412ac29ddf6a1b", id);
-  
+
       // Check if this
       setIsOpen(false);
       deleteTemporalItem(id);
       const newEDI = edi.filter((document) => document.idDoc !== id);
-      console.log(newEDI)
+      console.log(newEDI);
       setEdi(newEDI);
-
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
 
   const selectedDocument = edi.find((edi) => edi.idDoc === selectedDocumentId);
-
 
   // Function that handles the visibility of delete modal, attached to ActionsButton.tsx
   const handleDeleteActionButton = (id: string) => {
@@ -107,9 +106,7 @@ export default function Home() {
   return (
     <>
       <div className="h-full flex flex-col">
-
         <div className="relative flex justify-center md:justify-end">
-
           <div className="absolute top-1 left-0">
             <BackButton
               onClick={() => {
@@ -122,8 +119,12 @@ export default function Home() {
         </div>
 
         <BrakeRule />
+        {isLoading ? (
+                <div className="flex justify-center items-center h-full">
+                  <span className="loading loading-dots loading-lg"></span>
+                </div>
+              ) : (
         <div className="max-h-full flex flex-col items-center w-full overflow-y-auto overscroll-none">
-
           <ListItem>
             <div className="flex flex-row w-full items-center">
               <p className="basis-2/6">Documents</p>
@@ -150,8 +151,7 @@ export default function Home() {
             handleDeleteButton={handleDeleteActionButton}
             handleEditButton={handleEditButton}
           />
-
-        </div>
+        </div>)}
 
         <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
           <DialogTitle className="text-2xl">Delete Document</DialogTitle>
@@ -165,10 +165,15 @@ export default function Home() {
           <div className="my-3" />
           <div className="w-[60%] flex flex-col sm:flex-row justify-between">
             <CancelButton onClick={() => setIsOpen(false)} />
-            <DeleteButton onClick={() => selectedDocument && selectedDocument.idDoc && deleteDatabaseItem(selectedDocument.idDoc)} />
+            <DeleteButton
+              onClick={() =>
+                selectedDocument &&
+                selectedDocument.idDoc &&
+                deleteDatabaseItem(selectedDocument.idDoc)
+              }
+            />
           </div>
         </Modal>
-
       </div>
       <DrawerDefault
         open={drawerOpen}
