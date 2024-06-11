@@ -224,10 +224,10 @@ export default function data(config: any, file: any, delimiters: string[]) {
     }
     //Imprimir Errores
     if (errorLog.length > 0){
-        errorLog.forEach((error) => {
-            console.log(error)})
+        return errorLog
     } else {
         console.log("Paso el test")
+        return []
     }
        
 }
