@@ -31,9 +31,9 @@ export default function ErrorItem({ title, children, type }: IError) {
           </p>
           <div className="text-error-content/50 dark:text-darkMode-foreground">
             {isOpen ? (
-              <ChevronDownIcon className="h-6 w-6 transform rotate-180 transition-transform duration-100" />
+              <ChevronDownIcon className="h-6 w-6 transform rotate-180 transition-transform duration-200 motion-reduce:transition-none motion-reduce:hover:transform-none" />
             ) : (
-              <ChevronDownIcon className="h-6 w-6 transition-transform duration-100" />
+              <ChevronDownIcon className="h-6 w-6 transition-transform duration-200  motion-reduce:transition-none motion-reduce:hover:transform-none" />
             )}
           </div>
         </div>
