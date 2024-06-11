@@ -267,7 +267,7 @@ export async function PostNewPartnership(PartnerId: string) {
                 idDoc: doc.idDoc,
                 Doc: doc.Doc,
                 DocFile: null,
-                Status: "Validate",
+                Status: "Pending",
                 isRequired: doc.isRequired,
                 LogErrors: []
             }))
@@ -332,12 +332,12 @@ export async function GetTPVisible() {
     }
 }
 
-export async function GetTPDocsRequired(PartnerName: string) {
-    console.log(PartnerName)
+export async function GetTPDocsRequired(partnerId: string) {
+    console.log(partnerId)
     try {
         const tradingPartner = await prisma.tradingPartner.findFirst({
             where: {
-                Name: PartnerName
+                id: partnerId
             },
             include: {
                 DocsRequired: true
