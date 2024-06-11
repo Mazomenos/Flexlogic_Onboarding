@@ -42,6 +42,7 @@ import FormModal from "./FormModal";
 import ButtonB from "./ButtonB";
 import { FaUpload } from "react-icons/fa6";
 import { ChangeEvent, useRef, useState } from "react";
+import { SuccessAction } from "@/components/toasters";
 
 const FormSchema = z.object({
   Name: z
@@ -172,6 +173,7 @@ export default function AddPartner() {
     //Llamada a la base de datos
     const newTradingPartner = await newTP(newData)
     setIsOpenForms(false);
+    SuccessAction(`Succesfully Created ${newData.Name} Partner`)
     //router.refresh()
     router.push(`/Admin/${newData.Name}`)
     console.log(JSON.stringify(newData, null, 2));
