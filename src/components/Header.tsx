@@ -1,9 +1,7 @@
 import ThemeChanger from "./ThemeChanger";
 import FlexLogicLogo from "./FlexLogicLogo";
-
 import { usePathname } from "next/navigation";
 import { GetAllTradingPartner } from "@/DA/tradingPartnerControllers";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { GetUsersPartnerInfo } from "@/DA/usersTpControllers";
 import { useHeaderContext } from "@/app/context/headerTrigger";
@@ -12,8 +10,6 @@ import { useHeaderContext } from "@/app/context/headerTrigger";
 export default function Header() {
 
   let currentPath = usePathname();
-
-  const router = useRouter();
 
   const {headerTrigger, setHeaderTrigger} = useHeaderContext()
 
@@ -59,17 +55,16 @@ export default function Header() {
   const partnershipNames = Partnerships.map((p: any) => p.Name.replace(/_/g, " "));
   const partnerNames = Partners.map((p: any) => p.Name.replace(/_/g, " ")); 
 
-
   if (currentPath === "/Cliente") {
     
     pageName = "Your partnerships";
-  } else if (partnershipNames.includes(icp) && currentPath === `/Cliente/${pathParts[2]}`) {
+  } else if (icp && currentPath === `/Cliente/${pathParts[2]}`) {
     pageName = `${icp} Partnership EDI Verification`;
   } 
   
   if (currentPath === "/Admin") {
     pageName = "Partner List";
-  } else if (partnerNames.includes(icp) && currentPath === `/Admin/${pathParts[2]}`) { 
+  } else if (icp && currentPath === `/Admin/${pathParts[2]}`) { 
     pageName = `${icp} EDI Documents`;
     //console.log("nombre de pagina",pageName)
   }
