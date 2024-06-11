@@ -4,8 +4,8 @@ import { DialogTitle } from '@headlessui/react';
 import BrakeRule from '@/components/BrakeRule';
 import ListItem from '@/components/ListItem';
 import GenericButton from '@/components/GenericButton';
-import { EDISegments } from "../../../../../prisma/EDISegments";
-import { EDISegment } from "../../../../../prisma/interfaces/EDIInterfaces";
+import { EDISegments } from "../../../../../../prisma/EDISegments";
+import { EDISegment } from "../../../../../../prisma/interfaces/EDIInterfaces";
 
 export default function SegmentModal({
     isOpen,
