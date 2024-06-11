@@ -235,7 +235,6 @@ export async function GetPartnershipDocLogError(PartnerName: string, DocId: stri
     }
 }
 
-<<<<<<< HEAD
 export async function UpdateUserLogErrors(UserId: string, DocId: string, PartnerName: string, newLogError: LogErrors[]) {
     try {
         const updatedUser = await prisma.user.update({
@@ -282,13 +281,9 @@ export async function UpdateUserLogErrors(UserId: string, DocId: string, Partner
     }
 }
 
-export async function PostNewPartnership(UserId: string, PartnerId: string) {
-=======
 export async function PostNewPartnership(PartnerId: string) {
 
     const userId = await GetUserId()
-
->>>>>>> 8f407f36677fa7dfba644a53a5ce9d9a3e74a3b5
     try {
 
         const users = await prisma.user.findUnique({
