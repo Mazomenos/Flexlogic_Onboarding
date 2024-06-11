@@ -10,7 +10,7 @@ interface Props {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   idDocument: string | null;
-  documentTitle: string;
+  documentTitle: string | undefined;
 }
 
 export default function DrawerDefault({
