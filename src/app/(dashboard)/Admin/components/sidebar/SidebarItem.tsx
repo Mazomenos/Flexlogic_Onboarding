@@ -20,7 +20,7 @@ import { EDITemplateDocs } from "../../../../../../prisma/EDITemplateDocs";
 import { EDIElements } from "../../../../../../prisma/EDIElements";
 import { EDISegments } from "../../../../../../prisma/EDISegments";
 import ConditionSelector from "./ConditionSelector";
-import SegmentModal from "./../SegmentModal";
+import SegmentModal from "./SegmentModal";
 import AddButton from "@/components/AddButton";
 import { EDISegment } from "../../../../../../prisma/interfaces/EDIInterfaces";
 
