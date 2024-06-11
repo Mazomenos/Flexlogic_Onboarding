@@ -312,6 +312,7 @@ export async function GetTPVisible() {
 
         if (tradingPartners.length === 0) throw new Error('No trading partners found');
 
+        console.log(tradingPartners)
         return tradingPartners.map(partner => ({
             id: partner.id,
             Name: partner.Name,
@@ -352,7 +353,8 @@ export async function GetTPDocsRequired(PartnerName: string) {
                 idDoc: docData.idDoc,
                 Doc: docData.Doc,
                 isVisible: docData.isVisible,
-                isRequired: docData.isRequired
+                isRequired: docData.isRequired,
+                instructionsPDF: docData.instructionsPDF
             })
         }
         return newData;

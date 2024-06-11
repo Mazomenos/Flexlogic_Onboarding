@@ -12,6 +12,7 @@ type EDI = {
   Doc: string;
   isVisible: boolean;
   isRequired: boolean;
+  instructionsPDF: string
 };
 
 interface Props {

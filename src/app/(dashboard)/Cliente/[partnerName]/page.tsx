@@ -232,7 +232,7 @@ export default function Home() {
                     )
                   ) : (
                     <button
-                      onClick={() => openError(true)}
+                      onClick={() => {openError(true); setTPDocID(document.idDoc)}}
                       className="w-28 p-1 text-base bg-error dark:bg-darkMode-error-content dark:hover:bg-transparent dark:text-darkMode-base-100 dark:hover:text-darkMode-error-content font-bold text-error-content transition motion-reduce:transition-none motion-reduce:hover:transform-none hover:bg-transparent hover:text-error-content ring-2 ring-error hover:ring-error dark:ring-darkMode-error-content hover:border-1"
                     >
                       Error Log
@@ -248,7 +248,7 @@ export default function Home() {
         setIsOpen={setIsUploadModalOpen}
         dataUserDoc={[partnerName, TPDocID]}
       ></UploadModal>
-      <Errors isOpen={isErrorModalOpen} setIsOpen={setIsErrorModalOpen} />
+      <Errors isOpen={isErrorModalOpen} setIsOpen={setIsErrorModalOpen} setIsUploadOpen={setIsUploadModalOpen} errorLog={ErrorLog} dataUserDoc={[partnerName, TPDocID]} />
     </div>
   );
 }

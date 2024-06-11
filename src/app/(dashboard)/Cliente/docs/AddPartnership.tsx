@@ -19,6 +19,7 @@ type TPDocsRequired = {
   Doc: string;
   isVisible: boolean;
   isRequired: boolean;
+  instructionsPDF: string
 };
 
 type Partnership = {
@@ -135,7 +136,7 @@ export default function AddPartnership() {
         <BrakeRule classname="my-3" />
         <div className="max-h-fit flex flex-col items-center w-full overflow-y-auto overscroll-none">
           {TPVisible && TPVisible.map((partner, index) => (
-            !Partnership?.some((p) => p.idPartner == partner.id) && (
+            Partnership?.some((p) => p.idPartner == partner.id) && (
               <ListItem key={index}>
                 <p> {partner.Name} Connection </p>
                 <GenericButton onClick={() => handleViewClick(partner.id)}>

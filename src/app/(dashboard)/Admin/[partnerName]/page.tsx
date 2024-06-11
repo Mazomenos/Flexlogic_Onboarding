@@ -14,13 +14,13 @@ import DocumentsList from "../components/DocumentsList";
 import { GetTPDocsRequired } from "@/DA/usersTpControllers";
 import { deleteTPDoc } from "@/DA/TpDocsController";
 import { useParams } from "next/navigation";
-import ListHeader from "@/components/ListHeader";
 
 type EDI = {
   idDoc: string;
   Doc: string;
   isVisible: boolean;
   isRequired: boolean;
+  instructionsPDF: string
 };
 
 export default function Home() {
@@ -44,13 +44,14 @@ export default function Home() {
       if (response) {
         const data = await response;
         if (data) {
+          console.log(data)
           setEdi(data)
           setTemporalDocuments(data)
         }
       }
     } catch (error) {
       console.log("error", error)
-      router.push("/Admin")
+      
     }
   }
   useEffect(() => {
@@ -122,7 +123,8 @@ export default function Home() {
 
         <BrakeRule />
         <div className="max-h-full flex flex-col items-center w-full overflow-y-auto overscroll-none">
-          <ListHeader>
+
+          <ListItem>
             <div className="flex flex-row w-full items-center">
               <p className="basis-2/6">Documents</p>
               <p className="basis-1/6 grid justify-items-center content-center">
@@ -134,8 +136,12 @@ export default function Home() {
               <p className="basis-1/6 grid justify-items-center content-center">
                 Actions
               </p>
+              <p className="basis-1/6 grid justify-items-center content-center">
+                Save Changes
+              </p>
             </div>
-          </ListHeader>
+          </ListItem>
+
           <DocumentsList
             handleDeleteDocument={deleteTemporalItem}
             temporalDocuments={temporalDocument}
@@ -143,7 +149,6 @@ export default function Home() {
             Documents={edi}
             handleDeleteButton={handleDeleteActionButton}
             handleEditButton={handleEditButton}
-            partner={partnerName}
           />
 
         </div>

@@ -156,7 +156,8 @@ export async function postTPDoc(TPId: string, DocTemplateNum: number) {
             idDoc: createdTPDoc.id,
             Doc: DocTemplateNum.toString(),
             isVisible: true,
-            isRequired: true
+            isRequired: true,
+            instructionsPDF: "blablabla"
         })
 
         const updatedDocs = await prisma.tradingPartner.update({
@@ -199,7 +200,8 @@ export async function updateTPDoc(PartnerName: string, TPDocId: string, newDocum
                 idDoc: docs.idDoc,
                 Doc: docs.Doc,
                 isRequired: docs.isRequired,
-                isVisible: docs.isVisible
+                isVisible: docs.isVisible,
+                instructionsPDF: docs.instructionsPDF
             }));
 
         // Add the new document to newData
@@ -207,7 +209,8 @@ export async function updateTPDoc(PartnerName: string, TPDocId: string, newDocum
             idDoc: newDocument.idDoc, 
             Doc: newDocument.Doc,
             isRequired: newDocument.isRequired,
-            isVisible: newDocument.isVisible
+            isVisible: newDocument.isVisible,
+            instructionsPDF: newDocument.instructionsPDF
         });
 
         // Update the trading partner with the filtered DocsRequired
@@ -264,7 +267,8 @@ export async function deleteTPDoc(PartnerId: string, TPDocId: string) {
                 idDoc: docs.idDoc,
                 Doc: docs.Doc,
                 isRequired: docs.isRequired,
-                isVisible: docs.isVisible
+                isVisible: docs.isVisible,
+                instructionsPDF: docs.instructionsPDF
             }));
 
 
@@ -275,6 +279,7 @@ export async function deleteTPDoc(PartnerId: string, TPDocId: string) {
                 id: TPDocId
             }
         });
+
 
         // Update the trading partner with the filtered DocsRequired
         const updatedPartner = await prisma.tradingPartner.update({
