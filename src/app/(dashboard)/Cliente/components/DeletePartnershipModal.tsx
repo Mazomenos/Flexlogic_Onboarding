@@ -31,7 +31,7 @@ export default function DeletePartnershipModal({
       <DialogTitle className="text-xl">{selectedPartnership?.Name}</DialogTitle>
       <p>
         To confirm, please type &quot;
-        <span className="font-bold">{selectedPartnership?.Name}</span>
+        <span className="font-bold select-none">{selectedPartnership?.Name}</span>
         &quot; in the box below
       </p>
       <div className="my-3" />
