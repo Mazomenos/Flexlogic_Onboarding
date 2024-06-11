@@ -9,7 +9,7 @@ import BrakeRule from "@/components/BrakeRule";
 import ListItem from "@/components/ListItem";
 import Badge from "./components/Badge";
 import AddPartnership from "./docs/AddPartnership";
-import { useRouter} from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { GetUsersPartnerInfo } from "@/DA/usersTpControllers";
 import ActionsButton from "@/components/ActionsButton";
@@ -48,6 +48,7 @@ export default function Home() {
   }, [])
 
 
+
   const [isOpen, setIsOpen] = React.useState(false);
   const [selectedPartnershipId, setSelectedPartnershipId] = React.useState<
     string | null
@@ -60,6 +61,9 @@ export default function Home() {
     setValue("");
     setIsOpen(true);
   };
+  const selectedPartnership = TPInfo && TPInfo.find(
+    (partnership) => partnership.idPartner === selectedPartnershipId,
+  );
 
   // Function that redirects the user to the selected TP
   const handleEditButton = (id: string) => {
@@ -69,10 +73,11 @@ export default function Home() {
       }
     });
   };
-
-
-
-
+  
+  // Handler that check's delete modal value
+  const handleChange = (e: any) => {
+    setValue(e.target.value);
+  };
 
   function handlePartnershipRedirect(path: string) {
     router.push(`/Cliente/${path}`);
@@ -116,10 +121,10 @@ export default function Home() {
               />
             </div>
           </ListItem>
-          
+
         ))}
       </div>
-      
+      <DeletePartnershipModal handleChange={handleChange} selectedPartnership={selectedPartnership} isOpen={isOpen} setIsOpen={setIsOpen} value={value} deleteDatabasePartnership={() => { console.log("deleted") }} />
     </div>
   );
 }
