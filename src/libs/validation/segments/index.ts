@@ -1,4 +1,23 @@
 
+/**
+    * -------------------------------------------------------------
+    * ARCHIVO PRINCIPAL PARA VALIDADOR DE ESTRUCTURA
+    * -------------------------------------------------------------
+    * Este mismo se compone de dos funciones principales 
+    * cuya funcion es devolver si la estructura del documento
+    * subido por el cliente es igual al que se quiere comparar 
+    * con el que se tiene en sistema o el documento de guia 
+    * para un Trading Partner.
+    * 
+    * ULTIMA ACTUALIZACION: 11-Junio-2024
+    * 
+    * NOTAS:
+    * - Se puede mejorar varias cosas como dividir las funciones 
+    *   repetidas en individuales como el chequeo de repeticiones
+    * - Generar mas opciones o filtros para tener mensajes de 
+    *   errores con mayor descripcion
+    * -------------------------------------------------------------
+*/
 
 /**
     * Funcion encargada de checar la repeticion de un segmento dependiendo
@@ -24,14 +43,16 @@ function checkRep(repCounter: number, posClient: number, sysFileMax: string, seg
 
 
 /**
-    * Funcion principal recursiva cuya responsabilidad es la de devolver si
-    * un archivo EDI es valido comparandolo en el documento del sistema que
-    * se quiere comparar, este mismo recibe el archivo del sistema o el loop
-    * en el que esta pues la funcion tiene el mismo comportamiento en un loop 
-    * a que si esta en el archivo principal del sistema.
-    * Igual recibe la informacion del archivo de cliente, su variable de control
-    * o basicamente su posicion, tambien el requerimiento del loop y si esta en 
-    * un loop o en el archivo principal.
+  * --------------------------------------------------------------------------
+  * Funcion principal recursiva cuya responsabilidad es la de devolver si
+  * un archivo EDI es valido comparandolo en el documento del sistema que
+  * se quiere comparar, este mismo recibe el archivo del sistema o el loop
+  * en el que esta, pues la funcion tiene el mismo comportamiento en un loop 
+  * al igual que el archivo principal del sistema con el que se quiere comparar.
+  * Igual recibe la informacion del archivo de cliente, su variable de control
+  * o basicamente su posicion, tambien el requerimiento del loop y si esta en 
+  * un loop o en el archivo principal.
+  * --------------------------------------------------------------------------
 */
 export default function ValStructure(currSystemFile: Array<any>, ClientFile: Array<any>, varControlClient: number, reqLoop: string, isFirst: Boolean): any {
   let isValidated = false;
@@ -45,8 +66,8 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
 
   /**
     * Ciclo principal que verifica si aun hay segmentos en el documento principal
-    * del sistema o en el segmento loop que se este analizando pues la logica
-    * aplica la misma para ambos 
+    * del sistema o en el segmento loop que se este analizando pues la misma logica
+    * aplica para ambos 
   */
   while (varControlSys < currSystemFile.length) {
 
@@ -109,117 +130,120 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
             }
 
             /**
-              * Filtro para veificar que el siguiente segmento es un loop al igual que 
-              * 
+              * Filtro para verificar que el siguiente segmento es un loop al igual que 
+              * los siguientes segmentos de los mismos loops son iguales
             */
             if (!lastSegment && currSystemFile[varControlSys + 1].Segment === "LOOP" && currSystemFile[varControlSys].Segments[0].Segment === currSystemFile[varControlSys + 1].Segments[0].Segment) {
               segInitialLoop = ClientFile[varControlClient][1];
               rightNextLoop = true;
             }
 
+            // Se aplica la misma logica al mandar el arreglo del loop para que lo recorra
             result = ValStructure(currSystemFile[varControlSys].Segments, ClientFile, varControlClient, currSystemFile[varControlSys].Requirement, false);
             varControlLoop++;
 
-            // Checa si hay segmentos siguientes, por ejemplo si un loop dentro de otro loop es el ultimo segmento del mismo
+            /**
+              * Otro filtro para poder ver si el segmento actual esta en su ultima
+              * posicion e igual activa bandera
+            */
             if (varControlSys >= currSystemFile.length - 1) {
-              console.log("ultima posicion del sistema actual")
               lastSegment = true;
             }
 
+            /**
+              * -------------------------------------------------------------------------- 
+              * El siguiente bloque tiene el enfoque de controlar los resultados del 
+              * recorrido de los loop, pues cuando se termina un ciclo este mismo devuelve 
+              * un status que se interpreta y despues hace alguna accion como avanzar la 
+              * posicion del cliente o del sistema en si.
+              * Estos status pueden ir desde Success, Failed, ErrorNotEqual, Errorrep y
+              * ErrorEndSystem.
+              * --------------------------------------------------------------------------
+            */
 
+            /**
+              * Primera condicional donde si el status es Success se actualiza la posicion
+              * del documento de cliente y ademas verifica si se acabaron los segmentos del
+              * documento de cliente, si es asi termina el ciclo de loops y continua a las 
+              * siguientes condicionales
+            */
             if (result.status === "Success") {
               varControlClient = result.posClient;
-              console.log("hola2")
               if (varControlClient >= ClientFile.length) {
-                console.log("breakaaa")
                 varControlSys++
                 break;
               }
               varControlLoop++;
+
+              /**
+                * Esta condicion esta hecha para cuando se encontro un error de estructura 
+                * critico por lo que el validador no deberia de seguir comparando o basicamente
+                * un freno
+              */
             } else if (result.status === "Failed") {
               varControlSys++
               return { status: "Failed" }
 
+              /**
+                * Esta condicion esta hecha cuando se encontro un error de comparacion entre dos
+                * segmentos, significa que habia un segmento en el documento de cliente que no deberia
+                * de estar ahi segun el documento de sistema y ve si el loop en el que esta es obligatorio,
+                * si lo es, pues el validador debe detenerse
+              */
             } else if (result.status === "ErrorNotEqual") {
               varControlClient = result.posClient
-              //varControlSys++;
               diff = result.posClient - varControlClient
-              console.log("diff:", diff)
               if (reqLoop === "M") {
                 return {status: "Failed"}
               }
               break;
 
-              // Checar condiciones cuando hay un error de repeticiones en un loop
+              /**
+                * Condicion que ocurre cuando se encontro un error de repeticion pero hay condiciones
+                * que se puede encontrar este error y el validador debera seguir corriendo
+              */
             } else if (result.status === "ErrorRep") {
-              console.log("cl: ", varControlClient, " sys: ", varControlSys);
-              console.log("sys:",currSystemFile[varControlSys].Segment);
-              console.log("cl:", ClientFile[result.posClient - 1].name)
-              // Ocurre cuando se hay un segmento repetido maximo
-              console.log("ErrorRep de verdad")
-              console.log("lSeg: ", lastSegment)
-              console.log("varible del result:", result.posClient)
 
               // Si el ultimo segmento del loop es el que se repite 
               if (result.lastItem) {
-
-                // ADAPTAR POR SI HAY ALGUN SEGMENTO QUE SEA IGUAL AL FINAL DE
               
                 // Checa si la siguiente posicion en el sistema es igual al ultimo segmento con el error
                 if (!lastSegment && currSystemFile[varControlSys + 1].Segment === ClientFile[result.posClient - 1].name) {
                   varControlClient = result.posClient - 1;
                   break;
-
-                  // el primer segmento de sistema es diferente al siguiente segmento de cliente
                 } 
 
-                console.log("vengo ayudar")
-
-                if ( currSystemFile[varControlSys].Segments[0].Segment !== ClientFile[result.posClient - 1].name) {
+                // Checa que el primer segmento del loop actual y el segmento del cliente donde termino sean diferentes
+                if (currSystemFile[varControlSys].Segments[0].Segment !== ClientFile[result.posClient - 1].name) {
                   console.log("el primer segmento de sistema es diferente al siguiente segmento de cliente")
                   varControlClient = result.posClient - 1;
                   break;
                 }
 
+                // Ve si el segmento del loop actual sea del mismo loop o diferente al anterior
                 if (rightNextLoop && segInitialLoop !== ClientFile[result.posClient][1]) {
                   console.log("es diferente tambien el siguiente")
                   varControlClient = result.posClient - 1;
                   
-                } else {
-                  console.log(varControlClient)
-                  console.log("Despues de errorLoop, continua el ciclo")
                 }
-
-
-
               } else {
                 return { status: "Failed" }
               }
 
-              
-              // Checar cuando se termina un loop con aun unos cuantos segmentos de cliente
+              /**
+                * Este error es el mas comun que se va encontrar el sistema pues ocurre cuando el loop se termino,
+                * por lo que puede ocurrir varias situaciones por lo que tenemos que delimitar que hara despues
+              */
             } else if (result.status === "ErrorEndSystem") {
-
-              console.log("ErrorEndSystem")
-              console.log("Cl:", ClientFile[varControlClient].name, " Pos: ", varControlClient, " Sys:", currSystemFile[varControlSys].Segment, " Pos: ", varControlSys);
-
-              
-              
-                
+                              
               // Si el siguiente segmento del cliente es igual a la primer posicion del loop, que continue el loop
               if (currSystemFile[varControlSys].Segments[0].Segment === ClientFile[result.posClient].name) {
-                console.log(varControlClient)
-                console.log(result.posClient)
-                console.log("Continua el loop despues de errorendsystem")
 
-
+                // Filtro cuando el loop no es el ultimo segmento del bloque en el que se encuentra y el siguiente el loop al igual que sus segmentos sean iguales
                 if (!lastSegment && currSystemFile[varControlSys + 1] === "LOOP" && ClientFile[result.posClient].name === currSystemFile[varControlSys + 1].Segments[0].Segment) {
-                  console.log("es igual al siguiente")
 
-                  console.log(segInitialLoop)
-                  console.log(ClientFile[result.posClient][1])
+                  // Ve si el segmento del loop actual sea del mismo loop o diferente al anterior
                   if (rightNextLoop && segInitialLoop !== ClientFile[result.posClient][1]) {
-                    console.log("es diferente tambien el siguiente")
                     varControlClient = result.posClient;
                     rightNextLoop = false;
                     break;
@@ -227,7 +251,6 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
                 }
 
                 varControlClient = result.posClient;
-                console.log("no paso Si el siguiente segmento del cliente es igual a la primer posicion del loop, que continue el loop")
                 continue
 
                 // Si el segmento de cliente anterior es igual al siguiente segmento del sistema, se regresa uno para verificar ese
@@ -249,23 +272,22 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
                 break;
               }
 
-
+              // Si ninguno de los filtro freno el ciclo, este mismo se repetira
               varControlClient = result.posClient;
-              console.log(result)
               break;
 
             }
           }
+
+          // Si se termino el bucle actual, este mismo avanza hacia la siguiente posicion en el sistema actual
           varControlSys++;
 
           // Despues de que dos segmentos se validen y baje el del sistema, controla segmentos repetidos al solo bajar cuando ya sean diferentes
         } else if (isValidated === true) {
-          console.log("validated")
           varControlSys++;
           isValidated = false;
 
         } else {
-          console.log("Los segmentos son diferentes")
 
           // Dos segmentos son diferentes y el del sistema es obligatorio
           if (currSystemFile[varControlSys].Requirement === "M") {
@@ -288,14 +310,15 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
         }
       }
 
-
-
+      /**
+        * El siguiente bloque se enfoca en hacer comparaciones y validaciones despues de que hacer 
+        * acciones o movimientos en las posiciones de los segmentos, aqui se verifica las repeticiones
+        * de los mismo y la posicion de las mismas variables de control
+      */
       // Chequeo de la posicion en el sistema
       if (varControlSys >= currSystemFile.length) {
         break;
       }
-      console.log(isFirst)
-      console.log("Largo del sistema: ", currSystemFile.length);
 
       // Chequeo de repeticiones
       result = checkRep(repCounter, varControlClient - 1, currSystemFile[varControlSys].Max, ClientFile[varControlClient - 1].name, isFirst);
@@ -307,62 +330,51 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
         // Dio error pero estabamos dentro de un loop
       } else if ( result.status === "ErrorRep") {
 
-
-        console.log("debugeo en errorrep ----------------")
-        
-        console.log(varControlClient)
-        console.log(ClientFile.length)
-        console.log(varControlSys)
-        console.log(currSystemFile.length)
-
         // El segmento repetido es el ultimo
         if (varControlSys  === currSystemFile.length - 1) {
-          console.log("Ultimo segmento del loop: ", currSystemFile[varControlSys])
           return  { status: result.status, posClient: varControlClient, lastItem: true, segValidated: segmentsValidated };
         } else {
-          console.log("popopopo")
+
+          // Checa si hay algun segmento adelante que sea obligatorio, si lo es, debera tenerse el validador
           for (const indSeg of currSystemFile.slice(varControlSys + 1)) {
-            console.log(indSeg.Segment)
             if (indSeg.Requirement === "M") {
-              console.log("se encontro obligatorio")
               return  { status: "Failed" };
             }
           }
           return { status: result.status, posClient: varControlClient, lastItem: true, segValidated: segmentsValidated };
         }
-
-
-        //return  { status: "Failed" };
       }
     }
   }
   
-  // Se acabo los segmentos del sistema o loop
-  // Aun quedaban segmentos en el documento de cliente
+  /**
+    * --------------------------------------------------------------------------------------------------- 
+    * Este es el ultimo bloque del validador, esta seccion suele pasar cuando se termina todos los 
+    * segmentos del sistema actual ya sea del loop o del archivo principal del que se esta comparando.
+    * Aqui se buscara saber si aun hay segmentos dentro del archivo del cliente al igual que devolver el 
+    * error de ErrorEndSystem el cual pasa cuando se acaban los segmentos dentro del sistema actual.
+    * De igual manera aqui verifica si el ultimo segmento verificado no esta en un loop y devuelve el 
+    * estado success lo que seria lo ultimo que veria el cliente al subir su documento.
+    * --------------------------------------------------------------------------------------------------- 
+  */
+
+  // Verifica si aun quedan segmentos en el documento de cliente
   if (varControlClient < ClientFile.length) {
 
     // Fuera de loop, significa que hay mas segmentos en cliente que los que deberia
     if (isFirst) {
       return {status: "Failed", Desc:"Failed more segments present in your file"}
     }
-    // Dentro de loop por lo que aun podria haber segmentos en sistema
-
-    console.log("lo que busco")
-    console.log("cl: ", varControlClient, " sys: ", varControlSys);
-
 
     // Checa si viene de un loop o no
     if (currSystemFile[varControlSys - 1].Segment === "LOOP") {
-      console.log("era loop")
       return {status: "ErrorEndSystem", posClient: varControlClient, firstSeg: currSystemFile[0], segValidated: segmentsValidated}
     } else {
       return {status: "ErrorEndSystem", posClient: varControlClient, firstSeg: currSystemFile[0].Segment, lastSegSys: currSystemFile[varControlSys - 1].Segment, segValidated: segmentsValidated}
     }
-
   }
 
-
-  console.log("Final, cliente: ", varControlClient, " sistema: ", varControlSys )
+  // Si todo esta correcto y no esta en un loop, devuelve el estado success solo sin informacion
   if (isFirst) {
     return { status: "Success"};
   }
