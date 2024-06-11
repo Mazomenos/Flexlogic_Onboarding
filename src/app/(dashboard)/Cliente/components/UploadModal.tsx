@@ -82,6 +82,7 @@ export default function UploadModal({
           const resultValStructure = ValStructure(info.Segments, Segments, 0, "M", true)
           if (resultValStructure.status === "Success") {
             data(info.Segments, Segments, [])
+            // Poner si el validador de elemento funciono aqui y poner la logica de la misma aqui
 
           } else {
             // Aqui deberia de ir el controlador de si encontro un error, subirlo a la base de datos
