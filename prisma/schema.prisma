@@ -78,11 +78,24 @@ model TradingPartner {
   id            String          @id @default(auto()) @map("_id") @db.ObjectId
   Name          String
   Initial850EDI String? // id of file if saved somewhere else
-  Delimiters    String[]
-  Version       String
-  EOL           String
+  Delimiters    Delimiters_enum
+  Version       Version_enum
+  EOL           EOL_enum
   isVisible     Boolean
   DocsRequired  TPDocRequired[]
+}
+
+enum Delimiters_enum {
+  COMMA_SEMICOLON_STAR @map("[',' , ';' , '*']")
+  PIPE_SEMICOLON_COMMA @map("['|' , ';' , ',']")
+}
+
+enum Version_enum {
+  X12_4010 @map("X12_4010")
+}
+
+enum EOL_enum {
+  TILDE   @map("~")
 }
 
 type TPDocRequired {

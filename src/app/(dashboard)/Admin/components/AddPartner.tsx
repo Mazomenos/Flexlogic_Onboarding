@@ -29,7 +29,8 @@ import { Button } from "@/components/ui/button";
 import FormModal from "./FormModal";
 import ButtonB from "./ButtonB";
 import { FaUpload } from "react-icons/fa6";
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, useRef, useState, useEffect} from "react";
+import { Delimiters_enum,Version_enum, EOL_enum } from "@prisma/client";
 
 const FormSchema = z.object({
   partnerName: z
@@ -37,27 +38,33 @@ const FormSchema = z.object({
       required_error: "Please input a trading partner name",
     })
     .min(2, { message: "Please input at least 2 characters" }),
-  delimeters: z.string({
-    required_error: "Please select a set of delimieters",
+  delimeters: z.nativeEnum(Delimiters_enum, {
+    required_error: "Please select a set of delimiters",
   }),
-  ediVersion: z.string({ required_error: "Please select an EDI version" }),
-  eol: z.string({ required_error: "Please select an EOL" }),
+  ediVersion: z.nativeEnum(Version_enum, {
+    required_error: "Please select an EDI version",
+  }),
+  eol: z.nativeEnum(EOL_enum, {
+    required_error: "Please select an EOL",
+  }),
 });
 
-// #TODO: Change to DB call
+
 const delimitersOptions = [
-  { value: ",", label: "Comma (,)" },
-  { value: ";", label: "Semicolon (;)" },
-  { value: "|", label: "Pipe (|)" },
+  { value: Delimiters_enum.COMMA_SEMICOLON_STAR, label:"Comma (,), Semicolon (;), Star (*)" },
+  { value: Delimiters_enum.PIPE_SEMICOLON_COMMA,  label:"Pipe (|), Semicolon (;), Comma (,)" },
 ];
 
-// #TODO: Change to DB call
-const ediVersionOptions = [{ value: "4010", label: "X12 4010" }];
+const ediVersionOptions = [
+  { value: Version_enum.X12_4010, label: "X12 4010" },
+];
 
-// #TODO: Change to DB call
-const eolOptions = [{ value: "LF", label: " ~ " }];
+const eolOptions = [
+  { value: EOL_enum.TILDE, label: "Tilde (~)" }
+];
 
 export default function AddPartner() {
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
