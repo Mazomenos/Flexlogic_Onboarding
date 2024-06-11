@@ -61,8 +61,6 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
   let segmentsValidated = 0;
   let result;
   let rightNextLoop = false
-  console.log("Largo del sistema: ", currSystemFile.length);
-  console.log("Largo del cliente: ", ClientFile.length);
 
   /**
     * Ciclo principal que verifica si aun hay segmentos en el documento principal
@@ -182,7 +180,7 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
               */
             } else if (result.status === "Failed") {
               varControlSys++
-              return { status: "Failed" }
+              return { status: "Failed", Description: result.Description}
 
               /**
                 * Esta condicion esta hecha cuando se encontro un error de comparacion entre dos
@@ -194,7 +192,7 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
               varControlClient = result.posClient
               diff = result.posClient - varControlClient
               if (reqLoop === "M") {
-                return {status: "Failed"}
+                return {status: "Failed", Description: "Segment" + currSystemFile[varControlSys] + " should be present in your file in the " + varControlClient + "column in your file! Be sure to see the guidelines for this document!"}
               }
               break;
 
@@ -215,19 +213,17 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
 
                 // Checa que el primer segmento del loop actual y el segmento del cliente donde termino sean diferentes
                 if (currSystemFile[varControlSys].Segments[0].Segment !== ClientFile[result.posClient - 1].name) {
-                  console.log("el primer segmento de sistema es diferente al siguiente segmento de cliente")
                   varControlClient = result.posClient - 1;
                   break;
                 }
 
                 // Ve si el segmento del loop actual sea del mismo loop o diferente al anterior
                 if (rightNextLoop && segInitialLoop !== ClientFile[result.posClient][1]) {
-                  console.log("es diferente tambien el siguiente")
                   varControlClient = result.posClient - 1;
                   
                 }
               } else {
-                return { status: "Failed" }
+                return { status: "Failed", Description: "Max repetition limit reached for segment " + ClientFile[result.posClient].name + " in the " + result.posClient + " column in your file! Be sure to see the guidelines for this document!" }
               }
 
               /**
@@ -261,12 +257,10 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
 
                 // El detenemos el ciclo pues el siguiente del sistema es diferente al principio del loop
               } else if (currSystemFile[varControlSys].Segments[0].Segment !== ClientFile[varControlClient].name) {
-                console.log("hola")
                 break;
                 
                 // Cuando el siguiente segmento es un loop 
               } else if (!lastSegment && currSystemFile[varControlSys + 1].Segment === "LOOP") {
-                console.log("siguiente segmento es loop")
                 varControlClient = result.posClient;
 
                 break;
@@ -294,11 +288,11 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
 
             // No estamos en un loop
             if (isFirst) {
-              return { status: "Failed" }
+              return { status: "Failed",  Description: "Segment " +  currSystemFile[varControlSys].Segment + " should be present in your file!"}
 
               // Estamos en un loop obligatorio
             } else if (reqLoop === "M") {
-              return { status: "Failed", Position: varControlClient }
+              return { status: "Failed", Position: varControlClient , Description: "Segment " +  currSystemFile[varControlSys].Segment + " should be present in your file and is inside one of your loops near"}
             }
               // Estamos en un loop no obligatorio
             return { status: "ErrorNotEqual", posClient: varControlClient, segValidated: segmentsValidated };
@@ -325,7 +319,7 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
 
       // El chequeo dio error donde el maximo estaba fuera de cualquier loop
       if (result.status === "Failed"){
-        return { status: "Failed"}
+        return { status: "Failed", Description: result.Description}
 
         // Dio error pero estabamos dentro de un loop
       } else if ( result.status === "ErrorRep") {
@@ -338,7 +332,7 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
           // Checa si hay algun segmento adelante que sea obligatorio, si lo es, debera tenerse el validador
           for (const indSeg of currSystemFile.slice(varControlSys + 1)) {
             if (indSeg.Requirement === "M") {
-              return  { status: "Failed" };
+              return  { status: "Failed", Description: "Max repetition limit reach por segment " + ClientFile[varControlClient].name };
             }
           }
           return { status: result.status, posClient: varControlClient, lastItem: true, segValidated: segmentsValidated };
@@ -363,7 +357,7 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
 
     // Fuera de loop, significa que hay mas segmentos en cliente que los que deberia
     if (isFirst) {
-      return {status: "Failed", Desc:"Failed more segments present in your file"}
+      return {status: "Failed", Desc: "Failed more segments present in your file than there should be, see manual for more information regarding the necessary segments!"}
     }
 
     // Checa si viene de un loop o no
