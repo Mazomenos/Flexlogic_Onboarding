@@ -56,7 +56,6 @@ export default function ConditionSelector({
           </Select>
         </div>
       </div>
-      <BrakeRule classname="my-2" />
       <div className="w-[90%]">
         <ConditionItem index={index} conditionType={selection} />
       </div>

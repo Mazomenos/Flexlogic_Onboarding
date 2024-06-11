@@ -19,7 +19,7 @@ export default function ConditionItem({ conditionType, index }: Props) {
   switch (conditionType) {
     case Conditions.CHARACTER_LENGTH:
       return (
-        <div className="self-start flex flex-row w-full place-items-center">
+        <div className="self-start flex flex-row w-full place-items-center mt-2">
           <p className=" basis-2/12 text-right pr-2">Length</p>
           <div className="basis-10/12 w-full ">
             <Input
@@ -33,7 +33,7 @@ export default function ConditionItem({ conditionType, index }: Props) {
       );
     case Conditions.DECIMAL_POSITION:
       return (
-        <div className="self-start flex flex-row w-full place-items-center">
+        <div className="self-start flex flex-row w-full place-items-center mt-2">
           <p className=" basis-2/12 text-right pr-2">Decimals</p>
           <div className="basis-10/12 w-full ">
             <Input
@@ -46,7 +46,7 @@ export default function ConditionItem({ conditionType, index }: Props) {
       );
     case Conditions.ID_CODES:
       return (
-        <div className="self-start flex flex-row w-full place-items-center">
+        <div className="self-start flex flex-row w-full place-items-center mt-2">
           <p className=" basis-2/12 text-right pr-2">ID Codes</p>
           <div className="basis-10/12 w-full ">
             <Input
@@ -58,7 +58,7 @@ export default function ConditionItem({ conditionType, index }: Props) {
       );
     case Conditions.DATE_FORMAT:
       return (
-        <div className="self-start flex flex-row w-full place-items-center">
+        <div className="self-start flex flex-row w-full place-items-center mt-2">
           <p className=" basis-2/12 text-right pr-2">Decimals</p>
 
           <div className="basis-10/12 w-full ">
@@ -80,7 +80,7 @@ export default function ConditionItem({ conditionType, index }: Props) {
 
     case Conditions.TIME_FORMAT:
       return (
-        <div className="self-start flex flex-row w-full place-items-center">
+        <div className="self-start flex flex-row w-full place-items-center mt-2">
           <p className=" basis-2/12 text-right pr-2">Decimals</p>
 
           <div className="basis-10/12 w-full ">
