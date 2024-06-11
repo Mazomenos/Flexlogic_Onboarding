@@ -1,21 +1,22 @@
-"use client";
-
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { GetTPDocsRequired, GetTPVisible, GetUsersPartnerInfo, PostNewPartnership } from "@/DA/usersTpControllers";
+import { useHeaderContext } from "@/app/context/headerTrigger";
+import { SuccessAction } from "@/components/toasters";
 import { DialogTitle, Description } from "@headlessui/react";
 import Modal from "@/components/Modal";
-import React, { useEffect, useState } from "react";
 import ListItem from "@/components/ListItem";
 import GenericButton from "@/components/GenericButton";
 import BrakeRule from "@/components/BrakeRule";
 import BackButton from "@/components/BackButton";
 import AddButton from "@/components/AddButton";
-import { useRouter } from "next/navigation";
-import { GetTPDocsRequired, GetTPVisible, GetUsersPartnerInfo, PostNewPartnership } from "@/DA/usersTpControllers";
 
 type TPDocsRequired = {
   idDoc: string;
   Doc: string;
   isVisible: boolean;
   isRequired: boolean;
+  instructionsPDF: string;
 };
 
 type Partnership = {
@@ -27,88 +28,82 @@ type Partnership = {
 type TPVisible = {
   id: string;
   Name: string;
-}
+};
 
 export default function AddPartnership() {
+  const { headerTrigger, setHeaderTrigger } = useHeaderContext();
   const router = useRouter();
-
-  const [isOpen, setIsOpen] = React.useState(false);
-  const [isModal2, setIsModal2] = React.useState(false);
-  const [selectedPartnershipId, setSelectedPartnershipId] = React.useState<string | null>(null);
-
+  const [isOpen, setIsOpen] = useState(false);
+  const [isModal2, setIsModal2] = useState(false);
+  const [selectedPartnershipId, setSelectedPartnershipId] = useState<string | null>(null);
   const [TPVisible, setTPVisible] = useState<TPVisible[] | null>(null);
   const [TPDoc, setTPDoc] = useState<TPDocsRequired[] | null>(null);
   const [Partnership, setPartnership] = useState<Partnership[] | null>(null);
 
   useEffect(() => {
-    getUsersPartnerInfo(),
-    getTPVisible()
-  }, [])
+    getUsersPartnerInfo();
+    getTPVisible();
+  }, []);
 
-  // gets required docs of a trading partner
   const getTPDocsRequired = async (idPartner: string) => {
     try {
       const response = await GetTPDocsRequired(idPartner);
-
       if (response) {
-        const data = await response;
-        if (data) setTPDoc(data)
+        const data = response;
+        if (data) setTPDoc(data);
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
-  // gets a client partnership info 
   const getUsersPartnerInfo = async () => {
     try {
-      const response = await GetUsersPartnerInfo("665a0753b9c7af2580bc0ad5")
-
+      const response = await GetUsersPartnerInfo();
       if (response) {
         const data = await response;
-        if (data) setPartnership(data)
+        if (data) setPartnership(data);
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
-  // gets a visible trading partner for partnership creation
   const getTPVisible = async () => {
     try {
-      const response = await GetTPVisible()
-
+      const response = await GetTPVisible();
       if (response) {
         const data = await response;
-        if (data) setTPVisible(data)
+        if (data) setTPVisible(data);
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
-  //posts a new partnership
-  const postNewPartnership = async (idPartner:string) => {
+  const postNewPartnership = async (idPartner: string) => {
     try {
-      const response = await PostNewPartnership("665a0753b9c7af2580bc0ad5",idPartner)
+      const response = await PostNewPartnership(idPartner);
+      setHeaderTrigger(!headerTrigger);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   const handleViewClick = (id: string) => {
     setSelectedPartnershipId(id);
     setIsOpen(false);
     setIsModal2(true);
-    getTPDocsRequired(id)
+    getTPDocsRequired(id);
   };
 
   const selectedPartnership = TPVisible?.find((partner) => partner.id === selectedPartnershipId);
 
-  const handleCreateClick = async (idPartner:string, partnerName:string) => {
+  const handleCreateClick = async (idPartner: string, partnerName: string) => {
     try {
       await postNewPartnership(idPartner);
       setIsModal2(false);
+      SuccessAction("Partnership Created");
       router.push(`/Cliente/${partnerName}`);
     } catch (error) {
       console.log(error);
@@ -121,21 +116,25 @@ export default function AddPartnership() {
         <AddButton onClick={() => setIsOpen(true)}>Add Partnership +</AddButton>
       </div>
 
-      {/* Maps trading partners that are visible and are not in a partnership with the client */}
       <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
         <DialogTitle className="text-2xl">Partners</DialogTitle>
         <BrakeRule classname="my-3" />
         <div className="max-h-fit flex flex-col items-center w-full overflow-y-auto overscroll-none">
-          {TPVisible && TPVisible.map((partner, index) => (
-            !Partnership?.some((p) => p.idPartner == partner.id) && (
-              <ListItem key={index}>
-                <p> {partner.Name} Connection </p>
-                <GenericButton onClick={() => handleViewClick(partner.id)}>
-                  View
-                </GenericButton>
-              </ListItem>
-            )
-          ))}
+          {TPVisible && TPVisible.length > 0 ? (
+            TPVisible.map((partner, index) => (
+              !Partnership?.some((p) => p.idPartner === partner.id) && (
+                <ListItem key={index}>
+                  <p> {partner.Name} Connection </p>
+                  <GenericButton onClick={() => handleViewClick(partner.id)}>View</GenericButton>
+                </ListItem>
+              )
+            ))
+          ) : (
+            <div>
+            <p className="">At the moment there are no more Partnerships</p>
+            <BrakeRule classname="my-4" />
+            </div>
+          )}
         </div>
       </Modal>
 
@@ -149,35 +148,30 @@ export default function AddPartnership() {
           />
         </div>
 
-        {/* Displays name of trading partner selected to view */}
-        <DialogTitle className="text-2xl">
-          {" "}
-          {selectedPartnership?.Name} Partnership EDI Verification{" "}
-        </DialogTitle>
-
-        {/* Displays selected TPDocsRequired*/}
+        <DialogTitle className="text-2xl">{selectedPartnership?.Name} Partnership EDI Verification</DialogTitle>
         <BrakeRule classname="my-4" />
         <div className="max-h-full flex flex-col items-center w-full overflow-y-auto overscroll-none">
-          {TPDoc &&
+          {TPDoc && TPDoc.length > 0 ? (
             TPDoc.map((partnership, index) => (
               <ListItem key={index}>
                 <p> {partnership.Doc} </p>
-                <Description>
-                  {" "}
-                  {partnership.isRequired ? "Mandatory" : "Optional"}{" "}
-                </Description>
+                <Description>{partnership.isRequired ? "Mandatory" : "Optional"}</Description>
               </ListItem>
-            ))}
+            ))
+          ) : (
+            <div>
+              <p className="text-2xl">This partner does not have any document to validate</p>
+              <BrakeRule classname="my-4" />
+            </div>
+          )}
         </div>
         <BrakeRule classname="my-3" />
-
-
         <div className="absolute flex-row bottom-2">
           <div className="inline-block">
             {selectedPartnershipId && selectedPartnership && (
-              <GenericButton onClick={() => handleCreateClick(selectedPartnershipId,selectedPartnership?.Name)}>
-              Create
-            </GenericButton>
+              <GenericButton onClick={() => handleCreateClick(selectedPartnershipId, selectedPartnership.Name)}>
+                Create
+              </GenericButton>
             )}
           </div>
         </div>

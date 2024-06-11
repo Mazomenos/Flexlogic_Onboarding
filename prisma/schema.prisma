@@ -86,10 +86,11 @@ model TradingPartner {
 }
 
 type TPDocRequired {
-  idDoc      String // id from TPDocs
-  Doc        String
-  isVisible  Boolean
-  isRequired Boolean
+  idDoc           String // id from TPDocs
+  Doc             String
+  instructionsPDF String
+  isVisible       Boolean
+  isRequired      Boolean
 }
 
 //--------------------------

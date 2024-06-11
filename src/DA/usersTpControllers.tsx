@@ -1,14 +1,20 @@
 "use server"
 
-import { prisma } from "@/libs/prisma";
+// import { prisma } from "@/libs/prisma";
 
-// import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 
-// const prisma = new PrismaClient();
+import { GetUserId } from '@/middleware';
+
+const prisma = new PrismaClient();
 
 
-export async function GetUsersPartnerInfo(userId: string) {
+export async function GetUsersPartnerInfo() {
+
+    const userId = await GetUserId()
+
     try {
+        console.log("hola:", userId)
         const userPartnerships = await prisma.user.findUnique({
             where: {
                 id: userId
@@ -18,7 +24,6 @@ export async function GetUsersPartnerInfo(userId: string) {
             }
         })
         if (!userPartnerships) throw new Error('User not found')
-
         const partnerships = userPartnerships.Partnerships;
             
         const data = partnerships.map(partnership => ({
@@ -42,7 +47,10 @@ export async function GetUsersPartnerInfo(userId: string) {
     }
 }
 
-export async function GetUsersDocs(UserId: string, PartnerName: string) {
+export async function GetUsersDocs(PartnerName: string) {
+
+    const userId = await GetUserId()
+
     try {
 
         const partner = await prisma.tradingPartner.findFirst({
@@ -60,7 +68,7 @@ export async function GetUsersDocs(UserId: string, PartnerName: string) {
 
         const user = await prisma.user.findFirst({
             where: {
-                id: UserId,
+                id: userId,
             },
             include: {
                 Partnerships: true
@@ -103,11 +111,14 @@ export async function GetUsersDocs(UserId: string, PartnerName: string) {
     }
 }
 
-export async function GetUsersLogErrors(PartnerId: string, UserId: string) {
+export async function GetUsersLogErrors(PartnerId: string) {
+
+    const userId = await GetUserId()
+
     try {
         const user = await prisma.user.findUnique({
             where: {
-                id: UserId,
+                id: userId,
             },
             include: {
                 Partnerships: true
@@ -157,7 +168,10 @@ export async function GetUsersLogErrors(PartnerId: string, UserId: string) {
 
 
 //this controller is used to get the log of Errors of a single partnership file
-export async function GetPartnershipDocLogError(PartnerName: string, UserId: string, DocId: string) {
+export async function GetPartnershipDocLogError(PartnerName: string, DocId: string) {
+
+    const userId = await GetUserId()
+
     try {
 
         const partner = await prisma.tradingPartner.findFirst({
@@ -176,7 +190,7 @@ export async function GetPartnershipDocLogError(PartnerName: string, UserId: str
 
         const user = await prisma.user.findUnique({
             where: {
-                id: UserId,
+                id: userId,
             },
             include: {
                 Partnerships: true
@@ -221,12 +235,15 @@ export async function GetPartnershipDocLogError(PartnerName: string, UserId: str
     }
 }
 
-export async function PostNewPartnership(UserId: string, PartnerId: string) {
+export async function PostNewPartnership(PartnerId: string) {
+
+    const userId = await GetUserId()
+
     try {
 
         const users = await prisma.user.findUnique({
             where: {
-                id: UserId,
+                id: userId,
             },
             include: {
                 Partnerships: true
@@ -257,14 +274,14 @@ export async function PostNewPartnership(UserId: string, PartnerId: string) {
                 idDoc: doc.idDoc,
                 Doc: doc.Doc,
                 DocFile: null,
-                Status: "Validate",
+                Status: "Pending",
                 isRequired: doc.isRequired,
                 LogErrors: []
             }))
         };
 
         const updatedUser = await prisma.user.update({
-            where: { id: UserId },
+            where: { id: userId },
             data: {
                 Partnerships: {
                     push: newPartnership
@@ -302,6 +319,7 @@ export async function GetTPVisible() {
 
         if (tradingPartners.length === 0) throw new Error('No trading partners found');
 
+        console.log(tradingPartners)
         return tradingPartners.map(partner => ({
             id: partner.id,
             Name: partner.Name,
@@ -321,11 +339,12 @@ export async function GetTPVisible() {
     }
 }
 
-export async function GetTPDocsRequired(PartnerId: string) {
+export async function GetTPDocsRequired(partnerId: string) {
+    console.log(partnerId)
     try {
         const tradingPartner = await prisma.tradingPartner.findFirst({
             where: {
-                id: PartnerId
+                id: partnerId
             },
             include: {
                 DocsRequired: true
@@ -341,7 +360,8 @@ export async function GetTPDocsRequired(PartnerId: string) {
                 idDoc: docData.idDoc,
                 Doc: docData.Doc,
                 isVisible: docData.isVisible,
-                isRequired: docData.isRequired
+                isRequired: docData.isRequired,
+                instructionsPDF: docData.instructionsPDF
             })
         }
         return newData;
@@ -360,3 +380,43 @@ export async function GetTPDocsRequired(PartnerId: string) {
     }
 }
 
+export async function GetTPDocs(partnerName: string) {
+    console.log(partnerName)
+    try {
+        const tradingPartner = await prisma.tradingPartner.findFirst({
+            where: {
+                Name: partnerName
+            },
+            include: {
+                DocsRequired: true
+            }
+        });
+
+        if (!tradingPartner) throw new Error('User not found')
+
+        let newData: any[] = []
+        for (let i = 0; i < tradingPartner.DocsRequired.length; i++) {
+            let docData = tradingPartner.DocsRequired[i]
+            newData.push({
+                idDoc: docData.idDoc,
+                Doc: docData.Doc,
+                isVisible: docData.isVisible,
+                isRequired: docData.isRequired,
+                instructionsPDF: docData.instructionsPDF
+            })
+        }
+        return newData;
+
+    } catch (error) {
+        if (error instanceof Error) {
+            console.log(
+                {
+                    message: error.message,
+                },
+                {
+                    status: 500,
+                }
+            );
+        }
+    }
+}

@@ -41,7 +41,7 @@ export default function Home() {
               </div>
               <div className="flex justify-center">
                 <Image
-                  src="/Flexlogic.svg"
+                  src="/FlexLogic.svg"
                   alt="Logo Flexlogic"
                   width={200}
                   height={200}
@@ -58,7 +58,7 @@ export default function Home() {
                   Welcome,
                 </p>
                 <p className="md:text-3xl sm:text-sm text-center mb-4 text-black dark:text-slate-100">
-                  User Flexlogic
+                  User Client
                 </p>
               </div>
               <div className="flex justify-center">

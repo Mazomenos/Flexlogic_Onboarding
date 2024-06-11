@@ -53,6 +53,7 @@ type EDITPSegmentElement = {
   Type: string;
   Min: number;
   Max: number;
+  Conditions?: JSON[]
 };
 type EDITPSegment = {
   Position: number;
@@ -73,6 +74,7 @@ export interface EDITPDocument {
 type DocumentsRequired = {
   idDoc: string;
   Doc: string;
+  instructionsPDF: string;
   isVisible: boolean;
   isRequired: boolean;
 };
@@ -106,6 +108,7 @@ type PartnershipDocs = {
 };
 type UserPartnerships = {
   idPartner: string;
+  Name: string,
   Status: string;
   Docs: PartnershipDocs[];
 };
