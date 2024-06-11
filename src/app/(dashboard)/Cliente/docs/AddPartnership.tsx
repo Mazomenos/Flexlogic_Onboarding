@@ -58,7 +58,7 @@ export default function AddPartnership() {
       const response = await GetTPDocsRequired(idPartner);
 
       if (response) {
-        const data = await response;
+        const data = response;
         if (data) setTPDoc(data)
       }
     } catch (error) {

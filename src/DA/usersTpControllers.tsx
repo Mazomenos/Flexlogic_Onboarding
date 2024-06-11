@@ -368,7 +368,14 @@ export async function GetTPDocsRequired(partnerId: string) {
 
     } catch (error) {
         if (error instanceof Error) {
-            return Error
+            console.log(
+                {
+                    message: error.message,
+                },
+                {
+                    status: 500,
+                }
+            );
         }
     }
 }
