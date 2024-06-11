@@ -130,14 +130,11 @@ export default function Home() {
         <ListHeader>
           <div className="flex flex-row w-full items-center">
             <p className="basis-3/6">Trading Partner</p>
-            <p className="basis-1/6 grid justify-items-center content-center">
+            <p className="basis-2/6 grid justify-items-center content-center">
               Visible
             </p>
             <p className="basis-1/6 grid justify-items-center content-center">
               Actions
-            </p>
-            <p className="basis-1/6 grid justify-items-center content-center">
-              Save Changes
             </p>
           </div>
         </ListHeader>
