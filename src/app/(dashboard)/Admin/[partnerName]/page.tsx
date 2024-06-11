@@ -134,9 +134,6 @@ export default function Home() {
               <p className="basis-1/6 grid justify-items-center content-center">
                 Actions
               </p>
-              <p className="basis-1/6 grid justify-items-center content-center">
-                Save Changes
-              </p>
             </div>
           </ListHeader>
           <DocumentsList

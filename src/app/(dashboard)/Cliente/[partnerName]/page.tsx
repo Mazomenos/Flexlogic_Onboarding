@@ -136,6 +136,7 @@ export default function Home() {
           const text = String.fromCharCode.apply(null, Array.from(new Uint8Array(fileContent.content)));
           saveAs(new Blob([text], { type: 'text/plain' }), fileContent.fileName);
       } catch (err) {
+          FailedAction("Failed to download Document")
           console.log('Error downloading file: ' + (err as Error).message);
       }
   };
@@ -162,7 +163,7 @@ export default function Home() {
           />
         </div>
         <AddButton onClick={() => downloadPOTest()}>
-          Download PO Test {partnerName}<IoMdDownload />
+          Download PO Test<IoMdDownload />
         </AddButton>
         <div>
           {}

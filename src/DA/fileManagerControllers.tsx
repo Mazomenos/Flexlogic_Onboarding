@@ -1,6 +1,7 @@
 'use server'
 import { BlobServiceClient } from "@azure/storage-blob";
 import { PrismaClient } from "@prisma/client";
+import { GetUserId } from "@/middleware";
 
 const connectionString = process.env.AZURE_STORAGE_CONNECTION_STRING;
 if (!connectionString) {
@@ -116,7 +117,14 @@ export async function downloadFileContent(url: string): Promise<{ content: Uint8
 */
 export async function uploadRecentEDI(data: Array<string>, file: UploadFile): Promise<Boolean> {
     try {
-        const [idUser, partnerName, TPDocID] = data;
+
+        const userId = await GetUserId()
+
+        if (userId){
+            data.push(userId)
+        }
+        const [partnerName, TPDocID, idUser] = data;
+
 
         // Sube el archivo a Azure junto los primeros 4 caracteres de idUser y TPDocID
         const url = await uploadFileToAzure(file, idUser.substring(0, 4) + TPDocID.substring(0, 4));

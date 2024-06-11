@@ -9,6 +9,7 @@ import React from "react";
 import { IoIosSave } from "react-icons/io";
 import { TradingPartnerCard } from "../page";
 import { UpdateTradingPartner } from "@/DA/tradingPartnerControllers";
+import { SuccessAction } from "@/components/toasters";
 
 
 interface Props {
@@ -89,24 +90,7 @@ export default function PartnerItem({
             handleEditButton={handleEditButton}
           />
         </div>
-        <div className="basis-1/6 flex justify-center">
-          <div
-            className={`${
-              JSON.stringify(partner) == JSON.stringify(realPartner)
-                ? "tooltip tooltip-warning"
-                : " "
-            }`}
-            data-tip="Make some changes before saving"
-          >
-            <button
-            onClick={() => {UpdateTPVisible(partner.id, {isVisible: partner.isVisible});}}
-              disabled={JSON.stringify(partner) == JSON.stringify(realPartner)}
-              className="bg-info dark:bg-darkMode-info ring-1 border-info-content dark:ring-darkMode-info-content text-info-content dark:text-darkMode-info-content disabled:bg-transparent dark:disabled:bg-darkMode-base-100 disabled:ring-base-300 dark:disabled:ring-darkMode-base-300 disabled:text-base-300 dark:disabled:text-darkMode-foreground/20 rounded p-2"
-            >
-              <IoIosSave />
-            </button>
-          </div>
-        </div>
+        
       </div>
     </li>
   );
