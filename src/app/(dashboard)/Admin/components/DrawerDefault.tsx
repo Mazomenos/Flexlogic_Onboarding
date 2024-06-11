@@ -4,6 +4,7 @@ import CloseButton from "@/components/CloseButton";
 import GenericButton from "@/components/GenericButton";
 import SidebarItem from "./sidebar/SidebarItem";
 import { ACTION_PREFETCH } from "next/dist/client/components/router-reducer/router-reducer-types";
+import ModalSaveChanges from "./ModalSaveChanges";
 
 interface Props {
   children?: React.ReactNode;
@@ -21,9 +22,12 @@ export default function DrawerDefault({
 }: Props) {
   const [drawerWidth, setDrawerWidth] = useState(600); // Initial width
   const drawerRef = useRef<HTMLDivElement>(null);
+  const [isModalOpen, setModalOpen] = useState(false);
 
   const openDrawer = () => setOpen(true);
-  const closeDrawer = () => setOpen(false);
+  const closeDrawer = () => {
+    setModalOpen(true);
+  };
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     const startX = e.clientX;
@@ -68,6 +72,11 @@ export default function DrawerDefault({
       <div className="w-full mt-2 flex justify-end">
         <GenericButton onClick={() => {}}>Create</GenericButton>
       </div>
+      <ModalSaveChanges
+        isModalOpen={isModalOpen}
+        setModalOpen={setModalOpen}
+        setDrawerOpen={setOpen}
+      />
     </Drawer>
   );
 }
