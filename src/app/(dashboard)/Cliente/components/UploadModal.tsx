@@ -85,7 +85,7 @@ export default function UploadModal({
 
           } else {
             // Aqui deberia de ir el controlador de si encontro un error, subirlo a la base de datos
-            UpdateUserLogErrors(dataUserDoc[0],dataUserDoc[1], dataUserDoc[2], [{Title:"", Description: resultValStructure.Description ,Position: resultValStructure.Position, Type:"Structure"}]);
+            UpdateUserLogErrors(dataUserDoc[0],dataUserDoc[1], dataUserDoc[2], [{Title:"Error in segment structure", Description: resultValStructure.Description, Position: resultValStructure.Position, Type:"Structure"}]);
 
           }
 
