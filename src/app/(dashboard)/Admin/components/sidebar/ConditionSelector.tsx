@@ -26,8 +26,8 @@ export default function ConditionSelector({
   return (
     <div className="p-2 bg-base-100 flex flex-col items-center dark:bg-darkMode-base-100 hover:bg-base-200 dark:hover:bg-darkMode-base-200 border-base-300 w-[95%] shadow-md border-1 transition motion-reduce:transition-none motion-reduce:hover:transform-none">
       <div className="basis-7/12 self-start flex flex-row w-full place-items-center">
-        <p className="text-lg basis-3/12">Conditional</p>
-        <div className="basis-9/12 w-full ">
+        <p className="font-bold  basis-2/12 text-right mr-2">Conditional</p>
+        <div className="basis-10/12 w-full ">
           <Select
             value={selection}
             onValueChange={(value) => onSelectionChange(value)}
