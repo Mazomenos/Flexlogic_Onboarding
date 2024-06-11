@@ -1,3 +1,4 @@
+/*
 "use client"
 
 import { GetUser } from "@/DA/usersControllers";
@@ -110,3 +111,4 @@ export default function Home() {
         </main>
     );
 }
+    */

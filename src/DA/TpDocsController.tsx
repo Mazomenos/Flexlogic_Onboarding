@@ -284,7 +284,7 @@ export async function deleteTPDoc(partnerName: string, TPDocId: string) {
         // Update the trading partner with the filtered DocsRequired
         const updatedPartner = await prisma.tradingPartner.update({
             where: {
-                id: PartnerId
+                id: partner.id
             },
             data: {
                 DocsRequired: {
