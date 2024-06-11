@@ -56,7 +56,7 @@ export default function Header() {
   let pageName = "";
   const pathParts = currentPath.split("/");
   const icp = pathParts[2]?.replace(/_/g, " ");
-  const partnershipNames = Partnerships.map(p => p. Name.replace(/_/g, " "));
+  const partnershipNames = Partnerships.map(p => p.Name.replace(/_/g, " "));
   const partnerNames = Partners.map(p => p.Name.replace(/_/g, " ")); 
 
 
@@ -69,7 +69,7 @@ export default function Header() {
   
   if (currentPath === "/Admin") {
     pageName = "Partner List";
-  } else if (partnerNames.includes(icp) && currentPath === `/Admin/${pathParts[2]}`) {
+  } else if (partnerNames.includes(icp) && currentPath === `/Admin/${pathParts[2]}`) { 
     pageName = `${icp} EDI Documents`;
     //console.log("nombre de pagina",pageName)
   }
