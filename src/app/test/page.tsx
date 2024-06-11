@@ -48,7 +48,17 @@ export default function Home() {
     }
 
     const alphanumericTest = () => {
-        const regexSchema = z.string().regex(new RegExp('^[^*~:]+$'), 'String must not have delimiters inside them')
+        let delimiters = ["*","~", ":"]
+        let regex = '^[^'
+        delimiters.forEach(delimiter => {
+            regex = regex + delimiter
+        });
+
+        regex = regex + ']+$'
+
+        console.log(regex)
+        //'^[^*~:]+$'
+        const regexSchema = z.string().regex(new RegExp(regex), 'String must not have delimiters inside them')
         const result = regexSchema.safeParse(inputString)
         console.log(result)
     }
@@ -129,7 +139,7 @@ export default function Home() {
     return (
         <main>
             <p>Test</p>
-            <input type="text" placeholder="Value" onChange={(e) => setInputString(e.target.value)}></input>
+            <input type="text" placeholder="Value" onChange={(e) => setInputString(String(e.target.value))}></input>
             <div>
                 <input type="number" placeholder="Min" onChange={(e) => setMinString(Number(e.target.value))}></input>
                 <input type="number" placeholder="Max" onChange={(e) => setMaxString(Number(e.target.value))}></input>

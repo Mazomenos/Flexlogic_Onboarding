@@ -9,6 +9,7 @@ import { PiUploadSimple } from "react-icons/pi";
 import { ParseEDIfile } from "@/libs/X12parser/lib/parseEDIfile";
 import { Readable } from "stream";
 import ValStructure from "@/libs/validation/segments";
+import data from "@/libs/validation/elements";
 
 
 const SystemFile = [
@@ -17,6 +18,128 @@ const SystemFile = [
     Segment: "ISA",
     Requirement: "M",
     Max: "1",
+    Elements: [
+      {
+        Position: "ISA01",
+        Element: "I01",
+        Requirement: "M",
+        Type: "ID",
+        Min: 2,
+        Max: 2,
+      },
+      {
+        Position: "ISA02",
+        Element: "I02",
+        Requirement: "M",
+        Type: "AN",
+        Min: 10,
+        Max: 10,
+      },
+      {
+        Position: "ISA03",
+        Element: "I03",
+        Requirement: "M",
+        Type: "ID",
+        Min: 2,
+        Max: 2,
+      },
+      {
+        Position: "ISA04",
+        Element: "I04",
+        Requirement: "M",
+        Type: "AN",
+        Min: 10,
+        Max: 10,
+      },
+      {
+        Position: "ISA05",
+        Element: "I05",
+        Requirement: "M",
+        Type: "ID",
+        Min: 2,
+        Max: 2,
+      },
+      {
+        Position: "ISA06",
+        Element: "I06",
+        Requirement: "M",
+        Type: "AN",
+        Min: 15,
+        Max: 15,
+      },
+      {
+        Position: "ISA07",
+        Element: "I05",
+        Requirement: "M",
+        Type: "ID",
+        Min: 2,
+        Max: 2,
+      },
+      {
+        Position: "ISA08",
+        Element: "I07",
+        Requirement: "M",
+        Type: "AN",
+        Min: 15,
+        Max: 15,
+      },
+      {
+        Position: "ISA09",
+        Element: "I08",
+        Requirement: "M",
+        Type: "DT",
+        Min: 6,
+        Max: 6,
+      },
+      {
+        Position: "ISA10",
+        Element: "I09",
+        Requirement: "M",
+        Type: "TM",
+        Min: 4,
+        Max: 4,
+      },
+      {
+        Position: "ISA12",
+        Element: "I11",
+        Requirement: "M",
+        Type: "ID",
+        Min: 5,
+        Max: 5,
+      },
+      {
+        Position: "ISA13",
+        Element: "I12",
+        Requirement: "M",
+        Type: "N0",
+        Min: 9,
+        Max: 9,
+      },
+      {
+        Position: "ISA14",
+        Element: "I13",
+        Requirement: "M",
+        Type: "ID",
+        Min: 1,
+        Max: 1,
+      },
+      {
+        Position: "ISA15",
+        Element: "I14",
+        Requirement: "M",
+        Type: "ID",
+        Min: 1,
+        Max: 1,
+      },
+      {
+        Position: "ISA16",
+        Element: "I15",
+        Requirement: "M",
+        Type: "",
+        Min: 1,
+        Max: 1,
+      }
+    ],
   },
   {
     Position: 2,
@@ -381,7 +504,8 @@ export default function Home() {
   const uploadAndParseFile = async () => {
     const contentStream = new ReadableString(String(fileContent));
     const Segments = await ParseEDIfile(contentStream);
-    console.log(ValStructure(SystemFile3, Segments, 0, "M", true));
+    console.log(ValStructure(SystemFile, Segments, 0, "M", true));
+    data(SystemFile, Segments, [])
   };
 
   return (
