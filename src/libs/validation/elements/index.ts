@@ -5,14 +5,15 @@
 -- Condition
 */
 
+import Conditions from "./conditions";
 import { Min, Max } from "./minMax";
 import { Types } from "./types";
 
 export interface Ierror {
-    Title:       String
-    Description: String
-    Position:    String
-    Type:        String
+    Title:       string
+    Description: string
+    Position:    string
+    Type:        string
 }
 
 function pushErrors(errorlogs: Ierror[], errors: {Description:string, Title: string}[], errorPos: string): Ierror[] {
@@ -176,7 +177,7 @@ export default function data(config: any, file: any, delimiters: string[]) {
                 let type = configseg.Elements[configpos].Type
                 let min = configseg.Elements[configpos].Min
                 let max = configseg.Elements[configpos].Max
-                //let condition = configseg.Elements[configpos].condition
+                let condition = configseg.Elements[configpos].condition
 
                 //console.log(position);
                 //console.log(name);
@@ -212,7 +213,11 @@ export default function data(config: any, file: any, delimiters: string[]) {
                 if (errorType.Description !== "") {
                     errorsElement.push(errorType)
                 } else {
-                    //Conditions
+                    if (condition > 0){
+                    let conditionsErrors: {Description:string, Title: string}[] = Conditions(data, condition, file);
+                    
+                    conditionsErrors.map((error) => errorsElement.push(error) )
+                    }
                 }
 
 

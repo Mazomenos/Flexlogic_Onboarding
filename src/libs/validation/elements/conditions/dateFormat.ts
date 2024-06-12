@@ -2,7 +2,7 @@ import { z } from "zod"
 import { IdateAndTimeFormat } from "./InterfaceConditions"
 
 
-export default function DateFormat(data: string, params: IdateAndTimeFormat) {
+export default function DateFormat(data: string, params: IdateAndTimeFormat): {Description: string, Title: string} {
     const format = params.format
     let regularExp = ""
     switch (format) {
@@ -17,8 +17,14 @@ export default function DateFormat(data: string, params: IdateAndTimeFormat) {
     const result = schema.safeParse(data)
     console.log(result)
     if (result.success === false) {
-        return "This element must be in a '" + format + "' format"
+        return {
+            Description: `This element must be in a '${format}' format`,
+            Title: "Date Format"
+        }
     } else {
-        return ""
+        return {
+            Description: "",
+            Title: ""
+        }
     }
 }

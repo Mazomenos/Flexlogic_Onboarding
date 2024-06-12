@@ -7,106 +7,63 @@ import TimeFormat from "./conditions/timeFormat"
 
 import { Iconditions, IcharLength, IdecimalCondition, IcompareCodes, IcompareData, IdateAndTimeFormat } from "./conditions/InterfaceConditions"
 
-/*
-const equal: Iconditions[] = [
-    {
-        type: "hello",
-        params:
-        {
-            operator: Operator.EQUAL
-        }
 
-    }
-]
+export default function Conditions(data: string, conditions: Iconditions[], file: Object): {Description: string, Title: string}[] {
 
-const equal: Iconditions[] = [
-    {
-        type: "hello",
-        params: [
-            {
-                operator: "="
-            }
-        ]
-    }
-]
+    let errorLog: {Description: string, Title: string}[]= []
 
-const equal: Iconditions[] = [
-    {
-        type: "hello",
-        params: [
-            {
-                operator: "="
-            }
-        ]
-    }
-]
 
-const equal: Iconditions[] = [
-    {
-        type: "hello",
-        params: [
-            {
-                operator: "="
-            }
-        ]
-    }
-]
-
-const equal: Iconditions[] = [
-    {
-        type: "hello",
-        params: [
-            {
-                operator: "="
-            }
-        ]
-    }
-]
-
-const equal: Iconditions[] = [
-    {
-        type: "hello",
-        params: [
-            {
-                operator: "="
-            }
-        ]
-    }
-]
-*/
-
-export default function Conditions(data: string, conditions: Iconditions[], file: Object) {
     //Conditions Loop
     conditions.forEach(condition => {
+        let error; 
         switch (condition.type) {
             case 'compareData':
-                CompareData(data, condition.params as IcompareData)
+                error = CompareData(data, condition.params as IcompareData)
+                if (error.Description === ""){
+                    errorLog.push(error)
+                }
                 console.log("compareData");
                 break;
 
             case 'decimalPosition':
-                DecimalPosition(data, condition.params as IdecimalCondition)
+                error = DecimalPosition(data, condition.params as IdecimalCondition)
+                if (error.Description === ""){
+                    errorLog.push(error)
+                }
                 console.log("decimalPosition");
                 break;
 
             case 'dateFormat':
-                DateFormat(data, condition.params as IdateAndTimeFormat)
+                error = DateFormat(data, condition.params as IdateAndTimeFormat)
+                if (error.Description === ""){
+                    errorLog.push(error)
+                }
                 console.log("dateFormat");
                 break;
 
             case 'timeFormat':
                 console.log("timeFormat");
-                TimeFormat(data, condition.params as IdateAndTimeFormat)
+                error = TimeFormat(data, condition.params as IdateAndTimeFormat)
+                if (error.Description === ""){
+                    errorLog.push(error)
+                }
                 break;
 
             case 'charLength':
-                charLength(data, condition.params as IcharLength)
+                error = charLength(data, condition.params as IcharLength)
+                if (error.Description === ""){
+                    errorLog.push(error)
+                }
                 console.log("charLength");
                 break;
             case 'idCodes':
-                IdCodes(data, condition.params as IcompareCodes)
+                error = IdCodes(data, condition.params as IcompareCodes)
+                if (error.Description === ""){
+                    errorLog.push(error)
+                }
                 console.log("idCodes");
                 break;
         }
     });
+    return errorLog
 }
