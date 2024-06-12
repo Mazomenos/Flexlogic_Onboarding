@@ -1,10 +1,10 @@
 const { createReadStream } = require("fs");
 import ValStructure from "@/libs/validation/segments";
 import { ParseEDIfile } from "@/libs/X12parser/lib/parseEDIfile";
-import { systemFile850 } from "./testSystemFiles";
+import { systemFile855 } from "./testSystemFiles";
 
-const currSystemFile = systemFile850
-const testFilePath = "__tests__/testfiles/VENDORCODE850.txt"
+const currSystemFile = systemFile855
+const testFilePath = "__tests__/testfiles/AMZN_Procurement_855_Example_A.txt"
 
 // EDI850 tests
 // ediFile var is pending to be changed depending on test case
