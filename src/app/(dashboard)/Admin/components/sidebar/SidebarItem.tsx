@@ -12,6 +12,7 @@ import { EDIElements } from "../../../../../../prisma/EDIElements";
 import { EDISegments } from "../../../../../../prisma/EDISegments";
 import ConditionSelector from "./ConditionSelector";
 import ItemsModal from "./ItemsModal";
+import ItemsModalLoop from "./itemsModalLoop";
 
 export default function SidebarItem({ children }: { children?: ReactNode }) {
   const [conditionSelections, setConditionSelections] = useState<{
@@ -47,6 +48,16 @@ export default function SidebarItem({ children }: { children?: ReactNode }) {
     setEDITemplate(updatedSegments);
     closeModal();
   };
+
+  const addLoopSegment = (newSegment: any) => {
+    const updatedSegments = [...EDITemplate];
+    const loopSegmentIndex = updatedSegments.findIndex(segment => segment.Segment === "Loop");
+    if (loopSegmentIndex !== -1) {
+      updatedSegments[loopSegmentIndex].Segments.push(newSegment);
+    }
+    setEDITemplate(updatedSegments);
+    closeModal();
+  }
 
   const addLoop = (newLoop: any) => {
     const updatedSegments = [...EDITemplate, newLoop];
@@ -151,6 +162,16 @@ export default function SidebarItem({ children }: { children?: ReactNode }) {
                   </AccordionTrigger>
                 </div>
                 <AccordionContent className="pb-0">
+                  <div className="flex flex-col h-full">
+                    <ItemsModalLoop
+                      isOpen={isModalOpen}
+                      setIsOpen={setIsModalOpen}
+                      usedSegments={usedSegments}
+                      addSegment={addLoopSegment}
+                      addLoop={addLoop}
+                    />
+
+                  </div>
                   {renderSegments(templateSegment.Segments)}
                 </AccordionContent>
               </AccordionItem>
@@ -241,19 +262,7 @@ export default function SidebarItem({ children }: { children?: ReactNode }) {
                             <div className="basis-1/12 flex-shrink-0 flex justify-center self-center">
                               {matchingElement.Max}
                             </div>
-                            <div className="basis-1/12 flex-shrink-0 flex justify-center self-center">
-                              <MinusCircleIcon
-                                className={`h-6 w-6 ${element.Requirement === "M"
-                                  ? "text-gray-300"
-                                  : "text-darkMode-error-content"
-                                  }`}
-                                onClick={() => {
-                                  if (element.Requirement !== "M") {
-                                    removeElement(element.Element);
-                                  }
-                                }}
-                              />
-                            </div>
+
                           </div>
                         </AccordionTrigger>
 
