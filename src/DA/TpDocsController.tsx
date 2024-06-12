@@ -178,6 +178,8 @@ export async function postTPDoc(Name_TP: string, DocType_e: DocType_enum, Delimi
     }
 }
 
+
+
 export async function updateTPDoc(PartnerName: string, TPDocId: string, newDocument: any) {
     try {
         // Find the trading partner
