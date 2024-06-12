@@ -25,7 +25,7 @@ export default function ModalSaveChanges({
         </p>
         <p className="mt-1 italic text-primary-content/40 dark:text-darkMode-foreground/40">
           {" "}
-          This action cannot be undone.{" "}
+          *This action cannot be undone.
         </p>
       </div>
       <div className="my-3" />
