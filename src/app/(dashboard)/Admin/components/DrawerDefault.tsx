@@ -1,9 +1,15 @@
-import React, {ChangeEvent ,useRef, useState } from "react";
+import React, { ChangeEvent, useRef, useState } from "react";
 import { Drawer } from "@material-tailwind/react";
 import CloseButton from "@/components/CloseButton";
 import GenericButton from "@/components/GenericButton";
-import { GetTPDocById, updateConfigTPDoc, updateTPDoc } from "@/DA/TpDocsController";
+import {
+  GetTPDocById,
+  updateConfigTPDoc,
+  updateTPDoc,
+} from "@/DA/TpDocsController";
 import { SuccessAction } from "@/components/toasters";
+import { IoMdCloudUpload, IoMdDownload } from "react-icons/io";
+import AddButton from "@/components/AddButton";
 import { FaUpload } from "react-icons/fa6";
 
 interface Props {
@@ -13,9 +19,6 @@ interface Props {
   idDocument: string;
   documentTitle: string | undefined;
 }
-
- 
-
 
 export default function DrawerDefault({
   open,
@@ -29,7 +32,6 @@ export default function DrawerDefault({
   const openDrawer = () => setOpen(true);
   const closeDrawer = () => setOpen(false);
 
-
   const [fileName, setFileName] = useState("");
   const [file, setFile] = useState<File | null>(null);
 
@@ -40,7 +42,6 @@ export default function DrawerDefault({
       fileInputRef.current.click();
     }
   };
- 
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -49,48 +50,42 @@ export default function DrawerDefault({
     }
   };
 
-
   async function handleDownload() {
     try {
-      SuccessAction("Download will Start Shortly")
-      const jsonData = await GetTPDocById(idDocument);    
+      SuccessAction("Download will Start Shortly");
+      const jsonData = await GetTPDocById(idDocument);
       const encodedData = encodeURIComponent(JSON.stringify(jsonData));
       const href = `data:text/json;charset=utf-8,${encodedData}`;
-      const downloadLink = document.createElement('a');
+      const downloadLink = document.createElement("a");
       downloadLink.href = href;
       downloadLink.download = "filename.json";
       downloadLink.click();
     } catch (error) {
-      console.error('Error downloading JSON:', error);
-  };}
+      console.error("Error downloading JSON:", error);
+    }
+  }
 
   async function handleUpload() {
     if (!file) {
-      alert('Please select a file first!');
+      alert("Please select a file first!");
       return;
     }
-  
+
     const reader = new FileReader();
     reader.onload = (e) => {
       try {
-          const parsedData = JSON.parse(e.target?.result as string);
-          const json = parsedData; // Update state with the parsed object
-          console.log('Parsed JSON Object:', json);
+        const parsedData = JSON.parse(e.target?.result as string);
+        const json = parsedData; // Update state with the parsed object
+        console.log("Parsed JSON Object:", json);
 
-          const send = updateConfigTPDoc(idDocument, json)
-
-
-
+        const send = updateConfigTPDoc(idDocument, json);
       } catch (error) {
-        console.error('Parsing Error:', error);
-        alert('Invalid JSON file!');
+        console.error("Parsing Error:", error);
+        alert("Invalid JSON file!");
       }
     };
     reader.readAsText(file);
-  
   }
-
-
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     const startX = e.clientX;
@@ -111,8 +106,8 @@ export default function DrawerDefault({
   };
 
   const YOURJSON = {
-    "Segments": "hello"
-  }
+    Segments: "hello",
+  };
 
   return (
     <Drawer
@@ -129,12 +124,25 @@ export default function DrawerDefault({
         </p>
         <CloseButton onClick={closeDrawer} />
       </div>
-      <div className=" px-3 flex justify-center gap-5">
-        <div className=" mt-2 flex ">
-          <GenericButton onClick={() => {handleUpload()}}>Upload </GenericButton>
+      <div className=" px-3 flex w-full flex-col items-center justify-center">
+        <div className=" mt-2 flex flex-col w-full justify-center items-center ">
+          <AddButton
+            onClick={() => {
+              handleDownload();
+            }}
+          >
+            Download <IoMdDownload />
+          </AddButton>
+
+          <p className="text-lg mt-2 w-3/4 text-center italic">
+            Download the current document configuration in json format
+          </p>
         </div>
-        <div className=" mt-2 flex justify-end">
-          <GenericButton onClick={() => {handleDownload()}}>Download </GenericButton>
+        <div className="inline-flex items-center justify-center w-full">
+          <hr className="w-64 h-px my-6 bg-gray-200 border-0 dark:bg-gray-700" />
+          <span className="absolute px-3 font-medium text-primary-content/50 bg-base-100 -translate-x-1/2  left-1/2 dark:text-darkMode-foreground/50 dark:bg-darkMode-base-200">
+            or
+          </span>
         </div>
       </div>
       <div
@@ -143,28 +151,33 @@ export default function DrawerDefault({
       />
 
       <div
-              className="flex flex-col mt-0 text-primary-content/40 dark:text-darkMode-foreground/40 items-center hover:bg-info/30 hover:text-info-content dark:hover:bg-darkMode-info dark:hover:text-darkMode-info-content justify-center border-2 border-dashed border-primary-content/40 dark:border-darkMode-foreground/40 p-6 rounded-lg cursor-pointer hover:border-info-content dark:hover:border-darkMode-info-content transition motion-reduce:transition-none motion-reduce:hover:transform-none"
-              onClick={handleUploadClick}
-              style={{ marginTop: "0.8rem" }}
-            >
-              <FaUpload className="text-4xl mb-2" />
-              <input
-                type="file"
-                id="fileInput"
-                accept=".json"
-                className="hidden"
-                ref={fileInputRef}
-                onChange={handleFileChange}
-              />
-              <p className="">
-                {fileName
-                  ? fileName
-                  : "Click to upload a file"}
-              </p>
-            </div>
+        className="flex flex-col mt-0 text-primary-content/40 dark:text-darkMode-foreground/40 items-center hover:bg-info/30 hover:text-info-content dark:hover:bg-darkMode-info dark:hover:text-darkMode-info-content justify-center border-2 border-dashed border-primary-content/40 dark:border-darkMode-foreground/40 p-6 rounded-lg cursor-pointer hover:border-info-content dark:hover:border-darkMode-info-content transition motion-reduce:transition-none motion-reduce:hover:transform-none"
+        onClick={handleUploadClick}
+        style={{ marginTop: "0.8rem" }}
+      >
+        <FaUpload className="text-4xl mb-2" />
+        <input
+          type="file"
+          id="fileInput"
+          accept=".json"
+          className="hidden"
+          ref={fileInputRef}
+          onChange={handleFileChange}
+        />
+        <p className="">{fileName ? fileName : "Click to upload a file"}</p>
+      </div>
+      <div className=" mt-4 flex flex-col justify-center w-full items-center ">
+        <AddButton
+          onClick={() => {
+            handleUpload();
+          }}
+        >
+          Upload <IoMdCloudUpload className="ml-3" />
+        </AddButton>
 
-      <div className="w-full mt-2 flex justify-end">
-        <GenericButton onClick={() => {}}>Create </GenericButton>
+        <p className="text-lg mt-2 w-3/4 text-center italic">
+          Upload json file with document configuration
+        </p>
       </div>
     </Drawer>
   );
