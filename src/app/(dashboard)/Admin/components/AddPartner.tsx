@@ -7,20 +7,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { uploadFileToAzure } from "@/DA/fileManagerControllers";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-
-  DialogTitle,
-} from "@/components/ui/dialog";
-import CloseButton from "@/components/CloseButton";
+import { DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useHeaderContext } from "@/app/context/headerTrigger";
-
-
 import {
   Form,
   FormControl,
@@ -36,7 +25,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
 import { Input } from "@/components/ui/input";
 import FormModal from "./FormModal";
 import ButtonB from "./ButtonB";
@@ -49,25 +37,30 @@ const FormSchema = z.object({
     .string({
       required_error: "Please input a trading partner name",
     })
-    .min(2, { message: "Please input at least 2 characters" }),
+    .min(2, { message: "Please input at least 2 characters" })
+    .max(60, { message: "Maximum 60 characters are allowed" })
+    .regex(/^[a-zA-Z0-9 ]*$/, { message: "No special characters allowed" })
+    .refine((value) => value.trim().length > 0, {
+      message: "Name cannot be only spaces",
+    })
+    .refine((value) => !/^\s|\s$/.test(value), {
+      message: "Name cannot start or end with a space",
+    }),
   Delimiters: z.string({
-    required_error: "Please select a set of delimieters",
+    required_error: "Please select a set of delimiters",
   }),
   Version: z.string({ required_error: "Please select an EDI version" }),
   EOL: z.string({ required_error: "Please select an EOL" }),
 });
 
-// #TODO: Change to DB call
 const delimitersOptions = [
-  { value: ", - @", label: "Comma (,)" },
+  { value: ",", label: "Comma (,)" },
   { value: ";", label: "Semicolon (;)" },
   { value: "|", label: "Pipe (|)" },
 ];
 
-// #TODO: Change to DB call
 const ediVersionOptions = [{ value: "X12_4010", label: "X12 4010" }];
 
-// #TODO: Change to DB call
 const eolOptions = [{ value: "LF", label: " ~ " }];
 
 export default function AddPartner() {
@@ -84,7 +77,7 @@ export default function AddPartner() {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const {headerTrigger, setHeaderTrigger} = useHeaderContext()
+  const { headerTrigger, setHeaderTrigger } = useHeaderContext();
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -101,64 +94,61 @@ export default function AddPartner() {
 
   const router = useRouter();
 
-  const newTP = async (newData: 
-    {
-      Name: string,
-      Initial850EDI: string, 
-      Delimiters: string[],
-      Version: string,
-      EOL: string,
-      isVisible: boolean
-      DocsRequired: any[]}) => 
-    {
+  const newTP = async (newData: {
+    Name: string;
+    Initial850EDI: string;
+    Delimiters: string[];
+    Version: string;
+    EOL: string;
+    isVisible: boolean;
+    DocsRequired: any[];
+  }) => {
     try {
-      const response = await CreateTradingPartner(newData)
+      const response = await CreateTradingPartner(newData);
 
       if (response) {
         const data = await response;
-        console.log(data)
+        console.log(data);
         if (data) {
-          setHeaderTrigger(!headerTrigger)
-          return data
+          setHeaderTrigger(!headerTrigger);
+          return data;
         }
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   async function onSubmit(data: {
-    Name: string,
-    Delimiters: string,
-    Version: string,
-    EOL: string,
+    Name: string;
+    Delimiters: string;
+    Version: string;
+    EOL: string;
   }) {
-
-    //Proceso de string a array para delimiters
-
-    const DelimitersArr = data.Delimiters.split(" ")
+    const DelimitersArr = data.Delimiters.split(" ");
     console.log(DelimitersArr);
 
-    //Proceso de subir documento a la base y recibir url al storage
-
-    let fileURL = ""
+    let fileURL = "";
     if (file) {
       const base64 = await readFileAsBase64(file);
-      fileURL = await uploadFileToAzure({
-        name: file.name,
-        type: file.type,
-        data: base64,
-      },data.Name.split(" ").join("_") + "_" + data.Version);
+      fileURL = await uploadFileToAzure(
+        {
+          name: file.name,
+          type: file.type,
+          data: base64,
+        },
+        data.Name.split(" ").join("_") + "_" + data.Version,
+      );
     }
 
     const newData: {
-      Name: string,
-      Initial850EDI: string, 
-      Delimiters: string[],
-      Version: string,
-      EOL: string,
-      isVisible: boolean
-      DocsRequired: any[]
+      Name: string;
+      Initial850EDI: string;
+      Delimiters: string[];
+      Version: string;
+      EOL: string;
+      isVisible: boolean;
+      DocsRequired: any[];
     } = {
       Name: data.Name.split(" ").join("_"),
       Initial850EDI: fileURL,
@@ -166,30 +156,27 @@ export default function AddPartner() {
       Version: data.Version,
       EOL: data.EOL,
       isVisible: false,
-      DocsRequired: []
-
+      DocsRequired: [],
     };
 
-    //Llamada a la base de datos
-    const newTradingPartner = await newTP(newData)
+    const newTradingPartner = await newTP(newData);
     setIsOpenForms(false);
-    SuccessAction(`Succesfully Created ${newData.Name} Partner`)
-    //router.refresh()
-    router.push(`/Admin/${newData.Name}`)
+    SuccessAction(`Successfully Created ${newData.Name} Partner`);
+    router.push(`/Admin/${newData.Name}`);
     console.log(JSON.stringify(newData, null, 2));
     console.log(file);
   }
 
   function readFileAsBase64(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            resolve(reader.result as string);
-        };
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        resolve(reader.result as string);
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
     });
-  };
+  }
 
   return (
     <FormModal
@@ -215,6 +202,13 @@ export default function AddPartner() {
                         <Input
                           placeholder="Type trading partner name"
                           {...field}
+                          onChange={(e) => {
+                            let value = e.target.value.replace(
+                              /[^a-zA-Z0-9 ]/g,
+                              "",
+                            );
+                            field.onChange(value);
+                          }}
                         />
                       </FormControl>
                       <FormMessage />
@@ -338,18 +332,13 @@ export default function AddPartner() {
                 disabled={file == null ? true : false}
                 className="w-36 p-1 text-base bg-info dark:bg-darkMode-primary dark:hover:bg-transparent dark:text-darkMode-base-100 dark:hover:text-darkMode-primary font-bold text-info-content transition motion-reduce:transition-none motion-reduce:hover:transform-none hover:bg-transparent hover:text-brand-blue ring-2 ring-primary hover:ring-primary dark:ring-darkMode-primary hover:border-1"
                 type="submit"
-                
-                
               >
                 Create
               </Button>
-             
             </div>
           </form>
         </Form>
-
-        </div>
-      </FormModal>
-    );
+      </div>
+    </FormModal>
+  );
 }
-
