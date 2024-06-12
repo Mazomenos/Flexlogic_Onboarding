@@ -11,10 +11,14 @@ export default function FailedModal({
   isOpen,
   setIsOpen,
   setErrorModalOpen,
+  getError,
+  idDoc
 }: {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setErrorModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  getError: Function
+  idDoc: string
 }) {
   return (
     <Dialog
@@ -45,7 +49,7 @@ export default function FailedModal({
             <button
               className="h-10 text-white font-bold w-36 border-[#ea6369]  border-2 bg-[#ea6369]   dark:text-darkMode-base-100 hover:bg-transparent dark:hover:bg-transparent hover:text-[#ea6369]  dark:hover:text-[#ea6369] hover:border-[#ea6369] dark:hover:border-[#ea6369] transition motion-reduce:transition-none motion-reduce:hover:transform-none"
               onClick={() => {
-                setIsOpen(false), setErrorModalOpen(true);
+                setIsOpen(false), getError(idDoc) ,setErrorModalOpen(true);
               }}
             >
               Open Errors

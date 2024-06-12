@@ -261,9 +261,11 @@ export default function Home() {
         isOpen={isUploadModalOpen}
         setIsOpen={setIsUploadModalOpen}
         dataUserDoc={[partnerName, TPDocID]}
+        setSuccess={setSuccessModalOpen}
+        setFail={setFailedModalOpen}
       ></UploadModal>
       <SuccessModal isOpen={isSuccessModalOpen} setIsOpen={setSuccessModalOpen} />
-      <FailedModal isOpen={isFailedModalOpen} setIsOpen={setFailedModalOpen} setErrorModalOpen={setIsErrorModalOpen}/>
+      <FailedModal isOpen={isFailedModalOpen} setIsOpen={setFailedModalOpen} setErrorModalOpen={setIsErrorModalOpen} getError={getErrorLog} idDoc={TPDocID}/>
       <Errors isOpen={isErrorModalOpen} setIsOpen={setIsErrorModalOpen} setIsUploadOpen={setIsUploadModalOpen} errorLog={ErrorLog} dataUserDoc={[partnerName, TPDocID]} />
     </div>
   );

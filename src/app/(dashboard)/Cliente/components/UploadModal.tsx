@@ -36,11 +36,15 @@ class ReadableString extends Readable {
 export default function UploadModal({
   dataUserDoc,
   isOpen,
-  setIsOpen
+  setIsOpen,
+  setSuccess,
+  setFail
   }:{
     dataUserDoc: Array<string>
     isOpen: boolean;
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    setSuccess: React.Dispatch<React.SetStateAction<boolean>>;
+    setFail: React.Dispatch<React.SetStateAction<boolean>>;
   }) {
 
   const [fileContent, setFileContent] = useState<string | null>(null);
@@ -106,14 +110,19 @@ export default function UploadModal({
             const resultElementVal = data(info.Segments, Segments, [])
             if (resultElementVal.length > 0) {
               UpdateUserLogErrors(dataUserDoc[1], dataUserDoc[0], resultElementVal)
+              setIsOpen(false)
+              setFail(true)
             } else {
               CheckPartnershipStatus(dataUserDoc[0]);
+              setIsOpen(false)
+              setSuccess(true)
             }
           } else {
             // Aqui deberia de ir el controlador de si encontro un error, subirlo a la base de datos
             UpdateUserLogErrors(dataUserDoc[1], dataUserDoc[0], [{Title:"Error in segment", Description: resultValStructure.Description, Position: String(resultValStructure.Position), Type:"Structure"}]);
+            setIsOpen(false)
+            setFail(true)
           }
-          
 
         }
       }
