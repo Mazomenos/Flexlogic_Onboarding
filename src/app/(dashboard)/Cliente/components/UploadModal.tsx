@@ -39,13 +39,17 @@ export default function UploadModal({
   isOpen,
   setIsOpen,
   setSuccess,
-  setFail
+  setFail,
+  trigger,
+  triggerState
   }:{
     dataUserDoc: Array<string>
     isOpen: boolean;
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
     setSuccess: React.Dispatch<React.SetStateAction<boolean>>;
     setFail: React.Dispatch<React.SetStateAction<boolean>>;
+    trigger: React.Dispatch<React.SetStateAction<boolean>>;
+    triggerState: boolean
   }) {
 
   const [fileContent, setFileContent] = useState<string | null>(null);
@@ -115,12 +119,13 @@ export default function UploadModal({
           if (resultValStructure.status === "Success") {
             const resultElementVal = data(info.Segments, Segments, [])
             if (resultElementVal.length > 0) {
+              trigger(!triggerState)
               UpdateDocumentStatus(dataUserDoc[0], dataUserDoc[1], "Failed")
               UpdateUserLogErrors(dataUserDoc[1], dataUserDoc[0], resultElementVal)
               setIsOpen(false)
               setFail(true)
             } else {
-
+              trigger(!triggerState)
               UpdateDocumentStatus(dataUserDoc[0], dataUserDoc[1], "Complete")
               CheckPartnershipStatus(dataUserDoc[0], dataUserDoc[1]);
               setIsOpen(false)
@@ -128,6 +133,7 @@ export default function UploadModal({
             }
           } else {
             // Aqui deberia de ir el controlador de si encontro un error, subirlo a la base de datos
+            trigger(!triggerState)
             UpdateDocumentStatus(dataUserDoc[0], dataUserDoc[1], "Failed")
             UpdateUserLogErrors(dataUserDoc[1], dataUserDoc[0], [{Title:"Error in segment structure", Description: resultValStructure.Description, Position: String(resultValStructure.Position), Type:"Structure"}]);
             setIsOpen(false)

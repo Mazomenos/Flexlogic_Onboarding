@@ -87,6 +87,10 @@ export default function Home() {
    * de la document.
    */
 
+  const [validationTrigger, setValidationTrigger] = useState<boolean>(true)
+
+
+
   const getTPDocs = async () => {
     try {
       const response = await GetUsersDocs(partnerName);
@@ -113,7 +117,7 @@ export default function Home() {
 
   useEffect(() => {
     getTPDocs();
-  }, []);
+  }, [validationTrigger]);
 
   /**
    * Esta funcion asyncronica llama el controlador
@@ -263,6 +267,8 @@ export default function Home() {
         dataUserDoc={[partnerName, TPDocID]}
         setSuccess={setSuccessModalOpen}
         setFail={setFailedModalOpen}
+        trigger={setValidationTrigger}
+        triggerState={validationTrigger}
       ></UploadModal>
       <SuccessModal isOpen={isSuccessModalOpen} setIsOpen={setSuccessModalOpen} />
       <FailedModal isOpen={isFailedModalOpen} setIsOpen={setFailedModalOpen} setErrorModalOpen={setIsErrorModalOpen} getError={getErrorLog} idDoc={TPDocID}/>
