@@ -6,7 +6,7 @@ import ListItem from "@/components/ListItem";
 import GenericButton from "@/components/GenericButton";
 import { EDISegments } from "../../../../../../prisma/EDISegments";
 import { EDIElements } from "../../../../../../prisma/EDIElements";
-import { EDISegment } from "../../../../../../prisma/interfaces/EDIInterfaces";
+import { EDISegment, EDILoop } from "../../../../../../prisma/interfaces/EDIInterfaces";
 import {
   Select,
   SelectContent,
@@ -18,19 +18,25 @@ import {
 } from "@/components/ui/select";
 import FormModal from "../FormModal";
 
-export default function SegmentModal({
+export default function ItemsModal({
   isOpen,
   setIsOpen,
   usedSegments,
   addSegment,
+  addLoop,
 }: {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   usedSegments: string[];
-  addSegment: (segment: EDISegment) => void;
+  addSegment: (segment: EDISegment, loopId: string | null) => void;
+  addLoop: (loop: EDILoop) => void;
 }) {
   const [selection, setSelection] = useState("segment");
   const [selectedSegment, setSelectedSegment] = useState("");
+  const [loopRequirement, setLoopRequirement] = useState("M");
+  const [loopMax, setLoopMax] = useState(1);
+  const [loopSelection, setLoopSelection] = useState("outside"); // New state for loop selection
+  const [selectedLoop, setSelectedLoop] = useState(null); // New state for selected loop
 
   const availableSegments = EDISegments.filter(
     (segment) => !usedSegments.includes(segment.Segment),
@@ -41,7 +47,18 @@ export default function SegmentModal({
     : [];
 
   const handleAddSegment = (segment: EDISegment) => {
-    addSegment(segment);
+    addSegment(segment, loopSelection === "inside" ? selectedLoop : null);
+    setSelection("segment");
+  };
+
+  const handleAddLoop = () => {
+    const newLoop = {
+      Segment: "Loop",
+      Requirement: loopRequirement,
+      Max: loopMax,
+      Segments: [],
+    };
+    addLoop(newLoop);
     setSelection("segment");
   };
 
@@ -65,10 +82,46 @@ export default function SegmentModal({
           </SelectContent>
         </Select>
       </div>
-      <div className="flex flex-col overflow-y-auto  h-full items-center w-full">
-        <div className="flex max-h-full  flex-col items-center w-full">
+      <div className="flex flex-col overflow-y-auto h-full items-center w-full">
+        <div className="flex max-h-full flex-col items-center w-full">
           {selection === "segment" && (
-            <div className="max-h-fit flex flex-col items-center w-full  ">
+            <div className="max-h-fit flex flex-col items-center w-full">
+              <Select
+                value={loopSelection}
+                onValueChange={(value) => setLoopSelection(value)}
+                className="mb-3"
+              >
+                <SelectTrigger className="text-lg w-full">
+                  <SelectValue placeholder="Select segment position" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="outside">Outside Loop</SelectItem>
+                  <SelectItem value="inside">Inside Loop</SelectItem>
+                </SelectContent>
+              </Select>
+              {loopSelection === "inside" && (
+                <Select
+                  value={selectedLoop}
+                  onValueChange={(value) => setSelectedLoop(value)}
+                  className="mb-3"
+                >
+                  <SelectTrigger className="text-lg w-full">
+                    <SelectValue placeholder="Select a loop" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Loops</SelectLabel>
+                      {usedSegments
+                        .filter((segment) => segment === "Loop")
+                        .map((loop) => (
+                          <SelectItem key={loop} value={loop}>
+                            {loop}
+                          </SelectItem>
+                        ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              )}
               {availableSegments.map((segment) => (
                 <ListItem key={segment.Segment}>
                   <div className="basis-10/12">
@@ -95,7 +148,6 @@ export default function SegmentModal({
                 <SelectContent>
                   <SelectGroup>
                     <SelectLabel>Segments</SelectLabel>
-
                     {usedSegments.map((segment) => {
                       const segmentInfo = EDISegments.find(
                         (s) => s.Segment === segment,
@@ -126,8 +178,32 @@ export default function SegmentModal({
             </div>
           )}
           {selection === "loop" && (
-            <div>
-              <p>Loop functionality to be implemented...</p>
+            <div className="flex flex-col items-center w-[97%] py-2">
+              <div className="flex w-full my-2">
+                <label className="w-1/2 text-lg">Requirement:</label>
+                <Select
+                  value={loopRequirement}
+                  onValueChange={(value) => setLoopRequirement(value)}
+                >
+                  <SelectTrigger className="text-lg w-full">
+                    <SelectValue placeholder="Select requirement" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="M">Mandatory</SelectItem>
+                    <SelectItem value="O">Optional</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="flex w-full my-2">
+                <label className="w-1/2 text-lg">Max Segments:</label>
+                <input
+                  type="number"
+                  value={loopMax}
+                  onChange={(e) => setLoopMax(Number(e.target.value))}
+                  className="text-lg w-full"
+                />
+              </div>
+              <GenericButton onClick={handleAddLoop}>Add Loop</GenericButton>
             </div>
           )}
         </div>
