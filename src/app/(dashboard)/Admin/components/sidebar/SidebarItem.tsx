@@ -5,15 +5,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { ReactNode } from "react";
 import { MinusCircleIcon } from "@heroicons/react/24/outline";
 import { EDITemplateDocs } from "../../../../../../prisma/EDITemplateDocs";
@@ -70,9 +61,12 @@ export default function SidebarItem({ children }: { children?: ReactNode }) {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex justify-end">
-        <AddButton onClick={openModal}> Add Item </AddButton>
-      </div>
+      <SegmentModal
+        isOpen={isModalOpen}
+        setIsOpen={setIsModalOpen}
+        usedSegments={usedSegments}
+        addSegment={addSegment}
+      />
       <div className="my-5 no-scrollbar flex-1 overflow-y-auto overscroll-none">
         {segments.map((templateSegment) => {
           const matchingSegment = EDISegments.find(
@@ -192,12 +186,6 @@ export default function SidebarItem({ children }: { children?: ReactNode }) {
           );
         })}
       </div>
-      <SegmentModal
-        isOpen={isModalOpen}
-        setIsOpen={setIsModalOpen}
-        usedSegments={usedSegments}
-        addSegment={addSegment}
-      />
     </div>
   );
 }
