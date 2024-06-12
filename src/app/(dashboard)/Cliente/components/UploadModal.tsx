@@ -107,7 +107,7 @@ export default function UploadModal({
             CheckPartnershipStatus(dataUserDoc[0]);
           } else {
             // Aqui deberia de ir el controlador de si encontro un error, subirlo a la base de datos
-            UpdateUserLogErrors(dataUserDoc[1], dataUserDoc[2], [{Title:"Error in segment structure", Description: resultValStructure.Description, Position: resultValStructure.Position, Type:"Structure"}]);
+            UpdateUserLogErrors(dataUserDoc[1], dataUserDoc[2], [{Title:"Error in segment structure", Description: resultValStructure.Description, Position: String(resultValStructure.Position), Type:"Structure"}]);
           }
 
         }
