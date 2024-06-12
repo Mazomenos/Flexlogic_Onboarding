@@ -101,7 +101,12 @@ export default function UploadModal({
           const contentStream = new ReadableString(String(fileContent));
           const Segments = await ParseEDIfile(contentStream);
           const resultValStructure = ValStructure(info.Segments, Segments, 0, "M", true);
+          console.log("Segmentos")
+          console.log(Segments)
+          console.log(info.Segments)
+          console.log("pedo")
           console.log(resultValStructure.status)
+          console.log(resultValStructure.Description)
           if (resultValStructure.status === "Success") {
             const resultElementVal = data(info.Segments, Segments, [])
             if (resultElementVal.length > 0) {

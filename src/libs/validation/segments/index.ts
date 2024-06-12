@@ -19,7 +19,6 @@
     * -------------------------------------------------------------
 */
 
-import { Description } from "@radix-ui/react-toast";
 
 /**
     * Funcion encargada de checar la repeticion de un segmento dependiendo
@@ -62,7 +61,7 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
   let varControlSys = 0;
   let segmentsValidated = 0;
   let result;
-  let rightNextLoop = false
+  let rightNextLoop = false;
 
   /**
     * Ciclo principal que verifica si aun hay segmentos en el documento principal
@@ -92,8 +91,11 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
         * Ambos segmentos son iguales, avanza cliente, repetidor y cambia la 
         * bandera de si hubo validacion anteriormente. 
       */
-      if ( ClientFile[varControlClient].name === currSystemFile[varControlSys].Segment && 
-        repCounter <= +currSystemFile[varControlSys].Max) {
+      console.log("cheque de segment")
+      console.log("cl:", ClientFile[varControlClient].name, " pos: ", varControlClient, " sys:", currSystemFile[varControlSys].Segment, " pos: ", varControlSys)
+      console.log(repCounter)
+
+      if ( ClientFile[varControlClient].name === currSystemFile[varControlSys].Segment && (repCounter <= +currSystemFile[varControlSys].Max || currSystemFile[varControlSys].Max === ">1")) {
         repCounter++;
         varControlClient++;
         isValidated = true;
@@ -193,7 +195,7 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
             } else if (result.status === "ErrorNotEqual") {
               varControlClient = result.posClient
               diff = result.posClient - varControlClient
-              if (reqLoop === "M") {
+              if (reqLoop === "M" && !isFirst) {
                 return {status: "Failed", Position: varControlClient, Description: "Segment" + currSystemFile[varControlSys] + " should be present in your file in the " + varControlClient + "column in your file! Be sure to see the guidelines for this document!"}
               }
               break;
@@ -284,6 +286,7 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
           isValidated = false;
 
         } else {
+          console.log("diferentes")
 
           // Dos segmentos son diferentes y el del sistema es obligatorio
           if (currSystemFile[varControlSys].Requirement === "M") {
@@ -306,6 +309,7 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
         }
       }
 
+      console.log("fuera de la condicional ")
       /**
         * El siguiente bloque se enfoca en hacer comparaciones y validaciones despues de que hacer 
         * acciones o movimientos en las posiciones de los segmentos, aqui se verifica las repeticiones
@@ -313,11 +317,15 @@ export default function ValStructure(currSystemFile: Array<any>, ClientFile: Arr
       */
       // Chequeo de la posicion en el sistema
       if (varControlSys >= currSystemFile.length) {
+        console.log("llego al final el segmento")
         break;
       }
 
       // Chequeo de repeticiones
       result = checkRep(repCounter, varControlClient - 1, currSystemFile[varControlSys].Max, ClientFile[varControlClient - 1].name, isFirst);
+
+      console.log("despues del checkrep")
+      console.log(result)
 
       // El chequeo dio error donde el maximo estaba fuera de cualquier loop
       if (result.status === "Failed"){
