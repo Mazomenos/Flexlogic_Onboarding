@@ -58,17 +58,18 @@ export default function DrawerDefault({
         </p>
         <CloseButton onClick={closeDrawer} />
       </div>
-      <div className=" px-3  overflow-y-auto overscroll-none">
-        <SidebarItem></SidebarItem>
+      <div className=" px-3 flex justify-center gap-5">
+        <div className=" mt-2 flex ">
+          <GenericButton onClick={() => {}}>Upload </GenericButton>
+        </div>
+        <div className=" mt-2 flex justify-end">
+          <GenericButton onClick={() => {}}>Download </GenericButton>
+        </div>
       </div>
       <div
         className="absolute top-0 left-0 h-full w-2 cursor-ew-resize"
         onMouseDown={handleMouseDown}
       />
-
-      <div className="w-full mt-2 flex justify-end">
-        <GenericButton onClick={() => {}}>Create </GenericButton>
-      </div>
     </Drawer>
   );
 }
