@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 //AN Type validation
-function ANtype(data:string, delimiters: string[]): string {
+function ANtype(data:string, delimiters: string[]): {Description:string, Title: string} {
 
     let regex = '^[^'
         delimiters.forEach(delimiter => {
@@ -16,78 +16,117 @@ function ANtype(data:string, delimiters: string[]): string {
     const result = regexSchema.safeParse(data)
     console.log(result)
     if (result.success === false){
-        return "This element most be an Alphanumeric without delimiters"
+        return {
+            Description: "This Element most be an Alphanumeric Character Without the EDI Delimiters",
+            Title: "Alphanumeric Type"
+        }
     } else {
-        return ""
+        return {
+            Description: "",
+            Title: ""
+        }
     }
     
 }
 
 //N0, N2, N4, N6 Type validation
-function Ntype(data:string): string {
+function Ntype(data:string): {Description:string, Title: string} {
 
     const numSchema = z.number().int()
     const result = numSchema.safeParse(Number(data))
     console.log(result)
     if (result.success === false){
-        return "This element must be an Integer Number"
+        return {
+            Description: "This Element must be an Integer Number",
+            Title: "Number Type"
+        }
     } else {
-        return ""
+        return {
+            Description: "",
+            Title: ""
+        }
     }
 }
 
 //R Type validation
-function Rtype(data:string): string {
+function Rtype(data:string): {Description:string, Title: string} {
     const numSchema = z.number()
     const result = numSchema.safeParse(Number(data))
     console.log(result)
     if (result.success === false){
-        return "This element must be a decimal number"
+        return {
+            Description: "This Element must be a decimal number",
+            Title: "Decimal type"
+        }
     } else {
-        return ""
+        return {
+            Description: "",
+            Title: ""
+        }
     }
 }
 
 //ID Type validation
-function IDtype(data:string) {
+function IDtype(data:string): {Description:string, Title: string} {
     const schema = z.string().regex(new RegExp('^[a-zA-Z0-9]+$'))
     const result = schema.safeParse(data)
     console.log(result)
     if (result.success === false){
-        return "This element must be a code that can contain numbers and letters"
+        return {
+            Description: "This element must be one of the codes in specifications that can contain numbers and letters",
+            Title: "ID Type"
+        }
     } else {
-        return ""
+        return {
+            Description: "",
+            Title: ""
+        }
     }
 }
 
 //DT and TM Type validation
-function DTMtype(data:string) {
+function DTMtype(data:string): {Description:string, Title: string} {
     const schema = z.number({message:'Must be Number'}).int().positive()
     const result = schema.safeParse(Number(data))
     console.log(result)
     if (result.success === false){
-        return "This element must be a Date with only Positive Numbers"
+        return {
+            Description: "This element must be a Date with only Positive Numbers",
+            Title: "Date Time Type"
+        }
     } else {
-        return ""
+        return {
+            Description: "",
+            Title: ""
+        }
     }
 }
 
 //B Type validation
-function Btype(data:string) {
+function Btype(data:string): {Description:string, Title: string} {
     
     const schema = z.string().regex(new RegExp('^[0-9a-fA-F]+$'))
     const result = schema.safeParse(data)
     console.log(result)
     if (result.success === false){
-        return "This element must be a Binary or Hexadecimal value"
+        return {
+            Description: "This element must be a Binary or Hexadecimal value",
+            Title: "Binary Type"
+        }
     } else {
-        return ""
+        return {
+            Description: "",
+            Title: ""
+        }
     }
 }
 
 
-export function Types(data:string , type:string, delimiters: string[]): string {
-    let result = "";
+export function Types(data:string , type:string, delimiters: string[]): {Description:string, Title: string} {
+    let result = {
+        Description: "",
+        Title: ""
+    };
     switch(type) {
         case 'AN':
             ANtype(data,delimiters)
@@ -123,13 +162,19 @@ export function Types(data:string , type:string, delimiters: string[]): string {
             break;
         case '':
             console.log("")
-            result = ""
+            result = {
+                Description: "",
+                Title: ""
+            }
     }
-    if (result !== ""){
+    if (result.Description !== ""){
         console.log(result)
         return result
     } else {
-        return ""
+        return {
+            Description: "",
+            Title: ""
+        }
     }
 
 }
