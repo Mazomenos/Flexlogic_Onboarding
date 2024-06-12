@@ -118,13 +118,14 @@ export default function UploadModal({
               setIsOpen(false)
               setFail(true)
             } else {
-              CheckPartnershipStatus(dataUserDoc[0]);
+
+              CheckPartnershipStatus(dataUserDoc[0], dataUserDoc[1]);
               setIsOpen(false)
               setSuccess(true)
             }
           } else {
             // Aqui deberia de ir el controlador de si encontro un error, subirlo a la base de datos
-            UpdateUserLogErrors(dataUserDoc[1], dataUserDoc[0], [{Title:"Error in segment", Description: resultValStructure.Description, Position: String(resultValStructure.Position), Type:"Structure"}]);
+            UpdateUserLogErrors(dataUserDoc[1], dataUserDoc[0], [{Title:"Error in segment structure", Description: resultValStructure.Description, Position: String(resultValStructure.Position), Type:"Structure"}]);
             setIsOpen(false)
             setFail(true)
           }

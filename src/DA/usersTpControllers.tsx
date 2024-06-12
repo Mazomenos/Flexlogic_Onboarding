@@ -537,10 +537,29 @@ export async function GetTPDocs(partnerName: string) {
     }
 }
 
-export async function CheckPartnershipStatus(PartnerName: string) {
+
+export async function CheckPartnershipStatus(PartnerName: string, TPDocID: string) {
     const userId = await GetUserId()
 
     try {
+        await prisma.$runCommandRaw({
+            update: "User",
+            updates: [{
+                q: {
+                    _id: { $oid: userId },
+                    "Partnerships.Name": PartnerName,
+                    "Partnerships.Docs.idDoc": TPDocID
+                },
+                u: {
+                    $set: {
+                        "Partnerships.$[].Docs.$[doc].Status": 'COMPLETE'
+                    }
+                },
+                arrayFilters: [{ "doc.idDoc": TPDocID }]
+            }]
+        });
+    
+
         const userPartnershipDocs = await prisma.user.findFirst({
             where: { id: userId },
             include: {
