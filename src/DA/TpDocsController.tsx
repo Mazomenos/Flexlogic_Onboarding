@@ -123,7 +123,7 @@ export async function updateConfigTPDoc(TPDocID: string , newDocument: any) {
 
 
 
-export async function postTPDoc(TPId: string, DocTemplateNum: number, pdfURL: string) {
+export async function postTPDoc(Name_TP: string, DocType_e: DocType_enum, Delimiter_e: Delimiters_enum, EOL_e: EOL_enum) {
     try {
         const [tradingPartner, templateDoc] = await Promise.all([
             prisma.tradingPartner.findFirst({ where: { Name: Name_TP } }),
@@ -138,29 +138,20 @@ export async function postTPDoc(TPId: string, DocTemplateNum: number, pdfURL: st
             throw new Error('Template document not found');
         }
 
-        let newDataSegments: any[] = []
-        for (let j = 0; j < templateDoc.Segments.length; j++) {
-            let segment = templateDoc.Segments[j]
-            let segmentData = await GetSegment(segment.Segment)
-            let elements: any[] = []
-            if (segmentData && segmentData.Elements) {
-                for (let i = 0; i < segmentData.Elements.length; i++) {
-                    let element = segmentData.Elements[i]
-                    if (element) {
-                        let elementData = await GetElement(element.Element)
-                        elements.push({
-                            Position: element.Position,
-                            Element: element.Element,
-                            Requirement: element.Requirement,
-                            Type: elementData?.Type,
-                            Min: elementData?.Min,
-                            Max: elementData?.Max,
-                            Conditions: [],
-                            Composites: []
-                        })
-                    }
-                }
-            }
+        const fetchSegmentData = async (segment: any) => {
+            const segmentData = await GetSegment(segment.Segment);
+            const elements = await Promise.all((segmentData?.Elements || []).map(async (element: any) => {
+                const elementData = await GetElement(element.Element);
+                return {
+                    Position: element.Position,
+                    Element: element.Element,
+                    Requirement: element.Requirement,
+                    Type: elementData?.Type,
+                    Min: elementData?.Min,
+                    Max: elementData?.Max,
+                    Conditions: []
+                };
+            }));
 
             const result: any = {
                 Position: segment.Position,
@@ -203,8 +194,8 @@ export async function postTPDoc(TPId: string, DocTemplateNum: number, pdfURL: st
             Doc: DocType_e,
             isVisible: true,
             isRequired: true,
-            instructionsPDF: pdfURL
-        })
+            instructionsPDF: "blablabla",
+        });
 
         const updatedDocs = await prisma.tradingPartner.update({
             where: { id: tradingPartner.id },
