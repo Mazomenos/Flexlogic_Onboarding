@@ -1,4 +1,43 @@
 @tailwind base;
-  @tailwind components;
-  @tailwind utilities;
-  
+@tailwind components;
+@tailwind utilities;
+
+.background-success {
+    background: linear-gradient(
+        to bottom,
+        #62b47d 0%,
+        #62b47d 58%,
+        white 58%,
+        white 100%
+    );
+}
+
+.dark .background-success {
+    background: linear-gradient(
+        to bottom,
+        #62b47d 0%,
+        #62b47d 58%,
+        #2e3440 58%,
+        #2e3440 100%
+    );
+}
+
+.background-failed {
+    background: linear-gradient(
+        to bottom,
+        #ea6369 0%,
+        #ea6369 58%,
+        white 58%,
+        white 100%
+    );
+}
+
+.dark .background-failed {
+    background: linear-gradient(
+        to bottom,
+        #ea6369 0%,
+        #ea6369 58%,
+        #2e3440 58%,
+        #2e3440 100%
+    );
+}
