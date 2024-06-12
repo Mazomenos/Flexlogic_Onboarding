@@ -105,9 +105,9 @@ export async function postTPDoc(Name_TP: string, DocType_e: DocType_enum, Delimi
             throw new Error('Template document not found');
         }
 
-        const newDataSegments = await Promise.all(templateDoc.Segments.map(async (segment) => {
+        const fetchSegmentData = async (segment: any) => {
             const segmentData = await GetSegment(segment.Segment);
-            const elements = await Promise.all((segmentData?.Elements || []).map(async (element) => {
+            const elements = await Promise.all((segmentData?.Elements || []).map(async (element: any) => {
                 const elementData = await GetElement(element.Element);
                 return {
                     Position: element.Position,
@@ -118,27 +118,41 @@ export async function postTPDoc(Name_TP: string, DocType_e: DocType_enum, Delimi
                     Max: elementData?.Max,
                 };
             }));
-            return {
+
+            const result: any = {
                 Position: segment.Position,
                 Segment: segment.Segment,
                 Requirement: segment.Requirement,
-                Max: segment.Max,
-                ...(segment.Segments && segment.Segments.length > 0 && { Segments: segment.Segments }),
-                Elements: elements,
+                Max: segment.Max
             };
-        }));
+
+            if (elements.length > 0) {
+                result['Elements'] = elements;
+            }
+
+            if (segment.Segments) {
+                const nestedSegments = await Promise.all(segment.Segments.map(fetchSegmentData));
+                if (nestedSegments.length > 0) {
+                    result['Segments'] = nestedSegments;
+                }
+            }
+
+            return result;
+        };
+
+        const newDataSegments = await Promise.all(templateDoc.Segments.map(fetchSegmentData));
 
         const createdTPDoc = await prisma.eDITPDocs.create({ data: { Segments: newDataSegments } });
 
-        const isDelimiterIncluded = tradingPartner.Delimiters.includes(Delimiters_enum[Delimiter_e]);
-        const isEOLIncluded = tradingPartner.EOL.includes(EOL_enum[EOL_e]);
+        const isDelimiterIncluded = tradingPartner.Delimiters.includes(Delimiter_e);
+        const isEOLIncluded = tradingPartner.EOL.includes(EOL_e);
 
         if (!isDelimiterIncluded) {
-            tradingPartner.Delimiters.push(Delimiters_enum[Delimiter_e]);
+            tradingPartner.Delimiters.push(Delimiter_e);
         }
 
         if (!isEOLIncluded) {
-            tradingPartner.EOL.push(EOL_enum[EOL_e]);
+            tradingPartner.EOL.push(EOL_e);
         }
 
         tradingPartner.DocsRequired.push({
@@ -152,8 +166,8 @@ export async function postTPDoc(Name_TP: string, DocType_e: DocType_enum, Delimi
         const updatedDocs = await prisma.tradingPartner.update({
             where: { id: tradingPartner.id },
             data: {
-                Delimiters: isDelimiterIncluded ? tradingPartner.Delimiters : { push: [Delimiters_enum[Delimiter_e]] },
-                EOL: isEOLIncluded ? tradingPartner.EOL : { push: [EOL_enum[EOL_e]] },
+                Delimiters: isDelimiterIncluded ? tradingPartner.Delimiters : { push: [Delimiter_e] },
+                EOL: isEOLIncluded ? tradingPartner.EOL : { push: [EOL_e] },
                 DocsRequired: tradingPartner.DocsRequired,
             },
         });
@@ -193,7 +207,7 @@ export async function updateTPDoc(PartnerName: string, TPDocId: string, newDocum
 
         // Add the new document to newData
         newData.push({
-            idDoc: newDocument.idDoc, 
+            idDoc: newDocument.idDoc,
             Doc: newDocument.Doc,
             isRequired: newDocument.isRequired,
             isVisible: newDocument.isVisible,
