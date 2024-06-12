@@ -10,58 +10,61 @@ import { useRouter } from "next/navigation";
 import PartnersList from "./components/PartnersList";
 import ListHeader from "@/components/ListHeader";
 import { useEffect } from "react";
-import { GetAllTradingPartner, DeleteTradingPartner, UpdateTradingPartner } from "@/DA/tradingPartnerControllers";
+import {
+  GetAllTradingPartner,
+  DeleteTradingPartner,
+  UpdateTradingPartner,
+} from "@/DA/tradingPartnerControllers";
 
 export type TradingPartnerCard = {
   id: string;
-  Name: string,
-  isVisible: boolean
+  Name: string;
+  isVisible: boolean;
 };
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
 
   const [isOpen, setIsOpen] = React.useState(false);
-  const [selectedPartnershipId, setSelectedPartnershipId] = React.useState<
-    string
-  >("");
+  const [selectedPartnershipId, setSelectedPartnershipId] =
+    React.useState<string>("");
   const [value, setValue] = React.useState("");
 
   const router = useRouter();
 
-
-
-  const [TradingPartners, setTradingPartners] = React.useState<TradingPartnerCard[]>([])
+  const [TradingPartners, setTradingPartners] = React.useState<
+    TradingPartnerCard[]
+  >([]);
 
   // Created a 'Mirror' list of TP, this will prevent db calls when a user changes visibility
   // and will only update in database once the user selects save button.
-  const [temporalPartners, setTemporalPartners] = React.useState<TradingPartnerCard[]>([]);
+  const [temporalPartners, setTemporalPartners] = React.useState<
+    TradingPartnerCard[]
+  >([]);
 
   //Async GET PARTNERS
   const getAllTP = async () => {
     try {
-      const response = await GetAllTradingPartner()
+      const response = await GetAllTradingPartner();
 
       if (response) {
         const data = await response;
-        console.log(data)
+        console.log(data);
         if (data) {
-          setTradingPartners(data)
-          setTemporalPartners(data)
+          setTradingPartners(data);
+          setTemporalPartners(data);
         }
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     } finally {
-          setIsLoading(false);
-        }
-  }
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    getAllTP()
-  }, [])
-
-
+    getAllTP();
+  }, []);
 
   // Function that sets the selected partnership into a state
   const selectedPartnership = TradingPartners.find(
@@ -71,7 +74,6 @@ export default function Home() {
   // This function deletes an item from the 'Mirror' temporal partners list, so the user does not need to refresh the page
   // to see the list without the items.
   const deleteTemporalPartner = (id: string | null) => {
-
     const newPartners = temporalPartners.filter((partner) => partner.id !== id);
     setTemporalPartners(newPartners);
   };
@@ -81,17 +83,17 @@ export default function Home() {
   async function deleteDatabasePartner() {
     setIsOpen(false);
 
-     //Agregar funcion async DELETE
+    //Agregar funcion async DELETE
 
-     try {
-      const del = await DeleteTradingPartner(selectedPartnershipId)
+    try {
+      const del = await DeleteTradingPartner(selectedPartnershipId);
 
       if (del) {
         const data = await del;
-        console.log(data)
+        console.log(data);
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
 
     deleteTemporalPartner(selectedPartnershipId);
@@ -135,39 +137,42 @@ export default function Home() {
           <span className="loading loading-dots loading-lg"></span>
         </div>
       ) : (
-      <div className="max-h-full flex flex-col items-center w-full overflow-y-auto overscroll-none">
-        <ListHeader>
-          <div className="flex flex-row w-full items-center">
-            <p className="basis-3/6">Trading Partner</p>
-            <p className="basis-2/6 grid justify-items-center content-center">
-              Visible
-            </p>
-            <p className="basis-1/6 grid justify-items-center content-center">
-              Actions
-            </p>
-          </div>
-        </ListHeader>
-
         <div className="max-h-full flex flex-col items-center w-full overflow-y-auto overscroll-none">
-          <PartnersList
-            temporalPartners={temporalPartners}
-            setTemporalPartners={setTemporalPartners}
-            handleDeleteTemporalPartner={deleteTemporalPartner}
-            handleEditButton={handleEditButton}
-            handleDeleteButton={handleDeleteButton}
-            Partners={TradingPartners}
-          />
+          <ListHeader>
+            <div className="flex flex-row w-full items-center">
+              <p className="basis-3/6">Trading Partner</p>
+              <p className="basis-2/6 grid justify-items-center content-center">
+                Visible
+              </p>
+              <p className="basis-1/6 grid justify-items-center content-center">
+                Actions
+              </p>
+            </div>
+          </ListHeader>
+
+          <div className="max-h-full flex flex-col items-center w-full overflow-y-auto overscroll-none">
+            <PartnersList
+              temporalPartners={temporalPartners}
+              setTemporalPartners={setTemporalPartners}
+              handleDeleteTemporalPartner={deleteTemporalPartner}
+              handleEditButton={handleEditButton}
+              handleDeleteButton={handleDeleteButton}
+              Partners={TradingPartners}
+            />
+          </div>
         </div>
-      </div>
       )}
       <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
         <DialogTitle className="text-2xl">Delete Partner</DialogTitle>
-        <DialogTitle className="text-xl">
+        <DialogTitle className="text-xl select-none">
           {selectedPartnership?.Name}
         </DialogTitle>
+
         <p>
           To confirm, please type &quot;
-          <span className="font-bold select-none">{selectedPartnership?.Name}</span>
+          <span className="font-bold select-none">
+            {selectedPartnership?.Name}
+          </span>
           &quot; in the box below
         </p>
         <div className="my-3" />
