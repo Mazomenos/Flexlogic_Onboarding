@@ -8,6 +8,7 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
+
 export async function GetTPDocsFromPartnership(TPId: string) {
     try {
         const tradingPartner = await prisma.tradingPartner.findUnique({
@@ -128,7 +129,8 @@ export async function postTPDoc(TPId: string, DocTemplateNum: number, pdfURL: st
                             Requirement: element.Requirement,
                             Type: elementData?.Type,
                             Min: elementData?.Min,
-                            Max: elementData?.Max
+                            Max: elementData?.Max,
+                            Conditions: []
                         })
                     }
                 }

@@ -2,9 +2,9 @@ import React, { useRef, useState } from "react";
 import { Drawer } from "@material-tailwind/react";
 import CloseButton from "@/components/CloseButton";
 import GenericButton from "@/components/GenericButton";
-import SidebarItem from "./SidebarItem";
-import { ACTION_PREFETCH } from "next/dist/client/components/router-reducer/router-reducer-types";
 import { GetTPDocById } from "@/DA/TpDocsController";
+import { SuccessAction } from "@/components/toasters";
+
 
 interface Props {
   children?: React.ReactNode;
@@ -29,21 +29,26 @@ export default function DrawerDefault({
   const openDrawer = () => setOpen(true);
   const closeDrawer = () => setOpen(false);
 
-  const getTPDoc =  async () =>{
-    try {
-      const response = await GetTPDocById(idDocument);
+ 
 
-      if (response) {
-        const data = await response;
-        console.log(data);
-        if (data) {
-          return data;
-        }
-      }
+  async function handleDownload() {
+    try {
+      console.log("jeje")
+      SuccessAction("Download will Start Shortly")
+      const jsonData = await GetTPDocById(idDocument);    
+      const encodedData = encodeURIComponent(JSON.stringify(jsonData));
+      const href = `data:text/json;charset=utf-8,${encodedData}`;
+      const downloadLink = document.createElement('a');
+      downloadLink.href = href;
+      downloadLink.download = "filename.json";
+      downloadLink.click();
     } catch (error) {
-      console.log(error);
-    }
-  };
+      console.error('Error downloading JSON:', error);
+  };}
+
+  async function handleUpload() {
+    
+  }
 
 
 
@@ -89,21 +94,13 @@ export default function DrawerDefault({
           <GenericButton onClick={() => {}}>Upload </GenericButton>
         </div>
         <div className=" mt-2 flex justify-end">
-          <GenericButton onClick={() => {}}>Download </GenericButton>
+          <GenericButton onClick={() => {handleDownload()}}>Download </GenericButton>
         </div>
       </div>
       <div
         className="absolute top-0 left-0 h-full w-2 cursor-ew-resize"
         onMouseDown={handleMouseDown}
       />
-      <a
-            href={`data:text/json;charset=utf-8,${encodeURIComponent(
-              JSON.stringify(getTPDoc())
-            )}`}
-            download="filename.json"
-          >
-            {`Download Json`}
-          </a>
       <div className="w-full mt-2 flex justify-end">
         <GenericButton onClick={() => {}}>Create </GenericButton>
       </div>
