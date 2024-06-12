@@ -115,20 +115,20 @@ export default function UploadModal({
           if (resultValStructure.status === "Success") {
             const resultElementVal = data(info.Segments, Segments, [])
             if (resultElementVal.length > 0) {
-              UpdateDocumentStatus(dataUserDoc[0], dataUserDoc[1], "FAILED")
+              UpdateDocumentStatus(dataUserDoc[0], dataUserDoc[1], "Failed")
               UpdateUserLogErrors(dataUserDoc[1], dataUserDoc[0], resultElementVal)
               setIsOpen(false)
               setFail(true)
             } else {
 
-              UpdateDocumentStatus(dataUserDoc[0], dataUserDoc[1], "COMPLETE")
+              UpdateDocumentStatus(dataUserDoc[0], dataUserDoc[1], "Complete")
               CheckPartnershipStatus(dataUserDoc[0], dataUserDoc[1]);
               setIsOpen(false)
               setSuccess(true)
             }
           } else {
             // Aqui deberia de ir el controlador de si encontro un error, subirlo a la base de datos
-            UpdateDocumentStatus(dataUserDoc[0], dataUserDoc[1], "FAILED")
+            UpdateDocumentStatus(dataUserDoc[0], dataUserDoc[1], "Failed")
             UpdateUserLogErrors(dataUserDoc[1], dataUserDoc[0], [{Title:"Error in segment structure", Description: resultValStructure.Description, Position: String(resultValStructure.Position), Type:"Structure"}]);
             setIsOpen(false)
             setFail(true)
