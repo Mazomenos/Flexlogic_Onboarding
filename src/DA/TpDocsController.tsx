@@ -116,6 +116,7 @@ export async function postTPDoc(Name_TP: string, DocType_e: DocType_enum, Delimi
                     Type: elementData?.Type,
                     Min: elementData?.Min,
                     Max: elementData?.Max,
+                    Conditions: []
                 };
             }));
 
