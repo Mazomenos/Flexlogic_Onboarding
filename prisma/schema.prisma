@@ -37,10 +37,17 @@ model EDISegments {
 // Individual EDI Document structure
 model EDITemplateDocuments {
   id      String @id @default(auto()) @map("_id") @db.ObjectId
-  Doc     Int
+  Doc     DocType_enum
   Version String
 
   Segments Segment[]
+}
+
+enum DocType_enum {
+  EDI_810 @map("810")
+  EDI_850 @map("850")
+  EDI_855 @map("855")
+  EDI_856 @map("856")
 }
 
 model EDITPDocs {

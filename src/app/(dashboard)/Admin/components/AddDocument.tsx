@@ -27,29 +27,30 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import FormModal from "./FormModal";
+import { Delimiters_enum,DocType_enum, EOL_enum } from "@prisma/client";
 
 // Form main schema, here Zod knows how to validate form data
 const FormSchema = z.object({
-  ediType: z.string({ required_error: "Please select an EDI type" }),
-  delimeters: z.string({ required_error: "Please select delimiters" }),
-  eol: z.string({ required_error: "Please select an EOL" }),
+  ediType: z.nativeEnum(DocType_enum , { required_error: "Please select an EDI type" }),
+  delimeters: z.nativeEnum(Delimiters_enum, { required_error: "Please select delimiters" }),
+  eol: z.nativeEnum(EOL_enum, { required_error: "Please select an EOL" }),
 });
 
 // #TODO: Change to DB data
-const EdiDocument = [
-  { key: "856", label: "EDI 856" },
-  { key: "810", label: "EDI 810" },
+const edi_documentOptions = [
+  { value: DocType_enum.EDI_810, label: "EDI 810" },
+  { value: DocType_enum.EDI_850, label: "EDI 850" },
+  { value: DocType_enum.EDI_855, label: "EDI 855" },
+  { value: DocType_enum.EDI_856, label: "EDI 856" },
 ];
-
-// #TODO: Change to DB data
 const delimitersOptions = [
-  { value: ",", label: "Comma (,)" },
-  { value: ";", label: "Semicolon (;)" },
-  { value: "|", label: "Pipe (|)" },
+  { value: Delimiters_enum.COMMA_SEMICOLON_STAR, label:"Comma (,), Semicolon (;), Star (*)" },
+  { value: Delimiters_enum.PIPE_SEMICOLON_COMMA,  label:"Pipe (|), Semicolon (;), Comma (,)" },
 ];
 
-// #TODO: Change to DB data
-const eolOptions = [{ value: "LF", label: " ~ " }];
+const eolOptions = [
+  { value: EOL_enum.TILDE, label: "Tilde (~)" }
+];
 
 export default function AddDocument() {
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -108,7 +109,11 @@ export default function AddDocument() {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="850">EDI 850</SelectItem>
+                        {edi_documentOptions.map((doctype, index) => (
+                            <SelectItem key={index} value={doctype.value}>
+                              {doctype.label}
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                       <FormMessage />
