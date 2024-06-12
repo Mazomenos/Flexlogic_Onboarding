@@ -42,20 +42,20 @@ export default function SidebarItem({ children }: { children?: ReactNode }) {
     setIsModalOpen(false);
   };
 
-  const addSegment = (newSegment) => {
+  const addSegment = (newSegment: any) => {
     const updatedSegments = [...EDITemplate, newSegment];
     setEDITemplate(updatedSegments);
     closeModal();
   };
 
-  const addLoop = (newLoop) => {
+  const addLoop = (newLoop: any) => {
     const updatedSegments = [...EDITemplate, newLoop];
     setEDITemplate(updatedSegments);
     closeModal();
   };
 
-  const removeSegment = (segmentToRemove: string, segments) => {
-    return segments.filter((segment) => {
+  const removeSegment = (segmentToRemove: string, segments: any) => {
+    return segments.filter((segment: any) => {
       if (segment.Segment === "Loop") {
         segment.Segments = removeSegment(segmentToRemove, segment.Segments);
       }
@@ -63,8 +63,8 @@ export default function SidebarItem({ children }: { children?: ReactNode }) {
     });
   };
 
-  const removeSegmentLoop = (segments, positionToRemove) => {
-    return segments.filter((segment) => {
+  const removeSegmentLoop = (segments: any, positionToRemove: any) => {
+    return segments.filter((segment: any) => {
       if (segment.Position === positionToRemove) {
         return false;
       }
@@ -103,8 +103,8 @@ export default function SidebarItem({ children }: { children?: ReactNode }) {
     (templateSegment) => templateSegment.Segment,
   );
 
-  const renderSegments = (segments) => {
-    return segments.map((templateSegment) => {
+  const renderSegments = (segments: any) => {
+    return segments.map((templateSegment: any) => {
       if (templateSegment.Segment === "Loop") {
         return (
           <div key={templateSegment.Position} className="flex justify-center">
@@ -125,7 +125,9 @@ export default function SidebarItem({ children }: { children?: ReactNode }) {
                         {templateSegment.Segment}
                       </div>
                       <span className="self-center basis-7/12 overflow-hidden text-ellipsis whitespace-nowrap">
-                        {templateSegment.Requirement}
+                        {templateSegment.Requirement === "M"
+                          ? "Mandatory"
+                          : "Optional"}
                       </span>
                       <div className="basis-3/12 w-full flex justify-center self-center text-center">
                         {templateSegment.Max}
@@ -136,13 +138,13 @@ export default function SidebarItem({ children }: { children?: ReactNode }) {
                             ? "text-gray-300"
                             : "text-darkMode-error-content cursor-pointer"
                             }`}
-                            onClick={() => {
-                              if (templateSegment.Requirement !== "M") {
-                                setEDITemplate((prev) =>
-                                  removeSegmentLoop(prev, templateSegment.Position),
-                                );
-                              }
-                            }}
+                          onClick={() => {
+                            if (templateSegment.Requirement !== "M") {
+                              setEDITemplate((prev) =>
+                                removeSegmentLoop(prev, templateSegment.Position),
+                              );
+                            }
+                          }}
                         />
                       </div>
                     </div>
