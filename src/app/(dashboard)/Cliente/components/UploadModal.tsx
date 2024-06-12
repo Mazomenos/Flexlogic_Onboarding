@@ -101,9 +101,10 @@ export default function UploadModal({
           const contentStream = new ReadableString(String(fileContent));
           const Segments = await ParseEDIfile(contentStream);
           const resultValStructure = ValStructure(info.Segments, Segments, 0, "M", true);
+          console.log(resultValStructure.status)
           if (resultValStructure.status === "Success") {
             const resultElementVal = data(info.Segments, Segments, [])
-            if (data.length > 0) {
+            if (resultElementVal.length > 0) {
               UpdateUserLogErrors(dataUserDoc[1], dataUserDoc[0], resultElementVal)
             } else {
               CheckPartnershipStatus(dataUserDoc[0]);
@@ -112,6 +113,8 @@ export default function UploadModal({
             // Aqui deberia de ir el controlador de si encontro un error, subirlo a la base de datos
             UpdateUserLogErrors(dataUserDoc[1], dataUserDoc[0], [{Title:"Error in segment", Description: resultValStructure.Description, Position: String(resultValStructure.Position), Type:"Structure"}]);
           }
+          
+
         }
       }
     } catch (error) {
