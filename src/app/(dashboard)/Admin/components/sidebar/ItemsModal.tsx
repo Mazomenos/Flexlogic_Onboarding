@@ -6,7 +6,7 @@ import ListItem from "@/components/ListItem";
 import GenericButton from "@/components/GenericButton";
 import { EDISegments } from "../../../../../../prisma/EDISegments";
 import { EDIElements } from "../../../../../../prisma/EDIElements";
-import { EDISegment, EDILoop } from "../../../../../../prisma/interfaces/EDIInterfaces";
+import { EDISegment } from "../../../../../../prisma/interfaces/EDIInterfaces";
 import {
   Select,
   SelectContent,
@@ -29,17 +29,15 @@ export default function ItemsModal({
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   usedSegments: string[];
   addSegment: (segment: EDISegment, loopId: string | null) => void;
-  addLoop: (loop: EDILoop) => void;
+  addLoop: (loop: any) => void;
 }) {
   const [selection, setSelection] = useState("segment");
   const [selectedSegment, setSelectedSegment] = useState("");
-  const [loopRequirement, setLoopRequirement] = useState("M");
+  const [loopRequirement, setLoopRequirement] = useState("OP");
   const [loopMax, setLoopMax] = useState(1);
-  const [loopSelection, setLoopSelection] = useState("outside"); // New state for loop selection
-  const [selectedLoop, setSelectedLoop] = useState(null); // New state for selected loop
 
   const availableSegments = EDISegments.filter(
-    (segment) => !usedSegments.includes(segment.Segment),
+    (segment) => !usedSegments.includes(segment.Segment)
   );
 
   const availableElements = selectedSegment
@@ -47,7 +45,7 @@ export default function ItemsModal({
     : [];
 
   const handleAddSegment = (segment: EDISegment) => {
-    addSegment(segment, loopSelection === "inside" ? selectedLoop : null);
+    addSegment(segment, null); // Always adding segment outside any loop
     setSelection("segment");
   };
 
@@ -86,42 +84,6 @@ export default function ItemsModal({
         <div className="flex max-h-full flex-col items-center w-full">
           {selection === "segment" && (
             <div className="max-h-fit flex flex-col items-center w-full">
-              <Select
-                value={loopSelection}
-                onValueChange={(value) => setLoopSelection(value)}
-                className="mb-3"
-              >
-                <SelectTrigger className="text-lg w-full">
-                  <SelectValue placeholder="Select segment position" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="outside">Outside Loop</SelectItem>
-                  <SelectItem value="inside">Inside Loop</SelectItem>
-                </SelectContent>
-              </Select>
-              {loopSelection === "inside" && (
-                <Select
-                  value={selectedLoop}
-                  onValueChange={(value) => setSelectedLoop(value)}
-                  className="mb-3"
-                >
-                  <SelectTrigger className="text-lg w-full">
-                    <SelectValue placeholder="Select a loop" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectLabel>Loops</SelectLabel>
-                      {usedSegments
-                        .filter((segment) => segment === "Loop")
-                        .map((loop) => (
-                          <SelectItem key={loop} value={loop}>
-                            {loop}
-                          </SelectItem>
-                        ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              )}
               {availableSegments.map((segment) => (
                 <ListItem key={segment.Segment}>
                   <div className="basis-10/12">
@@ -150,7 +112,7 @@ export default function ItemsModal({
                     <SelectLabel>Segments</SelectLabel>
                     {usedSegments.map((segment) => {
                       const segmentInfo = EDISegments.find(
-                        (s) => s.Segment === segment,
+                        (s) => s.Segment === segment
                       );
                       return (
                         <SelectItem key={segment} value={segment}>
@@ -189,8 +151,7 @@ export default function ItemsModal({
                     <SelectValue placeholder="Select requirement" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="M">Mandatory</SelectItem>
-                    <SelectItem value="O">Optional</SelectItem>
+                    <SelectItem value="OP">Optional</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
