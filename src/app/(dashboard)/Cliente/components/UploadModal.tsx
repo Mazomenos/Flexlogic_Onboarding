@@ -15,6 +15,7 @@ import { FaUpload } from "react-icons/fa6";
 import BrakeRule from "@/components/BrakeRule";
 import { UpdateUserLogErrors } from "@/DA/usersTpControllers";
 import { CheckPartnershipStatus } from "@/DA/usersTpControllers";
+import { UpdateDocumentStatus } from "@/DA/usersTpControllers";
 
 // Read stream code by Russell Briggs: https://medium.com/@dupski/nodejs-creating-a-readable-stream-from-a-string-e0568597387f
 class ReadableString extends Readable {
@@ -114,17 +115,20 @@ export default function UploadModal({
           if (resultValStructure.status === "Success") {
             const resultElementVal = data(info.Segments, Segments, [])
             if (resultElementVal.length > 0) {
+              UpdateDocumentStatus(dataUserDoc[0], dataUserDoc[1], "FAILED")
               UpdateUserLogErrors(dataUserDoc[1], dataUserDoc[0], resultElementVal)
               setIsOpen(false)
               setFail(true)
             } else {
 
+              UpdateDocumentStatus(dataUserDoc[0], dataUserDoc[1], "COMPLETE")
               CheckPartnershipStatus(dataUserDoc[0], dataUserDoc[1]);
               setIsOpen(false)
               setSuccess(true)
             }
           } else {
             // Aqui deberia de ir el controlador de si encontro un error, subirlo a la base de datos
+            UpdateDocumentStatus(dataUserDoc[0], dataUserDoc[1], "FAILED")
             UpdateUserLogErrors(dataUserDoc[1], dataUserDoc[0], [{Title:"Error in segment structure", Description: resultValStructure.Description, Position: String(resultValStructure.Position), Type:"Structure"}]);
             setIsOpen(false)
             setFail(true)

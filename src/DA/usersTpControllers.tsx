@@ -537,29 +537,75 @@ export async function GetTPDocs(partnerName: string) {
     }
 }
 
+export async function UpdateDocumentStatus(PartnerName:string, TPDocID: string, status: string) {
+    const userId = await GetUserId()
+
+    try {
+        const user = await prisma.user.findUnique({
+            where: { id: userId },
+            include: { Partnerships: true }
+        });
+
+        if (!user) {
+            throw new Error('User not found');
+        }
+
+        // Encontrar la asociación (Partner) correspondiente
+        const partnership = user.Partnerships.find(partner => partner.Name === PartnerName);
+
+        if (!partnership) {
+            throw new Error('Partnership not found');
+        }
+
+        const document = partnership.Docs.find(doc => doc.idDoc === TPDocID);
+
+        if (!document) {
+            throw new Error('Document not found');
+        }
+
+        document.Status = status;
+
+        // Guardar los cambios en la base de datos
+        await prisma.user.update({
+            where: { id: userId },
+            data: {
+                Partnerships: {
+                    updateMany: {
+                        where: { Name: PartnerName },
+                        data: {
+                            Docs: {
+                                updateMany: {
+                                    where: { idDoc: TPDocID },
+                                    data: { Status: status }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        console.log("Document status updated")
+
+    } catch (error) {
+        if (error instanceof Error) {
+            console.log(
+                {
+                    message: error.message,
+                },
+                {
+                    status: 500,
+                }
+            );
+        }
+    }
+}
 
 export async function CheckPartnershipStatus(PartnerName: string, TPDocID: string) {
     const userId = await GetUserId()
 
     try {
-        await prisma.$runCommandRaw({
-            update: "User",
-            updates: [{
-                q: {
-                    _id: { $oid: userId },
-                    "Partnerships.Name": PartnerName,
-                    "Partnerships.Docs.idDoc": TPDocID
-                },
-                u: {
-                    $set: {
-                        "Partnerships.$[].Docs.$[doc].Status": 'COMPLETE'
-                    }
-                },
-                arrayFilters: [{ "doc.idDoc": TPDocID }]
-            }]
-        });
-    
-
+        
         const userPartnershipDocs = await prisma.user.findFirst({
             where: { id: userId },
             include: {
