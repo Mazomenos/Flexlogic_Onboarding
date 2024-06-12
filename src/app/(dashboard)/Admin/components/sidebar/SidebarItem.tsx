@@ -170,7 +170,7 @@ export default function SidebarItem({ children }: { children?: ReactNode }) {
                   <span className=" text-left self-center basis-7/12 text-ellipsis  overflow-hidden">
                     {matchingSegment.Name}
                   </span>
-                  <div className="basis-2/12 flex-shrink-0 overflow-hidden text-ellipsis w-full flex justify-center self-center text-center">
+                  <div className="basis-2/12 flex-shrink-0 text-ellipsis w-full flex justify-center self-center text-center">
                     {templateSegment.Requirement === "M"
                       ? "Mandatory"
                       : "Optional"}
