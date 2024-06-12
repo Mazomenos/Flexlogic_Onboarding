@@ -74,7 +74,7 @@ export default function PartnerItem({
                 {partner.Name.split("_").join(" ")}
               </p>
             </TooltipTrigger>
-            <TooltipContent side="top" align="start" i className="max-w-xs">
+            <TooltipContent side="top" align="start" className="max-w-xs">
               <span className="whitespace-normal break-words">
                 {partner.Name.split("_").join(" ")}
               </span>
