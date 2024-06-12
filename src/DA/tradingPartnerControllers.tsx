@@ -2,7 +2,7 @@
 
 import { prisma } from "@/libs/prisma";
 
-import { Partnership, TPDocRequired, TradingPartner } from "@prisma/client";
+import { Delimiters_enum, EOL_enum, Partnership, TPDocRequired, TradingPartner, Version_enum } from "@prisma/client";
 
 
 export async function GetAllTradingPartner() {
@@ -86,50 +86,110 @@ export async function GetPartnershipsFromUser(userId: string) {
     }
 }
 
-
 export async function CreateTradingPartner(data: {
     Name: string,
-    Initial850EDI: string, 
-    Delimiters: string[],
-    Version: string,
-    EOL: string,
-    isVisible: boolean
+    Initial850EDI: string | null,
+    Delimiters: Delimiters_enum[],
+    Version: Version_enum,
+    EOL: EOL_enum[],
+    isVisible: boolean,
     DocsRequired: any[]
-}){
+}) {
     try {
         const partner = await prisma.tradingPartner.create({
-            
-            data: data
-
-        })
+            data: {
+                Name: data.Name,
+                Initial850EDI: data.Initial850EDI,
+                Delimiters: data.Delimiters,
+                Version: data.Version,
+                EOL: data.EOL,
+                isVisible: data.isVisible,
+                DocsRequired: data.DocsRequired
+            }
+        });
 
         if (!partner) {
             throw new Error('Trading partner not created');
         }
-        console.log(partner)
-        return partner
 
+        console.log(partner);
+        return partner;
     } catch (error) {
         if (error instanceof Error) {
-            console.log(
-                {
-                    message: error.message,
-                },
-                {
-                    status: 500,
-                }
-            );
+            console.error({
+                message: error.message,
+                stack: error.stack,
+            });
+        } else {
+            console.error('Unexpected error', error);
         }
+
+        throw new Error('Failed to create trading partner');
     }
 }
+
+// export async function CreateTradingPartner(data: {
+//     Name: string,
+//     Initial850EDI: string, 
+//     Delimiters: Delimiters_enum[],
+//     Version: Version_enum,
+//     EOL: EOL_enum[],
+//     isVisible: boolean
+//     DocsRequired: any[]
+// }){
+//     try {
+//         const partner = await prisma.tradingPartner.create({
+            
+//             data: data
+
+//         })
+
+//         if (!partner) {
+//             throw new Error('Trading partner not created');
+//         }
+//         console.log(partner)
+//         return partner
+
+//     } catch (error) {
+//         if (error instanceof Error) {
+//             console.log(
+//                 {
+//                     message: error.message,
+//                 },
+//                 {
+//                     status: 500,
+//                 }
+//             );
+//         }
+//     }
+// }
+
+// const data = {
+//         Name: "Amazon",
+//         Initial850EDI: "jejejeje",
+//         Delimiters: ['COMMA_SEMICOLON_STAR'],
+//         Version: 'X12_4010',
+//         EOL: ['TILDE'],
+//         isVisible: true,
+//         DocsRequired: [
+//           {
+//             idDoc: "664d783c5d59cf13115aaec8",
+//             Doc: 'EDI_850',
+//             instructionsPDF: "",
+//             isVisible: true,
+//             isRequired: true
+//           },
+//         ]
+// }
+
 
 //Testing pending
 export async function UpdateTradingPartner(partnerId: string, data: {
     Name?: string,
     Initial850EDI?: string, 
-    Delimiters?: string[],
-    Version?: string,
-    EOL?: string,
+    Delimiters?: Delimiters_enum[],
+    Version?: Version_enum,
+    EOL?: EOL_enum[],
     isVisible?: boolean, 
     }){
     try {

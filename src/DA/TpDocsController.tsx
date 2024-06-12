@@ -4,7 +4,7 @@
 import { GetElement } from './elementControllers'
 import { GetSegment } from './segmentControllers'
 
-import { PrismaClient } from '@prisma/client';
+import { Delimiters_enum, DocType_enum, EOL_enum, PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -125,21 +125,14 @@ export async function updateConfigTPDoc(TPDocID: string , newDocument: any) {
 
 export async function postTPDoc(TPId: string, DocTemplateNum: number, pdfURL: string) {
     try {
-        const tradingPartner = await prisma.tradingPartner.findFirst({
-            where: {
-                id: TPId
-            }
-        });
+        const [tradingPartner, templateDoc] = await Promise.all([
+            prisma.tradingPartner.findFirst({ where: { Name: Name_TP } }),
+            prisma.eDITemplateDocuments.findFirst({ where: { Doc: DocType_e } }),
+        ]);
 
         if (!tradingPartner) {
             throw new Error('Trading partner not found');
         }
-
-        const templateDoc = await prisma.eDITemplateDocuments.findFirst({
-            where: {
-                Doc: DocTemplateNum,
-            },
-        });
 
         if (!templateDoc) {
             throw new Error('Template document not found');
@@ -169,48 +162,66 @@ export async function postTPDoc(TPId: string, DocTemplateNum: number, pdfURL: st
                 }
             }
 
-            newDataSegments.push({
+            const result: any = {
                 Position: segment.Position,
                 Segment: segment.Segment,
                 Requirement: segment.Requirement,
-                Max: segment.Max,
-                ...(segment.Segments !== null && segment.Segments !== undefined && segment.Segments.length > 0 && { Segments: segment.Segments }),
-                Elements: elements
-            })
+                Max: segment.Max
+            };
+
+            if (elements.length > 0) {
+                result['Elements'] = elements;
+            }
+
+            if (segment.Segments) {
+                const nestedSegments = await Promise.all(segment.Segments.map(fetchSegmentData));
+                if (nestedSegments.length > 0) {
+                    result['Segments'] = nestedSegments;
+                }
+            }
+
+            return result;
+        };
+
+        const newDataSegments = await Promise.all(templateDoc.Segments.map(fetchSegmentData));
+
+        const createdTPDoc = await prisma.eDITPDocs.create({ data: { Segments: newDataSegments } });
+
+        const isDelimiterIncluded = tradingPartner.Delimiters.includes(Delimiter_e);
+        const isEOLIncluded = tradingPartner.EOL.includes(EOL_e);
+
+        if (!isDelimiterIncluded) {
+            tradingPartner.Delimiters.push(Delimiter_e);
         }
 
-
-        const createdTPDoc = await prisma.eDITPDocs.create({
-            data: {
-                Segments: newDataSegments
-
-            }
-        });
+        if (!isEOLIncluded) {
+            tradingPartner.EOL.push(EOL_e);
+        }
 
         tradingPartner.DocsRequired.push({
             idDoc: createdTPDoc.id,
-            Doc: DocTemplateNum.toString(),
+            Doc: DocType_e,
             isVisible: true,
             isRequired: true,
             instructionsPDF: pdfURL
         })
 
         const updatedDocs = await prisma.tradingPartner.update({
-            where: {
-                id: TPId
-            },
+            where: { id: tradingPartner.id },
             data: {
-                DocsRequired: tradingPartner.DocsRequired
-            }
+                Delimiters: isDelimiterIncluded ? tradingPartner.Delimiters : { push: [Delimiter_e] },
+                EOL: isEOLIncluded ? tradingPartner.EOL : { push: [EOL_e] },
+                DocsRequired: tradingPartner.DocsRequired,
+            },
         });
 
         return updatedDocs;
     } catch (error) {
-        if (error instanceof Error) {
-            return Error
-        }
+        return { error: error instanceof Error ? error.message : "An error occurred" };
     }
 }
+
+
 
 export async function updateTPDoc(PartnerName: string, TPDocId: string, newDocument: any) {
     try {
@@ -241,7 +252,7 @@ export async function updateTPDoc(PartnerName: string, TPDocId: string, newDocum
 
         // Add the new document to newData
         newData.push({
-            idDoc: newDocument.idDoc, 
+            idDoc: newDocument.idDoc,
             Doc: newDocument.Doc,
             isRequired: newDocument.isRequired,
             isVisible: newDocument.isVisible,

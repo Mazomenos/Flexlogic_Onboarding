@@ -119,7 +119,7 @@ export default function Home() {
             />
           </div>
 
-          <AddDocument />
+          <AddDocument partnerName={partnerName}/>
         </div>
 
         <BrakeRule />

@@ -2,7 +2,7 @@
 import BrakeRule from "@/components/BrakeRule";
 import { useRouter } from "next/navigation";
 import { CreateTradingPartner } from "@/DA/tradingPartnerControllers";
-import { TradingPartner } from "@prisma/client";
+import { TradingPartner, Delimiters_enum, Version_enum, EOL_enum } from "@prisma/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -46,22 +46,29 @@ const FormSchema = z.object({
     .refine((value) => !/^\s|\s$/.test(value), {
       message: "Name cannot start or end with a space",
     }),
-  Delimiters: z.string({
+  Delimiters: z.nativeEnum(Delimiters_enum, {
     required_error: "Please select a set of delimiters",
   }),
-  Version: z.string({ required_error: "Please select an EDI version" }),
-  EOL: z.string({ required_error: "Please select an EOL" }),
+  Version: z.nativeEnum(Version_enum, {
+    required_error: "Please select an EDI version",
+  }),
+  EOL: z.nativeEnum(EOL_enum, {
+    required_error: "Please select an EOL",
+  }),
 });
 
 const delimitersOptions = [
-  { value: ",", label: "Comma (,)" },
-  { value: ";", label: "Semicolon (;)" },
-  { value: "|", label: "Pipe (|)" },
+  { value: Delimiters_enum.COMMA_SEMICOLON_STAR, label: "Comma (,), Semicolon (;), Star (*)" },
+  { value: Delimiters_enum.PIPE_SEMICOLON_COMMA, label: "Pipe (|), Semicolon (;), Comma (,)" },
 ];
 
-const ediVersionOptions = [{ value: "X12_4010", label: "X12 4010" }];
+const eolOptions = [
+  { value: EOL_enum.TILDE, label: "Tilde (~)" }
+];
 
-const eolOptions = [{ value: "LF", label: " ~ " }];
+const ediVersionOptions = [
+  { value: Version_enum.X12_4010, label: "X12 4010" },
+];
 
 export default function AddPartner() {
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -94,15 +101,7 @@ export default function AddPartner() {
 
   const router = useRouter();
 
-  const newTP = async (newData: {
-    Name: string;
-    Initial850EDI: string;
-    Delimiters: string[];
-    Version: string;
-    EOL: string;
-    isVisible: boolean;
-    DocsRequired: any[];
-  }) => {
+  const newTP = async (newData: TradingPartner) => {
     try {
       const response = await CreateTradingPartner(newData);
 
@@ -119,15 +118,7 @@ export default function AddPartner() {
     }
   };
 
-  async function onSubmit(data: {
-    Name: string;
-    Delimiters: string;
-    Version: string;
-    EOL: string;
-  }) {
-    const DelimitersArr = data.Delimiters.split(" ");
-    console.log(DelimitersArr);
-
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
     let fileURL = "";
     if (file) {
       const base64 = await readFileAsBase64(file);
@@ -141,20 +132,13 @@ export default function AddPartner() {
       );
     }
 
-    const newData: {
-      Name: string;
-      Initial850EDI: string;
-      Delimiters: string[];
-      Version: string;
-      EOL: string;
-      isVisible: boolean;
-      DocsRequired: any[];
-    } = {
+    const newData: TradingPartner = {
+      id: "",
       Name: data.Name.split(" ").join("_"),
       Initial850EDI: fileURL,
-      Delimiters: DelimitersArr,
+      Delimiters: [data.Delimiters],
       Version: data.Version,
-      EOL: data.EOL,
+      EOL: [data.EOL],
       isVisible: false,
       DocsRequired: [],
     };
