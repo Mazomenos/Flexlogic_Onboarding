@@ -101,15 +101,13 @@ export default function UploadModal({
           const contentStream = new ReadableString(String(fileContent));
           const Segments = await ParseEDIfile(contentStream);
           const resultValStructure = ValStructure(info.Segments, Segments, 0, "M", true);
-          console.log("holaaaa")
           if (resultValStructure.status === "Success") {
             data(info.Segments, Segments, [])
             // Poner si el validador de elemento funciono aqui y poner la logica de la misma aqui
             CheckPartnershipStatus(dataUserDoc[0]);
           } else {
-            console.log("hubo error")
             // Aqui deberia de ir el controlador de si encontro un error, subirlo a la base de datos
-            UpdateUserLogErrors(dataUserDoc[1], dataUserDoc[2], [{Title:"Error in segment structure", Description: resultValStructure.Description, Position: String(resultValStructure.Position), Type:"Structure"}]);
+            UpdateUserLogErrors(dataUserDoc[1], dataUserDoc[0], [{Title:"Error in segment", Description: resultValStructure.Description, Position: String(resultValStructure.Position), Type:"Structure"}]);
           }
 
         }

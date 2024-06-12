@@ -329,6 +329,7 @@ export async function UpdateUserLogErrors(DocId: string, PartnerName: string, ne
             return partnership;
         });
 
+
         const updatedUser = await prisma.user.update({
             where: { id: userId },
             data: {
@@ -563,7 +564,6 @@ export async function CheckPartnershipStatus(PartnerName: string) {
 
         const allDocsComplete = partnership.Docs.every(doc => doc.Status === 'COMPLETE');
 
-        
         if (allDocsComplete) {
             await prisma.user.update({
                 where: { id: userId },
