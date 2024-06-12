@@ -28,11 +28,13 @@ export default function SidebarItem({ children }: { children?: ReactNode }) {
   };
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [segments, setSegments] = useState(
+  const [EDITemplate, setEDITemplate] = useState(
     EDITemplateDocs[0].Segments.filter(
       (templateSegment) => templateSegment.Requirement === "M",
     ),
   );
+
+  const [elements, setElements] = useState(EDIElements);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -43,19 +45,46 @@ export default function SidebarItem({ children }: { children?: ReactNode }) {
   };
 
   const addSegment = (newSegment: EDISegment) => {
-    const updatedSegments = [...segments, newSegment];
-    setSegments(updatedSegments);
+    const updatedSegments = [...EDITemplate, newSegment];
+    setEDITemplate(updatedSegments);
     closeModal();
   };
 
   const removeSegment = (segmentToRemove: string) => {
-    const updatedSegments = segments.filter(
+    const updatedSegments = EDITemplate.filter(
       (segment) => segment.Segment !== segmentToRemove,
     );
-    setSegments(updatedSegments);
+    setEDITemplate(updatedSegments);
   };
 
-  const usedSegments = segments.map(
+  const removeElement = (elementToRemove: string) => {
+    const updatedElements = [...elements].filter(
+      (element) => element.Element !== elementToRemove
+    );
+    setElements(updatedElements);
+  
+    const updatedTemplate = EDITemplate.map((segment) => {
+      const matchingSegment = EDISegments.find(
+        (s) => s.Segment === segment.Segment
+      );
+      if (!matchingSegment) return segment;
+      const updatedElements = matchingSegment.Elements.filter(
+        (element) => element.Element !== elementToRemove
+      );
+  
+      return {
+        ...segment,
+        Elements: updatedElements,
+      };
+    });
+    
+    console.log(updatedTemplate);
+    setEDITemplate(updatedTemplate);
+  };
+  
+
+
+  const usedSegments = EDITemplate.map(
     (templateSegment) => templateSegment.Segment,
   );
 
@@ -68,7 +97,7 @@ export default function SidebarItem({ children }: { children?: ReactNode }) {
         addSegment={addSegment}
       />
       <div className="my-5 no-scrollbar flex-1 overflow-y-auto overscroll-none">
-        {segments.map((templateSegment) => {
+        {EDITemplate.map((templateSegment) => {
           const matchingSegment = EDISegments.find(
             (segment) => segment.Segment === templateSegment.Segment,
           );
@@ -101,11 +130,10 @@ export default function SidebarItem({ children }: { children?: ReactNode }) {
                       </div>
                       <div className="basis-1/12 flex-shrink-0 flex justify-center self-center">
                         <MinusCircleIcon
-                          className={`h-7 w-7 ${
-                            templateSegment.Requirement === "M"
-                              ? "text-gray-300"
-                              : "text-darkMode-error-content cursor-pointer"
-                          }`}
+                          className={`h-7 w-7 ${templateSegment.Requirement === "M"
+                            ? "text-gray-300"
+                            : "text-darkMode-error-content cursor-pointer"
+                            }`}
                           onClick={() => {
                             if (templateSegment.Requirement !== "M") {
                               removeSegment(templateSegment.Segment);
@@ -129,7 +157,10 @@ export default function SidebarItem({ children }: { children?: ReactNode }) {
                           collapsible
                           className="w-full collapse bg-base-200 dark:bg-darkMode-base-100 hover:bg-base-200 dark:hover:bg-darkMode-base-200 transition motion-reduce:transition-none motion-reduce:hover:transform-none rounded-none"
                         >
-                          <AccordionItem value={`item-${element.Position}`}>
+                          <AccordionItem
+                            value={`item-${templateSegment.Segment}-${element.Position}`}
+                            className="pb-0 w-full"
+                          >
                             <AccordionTrigger className="text-md">
                               <div className="px-2 flex w-full">
                                 <div className="basis-2/12 flex-shrink-0 w-full">
@@ -149,11 +180,16 @@ export default function SidebarItem({ children }: { children?: ReactNode }) {
                                 </div>
                                 <div className="basis-1/12 flex-shrink-0 flex justify-center self-center">
                                   <MinusCircleIcon
-                                    className={`h-6 w-6 ${
-                                      element.Requirement === "M"
-                                        ? "text-gray-300"
-                                        : "text-darkMode-error-content"
-                                    }`}
+                                    className={`h-6 w-6 ${element.Requirement === "M"
+                                      ? "text-gray-300"
+                                      : "text-darkMode-error-content"
+                                      }`}
+
+                                    onClick={() => {
+                                      if (element.Requirement !== "M") {
+                                        removeElement(element.Element);
+                                      }
+                                    }}
                                   />
                                 </div>
                               </div>
@@ -164,7 +200,7 @@ export default function SidebarItem({ children }: { children?: ReactNode }) {
                                 index={index}
                                 selection={
                                   conditionSelections[
-                                    `element-${element.Position}`
+                                  `element-${element.Position}`
                                   ] || ""
                                 }
                                 onSelectionChange={(value) =>
