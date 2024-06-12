@@ -5,7 +5,7 @@ import Badge from "./components/Badge";
 import AddPartnership from "./docs/AddPartnership";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { GetUsersPartnerInfo } from "@/DA/usersTpControllers";
+import { GetUsersPartnerInfo, DeleteUserPartnership } from "@/DA/usersTpControllers";
 import ActionsButton from "@/components/ActionsButton";
 import React from "react";
 import DeletePartnershipModal from "./components/DeletePartnershipModal";
@@ -39,6 +39,24 @@ export default function Home() {
       setIsLoading(false);
     }
   };
+
+  const deletePartnership = async (partnershipName?: string) => {
+    try {
+      if (!partnershipName) return
+
+      const response = await DeleteUserPartnership(partnershipName);
+
+      if (response) {
+        const data = await response;
+        console.log(data)
+      }
+
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   useEffect(() => {
     getTPInfo();
@@ -134,7 +152,7 @@ export default function Home() {
         setIsOpen={setIsOpen}
         value={value}
         deleteDatabasePartnership={() => {
-          console.log("deleted");
+          deletePartnership(selectedPartnership?.Name)
         }}
       />
     </div>

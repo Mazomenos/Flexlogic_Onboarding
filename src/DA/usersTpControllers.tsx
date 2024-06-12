@@ -25,14 +25,77 @@ export async function GetUsersPartnerInfo() {
         })
         if (!userPartnerships) throw new Error('User not found')
         const partnerships = userPartnerships.Partnerships;
-            
+
         const data = partnerships.map(partnership => ({
-            idPartner : partnership.idPartner,
-            Name : partnership.Name,
-            Status : partnership.Status
+            idPartner: partnership.idPartner,
+            Name: partnership.Name,
+            Status: partnership.Status
         }))
 
         return data;
+    } catch (error) {
+        if (error instanceof Error) {
+            console.log(
+                {
+                    message: error.message,
+                },
+                {
+                    status: 500,
+                }
+            );
+        }
+    }
+}
+
+export async function DeleteUserPartnership(PartnerName: string) {
+
+    const userId = await GetUserId()
+
+    try {
+
+        const partner = await prisma.tradingPartner.findFirst({
+            where: {
+                Name: PartnerName,
+
+            },
+            select: {
+                id: true,
+
+            }
+        })
+
+        if (!partner) throw new Error('User not found')
+
+        const user = await prisma.user.findFirst({
+            where: {
+                id: userId,
+            },
+            include: {
+                Partnerships: true
+            }
+        });
+
+        if (!user) throw new Error('User not found')
+
+        for (let i = 0; i < user.Partnerships.length; i++) {
+            let partnership = user.Partnerships[i]
+            if (partnership.idPartner === partner.id) {
+                user.Partnerships.splice(i, 1)
+                const updatedUser = await prisma.user.update({
+                    where: {
+                        id: userId,
+                    },
+                    data: {
+                        Partnerships: user.Partnerships
+                    }
+                })
+                return updatedUser
+            }
+        }
+
+        return "No partner named " + PartnerName + " found for the current user"
+
+
     } catch (error) {
         if (error instanceof Error) {
             console.log(
@@ -56,11 +119,11 @@ export async function GetUsersDocs(PartnerName: string) {
         const partner = await prisma.tradingPartner.findFirst({
             where: {
                 Name: PartnerName,
-                
-            }, 
+
+            },
             select: {
                 id: true,
-                
+
             }
         })
 
@@ -177,11 +240,11 @@ export async function GetPartnershipDocLogError(PartnerName: string, DocId: stri
         const partner = await prisma.tradingPartner.findFirst({
             where: {
                 Name: PartnerName,
-                
-            }, 
+
+            },
             select: {
                 id: true,
-                
+
             }
         })
 
