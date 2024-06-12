@@ -33,8 +33,8 @@ export default function Home() {
 
   const [isOpen, setIsOpen] = React.useState(false);
   const [selectedDocumentId, setSelectedDocumentId] = React.useState<
-    string | null
-  >(null);
+    string
+  >("");
   const [drawerOpen, setDrawerOpen] = React.useState(false);
 
   const [edi, setEdi] = useState<EDI[]>([]);

@@ -130,7 +130,8 @@ export async function postTPDoc(TPId: string, DocTemplateNum: number, pdfURL: st
                             Type: elementData?.Type,
                             Min: elementData?.Min,
                             Max: elementData?.Max,
-                            Conditions: []
+                            Conditions: [],
+                            Composites: []
                         })
                     }
                 }
