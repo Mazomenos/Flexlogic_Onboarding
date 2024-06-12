@@ -540,6 +540,7 @@ export async function GetTPDocs(partnerName: string) {
 export async function UpdateDocumentStatus(PartnerName:string, TPDocID: string, status: string) {
     const userId = await GetUserId()
 
+    console.log("hola1")
     try {
         const user = await prisma.user.findUnique({
             where: { id: userId },
@@ -550,42 +551,26 @@ export async function UpdateDocumentStatus(PartnerName:string, TPDocID: string, 
             throw new Error('User not found');
         }
 
-        // Encontrar la asociación (Partner) correspondiente
-        const partnership = user.Partnerships.find(partner => partner.Name === PartnerName);
+        const partnershipIndex = user.Partnerships.findIndex(partner => partner.Name === PartnerName);
 
-        if (!partnership) {
+        if (partnershipIndex === -1) {
             throw new Error('Partnership not found');
         }
+        
+        const documentIndex = user.Partnerships[partnershipIndex].Docs.findIndex(doc => doc.idDoc === TPDocID);
 
-        const document = partnership.Docs.find(doc => doc.idDoc === TPDocID);
-
-        if (!document) {
+        if (documentIndex === -1) {
             throw new Error('Document not found');
         }
 
-        document.Status = status;
+        user.Partnerships[partnershipIndex].Docs[documentIndex].Status = status;
 
-        // Guardar los cambios en la base de datos
         await prisma.user.update({
             where: { id: userId },
             data: {
-                Partnerships: {
-                    updateMany: {
-                        where: { Name: PartnerName },
-                        data: {
-                            Docs: {
-                                updateMany: {
-                                    where: { idDoc: TPDocID },
-                                    data: { Status: status }
-                                }
-                            }
-                        }
-                    }
-                }
+                Partnerships: user.Partnerships
             }
         });
-
-        console.log("Document status updated")
 
     } catch (error) {
         if (error instanceof Error) {
