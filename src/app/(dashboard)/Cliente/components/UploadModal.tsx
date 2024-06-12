@@ -14,7 +14,7 @@ import { uploadRecentEDI } from "@/DA/fileManagerControllers";
 import { FaUpload } from "react-icons/fa6";
 import BrakeRule from "@/components/BrakeRule";
 import { UpdateUserLogErrors } from "@/DA/usersTpControllers";
-import { Description } from "@radix-ui/react-toast";
+import { CheckPartnershipStatus } from "@/DA/usersTpControllers";
 
 // Read stream code by Russell Briggs: https://medium.com/@dupski/nodejs-creating-a-readable-stream-from-a-string-e0568597387f
 class ReadableString extends Readable {
@@ -104,10 +104,10 @@ export default function UploadModal({
           if (resultValStructure.status === "Success") {
             data(info.Segments, Segments, [])
             // Poner si el validador de elemento funciono aqui y poner la logica de la misma aqui
-            
+            CheckPartnershipStatus(dataUserDoc[0]);
           } else {
             // Aqui deberia de ir el controlador de si encontro un error, subirlo a la base de datos
-            UpdateUserLogErrors(dataUserDoc[0],dataUserDoc[1], dataUserDoc[2], [{Title:"Error in segment structure", Description: resultValStructure.Description, Position: resultValStructure.Position, Type:"Structure"}]);
+            UpdateUserLogErrors(dataUserDoc[1], dataUserDoc[2], [{Title:"Error in segment structure", Description: resultValStructure.Description, Position: resultValStructure.Position, Type:"Structure"}]);
           }
 
         }

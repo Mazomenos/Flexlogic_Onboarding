@@ -235,11 +235,14 @@ export async function GetPartnershipDocLogError(PartnerName: string, DocId: stri
     }
 }
 
-export async function UpdateUserLogErrors(UserId: string, DocId: string, PartnerName: string, newLogError: LogErrors[]) {
+export async function UpdateUserLogErrors(DocId: string, PartnerName: string, newLogError: LogErrors[]) {
+
+    const userId = await GetUserId()
+
     try {
         const updatedUser = await prisma.user.update({
             where: {
-                id: UserId,
+                id: userId,
             },
             data: {
                 Partnerships: {
@@ -451,6 +454,62 @@ export async function GetTPDocs(partnerName: string) {
             })
         }
         return newData;
+
+    } catch (error) {
+        if (error instanceof Error) {
+            console.log(
+                {
+                    message: error.message,
+                },
+                {
+                    status: 500,
+                }
+            );
+        }
+    }
+}
+
+export async function CheckPartnershipStatus(PartnerName: string) {
+    const userId = await GetUserId()
+
+    try {
+        const userPartnershipDocs = await prisma.user.findFirst({
+            where: { id: userId },
+            include: {
+                Partnerships: {
+                    include: { Docs: true }
+                }
+            }
+        });
+
+        if (!userPartnershipDocs || !userPartnershipDocs.Partnerships.length) {
+            console.log(`No partnership found for user: ${userId}`);
+            return; 
+        }
+
+        const partnership = userPartnershipDocs.Partnerships.find(p => p.Name === PartnerName);
+
+        if (!partnership) {
+            console.log(`No partnership found with name: ${PartnerName}`);
+            return; 
+        }
+
+        const allDocsComplete = partnership.Docs.every(doc => doc.Status === 'COMPLETE');
+
+        
+        if (allDocsComplete) {
+            await prisma.user.update({
+                where: { id: userId },
+                data: {
+                    Partnerships: {
+                        updateMany: {
+                            where: { Name: PartnerName },
+                            data: { Status: 'COMPLETE' }
+                        }
+                    }
+                }
+            });
+        } 
 
     } catch (error) {
         if (error instanceof Error) {
