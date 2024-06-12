@@ -11,9 +11,7 @@ import { EDITemplateDocs } from "../../../../../../prisma/EDITemplateDocs";
 import { EDIElements } from "../../../../../../prisma/EDIElements";
 import { EDISegments } from "../../../../../../prisma/EDISegments";
 import ConditionSelector from "./ConditionSelector";
-import SegmentModal from "./SegmentModal";
-import AddButton from "@/components/AddButton";
-import { EDISegment } from "../../../../../../prisma/interfaces/EDIInterfaces";
+import ItemsModal from "./ItemsModal";
 
 export default function SidebarItem({ children }: { children?: ReactNode }) {
   const [conditionSelections, setConditionSelections] = useState<{
@@ -50,13 +48,28 @@ export default function SidebarItem({ children }: { children?: ReactNode }) {
     closeModal();
   };
 
-  const removeSegment = (segments, positionToRemove) => {
+  const addLoop = (newLoop) => {
+    const updatedSegments = [...EDITemplate, newLoop];
+    setEDITemplate(updatedSegments);
+    closeModal();
+  };
+
+  const removeSegment = (segmentToRemove: string, segments) => {
+    return segments.filter((segment) => {
+      if (segment.Segment === "Loop") {
+        segment.Segments = removeSegment(segmentToRemove, segment.Segments);
+      }
+      return segment.Segment !== segmentToRemove;
+    });
+  };
+
+  const removeSegmentLoop = (segments, positionToRemove) => {
     return segments.filter((segment) => {
       if (segment.Position === positionToRemove) {
         return false;
       }
       if (segment.Segment === "Loop") {
-        segment.Segments = removeSegment(segment.Segments, positionToRemove);
+        segment.Segments = removeSegmentLoop(segment.Segments, positionToRemove);
       }
       return true;
     });
@@ -119,18 +132,17 @@ export default function SidebarItem({ children }: { children?: ReactNode }) {
                       </div>
                       <div className="basis-1/12 flex justify-center self-center">
                         <MinusCircleIcon
-                          className={`h-7 w-7 ${
-                            templateSegment.Requirement === "M"
-                              ? "text-gray-300"
-                              : "text-darkMode-error-content cursor-pointer"
-                          }`}
-                          onClick={() => {
-                            if (templateSegment.Requirement !== "M") {
-                              setEDITemplate((prev) =>
-                                removeSegment(prev, templateSegment.Position),
-                              );
-                            }
-                          }}
+                          className={`h-7 w-7 ${templateSegment.Requirement === "M"
+                            ? "text-gray-300"
+                            : "text-darkMode-error-content cursor-pointer"
+                            }`}
+                            onClick={() => {
+                              if (templateSegment.Requirement !== "M") {
+                                setEDITemplate((prev) =>
+                                  removeSegmentLoop(prev, templateSegment.Position),
+                                );
+                              }
+                            }}
                         />
                       </div>
                     </div>
@@ -164,7 +176,7 @@ export default function SidebarItem({ children }: { children?: ReactNode }) {
             >
               <AccordionTrigger className="text-lg">
                 <div className="px-2 flex w-full">
-                  <div className="basis-2/12   flex-shrink-0 w-full flex justify-center self-center ">
+                  <div className="basis-2/12 flex-shrink-0 w-full flex justify-center self-center ">
                     {templateSegment.Segment}
                   </div>
                   <span className=" text-left self-center basis-7/12 text-ellipsis  overflow-hidden">
@@ -177,15 +189,14 @@ export default function SidebarItem({ children }: { children?: ReactNode }) {
                   </div>
                   <div className="basis-1/12 flex-shrink-0 flex justify-center self-center">
                     <MinusCircleIcon
-                      className={`h-7 w-7 ${
-                        templateSegment.Requirement === "M"
-                          ? "text-gray-300"
-                          : "text-darkMode-error-content cursor-pointer"
-                      }`}
+                      className={`h-7 w-7 ${templateSegment.Requirement === "M"
+                        ? "text-gray-300"
+                        : "text-darkMode-error-content cursor-pointer"
+                        }`}
                       onClick={() => {
                         if (templateSegment.Requirement !== "M") {
                           setEDITemplate((prev) =>
-                            removeSegment(prev, templateSegment.Position),
+                            removeSegment(templateSegment.Segment, prev),
                           );
                         }
                       }}
@@ -230,11 +241,10 @@ export default function SidebarItem({ children }: { children?: ReactNode }) {
                             </div>
                             <div className="basis-1/12 flex-shrink-0 flex justify-center self-center">
                               <MinusCircleIcon
-                                className={`h-6 w-6 ${
-                                  element.Requirement === "M"
-                                    ? "text-gray-300"
-                                    : "text-darkMode-error-content"
-                                }`}
+                                className={`h-6 w-6 ${element.Requirement === "M"
+                                  ? "text-gray-300"
+                                  : "text-darkMode-error-content"
+                                  }`}
                                 onClick={() => {
                                   if (element.Requirement !== "M") {
                                     removeElement(element.Element);
@@ -250,7 +260,7 @@ export default function SidebarItem({ children }: { children?: ReactNode }) {
                             index={index}
                             selection={
                               conditionSelections[
-                                `element-${element.Position}`
+                              `element-${element.Position}`
                               ] || ""
                             }
                             onSelectionChange={(value) =>
@@ -275,11 +285,12 @@ export default function SidebarItem({ children }: { children?: ReactNode }) {
 
   return (
     <div className="flex flex-col h-full">
-      <SegmentModal
+      <ItemsModal
         isOpen={isModalOpen}
         setIsOpen={setIsModalOpen}
         usedSegments={usedSegments}
         addSegment={addSegment}
+        addLoop={addLoop}
       />
       <div className="my-5 no-scrollbar flex-1 overflow-y-auto overscroll-none">
         {renderSegments(EDITemplate)}
