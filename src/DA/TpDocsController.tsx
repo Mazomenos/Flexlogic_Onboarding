@@ -4,7 +4,7 @@
 import { GetElement } from './elementControllers'
 import { GetSegment } from './segmentControllers'
 
-import { PrismaClient } from '@prisma/client';
+import { Delimiters_enum, DocType_enum, EOL_enum, PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -90,90 +90,77 @@ export async function GetTPDocById(TPDocId: string) {
     }
 }
 
-export async function postTPDoc(TPId: string, DocTemplateNum: number) {
+export async function postTPDoc(Name_TP: string, DocType_e: DocType_enum, Delimiter_e: Delimiters_enum, EOL_e: EOL_enum) {
     try {
-        const tradingPartner = await prisma.tradingPartner.findFirst({
-            where: {
-                id: TPId
-            }
-        });
+        const [tradingPartner, templateDoc] = await Promise.all([
+            prisma.tradingPartner.findFirst({ where: { Name: Name_TP } }),
+            prisma.eDITemplateDocuments.findFirst({ where: { Doc: DocType_e } }),
+        ]);
 
         if (!tradingPartner) {
             throw new Error('Trading partner not found');
         }
 
-        const templateDoc = await prisma.eDITemplateDocuments.findFirst({
-            where: {
-                Doc: DocTemplateNum,
-            },
-        });
-
         if (!templateDoc) {
             throw new Error('Template document not found');
         }
 
-        let newDataSegments: any[] = []
-        for (let j = 0; j < templateDoc.Segments.length; j++) {
-            let segment = templateDoc.Segments[j]
-            let segmentData = await GetSegment(segment.Segment)
-            let elements: any[] = []
-            if (segmentData && segmentData.Elements) {
-                for (let i = 0; i < segmentData.Elements.length; i++) {
-                    let element = segmentData.Elements[i]
-                    if (element) {
-                        let elementData = await GetElement(element.Element)
-                        elements.push({
-                            Position: element.Position,
-                            Element: element.Element,
-                            Requirement: element.Requirement,
-                            Type: elementData?.Type,
-                            Min: elementData?.Min,
-                            Max: elementData?.Max
-                        })
-                    }
-                }
-            }
-
-            newDataSegments.push({
+        const newDataSegments = await Promise.all(templateDoc.Segments.map(async (segment) => {
+            const segmentData = await GetSegment(segment.Segment);
+            const elements = await Promise.all((segmentData?.Elements || []).map(async (element) => {
+                const elementData = await GetElement(element.Element);
+                return {
+                    Position: element.Position,
+                    Element: element.Element,
+                    Requirement: element.Requirement,
+                    Type: elementData?.Type,
+                    Min: elementData?.Min,
+                    Max: elementData?.Max,
+                };
+            }));
+            return {
                 Position: segment.Position,
                 Segment: segment.Segment,
                 Requirement: segment.Requirement,
                 Max: segment.Max,
-                ...(segment.Segments !== null && segment.Segments !== undefined && segment.Segments.length > 0 && { Segments: segment.Segments }),
-                Elements: elements
-            })
+                ...(segment.Segments && segment.Segments.length > 0 && { Segments: segment.Segments }),
+                Elements: elements,
+            };
+        }));
+
+        const createdTPDoc = await prisma.eDITPDocs.create({ data: { Segments: newDataSegments } });
+
+        const isDelimiterIncluded = tradingPartner.Delimiters.includes(Delimiters_enum[Delimiter_e]);
+        const isEOLIncluded = tradingPartner.EOL.includes(EOL_enum[EOL_e]);
+
+        if (!isDelimiterIncluded) {
+            tradingPartner.Delimiters.push(Delimiters_enum[Delimiter_e]);
         }
 
-
-        const createdTPDoc = await prisma.eDITPDocs.create({
-            data: {
-                Segments: newDataSegments
-
-            }
-        });
+        if (!isEOLIncluded) {
+            tradingPartner.EOL.push(EOL_enum[EOL_e]);
+        }
 
         tradingPartner.DocsRequired.push({
             idDoc: createdTPDoc.id,
-            Doc: DocTemplateNum.toString(),
+            Doc: DocType_e,
             isVisible: true,
             isRequired: true,
-            instructionsPDF: "blablabla"
-        })
+            instructionsPDF: "blablabla",
+        });
 
         const updatedDocs = await prisma.tradingPartner.update({
-            where: {
-                id: TPId
-            },
+            where: { id: tradingPartner.id },
             data: {
-                DocsRequired: tradingPartner.DocsRequired
-            }
+                Delimiters: isDelimiterIncluded ? tradingPartner.Delimiters : { push: [Delimiters_enum[Delimiter_e]] },
+                EOL: isEOLIncluded ? tradingPartner.EOL : { push: [EOL_enum[EOL_e]] },
+                DocsRequired: tradingPartner.DocsRequired,
+            },
         });
 
         return updatedDocs;
     } catch (error) {
-        if (error instanceof Error) {
-            return Error
-        }
+        return { error: error instanceof Error ? error.message : "An error occurred" };
     }
 }
 

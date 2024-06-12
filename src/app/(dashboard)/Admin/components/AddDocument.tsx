@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, ChangeEvent } from "react";
+import React, { useState, useRef, ChangeEvent, useEffect } from "react";
 import BrakeRule from "@/components/BrakeRule";
 import { FaUpload } from "react-icons/fa6";
 
@@ -10,6 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { uploadFileToAzure } from "@/DA/fileManagerControllers";
+import { postTPDoc } from "@/DA/TpDocsController";
 
 import {
   Form,
@@ -29,31 +30,32 @@ import {
 import { Button } from "@/components/ui/button";
 import FormModal from "./FormModal";
 import { url } from "inspector";
+import { Delimiters_enum, DocType_enum, EOL_enum } from "@prisma/client";
 
-// Form main schema, here Zod knows how to validate form data
 const FormSchema = z.object({
-  ediType: z.string({ required_error: "Please select an EDI type" }),
-  delimeters: z.string({ required_error: "Please select delimiters" }),
-  eol: z.string({ required_error: "Please select an EOL" }),
+  ediType: z.nativeEnum(DocType_enum, { required_error: "Please select an EDI type" }),
+  delimeters: z.nativeEnum(Delimiters_enum, { required_error: "Please select delimiters" }),
+  eol: z.nativeEnum(EOL_enum, { required_error: "Please select an EOL" }),
 });
 
 // #TODO: Change to DB data
-const EdiDocument = [
-  { key: "856", label: "EDI 856" },
-  { key: "810", label: "EDI 810" },
+const edi_documentOptions = [
+  { value: DocType_enum.EDI_810, label: "EDI 810" },
+  { value: DocType_enum.EDI_850, label: "EDI 850" },
+  { value: DocType_enum.EDI_855, label: "EDI 855" },
+  { value: DocType_enum.EDI_856, label: "EDI 856" },
 ];
-
-// #TODO: Change to DB data
 const delimitersOptions = [
-  { value: ",", label: "Comma (,)" },
-  { value: ";", label: "Semicolon (;)" },
-  { value: "|", label: "Pipe (|)" },
+  { value: Delimiters_enum.COMMA_SEMICOLON_STAR, label: "Comma (,), Semicolon (;), Star (*)" },
+  { value: Delimiters_enum.PIPE_SEMICOLON_COMMA, label: "Pipe (|), Semicolon (;), Comma (,)" },
 ];
 
-// #TODO: Change to DB data
-const eolOptions = [{ value: "LF", label: " ~ " }];
+const eolOptions = [
+  { value: EOL_enum.TILDE, label: "Tilde (~)" }
+];
 
-export default function AddDocument() {
+export default function AddDocument({ partnerName }: { partnerName: string }) {
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
@@ -61,6 +63,7 @@ export default function AddDocument() {
   const [isOpen, setIsOpenForms] = useState(false);
   const [fileName, setFileName] = useState("");
   const [file, setFile] = useState<File | null>(null);
+
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -81,6 +84,7 @@ export default function AddDocument() {
   // 'file' useState
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     setIsOpenForms(false);
+
     console.log(JSON.stringify(data, null, 2));
 
     // Use url for db
@@ -94,17 +98,25 @@ export default function AddDocument() {
         data: base64,
       },"");
     }
-    console.log(url);
-  }
+
+    try {
+      const response = await postTPDoc(partnerName, data.ediType, data.delimeters, data.eol);
+      if (response) { console.log("posted") }
+    }
+    catch (error) {
+      console.log(error);
+    }
+
+  };
 
   function readFileAsBase64(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            resolve(reader.result as string);
-        };
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        resolve(reader.result as string);
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
     });
   };
 
@@ -138,7 +150,11 @@ export default function AddDocument() {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="850">EDI 850</SelectItem>
+                          {edi_documentOptions.map((doctype, index) => (
+                            <SelectItem key={index} value={doctype.value}>
+                              {doctype.label}
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                       <FormMessage />

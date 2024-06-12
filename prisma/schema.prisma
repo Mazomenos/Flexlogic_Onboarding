@@ -37,11 +37,19 @@ model EDISegments {
 // Individual EDI Document structure
 model EDITemplateDocuments {
   id      String @id @default(auto()) @map("_id") @db.ObjectId
-  Doc     Int
+  Doc     DocType_enum
   Version String
 
   Segments Segment[]
 }
+
+enum DocType_enum {
+  EDI_810 @map("810")
+  EDI_850 @map("850")
+  EDI_855 @map("855")
+  EDI_856 @map("856")
+}
+
 
 model EDITPDocs {
   id String @id @default(auto()) @map("_id") @db.ObjectId
@@ -78,16 +86,29 @@ model TradingPartner {
   id            String          @id @default(auto()) @map("_id") @db.ObjectId
   Name          String
   Initial850EDI String? // id of file if saved somewhere else
-  Delimiters    String[]
-  Version       String
-  EOL           String
+  Delimiters    Delimiters_enum[]
+  Version       Version_enum
+  EOL           EOL_enum[]
   isVisible     Boolean
   DocsRequired  TPDocRequired[]
 }
 
+enum Delimiters_enum {
+  COMMA_SEMICOLON_STAR @map("[',' , ';' , '*']")
+  PIPE_SEMICOLON_COMMA @map("['|' , ';' , ',']")
+}
+
+enum Version_enum {
+  X12_4010 @map("X12_4010")
+}
+
+enum EOL_enum {
+  TILDE   @map("~")
+}
+
 type TPDocRequired {
   idDoc           String // id from TPDocs
-  Doc             String
+  Doc             DocType_enum
   instructionsPDF String
   isVisible       Boolean
   isRequired      Boolean
