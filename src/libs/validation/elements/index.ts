@@ -9,15 +9,19 @@ import { Min, Max } from "./minMax";
 import { Types } from "./types";
 
 export interface Ierror {
-    position: string,
-    error: string
+    Title:       String
+    Description: String
+    Position:    String
+    Type:        String
 }
 
-function pushErrors(errorlogs: Ierror[], errors: string[], errorPos: string): Ierror[] {
+function pushErrors(errorlogs: Ierror[], errors: {Description:string, Title: string}[], errorPos: string): Ierror[] {
     errors.forEach((error) => {
         errorlogs.push({
-            position: errorPos,
-            error: error
+            Position: errorPos,
+            Description: error.Description,
+            Title: error.Title,
+            Type: "Element Data"
         })
     })
     return errorlogs
@@ -105,14 +109,16 @@ export default function data(config: any, file: any, delimiters: string[]) {
             //console.log(elementpos)
             //console.log(lastPosition)
 
-            let errorsElement: string[] = []
+            let errorsElement: {Description: string, Title: string}[] = []
 
             //Si es el mismo numero, entonces se tiene un segmento con elementos de mas
             if (elementpos === Number(lastPosition)){
 
                 errorLog.push({
-                    position: errorSeg,
-                    error: "Extra number of elements for this segment"
+                    Position: errorSeg,
+                    Description: `Segment ${errorSeg} has more elements than the specifications`,
+                    Title: "Extra number of elements for this segment",
+                    Type: "Structure"
                 })
 
                 console.log(errorSeg + " Error: Extra number of elements for this segment") // Error de estructura segmento LOL
@@ -149,8 +155,10 @@ export default function data(config: any, file: any, delimiters: string[]) {
                     //generar error
 
                     errorLog.push({
-                        position: errorPos,
-                        error: "Empty element has data"
+                        Position: errorPos,
+                        Description: `Element ${errorPos} is not part of the specifications and should be left empty`,
+                        Title: "Empty element has data",
+                        Type: "Element Data"
                     })
 
                     console.log(errorPos + ": Dato No usado tiene dato")
@@ -181,15 +189,15 @@ export default function data(config: any, file: any, delimiters: string[]) {
                 //Validacion Datos
 
                 //Min
-                let minError:string = Min(data, min, req)
+                let minError:{Description:string, Title: string} = Min(data, min, req)
 
 
 
                 //Max
-                if (minError === "") {
-                    let maxError:string = Max(data,max)
+                if (minError.Description === "") {
+                    let maxError:{Description:string, Title: string} = Max(data,max)
                     
-                    if (maxError !== ""){
+                    if (maxError.Description !== ""){
                         errorsElement.push(maxError)
                     }
 
@@ -199,9 +207,9 @@ export default function data(config: any, file: any, delimiters: string[]) {
 
                 //Type
                 //cambiar la lista por una referencia a los delimitadores delimiters
-                let errorType:string = Types(data, type, ["*","~"])
+                let errorType:{Description:string, Title: string} = Types(data, type, ["*","~"])
 
-                if (errorType !== "") {
+                if (errorType.Description !== "") {
                     errorsElement.push(errorType)
                 } else {
                     //Conditions
@@ -227,7 +235,7 @@ export default function data(config: any, file: any, delimiters: string[]) {
         return errorLog
     } else {
         console.log("Paso el test")
-        return []
+        return errorLog
     }
        
 }
