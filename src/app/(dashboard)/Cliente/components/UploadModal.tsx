@@ -102,14 +102,16 @@ export default function UploadModal({
           const Segments = await ParseEDIfile(contentStream);
           const resultValStructure = ValStructure(info.Segments, Segments, 0, "M", true);
           if (resultValStructure.status === "Success") {
-            data(info.Segments, Segments, [])
-            // Poner si el validador de elemento funciono aqui y poner la logica de la misma aqui
-            CheckPartnershipStatus(dataUserDoc[0]);
+            const resultElementVal = data(info.Segments, Segments, [])
+            if (data.length > 0) {
+              UpdateUserLogErrors(dataUserDoc[1], dataUserDoc[0], resultElementVal)
+            } else {
+              CheckPartnershipStatus(dataUserDoc[0]);
+            }
           } else {
             // Aqui deberia de ir el controlador de si encontro un error, subirlo a la base de datos
             UpdateUserLogErrors(dataUserDoc[1], dataUserDoc[0], [{Title:"Error in segment", Description: resultValStructure.Description, Position: String(resultValStructure.Position), Type:"Structure"}]);
           }
-
         }
       }
     } catch (error) {
