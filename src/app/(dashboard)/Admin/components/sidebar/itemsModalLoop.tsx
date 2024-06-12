@@ -1,0 +1,144 @@
+import React, { useState } from "react";
+import Modal from "@/components/Modal";
+import BrakeRule from "@/components/BrakeRule";
+import ListItem from "@/components/ListItem";
+import GenericButton from "@/components/GenericButton";
+import { EDISegments } from "../../../../../../prisma/EDISegments";
+import { EDIElements } from "../../../../../../prisma/EDIElements";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import FormModal from "../FormModal";
+
+export default function ItemsModalLoop({
+  isOpen,
+  setIsOpen,
+  usedSegments,
+  addSegment,
+  addLoop,
+}: {
+  isOpen: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  usedSegments: string[];
+  addSegment: (segment: EDISegment, loopId: string | null) => void;
+  addLoop: (loop: any, loopId: string | null) => void;
+}) {
+  const [selection, setSelection] = useState("segment");
+  const [selectedSegment, setSelectedSegment] = useState("");
+  const [loopRequirement, setLoopRequirement] = useState("OP");
+  const [loopMax, setLoopMax] = useState(1);
+  const [selectedLoop, setSelectedLoop] = useState(null);
+
+  const availableSegments = EDISegments.filter(
+    (segment) => !usedSegments.includes(segment.Segment)
+  );
+
+  const availableElements = selectedSegment
+    ? EDIElements.filter((element) => element.Element === selectedSegment)
+    : [];
+
+  const handleAddSegment = (segment: EDISegment) => {
+    if (selectedLoop) {
+      addSegment(segment, selectedLoop.id); // Agregar al bucle seleccionado
+    } else {
+      addSegment(segment, null); // Agregar fuera de cualquier bucle
+    }
+    setSelection("segment");
+  };
+
+  const handleAddLoop = () => {
+    if (selectedLoop) {
+      const newLoop = {
+        Segment: "Loop",
+        Requirement: loopRequirement,
+        Max: loopMax,
+        Segments: [],
+      };
+      addLoop(newLoop, selectedLoop.id); // Agregar dentro del bucle seleccionado
+    } else {
+      const newLoop = {
+        Segment: "Loop",
+        Requirement: loopRequirement,
+        Max: loopMax,
+        Segments: [],
+      };
+      addLoop(newLoop, null); // Agregar como un bucle independiente
+    }
+    setSelection("segment");
+  };
+
+  return (
+    <FormModal buttonText="Add Item" isOpen={isOpen} setIsOpen={setIsOpen}>
+      <div className="h-full" />
+      <h3 className="text-2xl">Add Item</h3>
+      <BrakeRule classname="my-3" />
+      <div className=" w-[97%]">
+        <Select
+          value={selection}
+          onValueChange={(value) => setSelection(value)}
+        >
+          <SelectTrigger className="text-lg w-full">
+            <SelectValue placeholder="Select a conditional" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="segment">Segment</SelectItem>
+            <SelectItem value="element">Element</SelectItem>
+            <SelectItem value="loop">Loop</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+      <div className="flex flex-col overflow-y-auto h-full items-center w-full">
+        <div className="flex max-h-full flex-col items-center w-full">
+          {selection === "segment" && (
+            <div className="max-h-fit flex flex-col items-center w-full">
+              {availableSegments.map((segment) => (
+                <ListItem key={segment.Segment}>
+                  <div className="basis-10/12">
+                    <p> {segment.Name} </p>
+                  </div>
+                  <div className="basis-2/12">
+                    <GenericButton onClick={() => handleAddSegment(segment)}>
+                      Add
+                    </GenericButton>
+                  </div>
+                </ListItem>
+              ))}
+            </div>
+          )}
+          {selection === "loop" && (
+            <div className="flex flex-col items-center w-[97%] py-2">
+              <div className="flex w-full my-2">
+                <label className="w-1/2 text-lg">Requirement:</label>
+                <Select
+                  value={loopRequirement}
+                  onValueChange={(value) => setLoopRequirement(value)}
+                >
+                  <SelectTrigger className="text-lg w-full">
+                    <SelectValue placeholder="Select requirement" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="OP">Optional</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="flex w-full my-2">
+                <label className="w-1/2 text-lg">Max Segments:</label>
+                <input
+                  type="number"
+                  value={loopMax}
+                  onChange={(e) => setLoopMax(Number(e.target.value))}
+                  className="text-lg w-full"
+                />
+              </div>
+              <GenericButton onClick={handleAddLoop}>Add Loop</GenericButton>
+            </div>
+          )}
+        </div>
+      </div>
+    </FormModal>
+  );
+}
