@@ -8,13 +8,13 @@ import { GetUserId } from '@/middleware';
 
 const prisma = new PrismaClient();
 
+import { LogErrors } from '../../prisma/interfaces/EDIInterfaces';
 
 export async function GetUsersPartnerInfo() {
 
     const userId = await GetUserId()
 
     try {
-        console.log("hola:", userId)
         const userPartnerships = await prisma.user.findUnique({
             where: {
                 id: userId
@@ -298,10 +298,63 @@ export async function GetPartnershipDocLogError(PartnerName: string, DocId: stri
     }
 }
 
-export async function PostNewPartnership(PartnerId: string) {
+export async function UpdateUserLogErrors(DocId: string, PartnerName: string, newLogError: LogErrors[]) {
 
     const userId = await GetUserId()
 
+    try {
+        const user = await prisma.user.findUnique({
+            where: { id: userId },
+        });
+
+        if (!user) {
+            throw new Error('User not found');
+        }
+
+        const updatedPartnerships = user.Partnerships.map(partnership => {
+            if (partnership.Name === PartnerName) {
+                return {
+                    ...partnership,
+                    Docs: partnership.Docs.map(doc => {
+                        if (doc.idDoc === DocId) {
+                            return {
+                                ...doc,
+                                LogErrors: newLogError,
+                            };
+                        }
+                        return doc;
+                    }),
+                };
+            }
+            return partnership;
+        });
+
+
+        const updatedUser = await prisma.user.update({
+            where: { id: userId },
+            data: {
+                Partnerships: updatedPartnerships,
+            },
+        });
+
+        return updatedUser;
+    } catch(error) {
+        if (error instanceof Error) {
+            console.log(
+                {
+                    message: error.message,
+                },
+                {
+                    status: 500,
+                }
+            );
+        }
+    }
+}
+
+export async function PostNewPartnership(PartnerId: string) {
+
+    const userId = await GetUserId()
     try {
 
         const users = await prisma.user.findUnique({
@@ -469,6 +522,61 @@ export async function GetTPDocs(partnerName: string) {
             })
         }
         return newData;
+
+    } catch (error) {
+        if (error instanceof Error) {
+            console.log(
+                {
+                    message: error.message,
+                },
+                {
+                    status: 500,
+                }
+            );
+        }
+    }
+}
+
+export async function CheckPartnershipStatus(PartnerName: string) {
+    const userId = await GetUserId()
+
+    try {
+        const userPartnershipDocs = await prisma.user.findFirst({
+            where: { id: userId },
+            include: {
+                Partnerships: {
+                    include: { Docs: true }
+                }
+            }
+        });
+
+        if (!userPartnershipDocs || !userPartnershipDocs.Partnerships.length) {
+            console.log(`No partnership found for user: ${userId}`);
+            return; 
+        }
+
+        const partnership = userPartnershipDocs.Partnerships.find(p => p.Name === PartnerName);
+
+        if (!partnership) {
+            console.log(`No partnership found with name: ${PartnerName}`);
+            return; 
+        }
+
+        const allDocsComplete = partnership.Docs.every(doc => doc.Status === 'COMPLETE');
+
+        if (allDocsComplete) {
+            await prisma.user.update({
+                where: { id: userId },
+                data: {
+                    Partnerships: {
+                        updateMany: {
+                            where: { Name: PartnerName },
+                            data: { Status: 'COMPLETE' }
+                        }
+                    }
+                }
+            });
+        } 
 
     } catch (error) {
         if (error instanceof Error) {

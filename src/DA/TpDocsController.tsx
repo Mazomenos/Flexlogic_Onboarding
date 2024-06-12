@@ -90,7 +90,7 @@ export async function GetTPDocById(TPDocId: string) {
     }
 }
 
-export async function postTPDoc(TPId: string, DocTemplateNum: number) {
+export async function postTPDoc(TPId: string, DocTemplateNum: number, pdfURL: string) {
     try {
         const tradingPartner = await prisma.tradingPartner.findFirst({
             where: {
@@ -157,7 +157,7 @@ export async function postTPDoc(TPId: string, DocTemplateNum: number) {
             Doc: DocTemplateNum.toString(),
             isVisible: true,
             isRequired: true,
-            instructionsPDF: "blablabla"
+            instructionsPDF: pdfURL
         })
 
         const updatedDocs = await prisma.tradingPartner.update({

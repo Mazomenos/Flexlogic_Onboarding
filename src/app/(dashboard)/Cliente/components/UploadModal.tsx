@@ -13,6 +13,8 @@ import { GetTPDocById } from "@/DA/TpDocsController";
 import { uploadRecentEDI } from "@/DA/fileManagerControllers";
 import { FaUpload } from "react-icons/fa6";
 import BrakeRule from "@/components/BrakeRule";
+import { UpdateUserLogErrors } from "@/DA/usersTpControllers";
+import { CheckPartnershipStatus } from "@/DA/usersTpControllers";
 
 // Read stream code by Russell Briggs: https://medium.com/@dupski/nodejs-creating-a-readable-stream-from-a-string-e0568597387f
 class ReadableString extends Readable {
@@ -98,13 +100,21 @@ export default function UploadModal({
         if (info){
           const contentStream = new ReadableString(String(fileContent));
           const Segments = await ParseEDIfile(contentStream);
-            if (Segments) {
-              console.log(ValStructure(info.Segments, Segments, 0, "M", true));
-              data(info.Segments, Segments, [])
+          const resultValStructure = ValStructure(info.Segments, Segments, 0, "M", true);
+          console.log(resultValStructure.status)
+          if (resultValStructure.status === "Success") {
+            const resultElementVal = data(info.Segments, Segments, [])
+            if (resultElementVal.length > 0) {
+              UpdateUserLogErrors(dataUserDoc[1], dataUserDoc[0], resultElementVal)
+            } else {
+              CheckPartnershipStatus(dataUserDoc[0]);
             }
-          console.log(ValStructure(info.Segments, Segments, 0, "M", true));
-          const elementErrors = data(info.Segments, Segments, [])
-          console.log("elementErrors",elementErrors)
+          } else {
+            // Aqui deberia de ir el controlador de si encontro un error, subirlo a la base de datos
+            UpdateUserLogErrors(dataUserDoc[1], dataUserDoc[0], [{Title:"Error in segment", Description: resultValStructure.Description, Position: String(resultValStructure.Position), Type:"Structure"}]);
+          }
+          
+
         }
       }
     } catch (error) {

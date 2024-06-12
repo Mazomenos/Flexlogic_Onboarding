@@ -113,7 +113,7 @@ type UserDocs {
   Doc        String
   DocFile    String? // id of file if saved somewhere else
   isRequired Boolean
-  Status     String // Completed, validated & failed
+  Status     String // Complete, validated & failed
   LogErrors  LogErrors[]
 }
 
