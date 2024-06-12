@@ -4,14 +4,18 @@ import CloseButton from "@/components/CloseButton";
 import GenericButton from "@/components/GenericButton";
 import SidebarItem from "./SidebarItem";
 import { ACTION_PREFETCH } from "next/dist/client/components/router-reducer/router-reducer-types";
+import { GetTPDocById } from "@/DA/TpDocsController";
 
 interface Props {
   children?: React.ReactNode;
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  idDocument: string | null;
+  idDocument: string;
   documentTitle: string | undefined;
 }
+
+ 
+
 
 export default function DrawerDefault({
   open,
@@ -24,6 +28,24 @@ export default function DrawerDefault({
 
   const openDrawer = () => setOpen(true);
   const closeDrawer = () => setOpen(false);
+
+  const getTPDoc =  async () =>{
+    try {
+      const response = await GetTPDocById(idDocument);
+
+      if (response) {
+        const data = await response;
+        console.log(data);
+        if (data) {
+          return data;
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     const startX = e.clientX;
@@ -42,6 +64,10 @@ export default function DrawerDefault({
     document.documentElement.addEventListener("mousemove", doDrag);
     document.documentElement.addEventListener("mouseup", stopDrag);
   };
+
+  const YOURJSON = {
+    "Segments": "hello"
+  }
 
   return (
     <Drawer
@@ -65,7 +91,14 @@ export default function DrawerDefault({
         className="absolute top-0 left-0 h-full w-2 cursor-ew-resize"
         onMouseDown={handleMouseDown}
       />
-
+      <a
+            href={`data:text/json;charset=utf-8,${encodeURIComponent(
+              JSON.stringify(getTPDoc())
+            )}`}
+            download="filename.json"
+          >
+            {`Download Json`}
+          </a>
       <div className="w-full mt-2 flex justify-end">
         <GenericButton onClick={() => {}}>Create </GenericButton>
       </div>
