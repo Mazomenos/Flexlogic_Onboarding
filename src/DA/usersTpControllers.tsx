@@ -303,35 +303,39 @@ export async function UpdateUserLogErrors(DocId: string, PartnerName: string, ne
     const userId = await GetUserId()
 
     try {
+        const user = await prisma.user.findUnique({
+            where: { id: userId },
+        });
+
+        if (!user) {
+            throw new Error('User not found');
+        }
+
+        const updatedPartnerships = user.Partnerships.map(partnership => {
+            if (partnership.Name === PartnerName) {
+                return {
+                    ...partnership,
+                    Docs: partnership.Docs.map(doc => {
+                        if (doc.idDoc === DocId) {
+                            return {
+                                ...doc,
+                                LogErrors: newLogError,
+                            };
+                        }
+                        return doc;
+                    }),
+                };
+            }
+            return partnership;
+        });
+
         const updatedUser = await prisma.user.update({
-            where: {
-                id: userId,
-            },
+            where: { id: userId },
             data: {
-                Partnerships: {
-                    updateMany: {
-                        where: {
-                            Name: PartnerName,
-                            Docs: {
-                                some: {
-                                    idDoc: DocId,
-                                },
-                            },
-                        },
-                        data: {
-                            Docs: {
-                                updateMany: {
-                                    where: { idDoc: DocId },
-                                    data: {
-                                        LogErrors: { set: newLogError },
-                                    },
-                                },
-                            },
-                        },
-                    },
-                },
+                Partnerships: updatedPartnerships,
             },
         });
+
         return updatedUser;
     } catch(error) {
         if (error instanceof Error) {
