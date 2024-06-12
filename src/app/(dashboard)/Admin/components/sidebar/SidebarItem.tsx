@@ -64,17 +64,17 @@ export default function SidebarItem({ children }: { children?: ReactNode }) {
 
   const removeElement = (elementToRemove: string) => {
     const updatedElements = elements.filter(
-      (element) => element.Element !== elementToRemove
+      (element) => element.Element !== elementToRemove,
     );
     setElements(updatedElements);
 
     const updatedTemplate = EDITemplate.map((segment) => {
       const matchingSegment = EDISegments.find(
-        (s) => s.Segment === segment.Segment
+        (s) => s.Segment === segment.Segment,
       );
       if (!matchingSegment) return segment;
       const updatedElements = matchingSegment.Elements.filter(
-        (element) => element.Element !== elementToRemove
+        (element) => element.Element !== elementToRemove,
       );
 
       return {
@@ -94,49 +94,54 @@ export default function SidebarItem({ children }: { children?: ReactNode }) {
     return segments.map((templateSegment) => {
       if (templateSegment.Segment === "Loop") {
         return (
-          <Accordion
-            key={templateSegment.Position}
-            type="single"
-            collapsible
-            className="w-[98%] mb-3 mt-2 shadow-custom collapse bg-base-100 pb-0 dark:bg-darkMode-base-100 hover:bg-base-200 dark:hover:bg-darkMode-base-200 transition motion-reduce:transition-none motion-reduce:hover:transform-none rounded-none"
-          >
-            <AccordionItem
-              value={`item-${templateSegment.Position}`}
-              className="pb-0 w-full"
+          <div key={templateSegment.Position} className="flex justify-center">
+            <Accordion
+              key={templateSegment.Position}
+              type="single"
+              collapsible
+              className="w-[98%] mb-3 mt-2 shadow-custom collapse bg-info/20 pb-0 dark:bg-darkMode-info hover:bg-info/40 dark:hover:bg-darkMode-info-content/20 transition motion-reduce:transition-none motion-reduce:hover:transform-none rounded-none"
             >
-              <AccordionTrigger className="text-lg">
-                <div className="px-2 flex w-full">
-                  <div className="basis-1/12 flex-shrink-0 w-full flex justify-center self-center ">
-                    {templateSegment.Segment}
-                  </div>
-                  <span className="flex-shrink flex self-center basis-7/12 overflow-hidden text-ellipsis whitespace-nowrap">
-                    {templateSegment.Requirement}
-                  </span>
-                  <div className="basis-3/12 flex-shrink-0 w-full flex justify-center self-center text-center">
-                    {templateSegment.Max}
-                  </div>
-                  <div className="basis-1/12 flex-shrink-0 flex justify-center self-center">
-                    <MinusCircleIcon
-                      className={`h-7 w-7 ${templateSegment.Requirement === "M"
-                        ? "text-gray-300"
-                        : "text-darkMode-error-content cursor-pointer"
-                        }`}
-                      onClick={() => {
-                        if (templateSegment.Requirement !== "M") {
-                          setEDITemplate((prev) =>
-                            removeSegment(prev, templateSegment.Position)
-                          );
-                        }
-                      }}
-                    />
-                  </div>
+              <AccordionItem
+                value={`item-${templateSegment.Position}`}
+                className="pb-0 w-full"
+              >
+                <div className="w-full">
+                  <AccordionTrigger className="text-lg">
+                    <div className="px-2 flex w-full">
+                      <div className="basis-1/12 w-full flex justify-center self-center ">
+                        {templateSegment.Segment}
+                      </div>
+                      <span className="self-center basis-7/12 overflow-hidden text-ellipsis whitespace-nowrap">
+                        {templateSegment.Requirement}
+                      </span>
+                      <div className="basis-3/12 w-full flex justify-center self-center text-center">
+                        {templateSegment.Max}
+                      </div>
+                      <div className="basis-1/12 flex justify-center self-center">
+                        <MinusCircleIcon
+                          className={`h-7 w-7 ${
+                            templateSegment.Requirement === "M"
+                              ? "text-gray-300"
+                              : "text-darkMode-error-content cursor-pointer"
+                          }`}
+                          onClick={() => {
+                            if (templateSegment.Requirement !== "M") {
+                              setEDITemplate((prev) =>
+                                removeSegment(prev, templateSegment.Position),
+                              );
+                            }
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </AccordionTrigger>
                 </div>
-              </AccordionTrigger>
-              <AccordionContent className="pb-0">
-                {renderSegments(templateSegment.Segments)}
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
+                <AccordionContent className="pb-0">
+                  {renderSegments(templateSegment.Segments)}
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </div>
         );
       }
 
@@ -151,7 +156,7 @@ export default function SidebarItem({ children }: { children?: ReactNode }) {
             key={templateSegment.Position}
             type="single"
             collapsible
-            className="w-[98%] mb-3 mt-2 shadow-custom  collapse bg-base-100 pb-0 dark:bg-darkMode-base-100 hover:bg-base-200 dark:hover:bg-darkMode-base-200 transition motion-reduce:transition-none motion-reduce:hover:transform-none rounded-none"
+            className="w-[98%] mb-3 mt-2 shadow-custom collapse bg-base-100 pb-0 dark:bg-darkMode-base-100 hover:bg-base-200 dark:hover:bg-darkMode-base-200 transition motion-reduce:transition-none motion-reduce:hover:transform-none rounded-none"
           >
             <AccordionItem
               value={`item-${templateSegment.Position}`}
@@ -159,27 +164,28 @@ export default function SidebarItem({ children }: { children?: ReactNode }) {
             >
               <AccordionTrigger className="text-lg">
                 <div className="px-2 flex w-full">
-                  <div className="basis-1/12 flex-shrink-0 w-full flex justify-center self-center ">
+                  <div className="basis-2/12   flex-shrink-0 w-full flex justify-center self-center ">
                     {templateSegment.Segment}
                   </div>
-                  <span className="flex-shrink flex self-center basis-7/12 overflow-hidden text-ellipsis whitespace-nowrap">
+                  <span className=" text-left self-center basis-7/12 text-ellipsis  overflow-hidden">
                     {matchingSegment.Name}
                   </span>
-                  <div className="basis-3/12 flex-shrink-0 w-full flex justify-center self-center text-center">
+                  <div className="basis-2/12 flex-shrink-0 overflow-hidden text-ellipsis w-full flex justify-center self-center text-center">
                     {templateSegment.Requirement === "M"
                       ? "Mandatory"
                       : "Optional"}
                   </div>
                   <div className="basis-1/12 flex-shrink-0 flex justify-center self-center">
                     <MinusCircleIcon
-                      className={`h-7 w-7 ${templateSegment.Requirement === "M"
-                        ? "text-gray-300"
-                        : "text-darkMode-error-content cursor-pointer"
-                        }`}
+                      className={`h-7 w-7 ${
+                        templateSegment.Requirement === "M"
+                          ? "text-gray-300"
+                          : "text-darkMode-error-content cursor-pointer"
+                      }`}
                       onClick={() => {
                         if (templateSegment.Requirement !== "M") {
                           setEDITemplate((prev) =>
-                            removeSegment(prev, templateSegment.Position)
+                            removeSegment(prev, templateSegment.Position),
                           );
                         }
                       }}
@@ -224,10 +230,11 @@ export default function SidebarItem({ children }: { children?: ReactNode }) {
                             </div>
                             <div className="basis-1/12 flex-shrink-0 flex justify-center self-center">
                               <MinusCircleIcon
-                                className={`h-6 w-6 ${element.Requirement === "M"
-                                  ? "text-gray-300"
-                                  : "text-darkMode-error-content"
-                                  }`}
+                                className={`h-6 w-6 ${
+                                  element.Requirement === "M"
+                                    ? "text-gray-300"
+                                    : "text-darkMode-error-content"
+                                }`}
                                 onClick={() => {
                                   if (element.Requirement !== "M") {
                                     removeElement(element.Element);
