@@ -127,7 +127,7 @@ export default function Home() {
             TPInfo.map((partnership, index) => (
               <ListItem key={index}>
                 <div className="basis-8/12">
-                  <p>{partnership.Name} </p>
+                  <p>{partnership.Name.split("_").join(" ")} </p>
                 </div>
                 <div className="basis-2/12 flex justify-center">
                   <Badge status={partnership.Status} />

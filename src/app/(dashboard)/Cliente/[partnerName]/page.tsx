@@ -4,12 +4,10 @@ import AddButton from "@/components/AddButton";
 import BrakeRule from "@/components/BrakeRule";
 import ListItem from "@/components/ListItem";
 import { IoMdDownload } from "react-icons/io";
-import { TfiLayoutLineSolid } from "react-icons/tfi";
 import Badge from "../components/Badge";
 import Errors from "../components/ErrorsModal";
 import React, { useState, useEffect } from "react";
 import { Status } from "../enums/Status";
-import ValidateButton from "../components/ValidateButton";
 import BackButton from "@/components/BackButton";
 import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
@@ -22,11 +20,11 @@ import { LogErrors } from "@prisma/client";
 import { saveAs } from "file-saver";
 import { downloadInitial850EDI } from "@/DA/fileManagerControllers";
 import { downloadPDFInstructions } from "@/DA/fileManagerControllers";
-import { Button } from "@/components/ui/button";
-import { ArrowDownTrayIcon } from "@heroicons/react/16/solid";
 import { FailedAction } from "@/components/toasters";
 import ListHeader from "@/components/ListHeader";
 import { DocumentArrowDownIcon } from "@heroicons/react/24/outline";
+import SuccessModal from "../components/SuccessModal";
+import FailedModal from "../components/FailedModal";
 
 //Tipo especifico para definir lo que se jala de cada doc de la bd
 type EDI = {
@@ -62,6 +60,10 @@ export default function Home() {
    */
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+  
+  // HANDLERS PARA MODALES DE SUCCESS/FAILED
+  const [isSuccessModalOpen, setSuccessModalOpen] = useState(false);
+  const [isFailedModalOpen, setFailedModalOpen] = useState(false);
 
   /**
    * useState que en el cual se contiene el id del Doc al que se le
@@ -259,7 +261,11 @@ export default function Home() {
         isOpen={isUploadModalOpen}
         setIsOpen={setIsUploadModalOpen}
         dataUserDoc={[partnerName, TPDocID]}
+        setSuccess={setSuccessModalOpen}
+        setFail={setFailedModalOpen}
       ></UploadModal>
+      <SuccessModal isOpen={isSuccessModalOpen} setIsOpen={setSuccessModalOpen} />
+      <FailedModal isOpen={isFailedModalOpen} setIsOpen={setFailedModalOpen} setErrorModalOpen={setIsErrorModalOpen} getError={getErrorLog} idDoc={TPDocID}/>
       <Errors isOpen={isErrorModalOpen} setIsOpen={setIsErrorModalOpen} setIsUploadOpen={setIsUploadModalOpen} errorLog={ErrorLog} dataUserDoc={[partnerName, TPDocID]} />
     </div>
   );
