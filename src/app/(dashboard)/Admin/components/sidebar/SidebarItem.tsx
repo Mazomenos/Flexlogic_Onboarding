@@ -50,15 +50,20 @@ export default function SidebarItem({ children }: { children?: ReactNode }) {
     closeModal();
   };
 
-  const removeSegment = (segmentToRemove: string) => {
-    const updatedSegments = EDITemplate.filter(
-      (segment) => segment.Segment !== segmentToRemove,
-    );
-    setEDITemplate(updatedSegments);
+  const removeSegment = (segments, positionToRemove) => {
+    return segments.filter((segment) => {
+      if (segment.Position === positionToRemove) {
+        return false;
+      }
+      if (segment.Segment === "Loop") {
+        segment.Segments = removeSegment(segment.Segments, positionToRemove);
+      }
+      return true;
+    });
   };
 
   const removeElement = (elementToRemove: string) => {
-    const updatedElements = [...elements].filter(
+    const updatedElements = elements.filter(
       (element) => element.Element !== elementToRemove
     );
     setElements(updatedElements);
@@ -78,7 +83,6 @@ export default function SidebarItem({ children }: { children?: ReactNode }) {
       };
     });
 
-    console.log(updatedTemplate);
     setEDITemplate(updatedTemplate);
   };
 
@@ -94,7 +98,7 @@ export default function SidebarItem({ children }: { children?: ReactNode }) {
             key={templateSegment.Position}
             type="single"
             collapsible
-            className="w-[98%] mb-3 mt-2 shadow-custom  collapse bg-base-100 pb-0 dark:bg-darkMode-base-100 hover:bg-base-200 dark:hover:bg-darkMode-base-200 transition motion-reduce:transition-none motion-reduce:hover:transform-none rounded-none"
+            className="w-[98%] mb-3 mt-2 shadow-custom collapse bg-base-100 pb-0 dark:bg-darkMode-base-100 hover:bg-base-200 dark:hover:bg-darkMode-base-200 transition motion-reduce:transition-none motion-reduce:hover:transform-none rounded-none"
           >
             <AccordionItem
               value={`item-${templateSegment.Position}`}
@@ -119,7 +123,9 @@ export default function SidebarItem({ children }: { children?: ReactNode }) {
                         }`}
                       onClick={() => {
                         if (templateSegment.Requirement !== "M") {
-                          removeSegment(templateSegment.Segment);
+                          setEDITemplate((prev) =>
+                            removeSegment(prev, templateSegment.Position)
+                          );
                         }
                       }}
                     />
@@ -172,7 +178,9 @@ export default function SidebarItem({ children }: { children?: ReactNode }) {
                         }`}
                       onClick={() => {
                         if (templateSegment.Requirement !== "M") {
-                          removeSegment(templateSegment.Segment);
+                          setEDITemplate((prev) =>
+                            removeSegment(prev, templateSegment.Position)
+                          );
                         }
                       }}
                     />
@@ -235,7 +243,7 @@ export default function SidebarItem({ children }: { children?: ReactNode }) {
                             index={index}
                             selection={
                               conditionSelections[
-                              `element-${element.Position}`
+                                `element-${element.Position}`
                               ] || ""
                             }
                             onSelectionChange={(value) =>
