@@ -540,7 +540,6 @@ export async function GetTPDocs(partnerName: string) {
 export async function UpdateDocumentStatus(PartnerName:string, TPDocID: string, status: string) {
     const userId = await GetUserId()
 
-    console.log("hola1")
     try {
         const user = await prisma.user.findUnique({
             where: { id: userId },
