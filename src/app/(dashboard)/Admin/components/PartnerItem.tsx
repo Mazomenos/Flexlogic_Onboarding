@@ -11,6 +11,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Delimiters_enum, EOL_enum } from "@prisma/client";
 
 interface Props {
   partner: TradingPartnerCard;
@@ -26,9 +27,9 @@ async function UpdateTPVisible(
   data: {
     Name?: string;
     Initial850EDI?: string;
-    Delimiters?: string[];
-    Version?: string;
-    EOL?: string;
+    Delimiters?: Delimiters_enum[];
+    Version?: any;
+    EOL?: EOL_enum[];
     isVisible?: boolean;
   },
 ) {
