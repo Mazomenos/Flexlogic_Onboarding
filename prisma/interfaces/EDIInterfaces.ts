@@ -68,8 +68,8 @@ type EDITPSegment = {
 };
 export interface EDITPDocument {
   id: string;
-  Delimiters: string[],
-  EOL: string[]
+  Delimiters: Delimiters_enum[],
+  EOL: EOL_enum[]
   Segments: EDITPSegment[];
 }
 
