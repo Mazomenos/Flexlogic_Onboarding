@@ -75,6 +75,9 @@ export async function GetTPDocById(TPDocId: string) {
             throw new Error('Document not found');
         }
 
+
+        console.log(TPDoc)
+
         return TPDoc;
 
     } catch (error) {
@@ -97,9 +100,7 @@ export async function updateConfigTPDoc(TPDocID: string , newDocument: any) {
             where: {
                 id: TPDocID
             },
-                data: {
-                    Segments: newDocument
-                }
+                data: newDocument
         });
 
         if (!TPDoc) {
@@ -123,7 +124,7 @@ export async function updateConfigTPDoc(TPDocID: string , newDocument: any) {
 
 
 
-export async function postTPDoc(Name_TP: string, DocType_e: DocType_enum, Delimiter_e: Delimiters_enum, EOL_e: EOL_enum) {
+export async function postTPDoc(Name_TP: string, DocType_e: DocType_enum, Delimiter_e: Delimiters_enum, EOL_e: EOL_enum, url:string) {
     try {
         const [tradingPartner, templateDoc] = await Promise.all([
             prisma.tradingPartner.findFirst({ where: { Name: Name_TP } }),
@@ -149,27 +150,38 @@ export async function postTPDoc(Name_TP: string, DocType_e: DocType_enum, Delimi
                     Type: elementData?.Type,
                     Min: elementData?.Min,
                     Max: elementData?.Max,
-                    Conditions: []
+                    Conditions: [],
+                    Composites: []
                 };
             }));
+
+            let Segments = []
+
+            if (segment.Segment === "Loop"){
+                Segments = segment.Segments
+
+            }
 
             const result: any = {
                 Position: segment.Position,
                 Segment: segment.Segment,
                 Requirement: segment.Requirement,
-                Max: segment.Max
+                Max: segment.Max,
+                Segments: Segments
             };
 
             if (elements.length > 0) {
                 result['Elements'] = elements;
             }
 
-            if (segment.Segments) {
+            if (Segments.length > 0) {
                 const nestedSegments = await Promise.all(segment.Segments.map(fetchSegmentData));
                 if (nestedSegments.length > 0) {
                     result['Segments'] = nestedSegments;
                 }
             }
+
+            console.log(result)
 
             return result;
         };
@@ -194,7 +206,7 @@ export async function postTPDoc(Name_TP: string, DocType_e: DocType_enum, Delimi
             Doc: DocType_e,
             isVisible: true,
             isRequired: true,
-            instructionsPDF: "blablabla",
+            instructionsPDF: url
         });
 
         const updatedDocs = await prisma.tradingPartner.update({
@@ -205,6 +217,8 @@ export async function postTPDoc(Name_TP: string, DocType_e: DocType_enum, Delimi
                 DocsRequired: tradingPartner.DocsRequired,
             },
         });
+
+        console.log(updatedDocs)
 
         return updatedDocs;
     } catch (error) {

@@ -36,7 +36,7 @@ model EDISegments {
 
 // Individual EDI Document structure
 model EDITemplateDocuments {
-  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  id      String       @id @default(auto()) @map("_id") @db.ObjectId
   Doc     DocType_enum
   Version String
 
@@ -49,7 +49,6 @@ enum DocType_enum {
   EDI_855 @map("855")
   EDI_856 @map("856")
 }
-
 
 model EDITPDocs {
   id String @id @default(auto()) @map("_id") @db.ObjectId
@@ -83,7 +82,7 @@ type Segment {
 
 // Trading Partner structure -----------------------
 model TradingPartner {
-  id            String          @id @default(auto()) @map("_id") @db.ObjectId
+  id            String            @id @default(auto()) @map("_id") @db.ObjectId
   Name          String
   Initial850EDI String? // id of file if saved somewhere else
   Delimiters    Delimiters_enum[]
@@ -103,7 +102,7 @@ enum Version_enum {
 }
 
 enum EOL_enum {
-  TILDE   @map("~")
+  TILDE @map("~")
 }
 
 type TPDocRequired {
