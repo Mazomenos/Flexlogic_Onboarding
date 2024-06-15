@@ -1,13 +1,21 @@
+"use server"
+
 import { prisma } from "@/libs/prisma"
 
-export async function GetUser(userId: string) {
+import { cookies } from "next/headers";
+import { GetUserId } from "@/middleware";
+
+export async function GetClient() {
+
+    const userId = await GetUserId()
+
     try {
-        const user = await prisma.user.findFirst({
+        const client = await prisma.user.findFirst({
             where: {
                 id: userId
             }
         });
-        return user;
+        return client;
     } catch (error) {
         if (error instanceof Error) {
             console.log(

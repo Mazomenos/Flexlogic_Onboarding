@@ -1,7 +1,58 @@
 "use server"
 
 import { prisma } from "@/libs/prisma";
-import { Partnership, TPDocRequired, TradingPartner } from "@prisma/client";
+
+import { Delimiters_enum, EOL_enum, Partnership, TPDocRequired, TradingPartner, Version_enum } from "@prisma/client";
+
+
+export async function GetAllTradingPartner() {
+    try {
+        const tradingPartner = await prisma.tradingPartner.findMany({
+            select: {
+                id: true,
+                Name: true,
+                isVisible: true
+            }
+            
+        });
+        
+        return tradingPartner;
+        
+    } catch (error) {
+        if (error instanceof Error) {
+            console.log(
+                {
+                    message: error.message,
+                },
+                {
+                    status: 500,
+                }
+            );
+        }
+    }
+}
+
+export async function GetTradingPartner(PartnerId: string) {
+    try {
+        const tradingPartner = await prisma.tradingPartner.findFirst({
+            where: {
+                id: PartnerId
+            }
+        });
+        return tradingPartner;
+    } catch (error) {
+        if (error instanceof Error) {
+            console.log(
+                {
+                    message: error.message,
+                },
+                {
+                    status: 500,
+                }
+            );
+        }
+    }
+}
 
 export async function GetPartnershipsFromUser(userId: string) {
     try {
@@ -11,6 +62,7 @@ export async function GetPartnershipsFromUser(userId: string) {
             }
         })
         if (!userPartnerships) throw new Error('User not found')
+
         const idPartners = userPartnerships.Partnerships.map(partnership => partnership.idPartner)
         const partnerships = await prisma.tradingPartner.findMany({
             where: {
@@ -34,66 +86,118 @@ export async function GetPartnershipsFromUser(userId: string) {
     }
 }
 
-/*
-//WARNING DOESNT WORK!!!!!!!!!
-export async function PostPartnership(Name: string, Delimiters: string[], EDIVersion: string, EOL: string) {
+export async function CreateTradingPartner(data: {
+    Name: string,
+    Initial850EDI: string | null,
+    Delimiters: Delimiters_enum[],
+    Version: Version_enum,
+    EOL: EOL_enum[],
+    isVisible: boolean,
+    DocsRequired: any[]
+}) {
     try {
-        //Creates new blank 850 document to link to this new partnership
-        const eightfiftyTemplate = await prisma.eDITemplateDocuments.findFirst({
-            where: {
-                Doc: 850
+        const partner = await prisma.tradingPartner.create({
+            data: {
+                Name: data.Name,
+                Initial850EDI: data.Initial850EDI,
+                Delimiters: data.Delimiters,
+                Version: data.Version,
+                EOL: data.EOL,
+                isVisible: data.isVisible,
+                DocsRequired: data.DocsRequired
             }
-        })
-        if (eightfiftyTemplate === null) return null
-        let segmentArray = []
-        for (let i = 0; i < eightfiftyTemplate.Segments.length; i++) {
-            segmentArray.push(eightfiftyTemplate.Segments[i])
+        });
+
+        if (!partner) {
+            throw new Error('Trading partner not created');
         }
-        console.log(segmentArray)
-        const newTPDocument = await prisma.eDITPDocs.create({
-            data: {
-                Segments: []
-            }
-        })
-        const partnership = await prisma.tradingPartner.create({
-            data: {
-                Name,
-                //Initial850EDI: newTPDocument.id,
-                Delimiters,
-                EDIVersion,
-                EOL
-            }
-        })
-        return partnership
+
+        console.log(partner);
+        return partner;
     } catch (error) {
         if (error instanceof Error) {
-            console.log(
-                {
-                    message: error.message,
-                },
-                {
-                    status: 500,
-                }
-            );
+            console.error({
+                message: error.message,
+                stack: error.stack,
+            });
+        } else {
+            console.error('Unexpected error', error);
         }
+
+        throw new Error('Failed to create trading partner');
     }
 }
 
+// export async function CreateTradingPartner(data: {
+//     Name: string,
+//     Initial850EDI: string, 
+//     Delimiters: Delimiters_enum[],
+//     Version: Version_enum,
+//     EOL: EOL_enum[],
+//     isVisible: boolean
+//     DocsRequired: any[]
+// }){
+//     try {
+//         const partner = await prisma.tradingPartner.create({
+            
+//             data: data
+
+//         })
+
+//         if (!partner) {
+//             throw new Error('Trading partner not created');
+//         }
+//         console.log(partner)
+//         return partner
+
+//     } catch (error) {
+//         if (error instanceof Error) {
+//             console.log(
+//                 {
+//                     message: error.message,
+//                 },
+//                 {
+//                     status: 500,
+//                 }
+//             );
+//         }
+//     }
+// }
+
+// const data = {
+//         Name: "Amazon",
+//         Initial850EDI: "jejejeje",
+//         Delimiters: ['COMMA_SEMICOLON_STAR'],
+//         Version: 'X12_4010',
+//         EOL: ['TILDE'],
+//         isVisible: true,
+//         DocsRequired: [
+//           {
+//             idDoc: "664d783c5d59cf13115aaec8",
+//             Doc: 'EDI_850',
+//             instructionsPDF: "",
+//             isVisible: true,
+//             isRequired: true
+//           },
+//         ]
+// }
+
+
 //Testing pending
-export async function UpdatePartnership(id: string, Name: string, Initial850EDI: string, Delimiters: string[], EDIVersion: string, EOL: string, DocsRequired: TPDocRequired[]) {
+export async function UpdateTradingPartner(partnerId: string, data: {
+    Name?: string,
+    Initial850EDI?: string, 
+    Delimiters?: Delimiters_enum[],
+    Version?: Version_enum,
+    EOL?: EOL_enum[],
+    isVisible?: boolean, 
+    }){
     try {
         const partnership = await prisma.tradingPartner.update({
             where: {
-                id
+                id: partnerId
             },
-            data: {
-                Name,
-                Initial850EDI,
-                Delimiters,
-                EDIVersion,
-                EOL,
-                DocsRequired
-            }
+            data: data
         })
         return partnership
     } catch (error) {
@@ -111,7 +215,7 @@ export async function UpdatePartnership(id: string, Name: string, Initial850EDI:
 }
 
 //Testing pending
-export async function DeletePartnership(id: string) {
+export async function DeleteTradingPartner(id: string) {
     try {
         const partnership = await prisma.tradingPartner.delete({
             where: {
@@ -132,4 +236,3 @@ export async function DeletePartnership(id: string) {
         }
     }
 }
-*/

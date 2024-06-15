@@ -1,5 +1,8 @@
 //
 // EDI ELEMENTS
+
+import { Delimiters_enum, DocType_enum, Version_enum, EOL_enum} from "@prisma/client";
+
 //
 export interface EDIElement {
   Element: string;
@@ -38,7 +41,7 @@ type EDITemplateSegment = {
   Segments?: EDITemplateSegment[];
 };
 export interface EDITemplateDocument {
-  Doc: number;
+  Doc: DocType_enum;
   Version: string;
   Segments: EDITemplateSegment[];
 }
@@ -53,6 +56,7 @@ type EDITPSegmentElement = {
   Type: string;
   Min: number;
   Max: number;
+  Conditions?: any[]
 };
 type EDITPSegment = {
   Position: number;
@@ -64,6 +68,8 @@ type EDITPSegment = {
 };
 export interface EDITPDocument {
   id: string;
+  Delimiters: Delimiters_enum[],
+  EOL: EOL_enum[]
   Segments: EDITPSegment[];
 }
 
@@ -72,7 +78,8 @@ export interface EDITPDocument {
 //
 type DocumentsRequired = {
   idDoc: string;
-  Doc: string;
+  Doc: DocType_enum;
+  instructionsPDF: string;
   isVisible: boolean;
   isRequired: boolean;
 };
@@ -80,9 +87,9 @@ export interface TradingPartner {
   id: string;
   Name: string;
   Initial850EDI: string;
-  Delimiters: string[];
-  Version: string;
-  EOL: string;
+  Delimiters: Delimiters_enum[];
+  Version: Version_enum;
+  EOL: EOL_enum[];
   isVisible: boolean;
   DocsRequired: DocumentsRequired[];
 }
@@ -97,6 +104,7 @@ type Error = {
   Type: string;
 };
 type PartnershipDocs = {
+  idDoc: string;
   Doc: string;
   DocFile: string;
   isRequired: boolean;
@@ -105,9 +113,16 @@ type PartnershipDocs = {
 };
 type UserPartnerships = {
   idPartner: string;
+  Name: string,
   Status: string;
   Docs: PartnershipDocs[];
 };
 export interface User {
   Partnerships: UserPartnerships[];
+}
+export interface LogErrors {
+  Title: string;
+  Description: string;
+  Position: string;
+  Type: string;
 }

@@ -36,17 +36,25 @@ model EDISegments {
 
 // Individual EDI Document structure
 model EDITemplateDocuments {
-  id      String @id @default(auto()) @map("_id") @db.ObjectId
-  Doc     Int
+  id      String       @id @default(auto()) @map("_id") @db.ObjectId
+  Doc     DocType_enum
   Version String
 
   Segments Segment[]
 }
 
-model EDITPDocs {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
+enum DocType_enum {
+  EDI_810 @map("810")
+  EDI_850 @map("850")
+  EDI_855 @map("855")
+  EDI_856 @map("856")
+}
 
-  Segments Segment[]
+model EDITPDocs {
+  id         String            @id @default(auto()) @map("_id") @db.ObjectId
+  Delimiters Delimiters_enum[]
+  EOL        EOL_enum[]
+  Segments   Segment[]
 }
 
 type Element {
@@ -75,21 +83,36 @@ type Segment {
 
 // Trading Partner structure -----------------------
 model TradingPartner {
-  id            String          @id @default(auto()) @map("_id") @db.ObjectId
+  id            String            @id @default(auto()) @map("_id") @db.ObjectId
   Name          String
   Initial850EDI String? // id of file if saved somewhere else
-  Delimiters    String[]
-  Version       String
-  EOL           String
+  Delimiters    Delimiters_enum[]
+  Version       Version_enum
+  EOL           EOL_enum[]
   isVisible     Boolean
   DocsRequired  TPDocRequired[]
 }
 
+enum Delimiters_enum {
+  STAR_MORE @map("['*', '>']")
+}
+
+enum Version_enum {
+  X12_4010 @map("X12_4010")
+}
+
+enum EOL_enum {
+  TILDE @map("~")
+  CR    @map("\n")
+  LF    @map("\r")
+}
+
 type TPDocRequired {
-  idDoc      String // id from TPDocs
-  Doc        String
-  isVisible  Boolean
-  isRequired Boolean
+  idDoc           String // id from TPDocs
+  Doc             DocType_enum
+  instructionsPDF String
+  isVisible       Boolean
+  isRequired      Boolean
 }
 
 //--------------------------
@@ -102,15 +125,17 @@ model User {
 
 type Partnership {
   idPartner String
+  Name      String
   Status    String
   Docs      UserDocs[]
 }
 
 type UserDocs {
+  idDoc      String
   Doc        String
   DocFile    String? // id of file if saved somewhere else
   isRequired Boolean
-  Status     String // Completed, validated & failed
+  Status     String // Complete, validated & failed
   LogErrors  LogErrors[]
 }
 

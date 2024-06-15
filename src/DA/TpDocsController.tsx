@@ -1,8 +1,13 @@
 "use server"
 
-import { prisma } from '@/libs/prisma';
+// import { prisma } from '@/libs/prisma';
 import { GetElement } from './elementControllers'
 import { GetSegment } from './segmentControllers'
+
+import { Delimiters_enum, DocType_enum, EOL_enum, PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
+
 
 export async function GetTPDocsFromPartnership(TPId: string) {
     try {
@@ -54,115 +59,236 @@ export async function GetTPDocsFromPartnership(TPId: string) {
     }
 }
 
-/*
-export async function postTPDoc(TPId: string, DocTemplateNum: number) {
+export async function GetTPDocById(TPDocId: string) {
     try {
-        const tradingPartner = await prisma.tradingPartner.findFirst({
+
+        const TPDoc = await prisma.eDITPDocs.findUnique({
             where: {
-                id: TPId
+                id: TPDocId
+            },
+            select: {
+                Delimiters: true,
+                EOL: true,
+                Segments: true
             }
         });
+
+        if (!TPDoc) {
+            throw new Error('Document not found');
+        }
+
+
+        console.log({
+            id: TPDocId,
+            Delimiters: TPDoc.Delimiters[0],
+            EOL: TPDoc.EOL[0],
+            Segments: TPDoc.Segments
+        })
+
+        return TPDoc;
+
+        
+
+    } catch (error) {
+        if (error instanceof Error) {
+            console.log(
+                {
+                    message: error.message,
+                },
+                {
+                    status: 500,
+                }
+            );
+        }
+    }
+}
+
+export async function updateConfigTPDoc(TPDocID: string , newDocument: any) {
+    try {
+        const TPDoc = await prisma.eDITPDocs.update({
+            where: {
+                id: TPDocID
+            },
+                data: newDocument
+        });
+
+        if (!TPDoc) {
+            throw new Error('Trading Partner Document not found');
+        }
+
+        console.log(TPDoc)
+    } catch (error) {
+        if (error instanceof Error) {
+            console.log(
+                {
+                    message: error.message,
+                },
+                {
+                    status: 500,
+                }
+            );
+        }
+    }
+}
+
+
+
+export async function postTPDoc(Name_TP: string, DocType_e: DocType_enum, Delimiter_e: Delimiters_enum, EOL_e: EOL_enum, url:string) {
+    try {
+        const [tradingPartner, templateDoc] = await Promise.all([
+            prisma.tradingPartner.findFirst({ where: { Name: Name_TP } }),
+            prisma.eDITemplateDocuments.findFirst({ where: { Doc: DocType_e } }),
+        ]);
 
         if (!tradingPartner) {
             throw new Error('Trading partner not found');
         }
 
-        const templateDoc = await prisma.eDITemplateDocuments.findFirst({
-            where: {
-                Doc: DocTemplateNum,
-            },
-        });
-
         if (!templateDoc) {
             throw new Error('Template document not found');
         }
 
-        let newDataSegments: any[] = []
-        for (let j = 0; j < templateDoc.Segments.length; j++) {
-            let segment = templateDoc.Segments[j]
-            let segmentData = await GetSegment(segment.Segment)
-            let elements: any[] = []
-            if (segmentData && segmentData.Elements) {
-                for (let i = 0; i < segmentData.Elements.length; i++) {
-                    let element = segmentData.Elements[i]
-                    if (element) {
-                        let elementData = await GetElement(element.Element)
-                        elements.push({
-                            Position: element.Position,
-                            Element: element.Element,
-                            Requirement: element.Requirement,
-                            Type: elementData?.Type,
-                            Min: elementData?.Min,
-                            Max: elementData?.Max
-                        })
-                    }
-                }
+        const fetchSegmentData = async (segment: any) => {
+            const segmentData = await GetSegment(segment.Segment);
+            const elements = await Promise.all((segmentData?.Elements || []).map(async (element: any) => {
+                const elementData = await GetElement(element.Element);
+                return {
+                    Position: element.Position,
+                    Element: element.Element,
+                    Requirement: element.Requirement,
+                    Type: elementData?.Type,
+                    Min: elementData?.Min,
+                    Max: elementData?.Max,
+                    Conditions: [],
+                    Composites: []
+                };
+            }));
+
+            let Segments = []
+
+            if (segment.Segment === "Loop"){
+                Segments = segment.Segments
+
             }
 
-            newDataSegments.push({
+            const result: any = {
                 Position: segment.Position,
                 Segment: segment.Segment,
                 Requirement: segment.Requirement,
                 Max: segment.Max,
-                ...(segment.Segments !== null && segment.Segments !== undefined && segment.Segments.length > 0 && { Segments: segment.Segments }),
-                Elements: elements
-            })
+                Segments: Segments
+            };
+
+            if (elements.length > 0) {
+                result['Elements'] = elements;
+            }
+
+            if (Segments.length > 0) {
+                const nestedSegments = await Promise.all(segment.Segments.map(fetchSegmentData));
+                if (nestedSegments.length > 0) {
+                    result['Segments'] = nestedSegments;
+                }
+            }
+
+            console.log(result)
+
+            return result;
+        };
+
+        const newDataSegments = await Promise.all(templateDoc.Segments.map(fetchSegmentData));
+
+        const createdTPDoc = await prisma.eDITPDocs.create({ data: {Delimiters: [Delimiter_e], EOL: [EOL_e] ,Segments: newDataSegments } });
+
+        const isDelimiterIncluded = tradingPartner.Delimiters.includes(Delimiter_e);
+        const isEOLIncluded = tradingPartner.EOL.includes(EOL_e);
+
+        if (!isDelimiterIncluded) {
+            tradingPartner.Delimiters.push(Delimiter_e);
         }
 
-
-        const createdTPDoc = await prisma.eDITPDocs.create({
-            data: {
-                Segments: newDataSegments
-
-            }
-        });
+        if (!isEOLIncluded) {
+            tradingPartner.EOL.push(EOL_e);
+        }
 
         tradingPartner.DocsRequired.push({
             idDoc: createdTPDoc.id,
-            Doc: DocTemplateNum.toString(),
-            Version: "X12 4010",
-            isVisible: false
-        })
+            Doc: DocType_e,
+            isVisible: true,
+            isRequired: true,
+            instructionsPDF: url
+        });
 
         const updatedDocs = await prisma.tradingPartner.update({
-            where: {
-                id: TPId
-            },
+            where: { id: tradingPartner.id },
             data: {
-                DocsRequired: tradingPartner.DocsRequired
-            }
+                Delimiters: isDelimiterIncluded ? tradingPartner.Delimiters : { push: [Delimiter_e] },
+                EOL: isEOLIncluded ? tradingPartner.EOL : { push: [EOL_e] },
+                DocsRequired: tradingPartner.DocsRequired,
+            },
         });
+
+        console.log(updatedDocs)
 
         return updatedDocs;
     } catch (error) {
-        if (error instanceof Error) {
-            console.log(
-                {
-                    message: error.message,
-                },
-                {
-                    status: 500,
-                }
-            );
-        }
+        return { error: error instanceof Error ? error.message : "An error occurred" };
     }
 }
 
-export async function updateTPDoc(TPDocId: string, newData: any) {
-    try {
-        const updatedTPDoc = await prisma.eDITPDocs.update({
-            where: {
-                id: TPDocId
 
+
+export async function updateTPDoc(PartnerName: string, TPDocId: string, newDocument: any) {
+    try {
+        // Find the trading partner
+        const partner = await prisma.tradingPartner.findFirst({
+            where: {
+                Name: PartnerName
             },
-            data: newData
+            include: {
+                DocsRequired: true
+            }
         });
 
-        if (!updatedTPDoc) {
-            throw new Error('Trading partner doc not found');
+        // Throw error if trading partner not found
+        if (!partner) {
+            throw new Error('Trading partner not found');
         }
 
-        return updatedTPDoc;
+        // Filters DocsRequired data
+        const newData = partner.DocsRequired.filter(docs => docs.idDoc !== TPDocId)
+            .map(docs => ({
+                idDoc: docs.idDoc,
+                Doc: docs.Doc,
+                isRequired: docs.isRequired,
+                isVisible: docs.isVisible,
+                instructionsPDF: docs.instructionsPDF
+            }));
+
+        // Add the new document to newData
+        newData.push({
+            idDoc: newDocument.idDoc,
+            Doc: newDocument.Doc,
+            isRequired: newDocument.isRequired,
+            isVisible: newDocument.isVisible,
+            instructionsPDF: newDocument.instructionsPDF
+        });
+
+        // Update the trading partner with the filtered DocsRequired
+        const updatedPartner = await prisma.tradingPartner.update({
+            where: {
+                id: partner.id
+            },
+            data: {
+                DocsRequired: {
+                    set: newData
+                }
+            },
+            include: {
+                DocsRequired: true
+            }
+        });
+
+        return updatedPartner;
     } catch (error) {
         if (error instanceof Error) {
             console.log(
@@ -177,30 +303,62 @@ export async function updateTPDoc(TPDocId: string, newData: any) {
     }
 }
 
-export async function deleteTPDoc(TPDocId: string) {
+export async function deleteTPDoc(partnerName: string, TPDocId: string) {
     try {
-        const deletedTPDoc = await prisma.eDITPDocs.delete({
+        // Find the trading partner
+        const partner = await prisma.tradingPartner.findFirst({
+            where: {
+                Name: partnerName
+            },
+            include: {
+                DocsRequired: true
+            }
+        });
+
+        // Throw error if trading partner not found
+        if (!partner) {
+            throw new Error('Trading partner not found');
+        }
+
+
+        // Filters DocsRequired data
+        const newData = partner.DocsRequired.filter(docs => docs.idDoc !== TPDocId)
+            .map(docs => ({
+                idDoc: docs.idDoc,
+                Doc: docs.Doc,
+                isRequired: docs.isRequired,
+                isVisible: docs.isVisible,
+                instructionsPDF: docs.instructionsPDF
+            }));
+
+
+
+        // Deletes entries with the given TPDocId
+        const deletedoc = await prisma.eDITPDocs.delete({
             where: {
                 id: TPDocId
             }
         });
 
-        if (!deletedTPDoc) {
-            throw new Error('Trading partner doc not found');
-        }
 
-        return deletedTPDoc;
-    } catch (error) {
-        if (error instanceof Error) {
-            console.log(
-                {
-                    message: error.message,
-                },
-                {
-                    status: 500,
+        // Update the trading partner with the filtered DocsRequired
+        const updatedPartner = await prisma.tradingPartner.update({
+            where: {
+                id: partner.id
+            },
+            data: {
+                DocsRequired: {
+                    set: newData
                 }
-            );
-        }
+            },
+            include: {
+                DocsRequired: true
+            }
+        });
+
+        return updatedPartner;
+    } catch (error) {
+        console.error(error);
+        throw new Error('Failed to delete Trading Partner document');
     }
 }
-*/

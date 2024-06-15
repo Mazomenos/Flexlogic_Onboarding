@@ -117,7 +117,7 @@ export const EDIElements: EDIElement[] = [
         Element: "I15",
         Name: "Component Element Separator",
         Type: "", // Separador
-        Min: 1, 
+        Min: 1,
         Max: 1,
         Version: "X12 4010"
     },
@@ -228,14 +228,6 @@ export const EDIElements: EDIElement[] = [
     {
         Element: "66",
         Name: "Identification Code Identifier",
-        Type: "ID",
-        Min: 1,
-        Max: 2,
-        Version: "X12 4010"
-    },
-    {
-        Element: "66",
-        Name: "Identification Code Qualifier",
         Type: "ID",
         Min: 1,
         Max: 2,
@@ -2385,4 +2377,141 @@ export const EDIElements: EDIElement[] = [
         Max: 3,
         Version: "X12 4010"
     },
-];
+    {
+        Element: "704",
+        Name: "Paperwork/Report Action Code",
+        Type: "Identifier (ID)",
+        Min: 1,
+        Max: 2,
+        Version: "X12 4010"
+    },
+    {
+        Element: "983",
+        Name: "Hazardous Class Qualifier",
+        Type: "Identifier (ID)",
+        Min: 1,
+        Max: 1,
+        Version: "X12 4010"
+    },
+    {
+        Element: "808",
+        Name: "Hazardous Material Shipment Information Qualifier",
+        Type: "Identifier (ID)",
+        Min: 3,
+        Max: 3,
+        Version: "X12 4010"
+    },
+    {
+        Element: "809",
+        Name: "Hazardous Material Shipment Information",
+        Type: "String (AN)",
+        Min: 1,
+        Max: 25,
+        Version: "X12 4010"
+    },
+    {
+        Element: "1023",
+        Name: "Hazard Zone Code",
+        Type: "Identifier (ID)",
+        Min: 1,
+        Max: 1,
+        Version: "X12 4010"
+    },
+    {
+        Element: "806",
+        Name: "EPA Waste Stream Number Code",
+        Type: "Identifier (ID)",
+        Min: 4,
+        Max: 6,
+        Version: "X12 4010"
+    },
+    {
+        Element: "807",
+        Name: "Waste Characteristics Code",
+        Type: "Identifier (ID)",
+        Min: 12,
+        Max: 16,
+        Version: "X12 4010"
+    },
+    {
+        Element: "238",
+        Name: "Emergency Response Plan Number",
+        Type: "String (AN)",
+        Min: 1,
+        Max: 12,
+        Version: "X12 4010"
+    },
+    {
+        Element: "230",
+        Name: "Subsidiary Classification",
+        Type: "Identifier (ID)",
+        Min: 1,
+        Max: 3,
+        Version: "X12 4010"
+    },
+    {
+        Element: "271",
+        Name: "Subsidiary Risk Indicator",
+        Type: "Identifier (ID)",
+        Min: 1,
+        Max: 2,
+        Version: "X12 4010"
+    },
+    {
+        Element: "267",
+        Name: "Net Explosive Quantity",
+        Type: "Numeric (N0)",
+        Min: 1,
+        Max: 6,
+        Version: "X12 4010"
+    },
+    {
+        Element: "805",
+        Name: "Canadian Hazardous Notation",
+        Type: "String (AN)",
+        Min: 1,
+        Max: 25,
+        Version: "X12 4010"
+    },
+    {
+        Element: "986",
+        Name: "Special Commodity Indicator Code",
+        Type: "Identifier (ID)",
+        Min: 1,
+        Max: 1,
+        Version: "X12 4010"
+    },
+    {
+        Element: "622",
+        Name: "Number of Loads",
+        Type: "Numeric (N0)",
+        Min: 1,
+        Max: 5,
+        Version: "X12 4010"
+    },
+    {
+        Element: "626",
+        Name: "Excess Transportation Reason Code",
+        Type: "Identifier (ID)",
+        Min: 1,
+        Max: 2,
+        Version: "X12 4010"
+    },
+
+    {
+        Element: "627",
+        Name: "Excess Transportation Responsibility Code",
+        Type: "Identifier (ID)",
+        Min: 1,
+        Max: 1,
+        Version: "X12 4010"
+    },
+    {
+        Element: "743",
+        Name: "Returnable Container Freight Payment Responsibility Code",
+        Type: "Identifier (ID)",
+        Min: 1,
+        Max: 2,
+        Version: "X12 4010"
+    }
+]

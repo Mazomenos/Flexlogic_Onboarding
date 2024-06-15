@@ -1,37 +1,53 @@
 import { IcompareData, IcompareStatic, Operator, Source } from "./InterfaceConditions";
 
-function compareStatic(data:string, params: IcompareStatic) {
-    switch(params.operator){
+function compareStatic(data: string, params: IcompareStatic): {Description: string, Title: string} {
+    switch (params.operator) {
         case Operator.EQUAL: {
             if (data !== params.data) {
-                console.log("Error: valor no igual")
-            } 
-            console.log("equal")
-            break;
+                return {
+                    Description: `The Element Data must be EQUAL to ${params.data}`,
+                    Title: "Data Information"
+                }
+            }
+            return {
+                Description: "",
+                Title: ""
+            }
         }
         case Operator.MORE: {
             if (data < params.data) {
-                console.log("Error: valor menor al deseado")
-            } 
-            console.log("more than")
-            break;
+                return {
+                    Description: `The Element Data value must be MORE than ${params.data}`,
+                    Title: "Data Information"
+                }
+            }
+            return {
+                Description: "",
+                Title: ""
+            }
         }
-        case Operator.LESS: { 
+        case Operator.LESS: {
             if (data > params.data) {
-                console.log("Error: valor mayor al deseado")
-            } 
-            console.log("less than")
-            break;
+                return {
+                    Description: `The Element Data value must be LESS than ${params.data}`,
+                    Title: "Data Information"
+                }
+            }
+            return {
+                Description: "",
+                Title: ""
+            }
         }
     }
 }
 
 
 
-export default function CompareData(data: string, params: IcompareData) {
-    switch(params.source){
+export default function CompareData(data: string, params: IcompareData): {Description: string, Title: string} {
+    let result = {Description: "", Title: ""}
+    switch (params.source) {
         case Source.STATIC:
-            compareStatic(data, params.data as IcompareStatic)
+            result = compareStatic(data, params.data as IcompareStatic)
             console.log("static")
             break;
         case Source.PO:
@@ -41,4 +57,5 @@ export default function CompareData(data: string, params: IcompareData) {
             console.log("File")
             break;
     }
+    return result
 }
