@@ -1,10 +1,11 @@
+import { Delimiters_enum, EOL_enum } from "@prisma/client";
 import { EDITPDocument } from "./interfaces/EDIInterfaces";
 
 export const EDITPDocs: EDITPDocument[] = [
     {
         "id": "666986518ccd42f7c223ad82",
-        "Delimiters": ["*",">"],
-        "EOL": ["~"],
+        "Delimiters": [Delimiters_enum.STAR_MORE],
+        "EOL": [EOL_enum.TILDE],
         "Segments": [
           {
             "Position": 1,
