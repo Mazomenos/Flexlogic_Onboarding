@@ -4,7 +4,7 @@ export const TradingPartners: TradingPartner[] = [
     id: "664d76a8d7412ac29ddf6a1b",
     Name: "Amazon",
     Initial850EDI: "jejejeje",
-    Delimiters: ['COMMA_SEMICOLON_STAR'],
+    Delimiters: ['STAR_MORE'],
     Version: 'X12_4010',
     EOL: ['TILDE'],
     isVisible: true,
