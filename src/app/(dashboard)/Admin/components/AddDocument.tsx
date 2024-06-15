@@ -99,7 +99,7 @@ export default function AddDocument({ partnerName }: { partnerName: string }) {
     }
 
     try {
-      const response = await postTPDoc(partnerName, data.ediType, data.delimeters, data.eol);
+      const response = await postTPDoc(partnerName, data.ediType, data.delimeters, data.eol, url);
       if (response) { console.log("posted") }
     }
     catch (error) {
