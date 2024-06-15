@@ -58,12 +58,13 @@ const FormSchema = z.object({
 });
 
 const delimitersOptions = [
-  { value: Delimiters_enum.COMMA_SEMICOLON_STAR, label: "Comma (,), Semicolon (;), Star (*)" },
-  { value: Delimiters_enum.PIPE_SEMICOLON_COMMA, label: "Pipe (|), Semicolon (;), Comma (,)" },
+  { value: Delimiters_enum.STAR_MORE, label: "Star(*), More(>)" }
 ];
 
 const eolOptions = [
-  { value: EOL_enum.TILDE, label: "Tilde (~)" }
+  { value: EOL_enum.TILDE, label: "Tilde (~)" },
+  { value: EOL_enum.CR, label: "CR (\r)" },
+  { value: EOL_enum.LF, label: "LF (\n)" }
 ];
 
 const ediVersionOptions = [

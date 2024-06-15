@@ -1,10 +1,9 @@
 "use client";
 
-import React, { useState, useRef, ChangeEvent, useEffect } from "react";
-import BrakeRule from "@/components/BrakeRule";
+import React, { useState, useRef, ChangeEvent} from "react";
 import { FaUpload } from "react-icons/fa6";
 
-import { DialogClose, DialogFooter, DialogTitle } from "@/components/ui/dialog";
+import { DialogTitle } from "@/components/ui/dialog";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -41,17 +40,17 @@ const FormSchema = z.object({
 // #TODO: Change to DB data
 const edi_documentOptions = [
   { value: DocType_enum.EDI_810, label: "EDI 810" },
-  { value: DocType_enum.EDI_850, label: "EDI 850" },
   { value: DocType_enum.EDI_855, label: "EDI 855" },
   { value: DocType_enum.EDI_856, label: "EDI 856" },
 ];
 const delimitersOptions = [
-  { value: Delimiters_enum.COMMA_SEMICOLON_STAR, label: "Comma (,), Semicolon (;), Star (*)" },
-  { value: Delimiters_enum.PIPE_SEMICOLON_COMMA, label: "Pipe (|), Semicolon (;), Comma (,)" },
+  { value: Delimiters_enum.STAR_MORE, label: "Star(*), More(>)" },
 ];
 
 const eolOptions = [
-  { value: EOL_enum.TILDE, label: "Tilde (~)" }
+  { value: EOL_enum.TILDE, label: "Tilde (~)" },
+  { value: EOL_enum.CR, label: "CR (\r)" },
+  { value: EOL_enum.LF, label: "LF (\n)" }
 ];
 
 export default function AddDocument({ partnerName }: { partnerName: string }) {
@@ -100,7 +99,7 @@ export default function AddDocument({ partnerName }: { partnerName: string }) {
     }
 
     try {
-      const response = await postTPDoc(partnerName, data.ediType, data.delimeters, data.eol);
+      const response = await postTPDoc(partnerName, data.ediType, data.delimeters, data.eol, url);
       if (response) { console.log("posted") }
     }
     catch (error) {
