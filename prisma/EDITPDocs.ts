@@ -3,6 +3,8 @@ import { EDITPDocument } from "./interfaces/EDIInterfaces";
 export const EDITPDocs: EDITPDocument[] = [
     {
         "id": "666986518ccd42f7c223ad82",
+        "Delimiters": ["*",">"],
+        "EOL": ["~"],
         "Segments": [
           {
             "Position": 1,

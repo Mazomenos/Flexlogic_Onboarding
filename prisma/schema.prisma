@@ -51,9 +51,10 @@ enum DocType_enum {
 }
 
 model EDITPDocs {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-
-  Segments Segment[]
+  id         String            @id @default(auto()) @map("_id") @db.ObjectId
+  Delimiters Delimiters_enum[]
+  EOL        EOL_enum[]
+  Segments   Segment[]
 }
 
 type Element {
@@ -93,8 +94,7 @@ model TradingPartner {
 }
 
 enum Delimiters_enum {
-  COMMA_SEMICOLON_STAR @map("[',' , ';' , '*']")
-  PIPE_SEMICOLON_COMMA @map("['|' , ';' , ',']")
+  STAR_MORE @map("['*', '>']")
 }
 
 enum Version_enum {
@@ -103,6 +103,8 @@ enum Version_enum {
 
 enum EOL_enum {
   TILDE @map("~")
+  CR    @map("\n")
+  LF    @map("\r")
 }
 
 type TPDocRequired {

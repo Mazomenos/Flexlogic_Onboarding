@@ -67,6 +67,8 @@ export async function GetTPDocById(TPDocId: string) {
                 id: TPDocId
             },
             select: {
+                Delimiters: true,
+                EOL: true,
                 Segments: true
             }
         });
@@ -76,9 +78,16 @@ export async function GetTPDocById(TPDocId: string) {
         }
 
 
-        console.log(TPDoc)
+        console.log({
+            id: TPDocId,
+            Delimiters: TPDoc.Delimiters[0],
+            EOL: TPDoc.EOL[0],
+            Segments: TPDoc.Segments
+        })
 
         return TPDoc;
+
+        
 
     } catch (error) {
         if (error instanceof Error) {
@@ -188,7 +197,7 @@ export async function postTPDoc(Name_TP: string, DocType_e: DocType_enum, Delimi
 
         const newDataSegments = await Promise.all(templateDoc.Segments.map(fetchSegmentData));
 
-        const createdTPDoc = await prisma.eDITPDocs.create({ data: { Segments: newDataSegments } });
+        const createdTPDoc = await prisma.eDITPDocs.create({ data: {Delimiters: [Delimiter_e], EOL: [EOL_e] ,Segments: newDataSegments } });
 
         const isDelimiterIncluded = tradingPartner.Delimiters.includes(Delimiter_e);
         const isEOLIncluded = tradingPartner.EOL.includes(EOL_e);
