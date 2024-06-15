@@ -41,7 +41,6 @@ const FormSchema = z.object({
 // #TODO: Change to DB data
 const edi_documentOptions = [
   { value: DocType_enum.EDI_810, label: "EDI 810" },
-  { value: DocType_enum.EDI_850, label: "EDI 850" },
   { value: DocType_enum.EDI_855, label: "EDI 855" },
   { value: DocType_enum.EDI_856, label: "EDI 856" },
 ];
